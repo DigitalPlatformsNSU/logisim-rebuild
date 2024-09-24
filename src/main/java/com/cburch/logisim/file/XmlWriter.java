@@ -51,7 +51,7 @@ class XmlWriter {
 		
 		TransformerFactory tfFactory = TransformerFactory.newInstance();
 		try {
-			tffactory.setattribute("indent-number", integer.valueof(2));
+			tfFactory.setAttribute("indent-number", Integer.valueOf(2));
 		} catch (IllegalArgumentException e) { }
 		Transformer tf = tfFactory.newTransformer();
 		tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
