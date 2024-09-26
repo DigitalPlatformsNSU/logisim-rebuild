@@ -8,27 +8,27 @@ import java.util.Collections;
 import java.util.List;
 
 public class UnmodifiableList<E> extends AbstractList<E> {
-	public static <E> List<E> create(E[] data) {
-		if (data.length == 0) {
-			return Collections.emptyList();
-		} else {
-			return new UnmodifiableList<E>(data);
-		}
-	}
-	
-	private E[] data;
-	
-	public UnmodifiableList(E[] data) {
-		this.data = data;
-	}
+    public static <E> List<E> create(E[] data) {
+        if (data.length == 0) {
+            return Collections.emptyList();
+        } else {
+            return new UnmodifiableList<E>(data);
+        }
+    }
 
-	@Override
-	public E get(int index) {
-		return data[index];
-	}
+    private E[] data;
 
-	@Override
-	public int size() {
-		return data.length;
-	}
+    public UnmodifiableList(E[] data) {
+        this.data = data;
+    }
+
+    @Override
+    public E get(int index) {
+        return data[index];
+    }
+
+    @Override
+    public int size() {
+        return data.length;
+    }
 }

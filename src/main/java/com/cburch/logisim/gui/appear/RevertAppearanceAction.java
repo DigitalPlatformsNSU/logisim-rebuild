@@ -12,31 +12,31 @@ import com.cburch.logisim.proj.Action;
 import com.cburch.logisim.proj.Project;
 
 public class RevertAppearanceAction extends Action {
-	private Circuit circuit;
-	private ArrayList<CanvasObject> old;
-	private boolean wasDefault;
-	
-	public RevertAppearanceAction(Circuit circuit) {
-		this.circuit = circuit;
-	}
-	
-	@Override
-	public String getName() {
-		return Strings.get("revertAppearanceAction");
-	}
+    private Circuit circuit;
+    private ArrayList<CanvasObject> old;
+    private boolean wasDefault;
 
-	@Override
-	public void doIt(Project proj) {
-		CircuitAppearance appear = circuit.getAppearance();
-		wasDefault = appear.isDefaultAppearance();
-		old = new ArrayList<CanvasObject>(appear.getObjectsFromBottom());
-		appear.setDefaultAppearance(true);
-	}
+    public RevertAppearanceAction(Circuit circuit) {
+        this.circuit = circuit;
+    }
 
-	@Override
-	public void undo(Project proj) {
-		CircuitAppearance appear = circuit.getAppearance();
-		appear.setObjectsForce(old);
-		appear.setDefaultAppearance(wasDefault);
-	}
+    @Override
+    public String getName() {
+        return Strings.get("revertAppearanceAction");
+    }
+
+    @Override
+    public void doIt(Project proj) {
+        CircuitAppearance appear = circuit.getAppearance();
+        wasDefault = appear.isDefaultAppearance();
+        old = new ArrayList<CanvasObject>(appear.getObjectsFromBottom());
+        appear.setDefaultAppearance(true);
+    }
+
+    @Override
+    public void undo(Project proj) {
+        CircuitAppearance appear = circuit.getAppearance();
+        appear.setObjectsForce(old);
+        appear.setDefaultAppearance(wasDefault);
+    }
 }

@@ -4,25 +4,26 @@
 package com.cburch.logisim.util;
 
 public final class Nulls {
-	private Nulls() { }
-	
-	public static boolean equal(Object a, Object b) {
-		if(a == null) {
-			return b == null;
-		} else if(b == null) {
-			return false;
-		} else {
-			return a.equals(b);
-		}
-	}
-	
-	public static boolean unequal(Object a, Object b) {
-		if(a == null) {
-			return b != null;
-		} else if(b == null) {
-			return true;
-		} else {
-			return !a.equals(b);
-		}
-	}
+    private Nulls() {
+    }
+
+    public static boolean equal(Object a, Object b) {
+        if (a == null) {
+            return b == null;
+        } else if (b == null) {
+            return false;
+        } else {
+            return a.equals(b);
+        }
+    }
+
+    public static boolean unequal(Object a, Object b) {
+        if (a == null) {
+            return b != null;
+        } else if (b == null) {
+            return true;
+        } else {
+            return !a.equals(b);
+        }
+    }
 }

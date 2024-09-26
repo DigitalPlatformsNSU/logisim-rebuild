@@ -13,37 +13,70 @@ import java.util.ArrayList;
 import com.cburch.logisim.data.Bounds;
 
 public class AbstractCaret implements Caret {
-	private ArrayList<CaretListener> listeners = new ArrayList<CaretListener>();
-	private List<CaretListener> listenersView;
-	private Bounds bds = Bounds.EMPTY_BOUNDS;
+    private ArrayList<CaretListener> listeners = new ArrayList<CaretListener>();
+    private List<CaretListener> listenersView;
+    private Bounds bds = Bounds.EMPTY_BOUNDS;
 
-	public AbstractCaret() {
-		listenersView = Collections.unmodifiableList(listeners);
-	}
+    public AbstractCaret() {
+        listenersView = Collections.unmodifiableList(listeners);
+    }
 
-	// listener methods
-	public void addCaretListener(CaretListener e) { listeners.add(e); }
-	public void removeCaretListener(CaretListener e) { listeners.remove(e); }
-	protected List<CaretListener> getCaretListeners() { return listenersView; }
+    // listener methods
+    public void addCaretListener(CaretListener e) {
+        listeners.add(e);
+    }
 
-	// configuration methods
-	public void setBounds(Bounds value) { bds = value; }
+    public void removeCaretListener(CaretListener e) {
+        listeners.remove(e);
+    }
 
-	// query/Graphics methods
-	public String getText() { return ""; }
-	public Bounds getBounds(Graphics g) { return bds; }
-	public void draw(Graphics g) { }
+    protected List<CaretListener> getCaretListeners() {
+        return listenersView;
+    }
 
-	// finishing
-	public void commitText(String text) { }
-	public void cancelEditing() { }
-	public void stopEditing() { }
+    // configuration methods
+    public void setBounds(Bounds value) {
+        bds = value;
+    }
 
-	// events to handle
-	public void mousePressed(MouseEvent e) { }
-	public void mouseDragged(MouseEvent e) { }
-	public void mouseReleased(MouseEvent e) { }
-	public void keyPressed(KeyEvent e) { }
-	public void keyReleased(KeyEvent e) { }
-	public void keyTyped(KeyEvent e) { }
+    // query/Graphics methods
+    public String getText() {
+        return "";
+    }
+
+    public Bounds getBounds(Graphics g) {
+        return bds;
+    }
+
+    public void draw(Graphics g) {
+    }
+
+    // finishing
+    public void commitText(String text) {
+    }
+
+    public void cancelEditing() {
+    }
+
+    public void stopEditing() {
+    }
+
+    // events to handle
+    public void mousePressed(MouseEvent e) {
+    }
+
+    public void mouseDragged(MouseEvent e) {
+    }
+
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    public void keyPressed(KeyEvent e) {
+    }
+
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
 }
