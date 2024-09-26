@@ -10,59 +10,59 @@ import com.cburch.logisim.prefs.AppPreferences;
 import com.cburch.logisim.util.TableLayout;
 
 class WindowOptions extends OptionsPanel {
-	private PrefBoolean[] checks;
-	private PrefOptionList toolbarPlacement;
+    private PrefBoolean[] checks;
+    private PrefOptionList toolbarPlacement;
 
-	public WindowOptions(PreferencesFrame window) {
-		super(window);
-		
-		checks = new PrefBoolean[] {
-				new PrefBoolean(AppPreferences.SHOW_TICK_RATE,
-						Strings.getter("windowTickRate")),
-			};
+    public WindowOptions(PreferencesFrame window) {
+        super(window);
 
-		toolbarPlacement = new PrefOptionList(AppPreferences.TOOLBAR_PLACEMENT,
-				Strings.getter("windowToolbarLocation"),
-				new PrefOption[] {
-					new PrefOption(Direction.NORTH.toString(),
-							Direction.NORTH.getDisplayGetter()),
-					new PrefOption(Direction.SOUTH.toString(),
-							Direction.SOUTH.getDisplayGetter()),
-					new PrefOption(Direction.EAST.toString(),
-							Direction.EAST.getDisplayGetter()),
-					new PrefOption(Direction.WEST.toString(),
-							Direction.WEST.getDisplayGetter()),
-					new PrefOption(AppPreferences.TOOLBAR_DOWN_MIDDLE,
-							Strings.getter("windowToolbarDownMiddle")),
-					new PrefOption(AppPreferences.TOOLBAR_HIDDEN,
-							Strings.getter("windowToolbarHidden")) });
-		
-		JPanel panel = new JPanel(new TableLayout(2));
-		panel.add(toolbarPlacement.getJLabel());
-		panel.add(toolbarPlacement.getJComboBox());
+        checks = new PrefBoolean[]{
+                new PrefBoolean(AppPreferences.SHOW_TICK_RATE,
+                        Strings.getter("windowTickRate")),
+        };
 
-		setLayout(new TableLayout(1));
-		for (int i = 0; i < checks.length; i++) {
-			add(checks[i]);
-		}
-		add(panel);
-	}
+        toolbarPlacement = new PrefOptionList(AppPreferences.TOOLBAR_PLACEMENT,
+                Strings.getter("windowToolbarLocation"),
+                new PrefOption[]{
+                        new PrefOption(Direction.NORTH.toString(),
+                                Direction.NORTH.getDisplayGetter()),
+                        new PrefOption(Direction.SOUTH.toString(),
+                                Direction.SOUTH.getDisplayGetter()),
+                        new PrefOption(Direction.EAST.toString(),
+                                Direction.EAST.getDisplayGetter()),
+                        new PrefOption(Direction.WEST.toString(),
+                                Direction.WEST.getDisplayGetter()),
+                        new PrefOption(AppPreferences.TOOLBAR_DOWN_MIDDLE,
+                                Strings.getter("windowToolbarDownMiddle")),
+                        new PrefOption(AppPreferences.TOOLBAR_HIDDEN,
+                                Strings.getter("windowToolbarHidden"))});
 
-	@Override
-	public String getTitle() {
-		return Strings.get("windowTitle");
-	}
+        JPanel panel = new JPanel(new TableLayout(2));
+        panel.add(toolbarPlacement.getJLabel());
+        panel.add(toolbarPlacement.getJComboBox());
 
-	@Override
-	public String getHelpText() {
-		return Strings.get("windowHelp");
-	}
-	
-	@Override
-	public void localeChanged() {
-		for (int i = 0; i < checks.length; i++) {
-			checks[i].localeChanged();
-		}
-		toolbarPlacement.localeChanged();
-	}
+        setLayout(new TableLayout(1));
+        for (int i = 0; i < checks.length; i++) {
+            add(checks[i]);
+        }
+        add(panel);
+    }
+
+    @Override
+    public String getTitle() {
+        return Strings.get("windowTitle");
+    }
+
+    @Override
+    public String getHelpText() {
+        return Strings.get("windowHelp");
+    }
+
+    @Override
+    public void localeChanged() {
+        for (int i = 0; i < checks.length; i++) {
+            checks[i].localeChanged();
+        }
+        toolbarPlacement.localeChanged();
+    }
 }

@@ -11,34 +11,34 @@ import com.cburch.draw.model.CanvasObject;
 import com.cburch.draw.shapes.Text;
 
 public class ModelEditTextAction extends ModelAction {
-	private Text text;
-	private String oldValue;
-	private String newValue;
-	
-	public ModelEditTextAction(CanvasModel model, Text text, String newValue) {
-		super(model);
-		this.text = text;
-		this.oldValue = text.getText();
-		this.newValue = newValue;
-	}
-	
-	@Override
-	public Collection<CanvasObject> getObjects() {
-		return Collections.singleton((CanvasObject) text);
-	}
+    private Text text;
+    private String oldValue;
+    private String newValue;
 
-	@Override
-	public String getName() {
-		return Strings.get("actionEditText");
-	}
-	
-	@Override
-	void doSub(CanvasModel model) {
-		model.setText(text, newValue);
-	}
-	
-	@Override
-	void undoSub(CanvasModel model) {
-		model.setText(text, oldValue);
-	}
+    public ModelEditTextAction(CanvasModel model, Text text, String newValue) {
+        super(model);
+        this.text = text;
+        this.oldValue = text.getText();
+        this.newValue = newValue;
+    }
+
+    @Override
+    public Collection<CanvasObject> getObjects() {
+        return Collections.singleton((CanvasObject) text);
+    }
+
+    @Override
+    public String getName() {
+        return Strings.get("actionEditText");
+    }
+
+    @Override
+    void doSub(CanvasModel model) {
+        model.setText(text, newValue);
+    }
+
+    @Override
+    void undoSub(CanvasModel model) {
+        model.setText(text, oldValue);
+    }
 }
