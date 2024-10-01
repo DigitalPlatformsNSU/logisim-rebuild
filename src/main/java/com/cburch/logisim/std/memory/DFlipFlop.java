@@ -6,18 +6,18 @@ package com.cburch.logisim.std.memory;
 import com.cburch.logisim.data.Value;
 
 public class DFlipFlop extends AbstractFlipFlop {
-	public DFlipFlop() {
-		super("D Flip-Flop", "dFlipFlop.gif",
-				Strings.getter("dFlipFlopComponent"), 1, true);
-	}
+    public DFlipFlop() {
+        super("D Flip-Flop", "dFlipFlop.gif",
+                Strings.getter("dFlipFlopComponent"), 1, true);
+    }
 
-	@Override
-	protected String getInputName(int index) {
-		return "D";
-	}
+    @Override
+    protected String getInputName(int index) {
+        return "D";
+    }
 
-	@Override
-	protected Value computeValue(Value[] inputs, Value curValue) {
-		return inputs[0];
-	}
+    @Override
+    protected Value computeValue(Value[] inputs, Value curValue) {
+        return inputs[0];
+    }
 }
