@@ -31,11 +31,11 @@ public class Power extends InstanceFactory {
     public Power() {
         super("Power", Strings.getter("powerComponent"));
         setIconName("power.gif");
-        setAttributes(new Attribute[]{StdAttr.FACING, StdAttr.WIDTH},
-                new Object[]{Direction.NORTH, BitWidth.ONE});
+        setAttributes(new Attribute[] { StdAttr.FACING, StdAttr.WIDTH },
+                new Object[] { Direction.NORTH, BitWidth.ONE });
         setFacingAttribute(StdAttr.FACING);
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
-        setPorts(new Port[]{new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH)});
+        setPorts(new Port[] { new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH) });
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Power extends InstanceFactory {
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
         return Bounds.create(0, -8, 15, 16)
-                .rotate(Direction.EAST, attrs.getValue(StdAttr.FACING), 0, 0);
+            .rotate(Direction.EAST, attrs.getValue(StdAttr.FACING), 0, 0);
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Power extends InstanceFactory {
             BitWidth width = painter.getAttributeValue(StdAttr.WIDTH);
             g.setColor(Value.repeat(Value.TRUE, width.getWidth()).getColor());
         }
-        g.drawPolygon(new int[]{6, 14, 6}, new int[]{-8, 0, 8}, 3);
+        g.drawPolygon(new int[] { 6, 14, 6 }, new int[] { -8, 0, 8 }, 3);
 
         g.dispose();
     }

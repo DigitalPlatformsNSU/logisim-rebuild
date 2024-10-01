@@ -43,8 +43,7 @@ class TablePanel extends LogPanel {
             }
         }
 
-        public void filePropertyChanged(ModelEvent event) {
-        }
+        public void filePropertyChanged(ModelEvent event) { }
 
         private void computeRowCount() {
             Model model = getModel();
@@ -89,12 +88,12 @@ class TablePanel extends LogPanel {
             if (numCells <= 0) numCells = 1;
             if (direction > 0) {
                 return curY > 0
-                        ? numCells * cellHeight
-                        : numCells * cellHeight + HEADER_SEP;
+                    ? numCells * cellHeight
+                    : numCells * cellHeight + HEADER_SEP;
             } else {
                 return curY > cellHeight + HEADER_SEP
-                        ? numCells * cellHeight
-                        : numCells * cellHeight + HEADER_SEP;
+                    ? numCells * cellHeight
+                    : numCells * cellHeight + HEADER_SEP;
             }
         }
 
@@ -218,7 +217,7 @@ class TablePanel extends LogPanel {
     }
 
     private int paintHeader(String header, int x, int y,
-                            Graphics g, FontMetrics fm) {
+            Graphics g, FontMetrics fm) {
         int width = fm.stringWidth(header);
         g.drawString(header, x + (cellWidth - width) / 2, y);
         return x + cellWidth + COLUMN_SEP;

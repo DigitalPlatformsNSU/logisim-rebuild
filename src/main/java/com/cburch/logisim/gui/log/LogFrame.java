@@ -69,7 +69,7 @@ public class LogFrame extends LFrame {
 
     private class MyListener
             implements ActionListener, ProjectListener, LibraryListener,
-            SimulatorListener, LocaleListener {
+                SimulatorListener, LocaleListener {
         public void actionPerformed(ActionEvent event) {
             Object src = event.getSource();
             if (src == close) {
@@ -111,17 +111,15 @@ public class LogFrame extends LFrame {
             curModel.propagationCompleted();
         }
 
-        public void tickCompleted(SimulatorEvent e) {
-        }
+        public void tickCompleted(SimulatorEvent e) { }
 
-        public void simulatorStateChanged(SimulatorEvent e) {
-        }
+        public void simulatorStateChanged(SimulatorEvent e) { }
     }
 
     private Project project;
     private Simulator curSimulator = null;
     private Model curModel;
-    private Map<CircuitState, Model> modelMap = new HashMap<CircuitState, Model>();
+    private Map<CircuitState,Model> modelMap = new HashMap<CircuitState,Model>();
     private MyListener myListener = new MyListener();
     private WindowMenuManager windowManager;
 
@@ -138,7 +136,7 @@ public class LogFrame extends LFrame {
         setJMenuBar(new LogisimMenuBar(this, project));
         setSimulator(project.getSimulator(), project.getCircuitState());
 
-        panels = new LogPanel[]{
+        panels = new LogPanel[] {
                 new SelectionPanel(this),
                 new ScrollPanel(this),
                 new FilePanel(this),

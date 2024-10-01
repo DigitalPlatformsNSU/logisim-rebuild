@@ -52,8 +52,7 @@ class TableTabCaret {
         InputMap imap = table.getInputMap();
         ActionMap amap = table.getActionMap();
         AbstractAction nullAction = new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-            }
+            public void actionPerformed(ActionEvent e) { }
         };
         String nullKey = "null";
         amap.put(nullKey, nullAction);
@@ -68,21 +67,10 @@ class TableTabCaret {
         imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), nullKey);
     }
 
-    int getCursorRow() {
-        return cursorRow;
-    }
-
-    int getCursorCol() {
-        return cursorCol;
-    }
-
-    int getMarkRow() {
-        return markRow;
-    }
-
-    int getMarkCol() {
-        return markCol;
-    }
+    int getCursorRow() { return cursorRow; }
+    int getCursorCol() { return cursorCol; }
+    int getMarkRow() { return markRow; }
+    int getMarkCol() { return markCol; }
 
     void selectAll() {
         table.requestFocus();
@@ -145,9 +133,9 @@ class TableTabCaret {
         if (row >= 0) {
             int x0 = table.getX(0);
             int x1 = table.getX(table.getColumnCount() - 1)
-                    + table.getCellWidth();
+                + table.getCellWidth();
             table.repaint(x0 - 2, table.getY(row) - 2,
-                    (x1 - x0) + 4, table.getCellHeight() + 4);
+                (x1 - x0) + 4, table.getCellHeight() + 4);
         }
     }
 
@@ -160,16 +148,8 @@ class TableTabCaret {
             int c0 = cursorCol;
             int r1 = markRow;
             int c1 = markCol;
-            if (r1 < r0) {
-                int t = r1;
-                r1 = r0;
-                r0 = t;
-            }
-            if (c1 < c0) {
-                int t = c1;
-                c1 = c0;
-                c0 = t;
-            }
+            if (r1 < r0) { int t = r1; r1 = r0; r0 = t; }
+            if (c1 < c0) { int t = c1; c1 = c0; c0 = t; }
             int x0 = table.getX(c0);
             int y0 = table.getY(r0);
             int x1 = table.getX(c1) + table.getCellWidth();
@@ -192,8 +172,7 @@ class TableTabCaret {
     private class Listener implements MouseListener, MouseMotionListener,
             KeyListener, FocusListener, TruthTableListener {
 
-        public void mouseClicked(MouseEvent e) {
-        }
+        public void mouseClicked(MouseEvent e) { }
 
         public void mousePressed(MouseEvent e) {
             table.requestFocus();
@@ -206,11 +185,9 @@ class TableTabCaret {
             mouseDragged(e);
         }
 
-        public void mouseEntered(MouseEvent e) {
-        }
+        public void mouseEntered(MouseEvent e) { }
 
-        public void mouseExited(MouseEvent e) {
-        }
+        public void mouseExited(MouseEvent e) { }
 
         public void mouseDragged(MouseEvent e) {
             int row = table.getRow(e);
@@ -218,8 +195,7 @@ class TableTabCaret {
             setCursor(row, col, true);
         }
 
-        public void mouseMoved(MouseEvent e) {
-        }
+        public void mouseMoved(MouseEvent e) { }
 
         public void keyTyped(KeyEvent e) {
             int mask = e.getModifiers();
@@ -228,37 +204,36 @@ class TableTabCaret {
             char c = e.getKeyChar();
             Entry newEntry = null;
             switch (c) {
-                case ' ':
-                    if (cursorRow >= 0) {
-                        TruthTable model = table.getTruthTable();
-                        int inputs = model.getInputColumnCount();
-                        if (cursorCol >= inputs) {
-                            Entry cur = model.getOutputEntry(cursorRow, cursorCol - inputs);
-                            if (cur == Entry.ZERO) cur = Entry.ONE;
-                            else if (cur == Entry.ONE) cur = Entry.DONT_CARE;
-                            else cur = Entry.ZERO;
-                            model.setOutputEntry(cursorRow, cursorCol - inputs, cur);
-                        }
+            case ' ':
+                if (cursorRow >= 0) {
+                    TruthTable model = table.getTruthTable();
+                    int inputs = model.getInputColumnCount();
+                    if (cursorCol >= inputs) {
+                        Entry cur = model.getOutputEntry(cursorRow, cursorCol - inputs);
+                        if (cur == Entry.ZERO) cur = Entry.ONE;
+                        else if (cur == Entry.ONE) cur = Entry.DONT_CARE;
+                        else cur = Entry.ZERO;
+                        model.setOutputEntry(cursorRow, cursorCol - inputs, cur);
                     }
-                    break;
-                case '0':
-                    newEntry = Entry.ZERO;
-                    break;
-                case '1':
-                    newEntry = Entry.ONE;
-                    break;
-                case 'x':
-                    newEntry = Entry.DONT_CARE;
-                    break;
-                case '\n':
-                    setCursor(cursorRow + 1, table.getTruthTable().getInputColumnCount(),
-                            (mask & InputEvent.SHIFT_MASK) != 0);
-                    break;
-                case '\u0008':
-                case '\u007f':
-                    setCursor(cursorRow, cursorCol - 1, (mask & InputEvent.SHIFT_MASK) != 0);
-                    break;
-                default:
+                }
+                break;
+            case '0':
+                newEntry = Entry.ZERO;
+                break;
+            case '1':
+                newEntry = Entry.ONE;
+                break;
+            case 'x':
+                newEntry = Entry.DONT_CARE;
+                break;
+            case '\n':
+                setCursor(cursorRow + 1, table.getTruthTable().getInputColumnCount(),
+                        (mask & InputEvent.SHIFT_MASK) != 0);
+                break;
+            case '\u0008': case '\u007f':
+                setCursor(cursorRow, cursorCol - 1, (mask & InputEvent.SHIFT_MASK) != 0);
+                break;
+            default:
             }
             if (newEntry != null) {
                 TruthTable model = table.getTruthTable();
@@ -284,41 +259,32 @@ class TableTabCaret {
             int cols = inputs + outputs;
             boolean shift = (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    setCursor(cursorRow - 1, cursorCol, shift);
-                    break;
-                case KeyEvent.VK_LEFT:
-                    setCursor(cursorRow, cursorCol - 1, shift);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    setCursor(cursorRow + 1, cursorCol, shift);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    setCursor(cursorRow, cursorCol + 1, shift);
-                    break;
-                case KeyEvent.VK_HOME:
-                    if (cursorCol == 0) setCursor(0, 0, shift);
-                    else setCursor(cursorRow, 0, shift);
-                    break;
-                case KeyEvent.VK_END:
-                    if (cursorCol == cols - 1) setCursor(rows - 1, cols - 1, shift);
-                    else setCursor(cursorRow, cols - 1, shift);
-                    break;
-                case KeyEvent.VK_PAGE_DOWN:
-                    rows = table.getVisibleRect().height / table.getCellHeight();
-                    if (rows > 2) rows--;
-                    setCursor(cursorRow + rows, cursorCol, shift);
-                    break;
-                case KeyEvent.VK_PAGE_UP:
-                    rows = table.getVisibleRect().height / table.getCellHeight();
-                    if (rows > 2) rows--;
-                    setCursor(cursorRow - rows, cursorCol, shift);
-                    break;
+            case KeyEvent.VK_UP:    setCursor(cursorRow - 1, cursorCol, shift); break;
+            case KeyEvent.VK_LEFT:  setCursor(cursorRow, cursorCol - 1, shift); break;
+            case KeyEvent.VK_DOWN:  setCursor(cursorRow + 1, cursorCol, shift); break;
+            case KeyEvent.VK_RIGHT: setCursor(cursorRow, cursorCol + 1, shift); break;
+            case KeyEvent.VK_HOME:
+                if (cursorCol == 0) setCursor(0, 0, shift);
+                else setCursor(cursorRow, 0, shift);
+                break;
+            case KeyEvent.VK_END:
+                if (cursorCol == cols - 1) setCursor(rows - 1, cols - 1, shift);
+                else setCursor(cursorRow, cols - 1, shift);
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                rows = table.getVisibleRect().height / table.getCellHeight();
+                if (rows > 2) rows--;
+                setCursor(cursorRow + rows, cursorCol, shift);
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                rows = table.getVisibleRect().height / table.getCellHeight();
+                if (rows > 2) rows--;
+                setCursor(cursorRow - rows, cursorCol, shift);
+                break;
             }
         }
 
-        public void keyReleased(KeyEvent e) {
-        }
+        public void keyReleased(KeyEvent e) { }
 
         public void focusGained(FocusEvent e) {
             if (cursorRow >= 0) expose(cursorRow, cursorCol);
@@ -328,8 +294,7 @@ class TableTabCaret {
             if (cursorRow >= 0) expose(cursorRow, cursorCol);
         }
 
-        public void cellsChanged(TruthTableEvent event) {
-        }
+        public void cellsChanged(TruthTableEvent event) { }
 
         public void structureChanged(TruthTableEvent event) {
             TruthTable model = event.getSource();
@@ -338,22 +303,10 @@ class TableTabCaret {
             int rows = model.getRowCount();
             int cols = inputs + outputs;
             boolean changed = false;
-            if (cursorRow >= rows) {
-                cursorRow = rows - 1;
-                changed = true;
-            }
-            if (cursorCol >= cols) {
-                cursorCol = cols - 1;
-                changed = true;
-            }
-            if (markRow >= rows) {
-                markRow = rows - 1;
-                changed = true;
-            }
-            if (markCol >= cols) {
-                markCol = cols - 1;
-                changed = true;
-            }
+            if (cursorRow >= rows) { cursorRow = rows - 1; changed = true; }
+            if (cursorCol >= cols) { cursorCol = cols - 1; changed = true; }
+            if (markRow >= rows) { markRow = rows - 1; changed = true; }
+            if (markCol >= cols) { markCol = cols - 1; changed = true; }
             if (changed) table.repaint();
         }
     }

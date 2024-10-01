@@ -1,4 +1,4 @@
-/* Copyright (c) 2010, Carl Burch. License information is located in the
+﻿/* Copyright (c) 2010, Carl Burch. License information is located in the
  * com.cburch.logisim.Main source code and at www.cburch.com/logisim/. */
 
 package com.cburch.draw.shapes;
@@ -6,13 +6,12 @@ package com.cburch.draw.shapes;
 import com.cburch.logisim.data.Bounds;
 
 public class CurveUtil {
-    private CurveUtil() {
-    }
+    private CurveUtil() { }
 
     /**
      * getBounds and findNearestPoint are based translated from the ActionScript
      * of Olivier Besson's Bezier class for collision detection. Code from:
-     * http://blog.gludion.com/2009/08/distance-to-quadratic-bezier-curve.html
+     *   http://blog.gludion.com/2009/08/distance-to-quadratic-bezier-curve.html
      */
 
     // a value we consider "small enough" to equal it to zero:
@@ -53,25 +52,25 @@ public class CurveUtil {
     }
 
     private static double[] computeA(double[] p0, double[] p1) {
-        return new double[]{p1[0] - p0[0], p1[1] - p0[1]};
+        return new double[] { p1[0] - p0[0], p1[1] - p0[1] };
     }
 
     private static double[] computeB(double[] p0, double[] p1, double[] p2) {
-        return new double[]{
+        return new double[] {
                 p0[0] - 2 * p1[0] + p2[0],
-                p0[1] - 2 * p1[1] + p2[1]};
+                p0[1] - 2 * p1[1] + p2[1] };
     }
 
     // returns { t:Number, pos:Point, dist:Number, nor:Point }
     // (costs about 80 multiplications+additions)
     // note: p0 and p2 are endpoints, p1 is control point
     public static double[] findNearestPoint(double[] q,
-                                            double[] p0, double[] p1, double[] p2) {
+            double[] p0, double[] p1, double[] p2) {
         double[] A = computeA(p0, p1);
         double[] B = computeB(p0, p1, p2);
 
         // a temporary util vect = p0 - (x,y)
-        double[] pos = {p0[0] - q[0], p0[1] - q[1]};
+        double[] pos = { p0[0] - q[0], p0[1] - q[1] };
         // search points P of bezier curve with PM.(dP / dt) = 0
         // a calculus leads to a 3d degree equation :
         double a = B[0] * B[0] + B[1] * B[1];
@@ -116,7 +115,7 @@ public class CurveUtil {
     }
 
     private static void getPos(double[] result, double t,
-                               double[] p0, double[] p1, double[] p2) {
+            double[] p0, double[] p1, double[] p2) {
         double a = (1 - t) * (1 - t);
         double b = 2 * t * (1 - t);
         double c = t * t;
@@ -143,27 +142,27 @@ public class CurveUtil {
             if (D > zeroMax) {
                 // D positive
                 z = Math.sqrt(D);
-                double u = (-q + z) / 2;
-                double v = (-q - z) / 2;
-                u = (u >= 0) ? Math.pow(u, 1. / 3) : -Math.pow(-u, 1. / 3);
-                v = (v >= 0) ? Math.pow(v, 1. / 3) : -Math.pow(-v, 1. / 3);
-                return new double[]{u + v + offset};
+                double u = ( -q + z) / 2;
+                double v = ( -q - z) / 2;
+                u = (u >= 0)? Math.pow(u, 1. / 3) : -Math.pow( -u, 1. / 3);
+                v = (v >= 0)? Math.pow(v, 1. / 3) : -Math.pow( -v, 1. / 3);
+                return new double[] { u + v + offset };
             } else if (D < -zeroMax) {
                 // D negative
-                double u = 2 * Math.sqrt(-p / 3);
-                double v = Math.acos(-Math.sqrt(-27 / p3) * q / 2) / 3;
-                return new double[]{
-                        u * Math.cos(v) + offset,
-                        u * Math.cos(v + 2 * Math.PI / 3) + offset,
-                        u * Math.cos(v + 4 * Math.PI / 3) + offset};
+                double u = 2 * Math.sqrt( -p / 3);
+                double v = Math.acos( -Math.sqrt( -27 / p3) * q / 2) / 3;
+                return new double[] {
+                    u * Math.cos(v) + offset,
+                    u * Math.cos(v + 2 * Math.PI / 3) + offset,
+                    u * Math.cos(v + 4 * Math.PI / 3) + offset };
             } else {
                 // D zero
                 double u;
-                if (q < 0) u = Math.pow(-q / 2, 1. / 3);
-                else u = -Math.pow(q / 2, 1. / 3);
-                return new double[]{
-                        2 * u + offset,
-                        -u + offset};
+                if (q < 0) u = Math.pow( -q / 2, 1. / 3);
+                else u = -Math.pow( q / 2, 1. / 3);
+                return new double[] {
+                    2*u + offset,
+                    -u + offset };
             }
         } else if (Math.abs(b) > zeroMax) {
             // a = 0, then actually a 2nd degree equation:
@@ -171,23 +170,23 @@ public class CurveUtil {
             a = b;
             b = c;
             c = d;
-            double D = b * b - 4 * a * c;
+            double D = b*b - 4*a*c;
             if (D <= -zeroMax) {
                 // D negative
                 return null;
             } else if (D > zeroMax) {
                 // D positive
                 D = Math.sqrt(D);
-                return new double[]{
-                        (-b - D) / (2 * a),
-                        (-b + D) / (2 * a)};
+                return new double[] {
+                        ( -b - D) / (2 * a),
+                        ( -b + D) / (2 * a) };
             } else {
                 // D zero
-                return new double[]{-b / (2 * a)};
+                return new double[] { -b / (2 * a) };
             }
         } else if (Math.abs(c) > zeroMax) {
             // a and b are both 0 - we're looking at a linear equation
-            return new double[]{-d / c};
+            return new double[] { -d / c };
         } else {
             // a, b, and c are all 0 - this is a constant equation
             return null;
@@ -215,8 +214,8 @@ public class CurveUtil {
         double d1 = Math.sqrt(dx * dx + dy * dy);
 
         if (d0 < zeroMax || d1 < zeroMax) {
-            return new double[]{(end0[0] + end1[0]) / 2,
-                    (end0[1] + end1[1]) / 2};
+            return new double[] { (end0[0] + end1[0]) / 2,
+                    (end0[1] + end1[1]) / 2 };
         }
 
         double t = d0 / (d0 + d1);
@@ -227,6 +226,6 @@ public class CurveUtil {
 
         double xNum = mid[0] - u2 * end0[0] - t2 * end1[0];
         double yNum = mid[1] - u2 * end0[1] - t2 * end1[1];
-        return new double[]{xNum / den, yNum / den};
+        return new double[] { xNum / den, yNum / den };
     }
 }

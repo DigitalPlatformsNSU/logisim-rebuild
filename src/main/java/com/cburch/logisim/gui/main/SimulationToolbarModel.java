@@ -36,12 +36,12 @@ class SimulationToolbarModel extends AbstractToolbarModel
         tickStep = new LogisimToolbarItem(menu, "simtstep.png", LogisimMenuBar.TICK_STEP,
                 Strings.getter("simulateTickTip"));
 
-        items = UnmodifiableList.create(new ToolbarItem[]{
+        items = UnmodifiableList.create(new ToolbarItem[] {
                 simEnable,
                 simStep,
                 tickEnable,
                 tickStep,
-        });
+            });
 
         menu.getMenuBar().addEnableListener(this);
         stateChanged(null);

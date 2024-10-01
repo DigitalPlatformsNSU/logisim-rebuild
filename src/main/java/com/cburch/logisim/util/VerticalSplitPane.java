@@ -16,11 +16,8 @@ import javax.swing.JPanel;
 
 public class VerticalSplitPane extends JPanel {
     private class MyLayout implements LayoutManager {
-        public void addLayoutComponent(String name, Component comp) {
-        }
-
-        public void removeLayoutComponent(Component comp) {
-        }
+        public void addLayoutComponent(String name, Component comp) { }
+        public void removeLayoutComponent(Component comp) { }
 
         public Dimension preferredLayoutSize(Container parent) {
             if (fraction <= 0.0) return comp1.getPreferredSize();
@@ -94,7 +91,7 @@ public class VerticalSplitPane extends JPanel {
     }
 
     public VerticalSplitPane(JComponent comp0, JComponent comp1,
-                             double fraction) {
+            double fraction) {
         this.comp0 = comp0;
         this.comp1 = comp1;
         this.dragbar = new MyDragbar(); // above the other components

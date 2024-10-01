@@ -13,11 +13,9 @@ import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.StringUtil;
 
-/**
- * Manufactures a simple counter that iterates over the 4-bit Gray Code. This
+/** Manufactures a simple counter that iterates over the 4-bit Gray Code. This
  * example illustrates how a component can maintain its own internal state. All
- * of the code relevant to state, though, appears in CounterData class.
- */
+ * of the code relevant to state, though, appears in CounterData class. */
 class SimpleGrayCounter extends InstanceFactory {
     private static final BitWidth BIT_WIDTH = BitWidth.create(4);
 
@@ -29,9 +27,9 @@ class SimpleGrayCounter extends InstanceFactory {
     public SimpleGrayCounter() {
         super("Gray Counter (Simple)");
         setOffsetBounds(Bounds.create(-30, -15, 30, 30));
-        setPorts(new Port[]{
+        setPorts(new Port[] {
                 new Port(-30, 0, Port.INPUT, 1),
-                new Port(0, 0, Port.OUTPUT, BIT_WIDTH.getWidth()),
+                new Port(  0, 0, Port.OUTPUT, BIT_WIDTH.getWidth()),
         });
     }
 

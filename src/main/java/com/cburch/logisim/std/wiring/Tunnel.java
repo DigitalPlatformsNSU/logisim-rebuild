@@ -87,38 +87,38 @@ public class Tunnel extends InstanceFactory {
         if (facing == Direction.NORTH) {
             int yb = y0 + ARROW_DEPTH;
             if (x1 - x0 <= ARROW_MAX_WIDTH) {
-                xp = new int[]{x0, 0, x1, x1, x0};
-                yp = new int[]{yb, y0, yb, y1, y1};
+                xp = new int[] { x0, 0,  x1, x1, x0 };
+                yp = new int[] { yb, y0, yb, y1, y1 };
             } else {
-                xp = new int[]{x0, -mw, 0, mw, x1, x1, x0};
-                yp = new int[]{yb, yb, y0, yb, yb, y1, y1};
+                xp = new int[] { x0, -mw, 0,  mw, x1, x1, x0 };
+                yp = new int[] { yb, yb,  y0, yb, yb, y1, y1 };
             }
         } else if (facing == Direction.SOUTH) {
             int yb = y1 - ARROW_DEPTH;
             if (x1 - x0 <= ARROW_MAX_WIDTH) {
-                xp = new int[]{x0, x1, x1, 0, x0};
-                yp = new int[]{y0, y0, yb, y1, yb};
+                xp = new int[] { x0, x1, x1, 0,  x0 };
+                yp = new int[] { y0, y0, yb, y1, yb };
             } else {
-                xp = new int[]{x0, x1, x1, mw, 0, -mw, x0};
-                yp = new int[]{y0, y0, yb, yb, y1, yb, yb};
+                xp = new int[] { x0, x1, x1, mw, 0,  -mw, x0 };
+                yp = new int[] { y0, y0, yb, yb, y1, yb,  yb };
             }
         } else if (facing == Direction.EAST) {
             int xb = x1 - ARROW_DEPTH;
             if (y1 - y0 <= ARROW_MAX_WIDTH) {
-                xp = new int[]{x0, xb, x1, xb, x0};
-                yp = new int[]{y0, y0, 0, y1, y1};
+                xp = new int[] { x0, xb, x1, xb, x0 };
+                yp = new int[] { y0, y0, 0,  y1, y1 };
             } else {
-                xp = new int[]{x0, xb, xb, x1, xb, xb, x0};
-                yp = new int[]{y0, y0, -mw, 0, mw, y1, y1};
+                xp = new int[] { x0, xb, xb,  x1, xb, xb, x0 };
+                yp = new int[] { y0, y0, -mw, 0,  mw,  y1, y1 };
             }
         } else {
             int xb = x0 + ARROW_DEPTH;
             if (y1 - y0 <= ARROW_MAX_WIDTH) {
-                xp = new int[]{xb, x1, x1, xb, x0};
-                yp = new int[]{y0, y0, y1, y1, 0};
+                xp = new int[] { xb, x1, x1, xb, x0 };
+                yp = new int[] { y0, y0, y1, y1, 0  };
             } else {
-                xp = new int[]{xb, x1, x1, xb, xb, x0, xb};
-                yp = new int[]{y0, y0, y1, y1, mw, 0, -mw};
+                xp = new int[] { xb, x1, x1, xb, xb, x0, xb  };
+                yp = new int[] { y0, y0, y1, y1, mw, 0,  -mw };
             }
         }
         GraphicsUtil.switchToWidth(g, 2);
@@ -144,9 +144,9 @@ public class Tunnel extends InstanceFactory {
     @Override
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
-        instance.setPorts(new Port[]{
+        instance.setPorts(new Port[] {
                 new Port(0, 0, Port.INOUT, StdAttr.WIDTH)
-        });
+            });
         configureLabel(instance);
     }
 
@@ -177,7 +177,7 @@ public class Tunnel extends InstanceFactory {
     }
 
     private Bounds computeBounds(TunnelAttributes attrs, int textWidth,
-                                 int textHeight, Graphics g, String label) {
+            int textHeight, Graphics g, String label) {
         int x = attrs.getLabelX();
         int y = attrs.getLabelY();
         int halign = attrs.getLabelHAlign();
@@ -189,24 +189,14 @@ public class Tunnel extends InstanceFactory {
         int bx;
         int by;
         switch (halign) {
-            case TextField.H_LEFT:
-                bx = x;
-                break;
-            case TextField.H_RIGHT:
-                bx = x - bw;
-                break;
-            default:
-                bx = x - (bw / 2);
+        case TextField.H_LEFT: bx = x; break;
+        case TextField.H_RIGHT: bx = x - bw; break;
+        default: bx = x - (bw / 2);
         }
         switch (valign) {
-            case TextField.V_TOP:
-                by = y;
-                break;
-            case TextField.V_BOTTOM:
-                by = y - bh;
-                break;
-            default:
-                by = y - (bh / 2);
+        case TextField.V_TOP: by = y; break;
+        case TextField.V_BOTTOM: by = y - bh; break;
+        default: by = y - (bh / 2);
         }
 
         if (g != null) {

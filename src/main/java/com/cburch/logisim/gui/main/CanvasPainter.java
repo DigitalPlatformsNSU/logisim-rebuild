@@ -82,9 +82,9 @@ class CanvasPainter implements PropertyChangeListener {
         int h = bds.getHeight();
         double a = Canvas.SQRT_2 * w;
         double b = Canvas.SQRT_2 * h;
-        canvas.repaint((int) Math.round(bds.getX() + w / 2.0 - a / 2.0),
-                (int) Math.round(bds.getY() + h / 2.0 - b / 2.0),
-                (int) Math.round(a), (int) Math.round(b));
+        canvas.repaint((int) Math.round(bds.getX() + w/2.0 - a/2.0),
+            (int) Math.round(bds.getY() + h/2.0 - b/2.0),
+            (int) Math.round(a), (int) Math.round(b));
     }
 
     public void propertyChange(PropertyChangeEvent event) {
@@ -153,9 +153,9 @@ class CanvasPainter implements PropertyChangeListener {
             int h = bds.getHeight();
             double a = Canvas.SQRT_2 * w;
             double b = Canvas.SQRT_2 * h;
-            g.drawOval((int) Math.round(bds.getX() + w / 2.0 - a / 2.0),
-                    (int) Math.round(bds.getY() + h / 2.0 - b / 2.0),
-                    (int) Math.round(a), (int) Math.round(b));
+            g.drawOval((int) Math.round(bds.getX() + w/2.0 - a/2.0),
+                (int) Math.round(bds.getY() + h/2.0 - b/2.0),
+                (int) Math.round(a), (int) Math.round(b));
             GraphicsUtil.switchToWidth(g, 1);
             g.setColor(Color.BLACK);
         }
@@ -195,20 +195,14 @@ class CanvasPainter implements PropertyChangeListener {
                 // ensure it hasn't already been drawn
                 boolean drawn = false;
                 for (int j = 0; j < i; j++) {
-                    if (ex.getPoint(j).equals(p)) {
-                        drawn = true;
-                        break;
-                    }
+                    if (ex.getPoint(j).equals(p)) { drawn = true; break; }
                 }
                 if (drawn) continue;
 
                 // compute the caption combining all similar points
                 String caption = "" + w.getWidth();
                 for (int j = i + 1; j < ex.size(); j++) {
-                    if (ex.getPoint(j).equals(p)) {
-                        caption += "/" + ex.getBitWidth(j);
-                        break;
-                    }
+                    if (ex.getPoint(j).equals(p)) { caption += "/" + ex.getBitWidth(j); break; }
                 }
                 g.drawOval(p.getX() - 4, p.getY() - 4, 8, 8);
                 g.drawString(caption, p.getX() + 5, p.getY() + 2 + fm.getAscent());

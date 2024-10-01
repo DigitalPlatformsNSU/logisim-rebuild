@@ -20,17 +20,15 @@ import com.cburch.logisim.instance.StdAttr;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.StringUtil;
 
-/**
- * Manufactures a counter that iterates over Gray codes. This demonstrates
- * several additional features beyond the SimpleGrayCounter class.
- */
+/** Manufactures a counter that iterates over Gray codes. This demonstrates
+ * several additional features beyond the SimpleGrayCounter class. */
 class GrayCounter extends InstanceFactory {
     public GrayCounter() {
         super("Gray Counter");
         setOffsetBounds(Bounds.create(-30, -15, 30, 30));
-        setPorts(new Port[]{
+        setPorts(new Port[] {
                 new Port(-30, 0, Port.INPUT, 1),
-                new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH),
+                new Port(  0, 0, Port.OUTPUT, StdAttr.WIDTH),
         });
 
         // We'll have width, label, and label font attributes. The latter two
@@ -38,8 +36,8 @@ class GrayCounter extends InstanceFactory {
         // we'll also need configureNewInstance to configure the label's
         // location).
         setAttributes(
-                new Attribute[]{StdAttr.WIDTH, StdAttr.LABEL, StdAttr.LABEL_FONT},
-                new Object[]{BitWidth.create(4), "", StdAttr.DEFAULT_LABEL_FONT});
+                new Attribute[] { StdAttr.WIDTH, StdAttr.LABEL, StdAttr.LABEL_FONT },
+                new Object[] { BitWidth.create(4), "", StdAttr.DEFAULT_LABEL_FONT });
 
         // The following method invocation sets things up so that the instance's
         // state can be manipulated using the Poke Tool.
@@ -52,14 +50,12 @@ class GrayCounter extends InstanceFactory {
         if (url != null) setIcon(new ImageIcon(url));
     }
 
-    /**
-     * The configureNewInstance method is invoked every time a new instance
+    /** The configureNewInstance method is invoked every time a new instance
      * is created. In the superclass, the method doesn't do anything, since
      * the new instance is pretty thoroughly configured already by default. But
      * sometimes you need to do something particular to each instance, so you
      * would override the method. In this case, we need to set up the location
-     * for its label.
-     */
+     * for its label. */
     @Override
     protected void configureNewInstance(Instance instance) {
         Bounds bds = instance.getBounds();

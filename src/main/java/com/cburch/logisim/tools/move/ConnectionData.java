@@ -14,16 +14,14 @@ class ConnectionData {
 
     private Direction dir;
 
-    /**
-     * The list of wires leading up to this point - we may well want to
-     * truncate this path somewhat.
-     */
+    /** The list of wires leading up to this point - we may well want to
+     * truncate this path somewhat. */
     private List<Wire> wirePath;
 
     private Location wirePathStart;
 
     public ConnectionData(Location loc, Direction dir, List<Wire> wirePath,
-                          Location wirePathStart) {
+            Location wirePathStart) {
         this.loc = loc;
         this.dir = dir;
         this.wirePath = wirePath;

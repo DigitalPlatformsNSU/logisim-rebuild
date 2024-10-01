@@ -16,16 +16,16 @@ class CounterAttributes extends AbstractAttributeSet {
     private AttributeSet base;
 
     public CounterAttributes() {
-        base = AttributeSets.fixedSet(new Attribute<?>[]{
+        base = AttributeSets.fixedSet(new Attribute<?>[] {
                 StdAttr.WIDTH, Counter.ATTR_MAX, Counter.ATTR_ON_GOAL,
                 StdAttr.EDGE_TRIGGER,
                 StdAttr.LABEL, StdAttr.LABEL_FONT
-        }, new Object[]{
+            }, new Object[] {
                 BitWidth.create(8), Integer.valueOf(0xFF),
                 Counter.ON_GOAL_WRAP,
                 StdAttr.TRIG_RISING,
                 "", StdAttr.DEFAULT_LABEL_FONT
-        });
+            });
     }
 
     @Override
@@ -69,17 +69,17 @@ class CounterAttributes extends AbstractAttributeSet {
             }
             fireAttributeValueChanged(StdAttr.WIDTH, newWidth);
         } else if (attr == Counter.ATTR_MAX) {
-            int oldVal = base.getValue(Counter.ATTR_MAX).intValue();
+            int oldVal = ((Integer) value).intValue();
             BitWidth width = base.getValue(StdAttr.WIDTH);
-            int newVal = ((Integer) value).intValue() & width.getMask();
+            int newVal = oldVal & width.getMask();
             if (newVal != oldVal) {
                 @SuppressWarnings("unchecked")
                 V val = (V) Integer.valueOf(newVal);
                 value = val;
             }
+            fireAttributeValueChanged(attr, value);
         }
         base.setValue(attr, value);
-        fireAttributeValueChanged(attr, value);
         if (newMax != null) {
             base.setValue(Counter.ATTR_MAX, newMax);
             fireAttributeValueChanged(Counter.ATTR_MAX, newMax);

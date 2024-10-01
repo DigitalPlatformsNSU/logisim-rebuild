@@ -84,7 +84,7 @@ public class TableSorter extends AbstractTableModel {
             Method m;
             try {
                 // See if o1 is capable of comparing itself to o2
-                m = o1.getClass().getDeclaredMethod("compareTo", o2.getClass());
+                m = o1.getClass().getDeclaredMethod("compareTo",o2.getClass());
             } catch (NoSuchMethodException e) {
                 throw new ClassCastException();
             }
@@ -92,7 +92,7 @@ public class TableSorter extends AbstractTableModel {
             Object retVal;
             try {
                 // make the comparison
-                retVal = m.invoke(o1, o2);
+                retVal = m.invoke(o1,o2);
             } catch (IllegalAccessException e) {
                 throw new ClassCastException();
             } catch (InvocationTargetException e) {
@@ -124,7 +124,7 @@ public class TableSorter extends AbstractTableModel {
     private JTableHeader tableHeader;
     private MouseListener mouseListener;
     private TableModelListener tableModelListener;
-    private Map<Class<?>, Comparator<Object>> columnComparators = new HashMap<Class<?>, Comparator<Object>>();
+    private Map<Class<?>,Comparator<Object>> columnComparators = new HashMap<Class<?>,Comparator<Object>>();
     private List<Directive> sortingColumns = new ArrayList<Directive>();
 
     public TableSorter() {
@@ -331,7 +331,7 @@ public class TableSorter extends AbstractTableModel {
             int row1 = modelIndex;
             int row2 = o.modelIndex;
 
-            for (Iterator<Directive> it = sortingColumns.iterator(); it.hasNext(); ) {
+            for (Iterator<Directive> it = sortingColumns.iterator(); it.hasNext();) {
                 Directive directive = it.next();
                 int column = directive.column;
 
@@ -400,8 +400,8 @@ public class TableSorter extends AbstractTableModel {
                     && modelToView != null) {
                 int viewIndex = getModelToView()[e.getFirstRow()];
                 fireTableChanged(new TableModelEvent(TableSorter.this,
-                        viewIndex, viewIndex,
-                        column, e.getType()));
+                                                     viewIndex, viewIndex,
+                                                     column, e.getType()));
                 return;
             }
 
@@ -447,10 +447,10 @@ public class TableSorter extends AbstractTableModel {
             Color color = c == null ? Color.GRAY : c.getBackground();
             // In a compound sort, make each succesive triangle 20%
             // smaller than the previous one.
-            int dx = (int) (size / 2 * Math.pow(0.8, priority));
+            int dx = (int)(size/2*Math.pow(0.8, priority));
             int dy = descending ? dx : -dx;
             // Align icon (roughly) with font baseline.
-            y = y + 5 * size / 6 + (descending ? -dy : 0);
+            y = y + 5*size/6 + (descending ? -dy : 0);
             int shift = descending ? 1 : -1;
             g.translate(x, y);
 

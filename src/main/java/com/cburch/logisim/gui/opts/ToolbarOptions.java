@@ -17,38 +17,27 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import com.cburch.logisim.file.ToolbarData;
-import com.cburch.logisim.gui.generic.ProjectExplorer;
-import com.cburch.logisim.gui.generic.ProjectExplorerEvent;
-import com.cburch.logisim.gui.generic.ProjectExplorerListener;
-import com.cburch.logisim.gui.generic.ProjectExplorerToolNode;
+import com.cburch.logisim.gui.main.ProjectExplorer;
+import com.cburch.logisim.gui.main.ProjectExplorer.Event;
 import com.cburch.logisim.tools.AddTool;
 import com.cburch.logisim.tools.Tool;
 import com.cburch.logisim.util.TableLayout;
 
 class ToolbarOptions extends OptionsPanel {
     private class Listener
-            implements ProjectExplorerListener, ActionListener, ListSelectionListener {
-        public void selectionChanged(ProjectExplorerEvent event) {
+            implements ProjectExplorer.Listener, ActionListener, ListSelectionListener {
+        public void selectionChanged(Event event) {
             computeEnabled();
         }
 
-        public void doubleClicked(ProjectExplorerEvent event) {
+        public void doubleClicked(Event event) {
             Object target = event.getTarget();
-            if (target instanceof ProjectExplorerToolNode) {
-                Tool tool = ((ProjectExplorerToolNode) target).getValue();
-                doAddTool(tool);
-            }
+            if (target instanceof Tool) doAddTool((Tool) target);
         }
 
-        public void moveRequested(ProjectExplorerEvent event, AddTool dragged, AddTool target) {
-        }
-
-        public void deleteRequested(ProjectExplorerEvent event) {
-        }
-
-        public JPopupMenu menuRequested(ProjectExplorerEvent event) {
-            return null;
-        }
+        public void moveRequested(Event event, AddTool dragged, AddTool target) { }
+        public void deleteRequested(Event event) { }
+        public JPopupMenu menuRequested(Event event) { return null; }
 
         public void actionPerformed(ActionEvent event) {
             Object src = event.getSource();
@@ -150,17 +139,14 @@ class ToolbarOptions extends OptionsPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gridbag.setConstraints(explorerPane, gbc);
-        add(explorerPane);
+        gridbag.setConstraints(explorerPane, gbc); add(explorerPane);
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.weightx = 0.0;
-        gridbag.setConstraints(middle, gbc);
-        add(middle);
+        gridbag.setConstraints(middle, gbc); add(middle);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gridbag.setConstraints(listPane, gbc);
-        add(listPane);
+        gridbag.setConstraints(listPane, gbc); add(listPane);
     }
 
     @Override

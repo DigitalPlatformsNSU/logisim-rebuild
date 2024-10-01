@@ -172,7 +172,7 @@ class SelectionBase {
     void pasteHelper(CircuitMutation xn, Collection<Component> comps) {
         clear(xn);
 
-        Map<Component, Component> newLifted = copyComponents(comps);
+        Map<Component,Component> newLifted = copyComponents(comps);
         lifted.addAll(newLifted.values());
         fireSelectionChanged();
     }
@@ -187,14 +187,14 @@ class SelectionBase {
     }
 
     void translateHelper(CircuitMutation xn, int dx, int dy) {
-        Map<Component, Component> selectedAfter = copyComponents(selected, dx, dy);
-        for (Map.Entry<Component, Component> entry : selectedAfter.entrySet()) {
+        Map<Component,Component> selectedAfter = copyComponents(selected, dx, dy);
+        for (Map.Entry<Component,Component> entry : selectedAfter.entrySet()) {
             xn.replace(entry.getKey(), entry.getValue());
         }
 
-        Map<Component, Component> liftedAfter = copyComponents(lifted, dx, dy);
+        Map<Component,Component> liftedAfter = copyComponents(lifted, dx, dy);
         lifted.clear();
-        for (Map.Entry<Component, Component> entry : liftedAfter.entrySet()) {
+        for (Map.Entry<Component,Component> entry : liftedAfter.entrySet()) {
             xn.add(entry.getValue());
             selected.add(entry.getValue());
         }
@@ -220,7 +220,7 @@ class SelectionBase {
     }
 
     private boolean hasConflictTranslated(Collection<Component> components,
-                                          int dx, int dy, boolean selfConflicts) {
+            int dx, int dy, boolean selfConflicts) {
         Circuit circuit = proj.getCurrentCircuit();
         if (circuit == null) return false;
         for (Component comp : components) {
@@ -262,7 +262,7 @@ class SelectionBase {
         }
     }
 
-    private HashMap<Component, Component> copyComponents(Collection<Component> components) {
+    private HashMap<Component,Component> copyComponents(Collection<Component> components) {
         // determine translation offset where we can legally place the clipboard
         int dx;
         int dy;
@@ -304,9 +304,9 @@ class SelectionBase {
         }
     }
 
-    private HashMap<Component, Component> copyComponents(Collection<Component> components,
-                                                         int dx, int dy) {
-        HashMap<Component, Component> ret = new HashMap<Component, Component>();
+    private HashMap<Component,Component> copyComponents(Collection<Component> components,
+            int dx, int dy) {
+        HashMap<Component,Component> ret = new HashMap<Component,Component>();
         for (Component comp : components) {
             Location oldLoc = comp.getLocation();
             AttributeSet attrs = (AttributeSet) comp.getAttributeSet().clone();

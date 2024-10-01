@@ -24,10 +24,10 @@ public class Projects {
     public static final String projectListProperty = "projectList";
 
     private static final WeakHashMap<Window, Point> frameLocations
-            = new WeakHashMap<Window, Point>();
+        = new WeakHashMap<Window, Point>();
 
     private static void projectRemoved(Project proj, Frame frame,
-                                       MyListener listener) {
+            MyListener listener) {
         frame.removeWindowListener(listener);
         openProjects.remove(proj);
         proj.getSimulator().shutDown();
@@ -47,8 +47,7 @@ public class Projects {
                 mostRecentFrame = frame;
                 try {
                     frameLocations.put(frame, frame.getLocationOnScreen());
-                } catch (Throwable t) {
-                }
+                } catch (Throwable t) { }
             }
         }
 
@@ -79,12 +78,11 @@ public class Projects {
 
     private static final MyListener myListener = new MyListener();
     private static final PropertyChangeWeakSupport propertySupport
-            = new PropertyChangeWeakSupport(Projects.class);
+        = new PropertyChangeWeakSupport(Projects.class);
     private static ArrayList<Project> openProjects = new ArrayList<Project>();
     private static Frame mostRecentFrame = null;
 
-    private Projects() {
-    }
+    private Projects() { }
 
     public static Frame getTopFrame() {
         Frame ret = mostRecentFrame;
@@ -160,15 +158,12 @@ public class Projects {
     public static void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
     }
-
     public static void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(propertyName, listener);
     }
-
     public static void removePropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(listener);
     }
-
     public static void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(propertyName, listener);
     }

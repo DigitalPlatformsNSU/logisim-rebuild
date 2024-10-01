@@ -17,7 +17,7 @@ public class BasicZoomModel implements ZoomModel {
     private boolean showGrid;
 
     public BasicZoomModel(PrefMonitor<Boolean> gridPref,
-                          PrefMonitor<Double> zoomPref, double[] zoomOpts) {
+            PrefMonitor<Double> zoomPref, double[] zoomOpts) {
         zoomOptions = zoomOpts;
         support = new PropertyChangeSupport(this);
         zoomFactor = 1.0;
@@ -32,7 +32,7 @@ public class BasicZoomModel implements ZoomModel {
     }
 
     public void removePropertyChangeListener(String prop,
-                                             PropertyChangeListener l) {
+            PropertyChangeListener l) {
         support.removePropertyChangeListener(prop, l);
     }
 

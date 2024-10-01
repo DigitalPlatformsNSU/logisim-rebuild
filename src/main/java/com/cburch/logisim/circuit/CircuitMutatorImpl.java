@@ -15,12 +15,12 @@ import com.cburch.logisim.data.AttributeSet;
 
 class CircuitMutatorImpl implements CircuitMutator {
     private ArrayList<CircuitChange> log;
-    private HashMap<Circuit, ReplacementMap> replacements;
+    private HashMap<Circuit,ReplacementMap> replacements;
     private HashSet<Circuit> modified;
 
     public CircuitMutatorImpl() {
         log = new ArrayList<CircuitChange>();
-        replacements = new HashMap<Circuit, ReplacementMap>();
+        replacements = new HashMap<Circuit,ReplacementMap>();
         modified = new HashSet<Circuit>();
     }
 
@@ -83,7 +83,7 @@ class CircuitMutatorImpl implements CircuitMutator {
     }
 
     public void set(Circuit circuit, Component comp, Attribute<?> attr,
-                    Object newValue) {
+            Object newValue) {
         if (circuit.contains(comp)) {
             modified.add(circuit);
             @SuppressWarnings("unchecked")
@@ -96,7 +96,7 @@ class CircuitMutatorImpl implements CircuitMutator {
     }
 
     public void setForCircuit(Circuit circuit, Attribute<?> attr,
-                              Object newValue) {
+            Object newValue) {
         @SuppressWarnings("unchecked")
         Attribute<Object> a = (Attribute<Object>) attr;
         AttributeSet attrs = circuit.getStaticAttributes();

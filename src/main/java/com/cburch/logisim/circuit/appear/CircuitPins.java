@@ -27,13 +27,9 @@ public class CircuitPins {
         public void endChanged(ComponentEvent e) {
             appearanceManager.updatePorts();
         }
+        public void componentInvalidated(ComponentEvent e) { }
 
-        public void componentInvalidated(ComponentEvent e) {
-        }
-
-        public void attributeListChanged(AttributeEvent e) {
-        }
-
+        public void attributeListChanged(AttributeEvent e) { }
         public void attributeValueChanged(AttributeEvent e) {
             Attribute<?> attr = e.getAttribute();
             if (attr == StdAttr.FACING || attr == StdAttr.LABEL

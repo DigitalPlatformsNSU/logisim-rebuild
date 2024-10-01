@@ -85,8 +85,7 @@ public class SmallSet<E> extends AbstractSet<E> {
     private int version = 0;
     private Object values = null;
 
-    public SmallSet() {
-    }
+    public SmallSet() { }
 
     @Override
     public SmallSet<E> clone() {
@@ -111,7 +110,7 @@ public class SmallSet<E> extends AbstractSet<E> {
         Object vals = values;
         int sz = size;
         if (sz == 1) {
-            return new Object[]{vals};
+            return new Object[] { vals };
         } else if (sz <= HASH_POINT) {
             Object[] ret = new Object[sz];
             System.arraycopy(vals, 0, ret, 0, sz);

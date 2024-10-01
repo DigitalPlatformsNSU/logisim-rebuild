@@ -58,7 +58,7 @@ class PropagationPoints {
         if (data.isEmpty()) return;
 
         CircuitState state = context.getCircuitState();
-        HashMap<CircuitState, CircuitState> stateMap = new HashMap<CircuitState, CircuitState>();
+        HashMap<CircuitState,CircuitState> stateMap = new HashMap<CircuitState,CircuitState>();
         for (CircuitState s : state.getSubstates()) {
             addSubstates(stateMap, s, s);
         }
@@ -79,8 +79,8 @@ class PropagationPoints {
         GraphicsUtil.switchToWidth(g, 1);
     }
 
-    private void addSubstates(HashMap<CircuitState, CircuitState> map,
-                              CircuitState source, CircuitState value) {
+    private void addSubstates(HashMap<CircuitState,CircuitState> map,
+            CircuitState source, CircuitState value) {
         map.put(source, value);
         for (CircuitState s : source.getSubstates()) {
             addSubstates(map, s, value);

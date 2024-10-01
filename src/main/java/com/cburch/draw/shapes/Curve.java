@@ -37,7 +37,7 @@ public class Curve extends FillableCanvasObject {
         if (other instanceof Curve) {
             Curve that = (Curve) other;
             return this.p0.equals(that.p0) && this.p1.equals(that.p1)
-                    && this.p2.equals(that.p2) && super.matches(that);
+                && this.p2.equals(that.p2) && super.matches(that);
         } else {
             return false;
         }
@@ -142,14 +142,14 @@ public class Curve extends FillableCanvasObject {
 
     private Handle[] getHandleArray(HandleGesture gesture) {
         if (gesture == null) {
-            return new Handle[]{new Handle(this, p0), new Handle(this, p1),
-                    new Handle(this, p2)};
+            return new Handle[] { new Handle(this, p0), new Handle(this, p1),
+                    new Handle(this, p2) };
         } else {
             Handle g = gesture.getHandle();
             int gx = g.getX() + gesture.getDeltaX();
             int gy = g.getY() + gesture.getDeltaY();
-            Handle[] ret = {new Handle(this, p0), new Handle(this, p1),
-                    new Handle(this, p2)};
+            Handle[] ret = { new Handle(this, p0), new Handle(this, p1),
+                    new Handle(this, p2) };
             if (g.isAt(p0)) {
                 if (gesture.isShiftDown()) {
                     Location p = LineUtil.snapTo8Cardinals(p2, gx, gy);
@@ -180,9 +180,9 @@ public class Curve extends FillableCanvasObject {
                     gy = (int) Math.round(p[1]);
                 }
                 if (gesture.isAltDown()) {
-                    double[] e0 = {p0.getX(), p0.getY()};
-                    double[] e1 = {p2.getX(), p2.getY()};
-                    double[] mid = {gx, gy};
+                    double[] e0 = { p0.getX(), p0.getY() };
+                    double[] e1 = { p2.getX(), p2.getY() };
+                    double[] mid = { gx, gy };
                     double[] ct = CurveUtil.interpolate(e0, e1, mid);
                     gx = (int) Math.round(ct[0]);
                     gy = (int) Math.round(ct[1]);
@@ -236,6 +236,6 @@ public class Curve extends FillableCanvasObject {
     }
 
     private static double[] toArray(Location loc) {
-        return new double[]{loc.getX(), loc.getY()};
+        return new double[] { loc.getX(), loc.getY() };
     }
 }

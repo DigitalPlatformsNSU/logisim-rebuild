@@ -34,14 +34,13 @@ public class SplashScreen extends JWindow implements ActionListener {
     private static class Marker {
         int count;
         String message;
-
         Marker(int count, String message) {
             this.count = count;
             this.message = message;
         }
     }
 
-    Marker[] markers = new Marker[]{
+    Marker[] markers = new Marker[] {
             new Marker(377, Strings.get("progressLibraries")),
             new Marker(990, Strings.get("progressTemplateCreate")),
             new Marker(1002, Strings.get("progressTemplateOpen")),

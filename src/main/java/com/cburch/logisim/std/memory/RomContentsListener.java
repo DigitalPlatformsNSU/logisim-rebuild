@@ -18,7 +18,7 @@ class RomContentsListener implements HexModelListener {
         private boolean completed = true;
 
         Change(RomContentsListener source, MemContents contents,
-               long start, int[] oldValues, int[] newValues) {
+                long start, int[] oldValues, int[] newValues) {
             this.source = source;
             this.contents = contents;
             this.start = start;
@@ -80,8 +80,8 @@ class RomContentsListener implements HexModelListener {
                     int[] nOld = new int[(int) (nEnd - nStart)];
                     int[] nNew = new int[(int) (nEnd - nStart)];
                     System.arraycopy(o.oldValues, 0, nOld, (int) (o.start - nStart), o.oldValues.length);
-                    System.arraycopy(oldValues, 0, nOld, (int) (start - nStart), oldValues.length);
-                    System.arraycopy(newValues, 0, nNew, (int) (start - nStart), newValues.length);
+                    System.arraycopy(oldValues,   0, nOld, (int) (start - nStart),   oldValues.length);
+                    System.arraycopy(newValues,   0, nNew, (int) (start - nStart),   newValues.length);
                     System.arraycopy(o.newValues, 0, nNew, (int) (o.start - nStart), o.newValues.length);
                     return new Change(source, contents, nStart, nOld, nNew);
                 }
@@ -107,7 +107,7 @@ class RomContentsListener implements HexModelListener {
     }
 
     public void bytesChanged(HexModel source, long start,
-                             long numBytes, int[] oldValues) {
+            long numBytes, int[] oldValues) {
         if (enabled && proj != null && oldValues != null) {
             // this change needs to be logged in the undo log
             int[] newValues = new int[oldValues.length];

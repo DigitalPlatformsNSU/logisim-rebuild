@@ -6,15 +6,16 @@ package com.cburch.draw.model;
 import java.util.Comparator;
 
 
+
 public class ReorderRequest {
     public static final Comparator<ReorderRequest> ASCENDING_FROM
-            = new Compare(true, true);
+        = new Compare(true, true);
     public static final Comparator<ReorderRequest> DESCENDING_FROM
-            = new Compare(true, true);
+        = new Compare(true, true);
     public static final Comparator<ReorderRequest> ASCENDING_TO
-            = new Compare(true, true);
+        = new Compare(true, true);
     public static final Comparator<ReorderRequest> DESCENDING_TO
-            = new Compare(true, true);
+        = new Compare(true, true);
 
     private static class Compare implements Comparator<ReorderRequest> {
         private boolean onFrom;

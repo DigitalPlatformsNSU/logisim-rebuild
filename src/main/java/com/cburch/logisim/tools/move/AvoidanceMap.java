@@ -17,19 +17,19 @@ import com.cburch.logisim.data.Location;
 
 class AvoidanceMap {
     static AvoidanceMap create(Collection<Component> elements, int dx, int dy) {
-        AvoidanceMap ret = new AvoidanceMap(new HashMap<Location, String>());
+        AvoidanceMap ret = new AvoidanceMap(new HashMap<Location,String>());
         ret.markAll(elements, dx, dy);
         return ret;
     }
 
-    private final HashMap<Location, String> avoid;
+    private final HashMap<Location,String> avoid;
 
-    private AvoidanceMap(HashMap<Location, String> map) {
+    private AvoidanceMap(HashMap<Location,String> map) {
         avoid = map;
     }
 
     public AvoidanceMap cloneMap() {
-        return new AvoidanceMap(new HashMap<Location, String>(avoid));
+        return new AvoidanceMap(new HashMap<Location,String>(avoid));
     }
 
     public Object get(Location loc) {
@@ -49,7 +49,7 @@ class AvoidanceMap {
     }
 
     public void markComponent(Component comp, int dx, int dy) {
-        HashMap<Location, String> avoid = this.avoid;
+        HashMap<Location,String> avoid = this.avoid;
         boolean translated = dx != 0 || dy != 0;
         Bounds bds = comp.getBounds();
         int x0 = bds.getX() + dx;
@@ -80,7 +80,7 @@ class AvoidanceMap {
     }
 
     public void markWire(Wire w, int dx, int dy) {
-        HashMap<Location, String> avoid = this.avoid;
+        HashMap<Location,String> avoid = this.avoid;
         boolean translated = dx != 0 || dy != 0;
         Location loc0 = w.getEnd0();
         Location loc1 = w.getEnd1();

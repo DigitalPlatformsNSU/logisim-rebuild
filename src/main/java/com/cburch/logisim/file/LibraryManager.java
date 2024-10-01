@@ -21,11 +21,9 @@ class LibraryManager {
 
     private static abstract class LibraryDescriptor {
         abstract boolean concernsFile(File query);
-
         abstract String toDescriptor(Loader loader);
-
         abstract void setBase(Loader loader, LoadedLibrary lib)
-                throws LoadFailedException;
+            throws LoadFailedException;
     }
 
     private static class LogisimProjectDescriptor extends LibraryDescriptor {
@@ -100,12 +98,12 @@ class LibraryManager {
         }
     }
 
-    private HashMap<LibraryDescriptor, WeakReference<LoadedLibrary>> fileMap;
-    private WeakHashMap<LoadedLibrary, LibraryDescriptor> invMap;
+    private HashMap<LibraryDescriptor,WeakReference<LoadedLibrary>> fileMap;
+    private WeakHashMap<LoadedLibrary,LibraryDescriptor> invMap;
 
     private LibraryManager() {
-        fileMap = new HashMap<LibraryDescriptor, WeakReference<LoadedLibrary>>();
-        invMap = new WeakHashMap<LoadedLibrary, LibraryDescriptor>();
+        fileMap = new HashMap<LibraryDescriptor,WeakReference<LoadedLibrary>>();
+        invMap = new WeakHashMap<LoadedLibrary,LibraryDescriptor>();
         ProjectsDirty.initialize();
     }
 
@@ -155,7 +153,7 @@ class LibraryManager {
             return loadJarLibrary(loader, toRead, className);
         } else {
             loader.showError(StringUtil.format(Strings.get("fileTypeError"),
-                    type, desc));
+                type, desc));
             return null;
         }
     }

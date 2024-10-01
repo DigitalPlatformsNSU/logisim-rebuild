@@ -61,10 +61,10 @@ public class Splitter extends ManagedComponent
             Direction facing = getAttributeSet().getValue(StdAttr.FACING);
             if (facing == Direction.EAST || facing == Direction.WEST) {
                 return Math.abs(loc.getX() - myLoc.getX()) > 5
-                        || loc.manhattanDistanceTo(myLoc) <= 5;
+                    || loc.manhattanDistanceTo(myLoc) <= 5;
             } else {
                 return Math.abs(loc.getY() - myLoc.getY()) > 5
-                        || loc.manhattanDistanceTo(myLoc) <= 5;
+                    || loc.manhattanDistanceTo(myLoc) <= 5;
             }
         } else {
             return false;
@@ -150,7 +150,7 @@ public class Splitter extends ManagedComponent
 
         if (end == 0) {
             return Strings.get("splitterCombinedTip");
-        } else if (end > 0) {
+        } else if (end > 0){
             int bits = 0;
             StringBuilder buf = new StringBuilder();
             SplitterAttributes attrs = (SplitterAttributes) getAttributeSet();
@@ -174,22 +174,15 @@ public class Splitter extends ManagedComponent
             if (inString) appendBuf(buf, beginString, bit_end.length - 1);
             String base;
             switch (bits) {
-                case 0:
-                    base = Strings.get("splitterSplit0Tip");
-                    break;
-                case 1:
-                    base = Strings.get("splitterSplit1Tip");
-                    break;
-                default:
-                    base = Strings.get("splitterSplitManyTip");
-                    break;
+            case 0:  base = Strings.get("splitterSplit0Tip"); break;
+            case 1:  base = Strings.get("splitterSplit1Tip"); break;
+            default: base = Strings.get("splitterSplitManyTip"); break;
             }
             return StringUtil.format(base, buf.toString());
         } else {
             return null;
         }
     }
-
     private static void appendBuf(StringBuilder buf, int start, int end) {
         if (buf.length() > 0) buf.append(",");
         if (start == end) {
@@ -208,8 +201,7 @@ public class Splitter extends ManagedComponent
     //
     // AttributeListener methods
     //
-    public void attributeListChanged(AttributeEvent e) {
-    }
+    public void attributeListChanged(AttributeEvent e) { }
 
     public void attributeValueChanged(AttributeEvent e) {
         configureComponent();

@@ -31,15 +31,12 @@ import com.cburch.logisim.std.wiring.Pin;
 public class Analyze {
     private static final int MAX_ITERATIONS = 100;
 
-    private Analyze() {
-    }
+    private Analyze() { }
 
     //
     // getPinLabels
     //
-
-    /**
-     * Returns a sorted map from Pin objects to String objects,
+    /** Returns a sorted map from Pin objects to String objects,
      * listed in canonical order (top-down order, with ties
      * broken left-right).
      */
@@ -49,9 +46,9 @@ public class Analyze {
                 Location a = ac.getLocation();
                 Location b = bc.getLocation();
                 if (a.getY() < b.getY()) return -1;
-                if (a.getY() > b.getY()) return 1;
+                if (a.getY() > b.getY()) return  1;
                 if (a.getX() < b.getX()) return -1;
-                if (a.getX() > b.getX()) return 1;
+                if (a.getX() > b.getX()) return  1;
                 return a.hashCode() - b.hashCode();
             }
         };
@@ -159,14 +156,12 @@ public class Analyze {
     //
     // computeExpression
     //
-
-    /**
-     * Computes the expression corresponding to the given
+    /** Computes the expression corresponding to the given
      * circuit, or raises ComputeException if difficulties
      * arise.
      */
     public static void computeExpression(AnalyzerModel model, Circuit circuit,
-                                         Map<Instance, String> pinNames) throws AnalyzeException {
+            Map<Instance, String> pinNames) throws AnalyzeException {
         ExpressionMap expressionMap = new ExpressionMap(circuit);
 
         ArrayList<String> inputNames = new ArrayList<String>();
@@ -211,7 +206,7 @@ public class Analyze {
         }
     }
 
-    private static class ExpressionMap extends HashMap<Location, Expression> {
+    private static class ExpressionMap extends HashMap<Location,Expression> {
         private Circuit circuit;
         private Set<Location> dirtyPoints = new HashSet<Location>();
         private Map<Location, Component> causes = new HashMap<Location, Component>();
@@ -234,7 +229,7 @@ public class Analyze {
 
     // propagates expressions down wires
     private static void propagateWires(ExpressionMap expressionMap,
-                                       HashSet<Location> pointsToProcess) throws AnalyzeException {
+            HashSet<Location> pointsToProcess) throws AnalyzeException {
         expressionMap.currentCause = null;
         for (Location p : pointsToProcess) {
             Expression e = expressionMap.get(p);
@@ -259,7 +254,7 @@ public class Analyze {
 
     // computes outputs of affected components
     private static HashSet<Component> getDirtyComponents(Circuit circuit,
-                                                         Set<Location> pointsToProcess) throws AnalyzeException {
+            Set<Location> pointsToProcess) throws AnalyzeException {
         HashSet<Component> dirtyComponents = new HashSet<Component>();
         for (Location point : pointsToProcess) {
             for (Component comp : circuit.getNonWires(point)) {
@@ -270,10 +265,10 @@ public class Analyze {
     }
 
     private static void propagateComponents(ExpressionMap expressionMap,
-                                            Collection<Component> components) throws AnalyzeException {
+            Collection<Component> components) throws AnalyzeException {
         for (Component comp : components) {
             ExpressionComputer computer
-                    = (ExpressionComputer) comp.getFeature(ExpressionComputer.class);
+                = (ExpressionComputer) comp.getFeature(ExpressionComputer.class);
             if (computer != null) {
                 try {
                     expressionMap.currentCause = comp;
@@ -290,10 +285,8 @@ public class Analyze {
         }
     }
 
-    /**
-     * Checks whether any of the recently placed expressions in the
-     * expression map are self-referential; if so, return it.
-     */
+    /** Checks whether any of the recently placed expressions in the
+     * expression map are self-referential; if so, return it. */
     private static Expression checkForCircularExpressions(ExpressionMap expressionMap)
             throws AnalyzeException {
         for (Location point : expressionMap.dirtyPoints) {
@@ -306,12 +299,9 @@ public class Analyze {
     //
     // ComputeTable
     //
-
-    /**
-     * Returns a truth table corresponding to the circuit.
-     */
+    /** Returns a truth table corresponding to the circuit. */
     public static void computeTable(AnalyzerModel model, Project proj,
-                                    Circuit circuit, Map<Instance, String> pinLabels) {
+            Circuit circuit, Map<Instance, String> pinLabels) {
         ArrayList<Instance> inputPins = new ArrayList<Instance>();
         ArrayList<String> inputNames = new ArrayList<String>();
         ArrayList<Instance> outputPins = new ArrayList<Instance>();
@@ -342,10 +332,10 @@ public class Analyze {
 
             Propagator prop = circuitState.getPropagator();
             prop.propagate();
-			/* TODO for the SimulatorPrototype class
-			do {
-				prop.step();
-			} while (prop.isPending()); */
+            /* TODO for the SimulatorPrototype class
+            do {
+                prop.step();
+            } while (prop.isPending()); */
             // TODO: Search for circuit state
 
             if (prop.isOscillating()) {

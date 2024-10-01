@@ -24,7 +24,7 @@ public abstract class NumericConfigurator<V> implements KeyConfigurator, Cloneab
     }
 
     public NumericConfigurator(Attribute<V> attr, int min, int max,
-                               int modifiersEx, int radix) {
+            int modifiersEx, int radix) {
         this.attr = attr;
         this.minValue = min;
         this.maxValue = max;

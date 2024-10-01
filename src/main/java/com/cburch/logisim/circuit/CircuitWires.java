@@ -43,7 +43,6 @@ class CircuitWires {
     static class ThreadBundle {
         int loc;
         WireBundle b;
-
         ThreadBundle(int loc, WireBundle b) {
             this.loc = loc;
             this.b = b;
@@ -52,7 +51,7 @@ class CircuitWires {
 
     static class State {
         BundleMap bundleMap;
-        HashMap<WireThread, Value> thr_values = new HashMap<WireThread, Value>();
+        HashMap<WireThread,Value> thr_values = new HashMap<WireThread,Value>();
 
         State(BundleMap bundleMap) {
             this.bundleMap = bundleMap;
@@ -67,8 +66,7 @@ class CircuitWires {
     }
 
     private class TunnelListener implements AttributeListener {
-        public void attributeListChanged(AttributeEvent e) {
-        }
+        public void attributeListChanged(AttributeEvent e) { }
 
         public void attributeValueChanged(AttributeEvent e) {
             Attribute<?> attr = e.getAttribute();
@@ -80,7 +78,7 @@ class CircuitWires {
 
     static class BundleMap {
         boolean computed = false;
-        HashMap<Location, WireBundle> pointBundles = new HashMap<Location, WireBundle>();
+        HashMap<Location,WireBundle> pointBundles = new HashMap<Location,WireBundle>();
         HashSet<WireBundle> bundles = new HashSet<WireBundle>();
         boolean isValid = true;
         // NOTE: It would make things more efficient if we also had
@@ -140,10 +138,7 @@ class CircuitWires {
 
         synchronized void waitUntilComputed() {
             while (!computed) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                }
+                try { wait(); } catch (InterruptedException e) { }
             }
         }
     }
@@ -160,8 +155,7 @@ class CircuitWires {
     private Bounds bounds = Bounds.EMPTY_BOUNDS;
     private BundleMap bundleMap = null;
 
-    CircuitWires() {
-    }
+    CircuitWires() { }
 
     //
     // query methods
@@ -202,7 +196,7 @@ class CircuitWires {
 
     Iterator<? extends Component> getComponents() {
         return IteratorUtil.createJoinedIterator(splitters.iterator(),
-                wires.iterator());
+            wires.iterator());
     }
 
     Set<Wire> getWires() {
@@ -390,10 +384,7 @@ class CircuitWires {
                 boolean tvs_valid = true;
                 for (int i = 0; i < tvs.length; i++) {
                     Value tv = s.thr_values.get(b.threads[i]);
-                    if (tv == null) {
-                        tvs_valid = false;
-                        break;
-                    }
+                    if (tv == null) { tvs_valid = false; break; }
                     tvs[i] = tv;
                 }
                 if (tvs_valid) bv = Value.create(tvs);
@@ -426,7 +417,7 @@ class CircuitWires {
                     g.setColor(Value.WIDTH_ERROR_COLOR);
                 } else if (showState) {
                     if (!isValid) g.setColor(Value.NIL_COLOR);
-                    else g.setColor(state.getValue(s).getColor());
+                    else         g.setColor(state.getValue(s).getColor());
                 } else {
                     g.setColor(Color.BLACK);
                 }
@@ -447,7 +438,7 @@ class CircuitWires {
                             g.setColor(Value.WIDTH_ERROR_COLOR);
                         } else if (showState) {
                             if (!isValid) g.setColor(Value.NIL_COLOR);
-                            else g.setColor(state.getValue(loc).getColor());
+                            else         g.setColor(state.getValue(loc).getColor());
                         } else {
                             g.setColor(Color.BLACK);
                         }
@@ -469,7 +460,7 @@ class CircuitWires {
                         g.setColor(Value.WIDTH_ERROR_COLOR);
                     } else if (showState) {
                         if (!isValid) g.setColor(Value.NIL_COLOR);
-                        else g.setColor(state.getValue(s).getColor());
+                        else         g.setColor(state.getValue(s).getColor());
                     } else {
                         g.setColor(Color.BLACK);
                     }
@@ -499,7 +490,7 @@ class CircuitWires {
                                 g.setColor(Value.WIDTH_ERROR_COLOR);
                             } else if (showState) {
                                 if (!isValid) g.setColor(Value.NIL_COLOR);
-                                else g.setColor(state.getValue(loc).getColor());
+                                else         g.setColor(state.getValue(loc).getColor());
                             } else {
                                 g.setColor(Color.BLACK);
                             }
@@ -614,7 +605,7 @@ class CircuitWires {
 
         // unite threads going through splitters
         for (Splitter spl : splitters) {
-            synchronized (spl) {
+            synchronized(spl) {
                 SplitterAttributes spl_attrs = (SplitterAttributes) spl.getAttributeSet();
                 byte[] bit_end = spl_attrs.bit_end;
                 SplitterData spl_data = spl.wire_data;
@@ -672,13 +663,11 @@ class CircuitWires {
             WireBundle b0 = ret.getBundleAt(w.e0);
             if (b0 == null) {
                 WireBundle b1 = ret.createBundleAt(w.e1);
-                b1.points.add(w.e0);
-                ret.setBundleAt(w.e0, b1);
+                b1.points.add(w.e0); ret.setBundleAt(w.e0, b1);
             } else {
                 WireBundle b1 = ret.getBundleAt(w.e1);
                 if (b1 == null) { // t1 doesn't exist
-                    b0.points.add(w.e1);
-                    ret.setBundleAt(w.e1, b0);
+                    b0.points.add(w.e1); ret.setBundleAt(w.e1, b0);
                 } else {
                     b1.unite(b0); // unite b0 and b1
                 }
@@ -688,7 +677,7 @@ class CircuitWires {
 
     private void connectTunnels(BundleMap ret) {
         // determine the sets of tunnels
-        HashMap<String, ArrayList<Location>> tunnelSets = new HashMap<String, ArrayList<Location>>();
+        HashMap<String,ArrayList<Location>> tunnelSets = new HashMap<String,ArrayList<Location>>();
         for (Component comp : tunnels) {
             String label = comp.getAttributeSet().getValue(StdAttr.LABEL);
             label = label.trim();
@@ -794,17 +783,13 @@ class CircuitWires {
         int ymax = w.e1.getY();
         while (it.hasNext()) {
             w = it.next();
-            int x0 = w.e0.getX();
-            if (x0 < xmin) xmin = x0;
-            int x1 = w.e1.getX();
-            if (x1 > xmax) xmax = x1;
-            int y0 = w.e0.getY();
-            if (y0 < ymin) ymin = y0;
-            int y1 = w.e1.getY();
-            if (y1 > ymax) ymax = y1;
+            int x0 = w.e0.getX(); if (x0 < xmin) xmin = x0;
+            int x1 = w.e1.getX(); if (x1 > xmax) xmax = x1;
+            int y0 = w.e0.getY(); if (y0 < ymin) ymin = y0;
+            int y1 = w.e1.getY(); if (y1 > ymax) ymax = y1;
         }
         Bounds bds = Bounds.create(xmin, ymin,
-                xmax - xmin + 1, ymax - ymin + 1);
+            xmax - xmin + 1, ymax - ymin + 1);
         bounds = bds;
         return bds;
     }

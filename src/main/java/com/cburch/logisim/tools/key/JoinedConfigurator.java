@@ -5,7 +5,7 @@ package com.cburch.logisim.tools.key;
 
 public class JoinedConfigurator implements KeyConfigurator, Cloneable {
     public static JoinedConfigurator create(KeyConfigurator a, KeyConfigurator b) {
-        return new JoinedConfigurator(new KeyConfigurator[]{a, b});
+        return new JoinedConfigurator(new KeyConfigurator[] { a, b });
     }
 
     public static JoinedConfigurator create(KeyConfigurator[] configs) {

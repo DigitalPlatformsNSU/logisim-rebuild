@@ -22,9 +22,9 @@ import com.cburch.logisim.util.UnmodifiableList;
 
 public class AppearanceAnchor extends AppearanceElement {
     public static final Attribute<Direction> FACING
-            = Attributes.forDirection("facing", Strings.getter("appearanceFacingAttr"));
+        = Attributes.forDirection("facing", Strings.getter("appearanceFacingAttr"));
     static final List<Attribute<?>> ATTRIBUTES
-            = UnmodifiableList.create(new Attribute<?>[]{FACING});
+        = UnmodifiableList.create(new Attribute<?>[] { FACING });
 
     private static final int RADIUS = 3;
     private static final int INDICATOR_LENGTH = 8;
@@ -126,10 +126,10 @@ public class AppearanceAnchor extends AppearanceElement {
             Location end = center.translate(facing, RADIUS + INDICATOR_LENGTH);
             if (facing == Direction.EAST || facing == Direction.WEST) {
                 return Math.abs(loc.getY() - center.getY()) < 2
-                        && (loc.getX() < center.getX()) != (loc.getX() < end.getX());
+                    && (loc.getX() < center.getX()) != (loc.getX() < end.getX());
             } else {
                 return Math.abs(loc.getX() - center.getX()) < 2
-                        && (loc.getY() < center.getY()) != (loc.getY() < end.getY());
+                    && (loc.getY() < center.getY()) != (loc.getY() < end.getY());
             }
         }
     }
@@ -138,7 +138,7 @@ public class AppearanceAnchor extends AppearanceElement {
     public List<Handle> getHandles(HandleGesture gesture) {
         Location c = getLocation();
         Location end = c.translate(facing, RADIUS + INDICATOR_LENGTH);
-        return UnmodifiableList.create(new Handle[]{new Handle(this, c),
-                new Handle(this, end)});
+        return UnmodifiableList.create(new Handle[] { new Handle(this, c),
+                new Handle(this, end) });
     }
 }

@@ -15,18 +15,17 @@ class PinAttributes extends ProbeAttributes {
     public static PinAttributes instance = new PinAttributes();
 
     private static final List<Attribute<?>> ATTRIBUTES
-            = Arrays.asList(new Attribute<?>[]{
+        = Arrays.asList(new Attribute<?>[] {
             StdAttr.FACING, Pin.ATTR_TYPE, StdAttr.WIDTH, Pin.ATTR_TRISTATE,
             Pin.ATTR_PULL, StdAttr.LABEL, Pin.ATTR_LABEL_LOC, StdAttr.LABEL_FONT
-    });
+        });
 
     BitWidth width = BitWidth.ONE;
     boolean threeState = true;
     int type = EndData.INPUT_ONLY;
     Object pull = Pin.PULL_NONE;
 
-    public PinAttributes() {
-    }
+    public PinAttributes() { }
 
     @Override
     public List<Attribute<?>> getAttributes() {

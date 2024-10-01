@@ -38,17 +38,17 @@ class MenuFile extends Menu implements ActionListener {
         int menuMask = getToolkit().getMenuShortcutKeyMask();
 
         newi.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_N, menuMask));
+            KeyEvent.VK_N, menuMask));
         open.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_O, menuMask));
+            KeyEvent.VK_O, menuMask));
         close.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_W, menuMask | InputEvent.SHIFT_MASK));
+            KeyEvent.VK_W, menuMask | InputEvent.SHIFT_MASK));
         save.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, menuMask));
+            KeyEvent.VK_S, menuMask));
         saveAs.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_S, menuMask | InputEvent.SHIFT_MASK));
+            KeyEvent.VK_S, menuMask | InputEvent.SHIFT_MASK));
         print.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_P, menuMask));
+            KeyEvent.VK_P, menuMask));
         quit.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_Q, menuMask));
 

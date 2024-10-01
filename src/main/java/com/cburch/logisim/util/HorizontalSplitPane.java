@@ -23,7 +23,7 @@ public class HorizontalSplitPane extends JPanel {
     private static final Color DRAG_COLOR = new Color(0, 0, 0, 128);
 
     abstract static class Dragbar extends JComponent
-            implements MouseListener, MouseMotionListener {
+        implements MouseListener, MouseMotionListener {
         private boolean dragging = false;
         private int curValue;
 
@@ -33,7 +33,6 @@ public class HorizontalSplitPane extends JPanel {
         }
 
         abstract int getDragValue(MouseEvent e);
-
         abstract void setDragValue(int value);
 
         @Override
@@ -44,8 +43,7 @@ public class HorizontalSplitPane extends JPanel {
             }
         }
 
-        public void mouseClicked(MouseEvent e) {
-        }
+        public void mouseClicked(MouseEvent e) { }
 
         public void mousePressed(MouseEvent e) {
             if (!dragging) {
@@ -64,11 +62,9 @@ public class HorizontalSplitPane extends JPanel {
             }
         }
 
-        public void mouseEntered(MouseEvent e) {
-        }
+        public void mouseEntered(MouseEvent e) { }
 
-        public void mouseExited(MouseEvent e) {
-        }
+        public void mouseExited(MouseEvent e) { }
 
         public void mouseDragged(MouseEvent e) {
             if (dragging) {
@@ -77,17 +73,13 @@ public class HorizontalSplitPane extends JPanel {
             }
         }
 
-        public void mouseMoved(MouseEvent e) {
-        }
+        public void mouseMoved(MouseEvent e) { }
     }
 
 
     private class MyLayout implements LayoutManager {
-        public void addLayoutComponent(String name, Component comp) {
-        }
-
-        public void removeLayoutComponent(Component comp) {
-        }
+        public void addLayoutComponent(String name, Component comp) { }
+        public void removeLayoutComponent(Component comp) { }
 
         public Dimension preferredLayoutSize(Container parent) {
             if (fraction <= 0.0) return comp1.getPreferredSize();
@@ -161,7 +153,7 @@ public class HorizontalSplitPane extends JPanel {
     }
 
     public HorizontalSplitPane(JComponent comp0, JComponent comp1,
-                               double fraction) {
+            double fraction) {
         this.comp0 = comp0;
         this.comp1 = comp1;
         this.dragbar = new MyDragbar(); // above the other components

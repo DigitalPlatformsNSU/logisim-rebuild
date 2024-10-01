@@ -25,7 +25,7 @@ class LogisimToolbarItem implements ToolbarItem {
     private StringGetter toolTip;
 
     public LogisimToolbarItem(MenuListener menu, String iconName,
-                              LogisimMenuItem action, StringGetter toolTip) {
+            LogisimMenuItem action, StringGetter toolTip) {
         this.menu = menu;
         this.icon = Icons.getIcon(iconName);
         this.action = action;

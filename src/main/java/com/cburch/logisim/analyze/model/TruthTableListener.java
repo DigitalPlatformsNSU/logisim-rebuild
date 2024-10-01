@@ -5,6 +5,5 @@ package com.cburch.logisim.analyze.model;
 
 public interface TruthTableListener {
     public void cellsChanged(TruthTableEvent event);
-
     public void structureChanged(TruthTableEvent event);
 }

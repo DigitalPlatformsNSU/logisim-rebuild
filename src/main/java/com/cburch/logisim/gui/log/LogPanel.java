@@ -23,11 +23,8 @@ abstract class LogPanel extends JPanel {
     }
 
     public abstract String getTitle();
-
     public abstract String getHelpText();
-
     public abstract void localeChanged();
-
     public abstract void modelChanged(Model oldModel, Model newModel);
 
     LogFrame getLogFrame() {

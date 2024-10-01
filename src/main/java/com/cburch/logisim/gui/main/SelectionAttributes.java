@@ -105,7 +105,7 @@ class SelectionAttributes extends AbstractAttributeSet {
             }
         }
 
-        LinkedHashMap<Attribute<Object>, Object> attrMap = computeAttributes(newSel);
+        LinkedHashMap<Attribute<Object>,Object> attrMap = computeAttributes(newSel);
         boolean same = isSame(attrMap, this.attrs, this.values);
 
         if (same) {
@@ -117,7 +117,7 @@ class SelectionAttributes extends AbstractAttributeSet {
             Object[] newValues = new Object[newAttrs.length];
             boolean[] newReadOnly = new boolean[newAttrs.length];
             int i = -1;
-            for (Map.Entry<Attribute<Object>, Object> entry : attrMap.entrySet()) {
+            for (Map.Entry<Attribute<Object>,Object> entry : attrMap.entrySet()) {
                 i++;
                 newAttrs[i] = entry.getKey();
                 newValues[i] = entry.getValue();
@@ -160,10 +160,7 @@ class SelectionAttributes extends AbstractAttributeSet {
     private static Set<Component> createSet(Collection<Component> comps) {
         boolean includeWires = true;
         for (Component comp : comps) {
-            if (!(comp instanceof Wire)) {
-                includeWires = false;
-                break;
-            }
+            if (!(comp instanceof Wire)) { includeWires = false; break; }
         }
 
         if (includeWires) {
@@ -192,9 +189,9 @@ class SelectionAttributes extends AbstractAttributeSet {
         }
     }
 
-    private static LinkedHashMap<Attribute<Object>, Object> computeAttributes(Collection<Component> newSel) {
-        LinkedHashMap<Attribute<Object>, Object> attrMap;
-        attrMap = new LinkedHashMap<Attribute<Object>, Object>();
+    private static LinkedHashMap<Attribute<Object>,Object> computeAttributes(Collection<Component> newSel)  {
+        LinkedHashMap<Attribute<Object>,Object> attrMap;
+        attrMap = new LinkedHashMap<Attribute<Object>,Object>();
         Iterator<Component> sit = newSel.iterator();
         if (sit.hasNext()) {
             AttributeSet first = sit.next().getAttributeSet();
@@ -222,13 +219,13 @@ class SelectionAttributes extends AbstractAttributeSet {
         return attrMap;
     }
 
-    private static boolean isSame(LinkedHashMap<Attribute<Object>, Object> attrMap,
-                                  Attribute<?>[] oldAttrs, Object[] oldValues) {
+    private static boolean isSame(LinkedHashMap<Attribute<Object>,Object> attrMap,
+            Attribute<?>[] oldAttrs, Object[] oldValues) {
         if (oldAttrs.length != attrMap.size()) {
             return false;
         } else {
             int j = -1;
-            for (Map.Entry<Attribute<Object>, Object> entry : attrMap.entrySet()) {
+            for (Map.Entry<Attribute<Object>,Object> entry : attrMap.entrySet()) {
                 j++;
 
                 Attribute<Object> a = entry.getKey();

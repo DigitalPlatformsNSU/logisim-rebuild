@@ -56,16 +56,15 @@ public class CollectionUtil {
         }
     }
 
-    private CollectionUtil() {
-    }
+    private CollectionUtil() { }
 
     public static <E> Set<E> createUnmodifiableSetUnion(Set<? extends E> a,
-                                                        Set<? extends E> b) {
+            Set<? extends E> b) {
         return new UnionSet<E>(a, b);
     }
 
     public static <E> List<E> createUnmodifiableListUnion(List<? extends E> a,
-                                                          List<? extends E> b) {
+            List<? extends E> b) {
         return new UnionList<E>(a, b);
     }
 }

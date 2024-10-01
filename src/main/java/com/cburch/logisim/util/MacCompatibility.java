@@ -11,8 +11,7 @@ import javax.swing.JMenuBar;
 import net.roydesign.mac.MRJAdapter;
 
 public class MacCompatibility {
-    private MacCompatibility() {
-    }
+    private MacCompatibility() { }
 
     public static final double mrjVersion;
 
@@ -61,8 +60,7 @@ public class MacCompatibility {
     public static void setFramelessJMenuBar(JMenuBar menubar) {
         try {
             MRJAdapter.setFramelessJMenuBar(menubar);
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) { }
     }
 
     public static void setFileCreatorAndType(File dest, String app, String type)
@@ -74,8 +72,7 @@ public class MacCompatibility {
             } catch (IOException e) {
                 ioExcept = e;
             }
-        } catch (Throwable t) {
-        }
+        } catch (Throwable t) { }
         if (ioExcept != null) throw ioExcept;
     }
 

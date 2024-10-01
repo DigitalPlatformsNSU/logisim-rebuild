@@ -26,7 +26,7 @@ class MenuEdit extends Menu {
                 undo.setEnabled(false);
             } else {
                 undo.setText(StringUtil.format(Strings.get("editUndoItem"),
-                        last.getName()));
+                    last.getName()));
                 undo.setEnabled(true);
             }
         }
@@ -41,12 +41,12 @@ class MenuEdit extends Menu {
     }
 
     private LogisimMenuBar menubar;
-    private JMenuItem undo = new JMenuItem();
-    private MenuItemImpl cut = new MenuItemImpl(this, LogisimMenuBar.CUT);
-    private MenuItemImpl copy = new MenuItemImpl(this, LogisimMenuBar.COPY);
-    private MenuItemImpl paste = new MenuItemImpl(this, LogisimMenuBar.PASTE);
+    private JMenuItem undo  = new JMenuItem();
+    private MenuItemImpl cut    = new MenuItemImpl(this, LogisimMenuBar.CUT);
+    private MenuItemImpl copy   = new MenuItemImpl(this, LogisimMenuBar.COPY);
+    private MenuItemImpl paste  = new MenuItemImpl(this, LogisimMenuBar.PASTE);
     private MenuItemImpl delete = new MenuItemImpl(this, LogisimMenuBar.DELETE);
-    private MenuItemImpl dup = new MenuItemImpl(this, LogisimMenuBar.DUPLICATE);
+    private MenuItemImpl dup    = new MenuItemImpl(this, LogisimMenuBar.DUPLICATE);
     private MenuItemImpl selall = new MenuItemImpl(this, LogisimMenuBar.SELECT_ALL);
     private MenuItemImpl raise = new MenuItemImpl(this, LogisimMenuBar.RAISE);
     private MenuItemImpl lower = new MenuItemImpl(this, LogisimMenuBar.LOWER);
@@ -63,11 +63,11 @@ class MenuEdit extends Menu {
         undo.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_Z, menuMask));
         cut.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_X, menuMask));
+            KeyEvent.VK_X, menuMask));
         copy.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_C, menuMask));
+            KeyEvent.VK_C, menuMask));
         paste.setAccelerator(KeyStroke.getKeyStroke(
-                KeyEvent.VK_V, menuMask));
+            KeyEvent.VK_V, menuMask));
         delete.setAccelerator(KeyStroke.getKeyStroke(
                 KeyEvent.VK_DELETE, 0));
         dup.setAccelerator(KeyStroke.getKeyStroke(
@@ -100,7 +100,7 @@ class MenuEdit extends Menu {
         addSeparator();
         add(addCtrl);
         add(remCtrl);
-
+        
         Project proj = menubar.getProject();
         if (proj != null) {
             proj.addProjectListener(myListener);
@@ -139,7 +139,7 @@ class MenuEdit extends Menu {
         addCtrl.setText(Strings.get("editAddControlItem"));
         remCtrl.setText(Strings.get("editRemoveControlItem"));
     }
-
+    
     @Override
     void computeEnabled() {
         setEnabled(menubar.getProject() != null

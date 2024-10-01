@@ -25,7 +25,7 @@ public class TruthTable {
         private void inputsChanged(VariableListEvent event) {
             int action = event.getType();
             if (action == VariableListEvent.ADD) {
-                for (Map.Entry<String, Entry[]> curEntry : outputColumns.entrySet()) {
+                for (Map.Entry<String,Entry[]> curEntry : outputColumns.entrySet()) {
                     String output = curEntry.getKey();
                     Entry[] column = curEntry.getValue();
                     Entry[] newColumn = new Entry[2 * column.length];
@@ -37,7 +37,7 @@ public class TruthTable {
                 }
             } else if (action == VariableListEvent.REMOVE) {
                 int index = ((Integer) event.getData()).intValue();
-                for (Map.Entry<String, Entry[]> curEntry : outputColumns.entrySet()) {
+                for (Map.Entry<String,Entry[]> curEntry : outputColumns.entrySet()) {
                     String output = curEntry.getKey();
                     Entry[] column = curEntry.getValue();
                     Entry[] newColumn = removeInput(column, index);
@@ -46,7 +46,7 @@ public class TruthTable {
             } else if (action == VariableListEvent.MOVE) {
                 int delta = ((Integer) event.getData()).intValue();
                 int newIndex = model.getInputs().indexOf(event.getVariable());
-                for (Map.Entry<String, Entry[]> curEntry : outputColumns.entrySet()) {
+                for (Map.Entry<String,Entry[]> curEntry : outputColumns.entrySet()) {
                     String output = curEntry.getKey();
                     Entry[] column = curEntry.getValue();
                     Entry[] newColumn = moveInput(column, newIndex - delta, newIndex);
@@ -93,7 +93,7 @@ public class TruthTable {
             newIndex = inputs - 1 - newIndex;
             Entry[] ret = new Entry[old.length];
             int sameMask = (old.length - 1) ^ ((1 << (1 + Math.max(oldIndex, newIndex))) - 1)
-                    ^ ((1 << Math.min(oldIndex, newIndex)) - 1);        // bits that don't change
+                ^ ((1 << Math.min(oldIndex, newIndex)) - 1);        // bits that don't change
             int moveMask = 1 << oldIndex;                           // bit that moves
             int moveDist = Math.abs(newIndex - oldIndex);
             boolean moveLeft = newIndex > oldIndex;
@@ -102,10 +102,10 @@ public class TruthTable {
                 int j; // new index
                 if (moveLeft) {
                     j = (i & sameMask) | ((i & moveMask) << moveDist)
-                            | ((i & blockMask) >> 1);
+                        | ((i & blockMask) >> 1);
                 } else {
                     j = (i & sameMask) | ((i & moveMask) >> moveDist)
-                            | ((i & blockMask) << 1);
+                        | ((i & blockMask) << 1);
                 }
                 ret[j] = old[i];
             }
@@ -116,7 +116,7 @@ public class TruthTable {
     private MyListener myListener = new MyListener();
     private List<TruthTableListener> listeners = new ArrayList<TruthTableListener>();
     private AnalyzerModel model;
-    private HashMap<String, Entry[]> outputColumns = new HashMap<String, Entry[]>();
+    private HashMap<String,Entry[]> outputColumns = new HashMap<String,Entry[]>();
 
     public TruthTable(AnalyzerModel model) {
         this.model = model;

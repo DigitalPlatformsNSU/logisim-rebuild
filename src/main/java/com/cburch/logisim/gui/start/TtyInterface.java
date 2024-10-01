@@ -118,7 +118,7 @@ public class TtyInterface {
             if (nameLength > maxName) maxName = nameLength;
         }
         String fmt = "%" + countDigits(total.getUniqueCount()) + "d\t"
-                + "%" + countDigits(total.getRecursiveCount()) + "d\t";
+            + "%" + countDigits(total.getRecursiveCount()) + "d\t";
         String fmtNormal = fmt + "%-" + maxName + "s\t%s\n";
         for (FileStatistics.Count count : stats.getCounts()) {
             Library lib = count.getLibrary();
@@ -170,7 +170,7 @@ public class TtyInterface {
     }
 
     private static boolean prepareForTty(CircuitState circState,
-                                         ArrayList<InstanceState> keybStates) {
+            ArrayList<InstanceState> keybStates) {
         boolean found = false;
         for (Component comp : circState.getCircuit().getNonWires()) {
             Object factory = comp.getFactory();
@@ -192,7 +192,7 @@ public class TtyInterface {
     }
 
     private static int runSimulation(CircuitState circState,
-                                     ArrayList<Instance> outputPins, Instance haltPin, int format) {
+            ArrayList<Instance> outputPins, Instance haltPin, int format) {
         boolean showTable = (format & FORMAT_TABLE) != 0;
         boolean showSpeed = (format & FORMAT_SPEED) != 0;
         boolean showTty = (format & FORMAT_TTY) != 0;
@@ -273,7 +273,7 @@ public class TtyInterface {
     }
 
     private static void displayTableRow(ArrayList<Value> prevOutputs,
-                                        ArrayList<Value> curOutputs) {
+            ArrayList<Value> curOutputs) {
         boolean shouldPrint = false;
         if (prevOutputs == null) {
             shouldPrint = true;
@@ -344,8 +344,7 @@ public class TtyInterface {
                             queue.addLast(add);
                         }
                     }
-                } catch (IOException e) {
-                }
+                } catch (IOException e) { }
             }
         }
     }

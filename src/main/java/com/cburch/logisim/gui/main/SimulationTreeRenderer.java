@@ -14,7 +14,6 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import com.cburch.logisim.comp.ComponentDrawContext;
 import com.cburch.logisim.comp.ComponentFactory;
-import com.cburch.logisim.gui.generic.ProjectExplorer;
 
 public class SimulationTreeRenderer extends DefaultTreeCellRenderer {
     private static class RendererIcon implements Icon {
@@ -43,8 +42,8 @@ public class SimulationTreeRenderer extends DefaultTreeCellRenderer {
             if (isCurrentView) {
                 int tx = x + 13;
                 int ty = y + 13;
-                int[] xp = {tx - 1, x + 18, x + 20, tx + 1};
-                int[] yp = {ty + 1, y + 20, y + 18, ty - 1};
+                int[] xp = { tx - 1, x + 18, x + 20, tx + 1 };
+                int[] yp = { ty + 1, y + 20, y + 18, ty - 1 };
                 g.setColor(ProjectExplorer.MAGNIFYING_INTERIOR);
                 g.fillOval(x + 5, y + 5, 10, 10);
                 g.setColor(Color.BLACK);
@@ -56,8 +55,8 @@ public class SimulationTreeRenderer extends DefaultTreeCellRenderer {
 
     @Override
     public Component getTreeCellRendererComponent(JTree tree, Object value,
-                                                  boolean selected, boolean expanded, boolean leaf, int row,
-                                                  boolean hasFocus) {
+            boolean selected, boolean expanded, boolean leaf, int row,
+            boolean hasFocus) {
         Component ret = super.getTreeCellRendererComponent(tree, value,
                 selected, expanded, leaf, row, hasFocus);
         SimulationTreeModel model = (SimulationTreeModel) tree.getModel();

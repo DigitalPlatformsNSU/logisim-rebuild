@@ -30,7 +30,7 @@ import java.util.Set;
 
 public class WiringTool extends Tool {
     private static Cursor cursor
-            = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+        = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     private static final Icon toolIcon = Icons.getIcon("wiring.gif");
 
     private static final int HORIZONTAL = 1;
@@ -156,14 +156,14 @@ public class WiringTool extends Tool {
 
     @Override
     public void mouseEntered(Canvas canvas, Graphics g,
-                             MouseEvent e) {
+            MouseEvent e) {
         inCanvas = true;
         canvas.getProject().repaintCanvas();
     }
 
     @Override
     public void mouseExited(Canvas canvas, Graphics g,
-                            MouseEvent e) {
+            MouseEvent e) {
         inCanvas = false;
         canvas.getProject().repaintCanvas();
     }
@@ -230,18 +230,12 @@ public class WiringTool extends Tool {
             Wire shorten = null;
             if (startShortening) {
                 for (Wire w : canvas.getCircuit().getWires(start)) {
-                    if (w.contains(cur)) {
-                        shorten = w;
-                        break;
-                    }
+                    if (w.contains(cur)) { shorten = w; break; }
                 }
             }
             if (shorten == null) {
                 for (Wire w : canvas.getCircuit().getWires(cur)) {
-                    if (w.contains(start)) {
-                        shorten = w;
-                        break;
-                    }
+                    if (w.contains(start)) { shorten = w; break; }
                 }
             }
             shortening = shorten;
@@ -317,7 +311,7 @@ public class WiringTool extends Tool {
         }
 
         for (Component comp : canvas.getCircuit().getNonWires(cand)) {
-            if (comp.getBounds().contains(end, 2)) {
+            if (comp.getBounds().contains(end)) {
                 WireRepair repair = (WireRepair) comp.getFeature(WireRepair.class);
                 if (repair != null && repair.shouldRepairWire(new WireRepairData(w, cand))) {
                     w = Wire.create(w.getOtherEnd(end), cand);
@@ -383,11 +377,11 @@ public class WiringTool extends Tool {
     @Override
     public void keyPressed(Canvas canvas, KeyEvent event) {
         switch (event.getKeyCode()) {
-            case KeyEvent.VK_BACK_SPACE:
-                if (lastAction != null && canvas.getProject().getLastAction() == lastAction) {
-                    canvas.getProject().undoAction();
-                    lastAction = null;
-                }
+        case KeyEvent.VK_BACK_SPACE:
+            if (lastAction != null && canvas.getProject().getLastAction() == lastAction) {
+                canvas.getProject().undoAction();
+                lastAction = null;
+            }
         }
     }
 
@@ -405,7 +399,5 @@ public class WiringTool extends Tool {
     }
 
     @Override
-    public Cursor getCursor() {
-        return cursor;
-    }
+    public Cursor getCursor() { return cursor; }
 }

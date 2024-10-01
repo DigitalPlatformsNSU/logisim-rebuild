@@ -49,7 +49,7 @@ public class Handle {
         if (other instanceof Handle) {
             Handle that = (Handle) other;
             return this.object.equals(that.object) && this.x == that.x
-                    && this.y == that.y;
+                && this.y == that.y;
         } else {
             return false;
         }
