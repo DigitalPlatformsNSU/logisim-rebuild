@@ -5,6 +5,5 @@ package com.cburch.logisim.tools;
 
 public interface CaretListener {
     public void editingCanceled(CaretEvent e);
-
     public void editingStopped(CaretEvent e);
 }

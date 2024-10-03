@@ -40,11 +40,9 @@ public class MenuTool extends Tool {
             this.comp = comp;
             boolean canChange = proj.getLogisimFile().contains(circ);
 
-            add(del);
-            del.addActionListener(this);
+            add(del); del.addActionListener(this);
             del.setEnabled(canChange);
-            add(attrs);
-            attrs.addActionListener(this);
+            add(attrs); attrs.addActionListener(this);
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -70,14 +68,11 @@ public class MenuTool extends Tool {
         MenuSelection(Project proj) {
             this.proj = proj;
             boolean canChange = proj.getLogisimFile().contains(proj.getCurrentCircuit());
-            add(del);
-            del.addActionListener(this);
+            add(del); del.addActionListener(this);
             del.setEnabled(canChange);
-            add(cut);
-            cut.addActionListener(this);
+            add(cut); cut.addActionListener(this);
             cut.setEnabled(canChange);
-            add(copy);
-            copy.addActionListener(this);
+            add(copy); copy.addActionListener(this);
         }
 
         public void actionPerformed(ActionEvent e) {
@@ -97,8 +92,7 @@ public class MenuTool extends Tool {
         }
     }
 
-    public MenuTool() {
-    }
+    public MenuTool() { }
 
     @Override
     public boolean equals(Object other) {
@@ -111,19 +105,13 @@ public class MenuTool extends Tool {
     }
 
     @Override
-    public String getName() {
-        return "Menu Tool";
-    }
+    public String getName() { return "Menu Tool"; }
 
     @Override
-    public String getDisplayName() {
-        return Strings.get("menuTool");
-    }
+    public String getDisplayName() { return Strings.get("menuTool"); }
 
     @Override
-    public String getDescription() {
-        return Strings.get("menuToolDesc");
-    }
+    public String getDescription() { return Strings.get("menuToolDesc"); }
 
     @Override
     public void mousePressed(Canvas canvas, Graphics g, MouseEvent e) {
@@ -141,7 +129,7 @@ public class MenuTool extends Tool {
                 menu = new MenuSelection(proj);
             } else {
                 menu = new MenuComponent(proj,
-                        canvas.getCircuit(), comp);
+                    canvas.getCircuit(), comp);
                 MenuExtender extender = (MenuExtender) comp.getFeature(MenuExtender.class);
                 if (extender != null) extender.configureMenu(menu, proj);
             }
@@ -150,7 +138,7 @@ public class MenuTool extends Tool {
             if (!cl.isEmpty()) {
                 Component comp = cl.iterator().next();
                 menu = new MenuComponent(proj,
-                        canvas.getCircuit(), comp);
+                    canvas.getCircuit(), comp);
                 MenuExtender extender = (MenuExtender) comp.getFeature(MenuExtender.class);
                 if (extender != null) extender.configureMenu(menu, proj);
             } else {

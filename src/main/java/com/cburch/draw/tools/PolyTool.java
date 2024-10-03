@@ -90,10 +90,7 @@ public class PolyTool extends AbstractTool {
 
         Location loc = Location.create(mx, my);
         ArrayList<Location> locs = locations;
-        if (!active) {
-            locs.clear();
-            locs.add(loc);
-        }
+        if (!active) { locs.clear(); locs.add(loc); }
         locs.add(loc);
 
         mouseDown = true;
@@ -159,7 +156,7 @@ public class PolyTool extends AbstractTool {
         CanvasObject add = null;
         active = false;
         ArrayList<Location> locs = locations;
-        for (int i = locs.size() - 2; i >= 0; i--) {
+        for(int i = locs.size() - 2; i >= 0; i--) {
             if (locs.get(i).equals(locs.get(i + 1))) locs.remove(i);
         }
         if (locs.size() > 1) {
@@ -211,7 +208,7 @@ public class PolyTool extends AbstractTool {
             int size = locations.size();
             int[] xs = new int[size];
             int[] ys = new int[size];
-            for (int i = 0; i < size; i++) {
+            for(int i = 0; i < size; i++) {
                 Location loc = locations.get(i);
                 xs[i] = loc.getX();
                 ys[i] = loc.getY();

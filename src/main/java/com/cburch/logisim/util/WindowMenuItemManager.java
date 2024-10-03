@@ -12,22 +12,19 @@ import javax.swing.JRadioButtonMenuItem;
 
 public abstract class WindowMenuItemManager {
     private class MyListener implements WindowListener {
-        public void windowOpened(WindowEvent event) {
-        }
-
+        public void windowOpened(WindowEvent event) { }
         public void windowClosing(WindowEvent event) {
             JFrame frame = getJFrame(false);
             if (frame.getDefaultCloseOperation() == JFrame.HIDE_ON_CLOSE) {
                 removeFromManager();
             }
         }
-
+        
         public void windowClosed(WindowEvent event) {
             removeFromManager();
         }
-
-        public void windowDeiconified(WindowEvent event) {
-        }
+        
+        public void windowDeiconified(WindowEvent event) { }
 
         public void windowIconified(WindowEvent event) {
             addToManager();
@@ -43,15 +40,15 @@ public abstract class WindowMenuItemManager {
             WindowMenuManager.unsetCurrentManager(WindowMenuItemManager.this);
         }
     }
-
+    
     private MyListener myListener = new MyListener();
     private String text;
     private boolean persistent;
     private boolean listenerAdded = false;
     private boolean inManager = false;
-    private HashMap<WindowMenu, JRadioButtonMenuItem> menuItems
-            = new HashMap<WindowMenu, JRadioButtonMenuItem>();
-
+    private HashMap<WindowMenu,JRadioButtonMenuItem> menuItems
+        = new HashMap<WindowMenu,JRadioButtonMenuItem>();
+    
     public WindowMenuItemManager(String text, boolean persistent) {
         this.text = text;
         this.persistent = persistent;
@@ -59,9 +56,9 @@ public abstract class WindowMenuItemManager {
             WindowMenuManager.addManager(this);
         }
     }
-
+    
     public abstract JFrame getJFrame(boolean create);
-
+    
     public void frameOpened(JFrame frame) {
         if (!listenerAdded) {
             frame.addWindowListener(myListener);
@@ -80,14 +77,14 @@ public abstract class WindowMenuItemManager {
             removeFromManager();
         }
     }
-
+    
     private void addToManager() {
         if (!persistent && !inManager) {
             WindowMenuManager.addManager(this);
             inManager = true;
         }
     }
-
+    
     private void removeFromManager() {
         if (!persistent && inManager) {
             inManager = false;
@@ -98,28 +95,28 @@ public abstract class WindowMenuItemManager {
             WindowMenuManager.removeManager(this);
         }
     }
-
+    
     public String getText() {
         return text;
     }
-
+    
     public void setText(String value) {
         text = value;
         for (JRadioButtonMenuItem menuItem : menuItems.values()) {
             menuItem.setText(text);
         }
     }
-
+    
     JRadioButtonMenuItem getMenuItem(WindowMenu key) {
         return menuItems.get(key);
     }
-
+    
     void createMenuItem(WindowMenu menu) {
         WindowMenuItem ret = new WindowMenuItem(this);
         menuItems.put(menu, ret);
         menu.addMenuItem(this, ret, persistent);
     }
-
+    
     void removeMenuItem(WindowMenu menu) {
         JRadioButtonMenuItem item = menuItems.remove(menu);
         if (item != null) menu.removeMenuItem(this, item);

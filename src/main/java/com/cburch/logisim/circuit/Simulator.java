@@ -9,25 +9,25 @@ import com.cburch.logisim.comp.ComponentDrawContext;
 import com.cburch.logisim.prefs.AppPreferences;
 
 public class Simulator {
-	/*begin DEBUGGING
-	private static PrintWriter debug_log;
-	
-	static {
-		try {
-			debug_log = new PrintWriter(new BufferedWriter(new FileWriter("DEBUG")));
-		} catch (IOException e) {
-			System.err.println("Could not open debug log"); //OK
-		}
-	}
-	
-	public static void log(String msg) {
-		debug_log.println(msg);
-	}
-	
-	public static void flushLog() {
-		debug_log.flush();
-	}
-	//end DEBUGGING*/
+    /*begin DEBUGGING
+    private static PrintWriter debug_log;
+
+    static {
+        try {
+            debug_log = new PrintWriter(new BufferedWriter(new FileWriter("DEBUG")));
+        } catch (IOException e) {
+            System.err.println("Could not open debug log"); //OK
+        }
+    }
+
+    public static void log(String msg) {
+        debug_log.println(msg);
+    }
+
+    public static void flushLog() {
+        debug_log.flush();
+    }
+    //end DEBUGGING*/
 
     class PropagationManager extends Thread {
         private Propagator propagator = null;
@@ -64,7 +64,7 @@ public class Simulator {
             }
         }
 
-        public synchronized void requestTick() {
+        public synchronized void requestTick()  {
             if (ticksRequested < 16) {
                 ticksRequested++;
             }
@@ -79,14 +79,13 @@ public class Simulator {
         @Override
         public void run() {
             while (!complete) {
-                synchronized (this) {
+                synchronized(this) {
                     while (!complete && !propagateRequested
                             && !resetRequested && ticksRequested == 0
                             && stepsRequested == 0) {
                         try {
                             wait();
-                        } catch (InterruptedException e) {
-                        }
+                        } catch (InterruptedException e) { }
                     }
                 }
 
@@ -132,7 +131,7 @@ public class Simulator {
                                 doTick();
                             }
 
-                            synchronized (this) {
+                            synchronized(this) {
                                 stepsRequested--;
                             }
                             exceptionEncountered = false;
@@ -152,7 +151,7 @@ public class Simulator {
         }
 
         private void doTick() {
-            synchronized (this) {
+            synchronized(this) {
                 ticksRequested--;
             }
             propagator.tick();
@@ -167,7 +166,7 @@ public class Simulator {
     private PropagationManager manager;
     private SimulatorTicker ticker;
     private ArrayList<SimulatorListener> listeners
-            = new ArrayList<SimulatorListener>();
+        = new ArrayList<SimulatorListener>();
 
     public Simulator() {
         manager = new PropagationManager();
@@ -176,8 +175,7 @@ public class Simulator {
             manager.setPriority(manager.getPriority() - 1);
             ticker.setPriority(ticker.getPriority() - 1);
         } catch (SecurityException e) {
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         manager.start();
         ticker.start();
 
@@ -209,7 +207,7 @@ public class Simulator {
     }
 
     public void step() {
-        synchronized (manager) {
+        synchronized(manager) {
             manager.stepsRequested++;
             manager.notifyAll();
         }
@@ -231,8 +229,8 @@ public class Simulator {
         if (isRunning != value) {
             isRunning = value;
             renewTickerAwake();
-			/*DEBUGGING - comment out: 
-			if (!value) flushLog(); //*/
+            /*DEBUGGING - comment out:
+            if (!value) flushLog(); //*/
             fireSimulatorStateChanged();
         }
     }
@@ -284,28 +282,20 @@ public class Simulator {
         return prop != null && prop.isOscillating();
     }
 
-    public void addSimulatorListener(SimulatorListener l) {
-        listeners.add(l);
-    }
-
-    public void removeSimulatorListener(SimulatorListener l) {
-        listeners.remove(l);
-    }
-
+    public void addSimulatorListener(SimulatorListener l) { listeners.add(l); }
+    public void removeSimulatorListener(SimulatorListener l) { listeners.remove(l); }
     void firePropagationCompleted() {
         SimulatorEvent e = new SimulatorEvent(this);
         for (SimulatorListener l : new ArrayList<SimulatorListener>(listeners)) {
             l.propagationCompleted(e);
         }
     }
-
     void fireTickCompleted() {
         SimulatorEvent e = new SimulatorEvent(this);
         for (SimulatorListener l : new ArrayList<SimulatorListener>(listeners)) {
             l.tickCompleted(e);
         }
     }
-
     void fireSimulatorStateChanged() {
         SimulatorEvent e = new SimulatorEvent(this);
         for (SimulatorListener l : new ArrayList<SimulatorListener>(listeners)) {

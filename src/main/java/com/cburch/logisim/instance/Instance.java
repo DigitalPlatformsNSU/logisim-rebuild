@@ -81,7 +81,7 @@ public class Instance {
     }
 
     public void setTextField(Attribute<String> labelAttr, Attribute<Font> fontAttr,
-                             int x, int y, int halign, int valign) {
+            int x, int y, int halign, int valign) {
         comp.setTextField(labelAttr, fontAttr, x, y, halign, valign);
     }
 

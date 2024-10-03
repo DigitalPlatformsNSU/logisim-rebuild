@@ -130,8 +130,7 @@ class LayoutPopupManager implements SelectionListener, MouseListener, MouseMotio
         curPopupTime = System.currentTimeMillis();
     }
 
-    public void mouseClicked(MouseEvent e) {
-    }
+    public void mouseClicked(MouseEvent e) { }
 
     public void mouseEntered(MouseEvent e) {
         hideCurrentPopup();
@@ -148,8 +147,7 @@ class LayoutPopupManager implements SelectionListener, MouseListener, MouseMotio
         dragStart = Location.create(e.getX(), e.getY());
     }
 
-    public void mouseReleased(MouseEvent e) {
-    }
+    public void mouseReleased(MouseEvent e) { }
 
     public void mouseDragged(MouseEvent e) {
         Location start = dragStart;
@@ -158,8 +156,7 @@ class LayoutPopupManager implements SelectionListener, MouseListener, MouseMotio
         }
     }
 
-    public void mouseMoved(MouseEvent arg0) {
-    }
+    public void mouseMoved(MouseEvent arg0) { }
 
 
 }

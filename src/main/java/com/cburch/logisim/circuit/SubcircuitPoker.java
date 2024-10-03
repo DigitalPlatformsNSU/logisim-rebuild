@@ -38,8 +38,8 @@ public class SubcircuitPoker extends InstancePoker {
 
             int tx = cx + 3;
             int ty = cy + 3;
-            int[] xp = {tx - 1, cx + 8, cx + 10, tx + 1};
-            int[] yp = {ty + 1, cy + 10, cy + 8, ty - 1};
+            int[] xp = { tx - 1, cx + 8, cx + 10, tx + 1 };
+            int[] yp = { ty + 1, cy + 10, cy + 8, ty - 1 };
             Graphics g = painter.getGraphics();
             if (mouseDown) {
                 g.setColor(MAGNIFYING_INTERIOR_DOWN);

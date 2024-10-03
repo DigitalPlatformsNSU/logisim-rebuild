@@ -35,13 +35,13 @@ class IntlOptions extends OptionsPanel {
         replAccents = new PrefBoolean(AppPreferences.ACCENTS_REPLACE,
                 Strings.getter("intlReplaceAccents"));
         gateShape = new PrefOptionList(AppPreferences.GATE_SHAPE,
-                Strings.getter("intlGateShape"), new PrefOption[]{
-                new PrefOption(AppPreferences.SHAPE_SHAPED,
-                        Strings.getter("shapeShaped")),
-                new PrefOption(AppPreferences.SHAPE_RECTANGULAR,
-                        Strings.getter("shapeRectangular")),
-                new PrefOption(AppPreferences.SHAPE_DIN40700,
-                        Strings.getter("shapeDIN40700"))});
+                Strings.getter("intlGateShape"), new PrefOption[] {
+                    new PrefOption(AppPreferences.SHAPE_SHAPED,
+                            Strings.getter("shapeShaped")),
+                    new PrefOption(AppPreferences.SHAPE_RECTANGULAR,
+                            Strings.getter("shapeRectangular")),
+                    new PrefOption(AppPreferences.SHAPE_DIN40700,
+                            Strings.getter("shapeDIN40700")) });
 
         Box localePanel = new Box(BoxLayout.X_AXIS);
         localePanel.add(Box.createGlue());

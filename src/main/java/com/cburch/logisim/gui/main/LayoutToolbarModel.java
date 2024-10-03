@@ -68,7 +68,7 @@ class LayoutToolbarModel extends AbstractToolbarModel {
                 if (index == 10) index = 0;
                 int mask = frame.getToolkit().getMenuShortcutKeyMask();
                 ret += " (" + InputEventUtil.toKeyDisplayString(mask)
-                        + "-" + index + ")";
+                    + "-" + index + ")";
             }
             return ret;
         }
@@ -79,7 +79,7 @@ class LayoutToolbarModel extends AbstractToolbarModel {
     }
 
     private class MyListener implements ProjectListener, AttributeListener,
-            ToolbarData.ToolbarListener, PropertyChangeListener {
+                ToolbarData.ToolbarListener, PropertyChangeListener {
         //
         // ProjectListener methods
         //
@@ -114,9 +114,7 @@ class LayoutToolbarModel extends AbstractToolbarModel {
         //
         // AttributeListener methods
         //
-        public void attributeListChanged(AttributeEvent e) {
-        }
-
+        public void attributeListChanged(AttributeEvent e) { }
         public void attributeValueChanged(AttributeEvent e) {
             fireToolbarAppearanceChanged();
         }

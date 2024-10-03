@@ -24,31 +24,31 @@ import com.cburch.logisim.tools.key.BitWidthConfigurator;
 
 public class Shifter extends InstanceFactory {
     static final AttributeOption SHIFT_LOGICAL_LEFT
-            = new AttributeOption("ll", Strings.getter("shiftLogicalLeft"));
+        = new AttributeOption("ll", Strings.getter("shiftLogicalLeft"));
     static final AttributeOption SHIFT_LOGICAL_RIGHT
-            = new AttributeOption("lr", Strings.getter("shiftLogicalRight"));
+        = new AttributeOption("lr", Strings.getter("shiftLogicalRight"));
     static final AttributeOption SHIFT_ARITHMETIC_RIGHT
-            = new AttributeOption("ar", Strings.getter("shiftArithmeticRight"));
+        = new AttributeOption("ar", Strings.getter("shiftArithmeticRight"));
     static final AttributeOption SHIFT_ROLL_LEFT
-            = new AttributeOption("rl", Strings.getter("shiftRollLeft"));
+        = new AttributeOption("rl", Strings.getter("shiftRollLeft"));
     static final AttributeOption SHIFT_ROLL_RIGHT
-            = new AttributeOption("rr", Strings.getter("shiftRollRight"));
+        = new AttributeOption("rr", Strings.getter("shiftRollRight"));
     static final Attribute<AttributeOption> ATTR_SHIFT
-            = Attributes.forOption("shift", Strings.getter("shifterShiftAttr"),
-            new AttributeOption[]{SHIFT_LOGICAL_LEFT, SHIFT_LOGICAL_RIGHT,
-                    SHIFT_ARITHMETIC_RIGHT, SHIFT_ROLL_LEFT, SHIFT_ROLL_RIGHT});
+        = Attributes.forOption("shift", Strings.getter("shifterShiftAttr"),
+                new AttributeOption[] { SHIFT_LOGICAL_LEFT, SHIFT_LOGICAL_RIGHT,
+                    SHIFT_ARITHMETIC_RIGHT, SHIFT_ROLL_LEFT, SHIFT_ROLL_RIGHT });
 
-    private static final int IN0 = 0;
-    private static final int IN1 = 1;
-    private static final int OUT = 2;
+    private static final int IN0   = 0;
+    private static final int IN1   = 1;
+    private static final int OUT   = 2;
 
     public Shifter() {
         super("Shifter", Strings.getter("shifterComponent"));
-        setAttributes(new Attribute[]{
+        setAttributes(new Attribute[] {
                 StdAttr.WIDTH, ATTR_SHIFT
-        }, new Object[]{
+            }, new Object[] {
                 BitWidth.create(8), SHIFT_LOGICAL_LEFT
-        });
+            });
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
         setOffsetBounds(Bounds.create(-40, -20, 40, 40));
         setIconName("shifter.gif");
@@ -74,9 +74,9 @@ public class Shifter extends InstanceFactory {
         while ((1 << shift) < data) shift++;
 
         Port[] ps = new Port[3];
-        ps[IN0] = new Port(-40, -10, Port.INPUT, data);
-        ps[IN1] = new Port(-40, 10, Port.INPUT, shift);
-        ps[OUT] = new Port(0, 0, Port.OUTPUT, data);
+        ps[IN0]   = new Port(-40, -10, Port.INPUT,  data);
+        ps[IN1]   = new Port(-40,  10, Port.INPUT,  shift);
+        ps[OUT]   = new Port(  0,   0, Port.OUTPUT, data);
         ps[IN0].setToolTip(Strings.getter("shifterInputTip"));
         ps[IN1].setToolTip(Strings.getter("shifterDistanceTip"));
         ps[OUT].setToolTip(Strings.getter("shifterOutputTip"));
@@ -187,8 +187,8 @@ public class Shifter extends InstanceFactory {
     }
 
     private void drawArrow(Graphics g, int x, int y, int d) {
-        int[] px = {x + d, x, x + d};
-        int[] py = {y + d, y, y - d};
+        int[] px = { x + d, x, x + d };
+        int[] py = { y + d, y, y - d };
         g.fillPolygon(px, py, 3);
     }
 }

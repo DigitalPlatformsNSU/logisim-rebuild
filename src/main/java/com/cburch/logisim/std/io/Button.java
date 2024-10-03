@@ -30,18 +30,18 @@ public class Button extends InstanceFactory {
 
     public Button() {
         super("Button", Strings.getter("buttonComponent"));
-        setAttributes(new Attribute[]{
+        setAttributes(new Attribute[] {
                 StdAttr.FACING, Io.ATTR_COLOR,
                 StdAttr.LABEL, Io.ATTR_LABEL_LOC,
                 StdAttr.LABEL_FONT, Io.ATTR_LABEL_COLOR
-        }, new Object[]{
+            }, new Object[] {
                 Direction.EAST, Color.WHITE,
                 "", Io.LABEL_CENTER,
                 StdAttr.DEFAULT_LABEL_FONT, Color.BLACK
-        });
+            });
         setFacingAttribute(StdAttr.FACING);
         setIconName("button.gif");
-        setPorts(new Port[]{new Port(0, 0, Port.OUTPUT, 1)});
+        setPorts(new Port[] { new Port(0, 0, Port.OUTPUT, 1) });
         setInstancePoker(Poker.class);
         setInstanceLogger(Logger.class);
     }
@@ -157,7 +157,7 @@ public class Button extends InstanceFactory {
                 GraphicsUtil.switchToWidth(g, Wire.WIDTH);
                 g.setColor(Value.TRUE_COLOR);
                 if (facing == Direction.NORTH) g.drawLine(px, py, px, py + 10);
-                else g.drawLine(px, py, px + 10, py);
+                else                          g.drawLine(px, py, px + 10, py);
                 GraphicsUtil.switchToWidth(g, 1);
             }
 
@@ -167,8 +167,8 @@ public class Button extends InstanceFactory {
             g.drawRect(x, y, w - DEPTH, h - DEPTH);
         } else {
             depress = 0;
-            int[] xp = new int[]{x, x + w - DEPTH, x + w, x + w, x + DEPTH, x};
-            int[] yp = new int[]{y, y, y + DEPTH, y + h, y + h, y + h - DEPTH};
+            int[] xp = new int[] { x, x + w - DEPTH, x + w, x + w, x + DEPTH, x };
+            int[] yp = new int[] { y, y, y + DEPTH, y + h, y + h, y + h - DEPTH };
             g.setColor(color.darker());
             g.fillPolygon(xp, yp, xp.length);
             g.setColor(color);

@@ -20,13 +20,13 @@ class SearchNode implements Comparable<SearchNode> {
     private SearchNode prev;
 
     public SearchNode(ConnectionData conn, Location src,
-                      Direction srcDir, Location dst) {
+            Direction srcDir, Location dst) {
         this(src, srcDir, conn, dst, 0, srcDir != null, null);
     }
 
     private SearchNode(Location loc, Direction dir,
-                       ConnectionData conn, Location dest, int dist, boolean extendsWire,
-                       SearchNode prev) {
+            ConnectionData conn, Location dest, int dist, boolean extendsWire,
+            SearchNode prev) {
         this.loc = loc;
         this.dir = dir;
         this.conn = conn;
@@ -144,8 +144,8 @@ class SearchNode implements Comparable<SearchNode> {
         if (other instanceof SearchNode) {
             SearchNode o = (SearchNode) other;
             return this.loc.equals(o.loc)
-                    && (this.dir == null ? o.dir == null : this.dir.equals(o.dir))
-                    && this.dest.equals(o.dest);
+                && (this.dir == null ? o.dir == null : this.dir.equals(o.dir))
+                && this.dest.equals(o.dest);
         } else {
             return false;
         }
@@ -170,7 +170,7 @@ class SearchNode implements Comparable<SearchNode> {
     @Override
     public String toString() {
         return loc + "/" + (dir == null ? "null" : dir.toString())
-                + (extendsWire ? "+" : "-")
-                + "/" + dest + ":" + dist + "+" + (heur - dist);
+            + (extendsWire ? "+" : "-")
+            + "/" + dest + ":" + dist + "+" + (heur-dist);
     }
 }

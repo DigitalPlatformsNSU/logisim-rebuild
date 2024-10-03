@@ -24,7 +24,7 @@ public class InstancePainter implements InstanceState {
     private AttributeSet attrs;
 
     public InstancePainter(ComponentDrawContext context,
-                           InstanceComponent instance) {
+            InstanceComponent instance) {
         this.context = context;
         this.comp = instance;
     }
@@ -187,7 +187,7 @@ public class InstancePainter implements InstanceState {
     }
 
     public void drawRectangle(int x, int y,
-                              int width, int height, String label) {
+            int width, int height, String label) {
         context.drawRectangle(x, y, width, height, label);
     }
 

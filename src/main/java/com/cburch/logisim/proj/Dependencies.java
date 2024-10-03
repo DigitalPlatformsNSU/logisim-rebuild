@@ -20,56 +20,56 @@ public class Dependencies {
             implements LibraryListener, CircuitListener {
         public void libraryChanged(LibraryEvent e) {
             switch (e.getAction()) {
-                case LibraryEvent.ADD_TOOL:
-                    if (e.getData() instanceof AddTool) {
-                        ComponentFactory factory = ((AddTool) e.getData()).getFactory();
-                        if (factory instanceof SubcircuitFactory) {
-                            SubcircuitFactory circFact = (SubcircuitFactory) factory;
-                            processCircuit(circFact.getSubcircuit());
-                        }
+            case LibraryEvent.ADD_TOOL:
+                if (e.getData() instanceof AddTool) {
+                    ComponentFactory factory = ((AddTool) e.getData()).getFactory();
+                    if (factory instanceof SubcircuitFactory) {
+                        SubcircuitFactory circFact = (SubcircuitFactory) factory;
+                        processCircuit(circFact.getSubcircuit());
                     }
-                    break;
-                case LibraryEvent.REMOVE_TOOL:
-                    if (e.getData() instanceof AddTool) {
-                        ComponentFactory factory = ((AddTool) e.getData()).getFactory();
-                        if (factory instanceof SubcircuitFactory) {
-                            SubcircuitFactory circFact = (SubcircuitFactory) factory;
-                            Circuit circ = circFact.getSubcircuit();
-                            depends.removeNode(circ);
-                            circ.removeCircuitListener(this);
-                        }
+                }
+                break;
+            case LibraryEvent.REMOVE_TOOL:
+                if (e.getData() instanceof AddTool) {
+                    ComponentFactory factory = ((AddTool) e.getData()).getFactory();
+                    if (factory instanceof SubcircuitFactory) {
+                        SubcircuitFactory circFact = (SubcircuitFactory) factory;
+                        Circuit circ = circFact.getSubcircuit();
+                        depends.removeNode(circ);
+                        circ.removeCircuitListener(this);
                     }
-                    break;
+                }
+                break;
             }
         }
 
         public void circuitChanged(CircuitEvent e) {
             Component comp;
             switch (e.getAction()) {
-                case CircuitEvent.ACTION_ADD:
-                    comp = (Component) e.getData();
-                    if (comp.getFactory() instanceof SubcircuitFactory) {
-                        SubcircuitFactory factory = (SubcircuitFactory) comp.getFactory();
-                        depends.addEdge(e.getCircuit(), factory.getSubcircuit());
-                    }
-                    break;
-                case CircuitEvent.ACTION_REMOVE:
-                    comp = (Component) e.getData();
-                    if (comp.getFactory() instanceof SubcircuitFactory) {
-                        SubcircuitFactory factory = (SubcircuitFactory) comp.getFactory();
-                        boolean found = false;
-                        for (Component o : e.getCircuit().getNonWires()) {
-                            if (o.getFactory() == factory) {
-                                found = true;
-                                break;
-                            }
+            case CircuitEvent.ACTION_ADD:
+                comp = (Component) e.getData();
+                if (comp.getFactory() instanceof SubcircuitFactory) {
+                    SubcircuitFactory factory = (SubcircuitFactory) comp.getFactory();
+                    depends.addEdge(e.getCircuit(), factory.getSubcircuit());
+                }
+                break;
+            case CircuitEvent.ACTION_REMOVE:
+                comp = (Component) e.getData();
+                if (comp.getFactory() instanceof SubcircuitFactory) {
+                    SubcircuitFactory factory = (SubcircuitFactory) comp.getFactory();
+                    boolean found = false;
+                    for (Component o : e.getCircuit().getNonWires()) { 
+                        if (o.getFactory() == factory) {
+                            found = true;
+                            break;
                         }
-                        if (!found) depends.removeEdge(e.getCircuit(), factory.getSubcircuit());
                     }
-                    break;
-                case CircuitEvent.ACTION_CLEAR:
-                    depends.removeNode(e.getCircuit());
-                    break;
+                    if (!found) depends.removeEdge(e.getCircuit(), factory.getSubcircuit());
+                }
+                break;
+            case CircuitEvent.ACTION_CLEAR:
+                depends.removeNode(e.getCircuit());
+                break;
             }
         }
     }

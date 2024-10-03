@@ -70,15 +70,15 @@ import javax.swing.event.PopupMenuListener;
 
 public class Canvas extends JPanel
         implements LocaleListener, CanvasPaneContents {
-    public static final Color HALO_COLOR = new Color(192, 255, 255);
+    static final Color HALO_COLOR = new Color(192, 255, 255);
 
     private static final int BOUNDS_BUFFER = 70;
-    // pixels shown in canvas beyond outermost boundaries
+        // pixels shown in canvas beyond outermost boundaries
     private static final int THRESH_SIZE_UPDATE = 10;
-    // don't bother to update the size if it hasn't changed more than this
+        // don't bother to update the size if it hasn't changed more than this
     static final double SQRT_2 = Math.sqrt(2.0);
     private static final int BUTTONS_MASK = InputEvent.BUTTON1_DOWN_MASK
-            | InputEvent.BUTTON2_DOWN_MASK | InputEvent.BUTTON3_DOWN_MASK;
+        | InputEvent.BUTTON2_DOWN_MASK | InputEvent.BUTTON3_DOWN_MASK;
     private static final Color DEFAULT_ERROR_COLOR = new Color(192, 0, 0);
 
     private static final Color TICK_RATE_COLOR = new Color(0, 0, 92, 92);
@@ -86,14 +86,13 @@ public class Canvas extends JPanel
 
     private class MyListener
             implements MouseInputListener, KeyListener, PopupMenuListener,
-            PropertyChangeListener {
+                PropertyChangeListener {
         boolean menu_on = false;
 
         //
         // MouseListener methods
         //
-        public void mouseClicked(MouseEvent e) {
-        }
+        public void mouseClicked(MouseEvent e) { }
 
         public void mouseMoved(MouseEvent e) {
             if ((e.getModifiersEx() & BUTTONS_MASK) != 0) {
@@ -180,12 +179,10 @@ public class Canvas extends JPanel
             Tool tool = proj.getTool();
             if (tool != null) tool.keyPressed(Canvas.this, e);
         }
-
         public void keyReleased(KeyEvent e) {
             Tool tool = proj.getTool();
             if (tool != null) tool.keyReleased(Canvas.this, e);
         }
-
         public void keyTyped(KeyEvent e) {
             Tool tool = proj.getTool();
             if (tool != null) tool.keyTyped(Canvas.this, e);
@@ -197,13 +194,10 @@ public class Canvas extends JPanel
         public void popupMenuCanceled(PopupMenuEvent e) {
             menu_on = false;
         }
-
         public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
             menu_on = false;
         }
-
-        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-        }
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {}
 
         public void propertyChange(PropertyChangeEvent event) {
             if (AppPreferences.GATE_SHAPE.isSource(event)
@@ -218,7 +212,7 @@ public class Canvas extends JPanel
 
     private class MyProjectListener
             implements ProjectListener, LibraryListener, CircuitListener,
-            AttributeListener, SimulatorListener, Selection.Listener {
+                AttributeListener, SimulatorListener, Selection.Listener {
         public void projectChanged(ProjectEvent event) {
             int act = event.getAction();
             if (act == ProjectEvent.ACTION_SET_CURRENT) {
@@ -240,8 +234,8 @@ public class Canvas extends JPanel
                 viewport.setErrorMessage(null, null);
 
                 Tool t = event.getTool();
-                if (t == null) setCursor(Cursor.getDefaultCursor());
-                else setCursor(t.getCursor());
+                if (t == null)  setCursor(Cursor.getDefaultCursor());
+                else            setCursor(t.getCursor());
             } else if (act == ProjectEvent.ACTION_SET_STATE) {
                 CircuitState oldState = (CircuitState) event.getOldData();
                 CircuitState newState = (CircuitState) event.getData();
@@ -278,7 +272,7 @@ public class Canvas extends JPanel
 
                 if (proj.getTool() == event.getData()) {
                     Tool next = findTool(proj.getLogisimFile().getOptions()
-                            .getToolbarData().getContents());
+                                        .getToolbarData().getContents());
                     if (next == null) {
                         for (Library lib : proj.getLogisimFile().getLibraries()) {
                             next = findTool(lib.getTools());
@@ -328,31 +322,26 @@ public class Canvas extends JPanel
         }
 
         public void propagationCompleted(SimulatorEvent e) {
-			/* This was a good idea for a while... but it leads to problems
-			 * when a repaint is done just before a user action takes place.
-			// repaint - but only if it's been a while since the last one
-			long now = System.currentTimeMillis();
-			if (now > lastRepaint + repaintDuration) {
-				lastRepaint = now; // (ensure that multiple requests aren't made
-				repaintDuration = 15 + (int) (20 * Math.random());
-					// repaintDuration is for jittering the repaints to
-					// reduce aliasing effects
-				repaint();
-			}
-			*/
+            /* This was a good idea for a while... but it leads to problems
+             * when a repaint is done just before a user action takes place.
+            // repaint - but only if it's been a while since the last one
+            long now = System.currentTimeMillis();
+            if (now > lastRepaint + repaintDuration) {
+                lastRepaint = now; // (ensure that multiple requests aren't made
+                repaintDuration = 15 + (int) (20 * Math.random());
+                    // repaintDuration is for jittering the repaints to
+                    // reduce aliasing effects
+                repaint();
+            }
+            */
             paintThread.requestRepaint();
         }
-
         public void tickCompleted(SimulatorEvent e) {
             waitForRepaintDone();
         }
+        public void simulatorStateChanged(SimulatorEvent e) { }
 
-        public void simulatorStateChanged(SimulatorEvent e) {
-        }
-
-        public void attributeListChanged(AttributeEvent e) {
-        }
-
+        public void attributeListChanged(AttributeEvent e) { }
         public void attributeValueChanged(AttributeEvent e) {
             Attribute<?> attr = e.getAttribute();
             if (attr == Options.ATTR_GATE_UNDEFINED) {
@@ -381,8 +370,7 @@ public class Canvas extends JPanel
         boolean isSoutheast = false;
         boolean isSouthwest = false;
 
-        MyViewport() {
-        }
+        MyViewport() { }
 
         void setErrorMessage(StringGetter msg, Color color) {
             if (errorMessage != msg) {
@@ -403,38 +391,14 @@ public class Canvas extends JPanel
             isSoutheast = false;
             isSouthwest = false;
         }
-
-        void setNorth(boolean value) {
-            isNorth = value;
-        }
-
-        void setSouth(boolean value) {
-            isSouth = value;
-        }
-
-        void setEast(boolean value) {
-            isEast = value;
-        }
-
-        void setWest(boolean value) {
-            isWest = value;
-        }
-
-        void setNortheast(boolean value) {
-            isNortheast = value;
-        }
-
-        void setNorthwest(boolean value) {
-            isNorthwest = value;
-        }
-
-        void setSoutheast(boolean value) {
-            isSoutheast = value;
-        }
-
-        void setSouthwest(boolean value) {
-            isSouthwest = value;
-        }
+        void setNorth(boolean value) { isNorth = value; }
+        void setSouth(boolean value) { isSouth = value; }
+        void setEast(boolean value) { isEast = value; }
+        void setWest(boolean value) { isWest = value; }
+        void setNortheast(boolean value) { isNortheast = value; }
+        void setNorthwest(boolean value) { isNorthwest = value; }
+        void setSoutheast(boolean value) { isSoutheast = value; }
+        void setSouthwest(boolean value) { isSouthwest = value; }
 
         @Override
         public void paintChildren(Graphics g) {
@@ -448,24 +412,24 @@ public class Canvas extends JPanel
         }
 
         void paintContents(Graphics g) {
-			/* TODO this is for the SimulatorPrototype class
-			int speed = proj.getSimulator().getSimulationSpeed();
-			String speedStr;
-			if (speed >= 10000000) {
-				speedStr = (speed / 1000000) + " MHz";
-			} else if (speed >= 1000000) {
-				speedStr = (speed / 100000) / 10.0 + " MHz";
-			} else if (speed >= 10000) {
-				speedStr = (speed / 1000) + " KHz";
-			} else if (speed >= 10000) {
-				speedStr = (speed / 100) / 10.0 + " KHz";
-			} else {
-				speedStr = speed + " Hz";
-			}
-			FontMetrics fm = g.getFontMetrics();
-			g.drawString(speedStr, getWidth() - 10 - fm.stringWidth(speedStr),
-					getHeight() - 10);
-			*/
+            /* TODO this is for the SimulatorPrototype class
+            int speed = proj.getSimulator().getSimulationSpeed();
+            String speedStr;
+            if (speed >= 10000000) {
+                speedStr = (speed / 1000000) + " MHz";
+            } else if (speed >= 1000000) {
+                speedStr = (speed / 100000) / 10.0 + " MHz";
+            } else if (speed >= 10000) {
+                speedStr = (speed / 1000) + " KHz";
+            } else if (speed >= 10000) {
+                speedStr = (speed / 100) / 10.0 + " KHz";
+            } else {
+                speedStr = speed + " Hz";
+            }
+            FontMetrics fm = g.getFontMetrics();
+            g.drawString(speedStr, getWidth() - 10 - fm.stringWidth(speedStr),
+                    getHeight() - 10);
+            */
 
             StringGetter message = errorMessage;
             if (message != null) {
@@ -495,22 +459,22 @@ public class Canvas extends JPanel
             }
 
             GraphicsUtil.switchToWidth(g, 3);
-            if (isNorth) GraphicsUtil.drawArrow(g, sz.width / 2, 20,
-                    sz.width / 2, 2, 10, 30);
-            if (isSouth) GraphicsUtil.drawArrow(g, sz.width / 2, sz.height - 20,
-                    sz.width / 2, sz.height - 2, 10, 30);
-            if (isEast) GraphicsUtil.drawArrow(g, sz.width - 20, sz.height / 2,
-                    sz.width - 2, sz.height / 2, 10, 30);
-            if (isWest) GraphicsUtil.drawArrow(g, 20, sz.height / 2,
-                    2, sz.height / 2, 10, 30);
+            if (isNorth)        GraphicsUtil.drawArrow(g, sz.width / 2, 20,
+                                sz.width / 2, 2, 10, 30);
+            if (isSouth)        GraphicsUtil.drawArrow(g, sz.width / 2, sz.height - 20,
+                                sz.width / 2, sz.height -  2, 10, 30);
+            if (isEast)     GraphicsUtil.drawArrow(g, sz.width - 20, sz.height / 2,
+                                sz.width -  2, sz.height / 2, 10, 30);
+            if (isWest)     GraphicsUtil.drawArrow(g, 20, sz.height / 2,
+                                 2, sz.height / 2, 10, 30);
             if (isNortheast) GraphicsUtil.drawArrow(g, sz.width - 14, 14,
-                    sz.width - 2, 2, 10, 30);
+                                sz.width -  2, 2, 10, 30);
             if (isNorthwest) GraphicsUtil.drawArrow(g, 14, 14,
-                    2, 2, 10, 30);
-            if (isSoutheast) GraphicsUtil.drawArrow(g, sz.width - 14, sz.height - 14,
-                    sz.width - 2, sz.height - 2, 10, 30);
-            if (isSouthwest) GraphicsUtil.drawArrow(g, 14, sz.height - 14,
-                    2, sz.height - 2, 10, 30);
+                                2,  2, 10, 30);
+            if (isSoutheast)    GraphicsUtil.drawArrow(g, sz.width - 14, sz.height - 14,
+                                sz.width -  2, sz.height -  2, 10, 30);
+            if (isSouthwest)    GraphicsUtil.drawArrow(g, 14, sz.height - 14,
+                                2, sz.height -  2, 10, 30);
 
             if (AppPreferences.SHOW_TICK_RATE.getBoolean()) {
                 String hz = tickCounter.getTickRate();
@@ -604,7 +568,7 @@ public class Canvas extends JPanel
     @Override
     public void repaint() {
         if (inPaint) paintDirty = true;
-        else super.repaint();
+        else        super.repaint();
     }
 
     public StringGetter getErrorMessage() {
@@ -642,13 +606,9 @@ public class Canvas extends JPanel
         return painter.getGridPainter();
     }
 
-    Tool getDragTool() {
-        return drag_tool;
-    }
+    Tool getDragTool() { return drag_tool; }
 
-    boolean isPopupMenuUp() {
-        return myListener.menu_on;
-    }
+    boolean isPopupMenuUp() { return myListener.menu_on; }
 
     //
     // graphics methods
@@ -712,16 +672,14 @@ public class Canvas extends JPanel
     }
 
     private void waitForRepaintDone() {
-        synchronized (repaintLock) {
+        synchronized(repaintLock) {
             try {
                 while (inPaint) {
                     repaintLock.wait();
                 }
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) { }
         }
     }
-
     @Override
     public void paintComponent(Graphics g) {
         inPaint = true;
@@ -733,7 +691,7 @@ public class Canvas extends JPanel
             if (canvasPane == null) viewport.paintContents(g);
         } finally {
             inPaint = false;
-            synchronized (repaintLock) {
+            synchronized(repaintLock) {
                 repaintLock.notifyAll();
             }
         }
@@ -800,16 +758,16 @@ public class Canvas extends JPanel
                 boolean isSouth = y >= viewable.y + viewable.height;
 
                 if (isNorth) {
-                    if (isEast) viewport.setNortheast(true);
-                    else if (isWest) viewport.setNorthwest(true);
-                    else viewport.setNorth(true);
+                    if (isEast)     viewport.setNortheast(true);
+                    else if (isWest)    viewport.setNorthwest(true);
+                    else            viewport.setNorth(true);
                 } else if (isSouth) {
-                    if (isEast) viewport.setSoutheast(true);
-                    else if (isWest) viewport.setSouthwest(true);
-                    else viewport.setSouth(true);
+                    if (isEast)     viewport.setSoutheast(true);
+                    else if (isWest)    viewport.setSouthwest(true);
+                    else            viewport.setSouth(true);
                 } else {
-                    if (isEast) viewport.setEast(true);
-                    else if (isWest) viewport.setWest(true);
+                    if (isEast)     viewport.setEast(true);
+                    else if (isWest)    viewport.setWest(true);
                 }
             }
         }
@@ -919,7 +877,7 @@ public class Canvas extends JPanel
     }
 
     public int getScrollableBlockIncrement(Rectangle visibleRect,
-                                           int orientation, int direction) {
+            int orientation, int direction) {
         return canvasPane.supportScrollableBlockIncrement(visibleRect, orientation, direction);
     }
 
@@ -932,7 +890,7 @@ public class Canvas extends JPanel
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect,
-                                          int orientation, int direction) {
+            int orientation, int direction) {
         return canvasPane.supportScrollableUnitIncrement(visibleRect, orientation, direction);
     }
 
@@ -946,7 +904,6 @@ public class Canvas extends JPanel
             return ((x + 5) / 10) * 10;
         }
     }
-
     public static int snapYToGrid(int y) {
         if (y < 0) {
             return -((-y + 5) / 10) * 10;
@@ -954,7 +911,6 @@ public class Canvas extends JPanel
             return ((y + 5) / 10) * 10;
         }
     }
-
     public static void snapToGrid(MouseEvent e) {
         int old_x = e.getX();
         int old_y = e.getY();

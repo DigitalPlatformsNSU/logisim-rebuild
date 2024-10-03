@@ -41,7 +41,7 @@ import com.cburch.logisim.util.StringUtil;
 class XmlWriter {
     static void write(LogisimFile file, OutputStream out, LibraryLoader loader)
             throws ParserConfigurationException,
-            TransformerConfigurationException, TransformerException {
+                TransformerConfigurationException, TransformerException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -52,16 +52,14 @@ class XmlWriter {
         TransformerFactory tfFactory = TransformerFactory.newInstance();
         try {
             tfFactory.setAttribute("indent-number", Integer.valueOf(2));
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
         Transformer tf = tfFactory.newTransformer();
         tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
         tf.setOutputProperty(OutputKeys.INDENT, "yes");
         try {
             tf.setOutputProperty("{http://xml.apache.org/xslt}indent-amount",
                     "2");
-        } catch (IllegalArgumentException e) {
-        }
+        } catch (IllegalArgumentException e) { }
 
         Source src = new DOMSource(doc);
         Result dest = new StreamResult(out);
@@ -71,7 +69,7 @@ class XmlWriter {
     private LogisimFile file;
     private Document doc;
     private LibraryLoader loader;
-    private HashMap<Library, String> libs = new HashMap<Library, String>();
+    private HashMap<Library,String> libs = new HashMap<Library,String>();
 
     private XmlWriter(LogisimFile file, Document doc, LibraryLoader loader) {
         this.file = file;
@@ -115,7 +113,7 @@ class XmlWriter {
         String desc = loader.getDescriptor(lib);
         if (desc == null) {
             loader.showError("library location unknown: "
-                    + lib.getName());
+                + lib.getName());
             return null;
         }
         libs.put(lib, name);
@@ -144,7 +142,7 @@ class XmlWriter {
     Element fromMouseMappings() {
         Element elt = doc.createElement("mappings");
         MouseMappings map = file.getOptions().getMouseMappings();
-        for (Map.Entry<Integer, Tool> entry : map.getMappings().entrySet()) {
+        for (Map.Entry<Integer,Tool> entry : map.getMappings().entrySet()) {
             Integer mods = entry.getKey();
             Tool tool = entry.getValue();
             Element toolElt = fromTool(tool);
@@ -173,7 +171,7 @@ class XmlWriter {
         String lib_name;
         if (lib == null) {
             loader.showError(StringUtil.format("tool `%s' not found",
-                    tool.getDisplayName()));
+                tool.getDisplayName()));
             return null;
         } else if (lib == file) {
             lib_name = null;
@@ -251,7 +249,7 @@ class XmlWriter {
     }
 
     void addAttributeSetContent(Element elt, AttributeSet attrs,
-                                AttributeDefaultProvider source) {
+            AttributeDefaultProvider source) {
         if (attrs == null) return;
         LogisimVersion ver = Main.VERSION;
         if (source != null && source.isAllDefaultValues(attrs, ver)) return;

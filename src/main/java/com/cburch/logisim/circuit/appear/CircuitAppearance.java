@@ -73,7 +73,7 @@ public class CircuitAppearance extends Drawing {
     }
 
     void replaceAutomatically(List<AppearancePort> removes,
-                              List<AppearancePort> adds) {
+            List<AppearancePort> adds) {
         // this should be called only when substituting ports via PortManager
         boolean oldSuppress = suppressRecompute;
         try {
@@ -238,23 +238,6 @@ public class CircuitAppearance extends Drawing {
         } else {
             return ret;
         }
-    }
-
-    public boolean contains(Location loc) {
-        Location query;
-        AppearanceAnchor anchor = findAnchor();
-        if (anchor == null) {
-            query = loc;
-        } else {
-            Location anchorLoc = anchor.getLocation();
-            query = loc.translate(anchorLoc.getX(), anchorLoc.getY());
-        }
-        for (CanvasObject o : getObjectsFromBottom()) {
-            if (!(o instanceof AppearanceElement) && o.contains(query, true)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public SortedMap<Location, Instance> getPortOffsets(Direction facing) {

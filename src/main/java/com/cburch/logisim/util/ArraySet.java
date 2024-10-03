@@ -10,17 +10,17 @@ import java.util.NoSuchElementException;
 
 public class ArraySet<E> extends AbstractSet<E> {
     private static final Object[] EMPTY_ARRAY = new Object[0];
-
+    
     private class ArrayIterator implements Iterator<E> {
         int itVersion = version;
         int pos = 0; // position of next item to return
         boolean hasNext = values.length > 0;
         boolean removeOk = false;
-
+        
         public boolean hasNext() {
             return hasNext;
         }
-
+        
         public E next() {
             if (itVersion != version) {
                 throw new ConcurrentModificationException();
@@ -35,7 +35,7 @@ public class ArraySet<E> extends AbstractSet<E> {
                 return ret;
             }
         }
-
+        
         public void remove() {
             if (itVersion != version) {
                 throw new ConcurrentModificationException();
@@ -62,18 +62,17 @@ public class ArraySet<E> extends AbstractSet<E> {
             }
         }
     }
-
+    
     private int version = 0;
     private Object[] values = EMPTY_ARRAY;
-
-    public ArraySet() {
-    }
-
+    
+    public ArraySet() { }
+    
     @Override
     public Object[] toArray() {
         return values;
     }
-
+    
     @Override
     public Object clone() {
         ArraySet<E> ret = new ArraySet<E>();
@@ -84,13 +83,13 @@ public class ArraySet<E> extends AbstractSet<E> {
         }
         return ret;
     }
-
+    
     @Override
     public void clear() {
         values = EMPTY_ARRAY;
         ++version;
     }
-
+    
     @Override
     public boolean isEmpty() {
         return values.length == 0;
@@ -100,14 +99,14 @@ public class ArraySet<E> extends AbstractSet<E> {
     public int size() {
         return values.length;
     }
-
+    
     @Override
     public boolean add(Object value) {
         int n = values.length;
         for (int i = 0; i < n; i++) {
             if (values[i].equals(value)) return false;
         }
-
+        
         Object[] newValues = new Object[n + 1];
         System.arraycopy(values, 0, newValues, 0, n);
         newValues[n] = value;
@@ -115,7 +114,7 @@ public class ArraySet<E> extends AbstractSet<E> {
         ++version;
         return true;
     }
-
+    
     @Override
     public boolean contains(Object value) {
         for (int i = 0, n = values.length; i < n; i++) {
@@ -128,7 +127,7 @@ public class ArraySet<E> extends AbstractSet<E> {
     public Iterator<E> iterator() {
         return new ArrayIterator();
     }
-
+    
     public static void main(String[] args) throws java.io.IOException {
         ArraySet<String> set = new ArraySet<String>();
         java.io.BufferedReader in = new java.io.BufferedReader(

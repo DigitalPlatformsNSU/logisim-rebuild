@@ -5,7 +5,7 @@ package com.cburch.logisim.analyze.model;
 
 import com.cburch.logisim.util.StringGetter;
 
-public class ParserException extends Exception {
+public  class ParserException extends Exception {
     private StringGetter message;
     private int start;
     private int length;

@@ -47,7 +47,7 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
     private InstanceTextField textField;
 
     InstanceComponent(InstanceFactory factory, Location loc,
-                      AttributeSet attrs) {
+            AttributeSet attrs) {
         this.listeners = null;
         this.factory = factory;
         this.instance = new Instance(this);
@@ -147,7 +147,7 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
     }
 
     private void fireEndsChanged(ArrayList<EndData> oldEnds,
-                                 ArrayList<EndData> newEnds) {
+            ArrayList<EndData> newEnds) {
         EventSourceWeakSupport<ComponentListener> ls = listeners;
         if (ls != null) {
             ComponentEvent e = null;
@@ -279,8 +279,7 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
     //
     // AttributeListener methods
     //
-    public void attributeListChanged(AttributeEvent e) {
-    }
+    public void attributeListChanged(AttributeEvent e) { }
 
     public void attributeValueChanged(AttributeEvent e) {
         Attribute<?> attr = e.getAttribute();
@@ -328,7 +327,7 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
     }
 
     void setTextField(Attribute<String> labelAttr, Attribute<Font> fontAttr,
-                      int x, int y, int halign, int valign) {
+            int x, int y, int halign, int valign) {
         InstanceTextField field = textField;
         if (field == null) {
             field = new InstanceTextField(this);

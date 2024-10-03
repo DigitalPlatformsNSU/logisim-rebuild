@@ -46,9 +46,7 @@ class SimulateOptions extends OptionsPanel {
             }
         }
 
-        public void attributeListChanged(AttributeEvent e) {
-        }
-
+        public void attributeListChanged(AttributeEvent e) { }
         public void attributeValueChanged(AttributeEvent e) {
             Attribute<?> attr = e.getAttribute();
             Object val = e.getValue();
@@ -82,7 +80,7 @@ class SimulateOptions extends OptionsPanel {
     private MyListener myListener = new MyListener();
 
     private JLabel simLimitLabel = new JLabel();
-    private JComboBox simLimit = new JComboBox(new Integer[]{
+    private JComboBox simLimit = new JComboBox(new Integer[] {
             Integer.valueOf(200),
             Integer.valueOf(500),
             Integer.valueOf(1000),
@@ -94,10 +92,10 @@ class SimulateOptions extends OptionsPanel {
     });
     private JCheckBox simRandomness = new JCheckBox();
     private JLabel gateUndefinedLabel = new JLabel();
-    private JComboBox gateUndefined = new JComboBox(new Object[]{
+    private JComboBox gateUndefined = new JComboBox(new Object[] {
             new ComboOption(Options.GATE_UNDEFINED_IGNORE),
             new ComboOption(Options.GATE_UNDEFINED_ERROR)
-    });
+        });
 
     public SimulateOptions(OptionsFrame window) {
         super(window);

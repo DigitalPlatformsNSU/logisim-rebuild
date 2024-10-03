@@ -14,7 +14,7 @@ import javax.swing.event.ListSelectionListener;
 import com.cburch.logisim.prefs.AppPreferences;
 
 class LocaleSelector extends JList
-        implements LocaleListener, ListSelectionListener {
+            implements LocaleListener, ListSelectionListener {
     private static class LocaleOption implements Runnable {
         private Locale locale;
         private String text;
@@ -34,7 +34,7 @@ class LocaleSelector extends JList
                 text = locale.getDisplayName(locale);
             } else {
                 text = locale.getDisplayName(locale)
-                        + " / " + locale.getDisplayName(current);
+                    + " / " + locale.getDisplayName(current);
             }
         }
 

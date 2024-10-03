@@ -22,43 +22,40 @@ import com.cburch.logisim.instance.StdAttr;
 
 public class CircuitAttributes extends AbstractAttributeSet {
     public static final Attribute<String> NAME_ATTR
-            = Attributes.forString("circuit", Strings.getter("circuitName"));
+        = Attributes.forString("circuit", Strings.getter("circuitName"));
 
     public static final Attribute<Direction> LABEL_LOCATION_ATTR
-            = Attributes.forDirection("labelloc", Strings.getter("circuitLabelLocAttr"));
+        = Attributes.forDirection("labelloc", Strings.getter("circuitLabelLocAttr"));
 
     public static final Attribute<String> CIRCUIT_LABEL_ATTR
-            = Attributes.forString("clabel", Strings.getter("circuitLabelAttr"));
+        = Attributes.forString("clabel", Strings.getter("circuitLabelAttr"));
 
     public static final Attribute<Direction> CIRCUIT_LABEL_FACING_ATTR
-            = Attributes.forDirection("clabelup", Strings.getter("circuitLabelDirAttr"));
+        = Attributes.forDirection("clabelup", Strings.getter("circuitLabelDirAttr"));
 
     public static final Attribute<Font> CIRCUIT_LABEL_FONT_ATTR
-            = Attributes.forFont("clabelfont", Strings.getter("circuitLabelFontAttr"));
+        = Attributes.forFont("clabelfont", Strings.getter("circuitLabelFontAttr"));
 
     private static final Attribute<?>[] STATIC_ATTRS = {
-            NAME_ATTR, CIRCUIT_LABEL_ATTR, CIRCUIT_LABEL_FACING_ATTR, CIRCUIT_LABEL_FONT_ATTR,
+        NAME_ATTR, CIRCUIT_LABEL_ATTR, CIRCUIT_LABEL_FACING_ATTR, CIRCUIT_LABEL_FONT_ATTR,
     };
     private static final Object[] STATIC_DEFAULTS = {
-            "", "", Direction.EAST, StdAttr.DEFAULT_LABEL_FONT,
+        "", "", Direction.EAST, StdAttr.DEFAULT_LABEL_FONT,
     };
     private static final List<Attribute<?>> INSTANCE_ATTRS
-            = Arrays.asList(new Attribute<?>[]{
-            StdAttr.FACING, StdAttr.LABEL, LABEL_LOCATION_ATTR,
-            StdAttr.LABEL_FONT,
-            CircuitAttributes.NAME_ATTR, CIRCUIT_LABEL_ATTR,
-            CIRCUIT_LABEL_FACING_ATTR, CIRCUIT_LABEL_FONT_ATTR,
-    });
+        = Arrays.asList(new Attribute<?>[] {
+                StdAttr.FACING, StdAttr.LABEL, LABEL_LOCATION_ATTR,
+                StdAttr.LABEL_FONT,
+                CircuitAttributes.NAME_ATTR, CIRCUIT_LABEL_ATTR,
+                CIRCUIT_LABEL_FACING_ATTR, CIRCUIT_LABEL_FONT_ATTR,
+            });
 
     private static class StaticListener implements AttributeListener {
         private Circuit source;
 
-        private StaticListener(Circuit s) {
-            source = s;
-        }
+        private StaticListener(Circuit s) { source = s; }
 
-        public void attributeListChanged(AttributeEvent e) {
-        }
+        public void attributeListChanged(AttributeEvent e) { }
 
         public void attributeValueChanged(AttributeEvent e) {
             if (e.getAttribute() == NAME_ATTR) {
@@ -68,8 +65,7 @@ public class CircuitAttributes extends AbstractAttributeSet {
     }
 
     private class MyListener implements AttributeListener, CircuitAppearanceListener {
-        public void attributeListChanged(AttributeEvent e) {
-        }
+        public void attributeListChanged(AttributeEvent e) { }
 
         public void attributeValueChanged(AttributeEvent e) {
             @SuppressWarnings("unchecked")

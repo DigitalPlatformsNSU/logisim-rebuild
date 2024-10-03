@@ -10,6 +10,7 @@ import javax.swing.JFileChooser;
 
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.CircuitListener;
+import com.cburch.logisim.circuit.CircuitMutation;
 import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.circuit.Simulator;
 import com.cburch.logisim.circuit.SubcircuitFactory;
@@ -73,8 +74,8 @@ public class Project {
     private Simulator simulator = new Simulator();
     private LogisimFile file;
     private CircuitState circuitState;
-    private HashMap<Circuit, CircuitState> stateMap
-            = new HashMap<Circuit, CircuitState>();
+    private HashMap<Circuit,CircuitState> stateMap
+        = new HashMap<Circuit,CircuitState>();
     private Frame frame = null;
     private OptionsFrame optionsFrame = null;
     private LogFrame logFrame = null;
@@ -82,11 +83,11 @@ public class Project {
     private LinkedList<ActionData> undoLog = new LinkedList<ActionData>();
     private int undoMods = 0;
     private EventSourceWeakSupport<ProjectListener> projectListeners
-            = new EventSourceWeakSupport<ProjectListener>();
+        = new EventSourceWeakSupport<ProjectListener>();
     private EventSourceWeakSupport<LibraryListener> fileListeners
-            = new EventSourceWeakSupport<LibraryListener>();
+        = new EventSourceWeakSupport<LibraryListener>();
     private EventSourceWeakSupport<CircuitListener> circuitListeners
-            = new EventSourceWeakSupport<CircuitListener>();
+        = new EventSourceWeakSupport<CircuitListener>();
     private Dependencies depends;
     private MyListener myListener = new MyListener();
     private boolean startupScreen = false;
@@ -334,12 +335,20 @@ public class Project {
         if (old != null) old.deselect(canvas);
         Selection selection = canvas.getSelection();
         if (selection != null && !selection.isEmpty()) {
-            if (value == null || !getOptions().getMouseMappings().containsSelectTool()) {
-                Action act = SelectionActions.anchorAll(selection);
+            Circuit circuit = canvas.getCircuit();
+            CircuitMutation xn = new CircuitMutation(circuit);
+            if (value == null) {
+                Action act = SelectionActions.dropAll(selection);
+                if (act != null) {
+                    doAction(act);
+                }
+            } else if (!getOptions().getMouseMappings().containsSelectTool()) {
+                Action act = SelectionActions.dropAll(selection);
                 if (act != null) {
                     doAction(act);
                 }
             }
+            if (!xn.isEmpty()) doAction(xn.toAction(null));
         }
         startupScreen = false;
         tool = value;

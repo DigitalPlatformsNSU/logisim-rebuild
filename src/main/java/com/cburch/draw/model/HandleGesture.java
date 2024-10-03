@@ -19,11 +19,6 @@ public class HandleGesture {
         this.modifiersEx = modifiersEx;
     }
 
-    @Override
-    public String toString() {
-        return "HandleGesture[" + dx + "," + dy + ":" + handle.getObject() + "/" + handle.getX() + "," + handle.getY() + "]";
-    }
-
     public Handle getHandle() {
         return handle;
     }

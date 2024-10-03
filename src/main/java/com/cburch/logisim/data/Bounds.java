@@ -46,14 +46,8 @@ public class Bounds {
         this.y = y;
         this.wid = wid;
         this.ht = ht;
-        if (wid < 0) {
-            x += wid / 2;
-            wid = 0;
-        }
-        if (ht < 0) {
-            y += ht / 2;
-            ht = 0;
-        }
+        if (wid < 0) { x += wid / 2; wid = 0; }
+        if (ht < 0)  { y += ht  / 2; ht = 0;  }
     }
 
     @Override
@@ -61,7 +55,7 @@ public class Bounds {
         if (!(other_obj instanceof Bounds)) return false;
         Bounds other = (Bounds) other_obj;
         return x == other.x && y == other.y
-                && wid == other.wid && ht == other.ht;
+            && wid == other.wid && ht == other.ht;
     }
 
     @Override
@@ -93,14 +87,6 @@ public class Bounds {
         return ht;
     }
 
-    public int getCenterX() {
-        return x + wid / 2;
-    }
-
-    public int getCenterY() {
-        return y + ht / 2;
-    }
-
     public Rectangle toRectangle() {
         return new Rectangle(x, y, wid, ht);
     }
@@ -120,7 +106,7 @@ public class Bounds {
 
     public boolean contains(int px, int py, int allowedError) {
         return px >= x - allowedError && px < x + wid + allowedError
-                && py >= y - allowedError && py < y + ht + allowedError;
+            && py >= y - allowedError && py < y + ht + allowedError;
     }
 
     public boolean contains(int x, int y, int wid, int ht) {

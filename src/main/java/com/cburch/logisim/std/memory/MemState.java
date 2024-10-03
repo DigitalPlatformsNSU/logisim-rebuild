@@ -47,9 +47,7 @@ class MemState implements InstanceData, Cloneable, HexModelListener {
             ret.contents = contents.clone();
             ret.contents.addHexModelListener(ret);
             return ret;
-        } catch (CloneNotSupportedException e) {
-            return null;
-        }
+        } catch (CloneNotSupportedException e) { return null; }
     }
 
     //
@@ -256,6 +254,5 @@ class MemState implements InstanceData, Cloneable, HexModelListener {
         setBits(contents.getLogLength(), contents.getWidth());
     }
 
-    public void bytesChanged(HexModel source, long start, long numBytes, int[] oldValues) {
-    }
+    public void bytesChanged(HexModel source, long start, long numBytes, int[] oldValues) { }
 }

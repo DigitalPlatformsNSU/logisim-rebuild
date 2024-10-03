@@ -9,7 +9,7 @@ import com.cburch.logisim.data.Attribute;
 
 public class ParallelConfigurator implements KeyConfigurator, Cloneable {
     public static ParallelConfigurator create(KeyConfigurator a, KeyConfigurator b) {
-        return new ParallelConfigurator(new KeyConfigurator[]{a, b});
+        return new ParallelConfigurator(new KeyConfigurator[] { a, b });
     }
 
     public static ParallelConfigurator create(KeyConfigurator[] configs) {
@@ -45,14 +45,14 @@ public class ParallelConfigurator implements KeyConfigurator, Cloneable {
             return null;
         }
         KeyConfigurationResult first = null;
-        HashMap<Attribute<?>, Object> map = null;
+        HashMap<Attribute<?>,Object> map = null;
         for (int i = 0; i < hs.length; i++) {
             KeyConfigurationResult result = hs[i].keyEventReceived(event);
             if (result != null) {
                 if (first == null) {
                     first = result;
                 } else if (map == null) {
-                    map = new HashMap<Attribute<?>, Object>(first.getAttributeValues());
+                    map = new HashMap<Attribute<?>,Object>(first.getAttributeValues());
                     map.putAll(result.getAttributeValues());
                 } else {
                     map.putAll(result.getAttributeValues());

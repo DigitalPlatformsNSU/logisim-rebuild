@@ -104,7 +104,7 @@ public class TextTool extends Tool {
     }
 
     private static Cursor cursor
-            = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
+        = Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR);
 
     private MyListener listener = new MyListener();
     private AttributeSet attrs;

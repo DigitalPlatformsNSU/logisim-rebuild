@@ -32,11 +32,9 @@ import javax.swing.table.AbstractTableModel;
 import com.cburch.logisim.file.MouseMappings;
 import com.cburch.logisim.gui.generic.AttrTable;
 import com.cburch.logisim.gui.generic.AttrTableModel;
-import com.cburch.logisim.gui.generic.ProjectExplorer;
-import com.cburch.logisim.gui.generic.ProjectExplorerEvent;
-import com.cburch.logisim.gui.generic.ProjectExplorerListener;
-import com.cburch.logisim.gui.generic.ProjectExplorerToolNode;
 import com.cburch.logisim.gui.main.AttrTableToolModel;
+import com.cburch.logisim.gui.main.ProjectExplorer;
+import com.cburch.logisim.gui.main.ProjectExplorer.Event;
 import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.tools.AddTool;
 import com.cburch.logisim.tools.Tool;
@@ -87,7 +85,7 @@ class MouseOptions extends OptionsPanel {
 
     private class MyListener
             implements ActionListener, MouseListener, ListSelectionListener,
-            MouseMappings.MouseMappingsListener, ProjectExplorerListener {
+                MouseMappings.MouseMappingsListener, ProjectExplorer.Listener {
         //
         // ActionListener method
         //
@@ -96,7 +94,7 @@ class MouseOptions extends OptionsPanel {
             if (src == remove) {
                 int row = mappings.getSelectedRow();
                 getProject().doAction(OptionsActions.removeMapping(getOptions().getMouseMappings(),
-                        model.getKey(row)));
+                    model.getKey(row)));
                 row = Math.min(row, model.getRowCount() - 1);
                 if (row >= 0) setSelectedRow(row);
             }
@@ -105,15 +103,9 @@ class MouseOptions extends OptionsPanel {
         //
         // MouseListener methods
         //
-        public void mouseClicked(MouseEvent e) {
-        }
-
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-
+        public void mouseClicked(MouseEvent e) { }
+        public void mouseEntered(MouseEvent e) { }
+        public void mouseExited(MouseEvent e) { }
         public void mousePressed(MouseEvent e) {
             if (e.getSource() == addArea && curTool != null) {
                 Tool t = curTool.cloneTool();
@@ -122,9 +114,7 @@ class MouseOptions extends OptionsPanel {
                 setSelectedRow(model.getRow(mods));
             }
         }
-
-        public void mouseReleased(MouseEvent e) {
-        }
+        public void mouseReleased(MouseEvent e) { }
 
         //
         // ListSelectionListener method
@@ -158,28 +148,19 @@ class MouseOptions extends OptionsPanel {
         //
         // Explorer.Listener methods
         //
-        public void selectionChanged(ProjectExplorerEvent event) {
+        public void selectionChanged(Event event) {
             Object target = event.getTarget();
-            if (target instanceof ProjectExplorerToolNode) {
-                Tool tool = ((ProjectExplorerToolNode) target).getValue();
-                setCurrentTool(tool);
+            if (target instanceof Tool) {
+                setCurrentTool((Tool) event.getTarget());
             } else {
                 setCurrentTool(null);
             }
         }
 
-        public void doubleClicked(ProjectExplorerEvent event) {
-        }
-
-        public void moveRequested(ProjectExplorerEvent event, AddTool dragged, AddTool target) {
-        }
-
-        public void deleteRequested(ProjectExplorerEvent event) {
-        }
-
-        public JPopupMenu menuRequested(ProjectExplorerEvent event) {
-            return null;
-        }
+        public void doubleClicked(Event event) { }
+        public void moveRequested(Event event, AddTool dragged, AddTool target) { }
+        public void deleteRequested(Event event) { }
+        public JPopupMenu menuRequested(Event event) { return null; }
     }
 
     private class MappingsModel extends AbstractTableModel {
@@ -285,24 +266,15 @@ class MouseOptions extends OptionsPanel {
         gbc.weightx = 0.0;
         JPanel gap = new JPanel();
         gap.setPreferredSize(new Dimension(10, 10));
-        gridbag.setConstraints(gap, gbc);
-        add(gap);
+        gridbag.setConstraints(gap, gbc); add(gap);
         gbc.weightx = 1.0;
         gbc.gridheight = 1;
         gbc.gridx = 2;
         gbc.gridy = GridBagConstraints.RELATIVE;
-        gbc.weighty = 0.0;
-        gridbag.setConstraints(addArea, gbc);
-        add(addArea);
-        gbc.weighty = 1.0;
-        gridbag.setConstraints(mapPane, gbc);
-        add(mapPane);
-        gbc.weighty = 0.0;
-        gridbag.setConstraints(removeArea, gbc);
-        add(removeArea);
-        gbc.weighty = 1.0;
-        gridbag.setConstraints(attrTable, gbc);
-        add(attrTable);
+        gbc.weighty = 0.0; gridbag.setConstraints(addArea, gbc); add(addArea);
+        gbc.weighty = 1.0; gridbag.setConstraints(mapPane, gbc); add(mapPane);
+        gbc.weighty = 0.0; gridbag.setConstraints(removeArea, gbc); add(removeArea);
+        gbc.weighty = 1.0; gridbag.setConstraints(attrTable, gbc); add(attrTable);
 
         getOptions().getMouseMappings().addMouseMappingsListener(listener);
         setCurrentTool(null);

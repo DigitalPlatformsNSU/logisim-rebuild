@@ -68,8 +68,8 @@ public class LogisimMenuBar extends JMenuBar {
     private MyListener listener;
     private Project proj;
     private SimulateListener simulateListener = null;
-    private HashMap<LogisimMenuItem, MenuItem> menuItems
-            = new HashMap<LogisimMenuItem, MenuItem>();
+    private HashMap<LogisimMenuItem,MenuItem> menuItems
+        = new HashMap<LogisimMenuItem,MenuItem>();
     private ArrayList<ChangeListener> enableListeners;
 
     private MenuFile file;

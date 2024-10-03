@@ -41,7 +41,7 @@ public final class CircuitMutation extends CircuitTransaction {
     }
 
     public void addAll(Collection<? extends Component> comps) {
-        changes.add(CircuitChange.addAll(primary, new ArrayList<Component>(comps)));
+        changes.add(CircuitChange.addAll(primary, comps));
     }
 
     public void remove(Component comp) {
@@ -49,7 +49,7 @@ public final class CircuitMutation extends CircuitTransaction {
     }
 
     public void removeAll(Collection<? extends Component> comps) {
-        changes.add(CircuitChange.removeAll(primary, new ArrayList<Component>(comps)));
+        changes.add(CircuitChange.removeAll(primary, comps));
     }
 
     public void replace(Component oldComp, Component newComp) {
@@ -82,8 +82,8 @@ public final class CircuitMutation extends CircuitTransaction {
     }
 
     @Override
-    protected Map<Circuit, Integer> getAccessedCircuits() {
-        HashMap<Circuit, Integer> accessMap = new HashMap<Circuit, Integer>();
+    protected Map<Circuit,Integer> getAccessedCircuits() {
+        HashMap<Circuit,Integer> accessMap = new HashMap<Circuit,Integer>();
         HashSet<Circuit> supercircsDone = new HashSet<Circuit>();
         for (CircuitChange change : changes) {
             Circuit circ = change.getCircuit();

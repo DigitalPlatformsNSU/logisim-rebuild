@@ -25,7 +25,7 @@ public class ShiftRegisterLogger extends InstanceLogger {
         String inName = state.getAttributeValue(StdAttr.LABEL);
         if (inName == null || inName.equals("")) {
             inName = Strings.get("shiftRegisterComponent")
-                    + state.getInstance().getLocation();
+                + state.getInstance().getLocation();
         }
         if (option instanceof Integer) {
             return inName + "[" + option + "]";

@@ -21,13 +21,13 @@ public class MouseMappings {
     }
 
     private ArrayList<MouseMappingsListener> listeners;
-    private HashMap<Integer, Tool> map;
+    private HashMap<Integer,Tool> map;
     private int cache_mods;
     private Tool cache_tool;
 
     public MouseMappings() {
         listeners = new ArrayList<MouseMappingsListener>();
-        map = new HashMap<Integer, Tool>();
+        map = new HashMap<Integer,Tool>();
     }
 
     //
@@ -50,7 +50,7 @@ public class MouseMappings {
     //
     // query methods
     //
-    public Map<Integer, Tool> getMappings() {
+    public Map<Integer,Tool> getMappings() {
         return map;
     }
 
@@ -92,7 +92,7 @@ public class MouseMappings {
         }
         return false;
     }
-
+    
     public boolean containsSelectTool() {
         for (Tool tool : map.values()) {
             if (tool instanceof SelectTool) return true;
@@ -151,9 +151,9 @@ public class MouseMappings {
     //
     // package-protected methods
     //
-    void replaceAll(Map<Tool, Tool> toolMap) {
+    void replaceAll(Map<Tool,Tool> toolMap) {
         boolean changed = false;
-        for (Map.Entry<Integer, Tool> entry : map.entrySet()) {
+        for (Map.Entry<Integer,Tool> entry : map.entrySet()) {
             Integer key = entry.getKey();
             Tool tool = entry.getValue();
             if (tool instanceof AddTool) {

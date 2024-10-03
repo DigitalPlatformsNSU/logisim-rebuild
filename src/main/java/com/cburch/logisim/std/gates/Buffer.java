@@ -33,14 +33,14 @@ class Buffer extends InstanceFactory {
 
     private Buffer() {
         super("Buffer", Strings.getter("bufferComponent"));
-        setAttributes(new Attribute[]{StdAttr.FACING, StdAttr.WIDTH,
-                        GateAttributes.ATTR_OUTPUT, StdAttr.LABEL, StdAttr.LABEL_FONT},
-                new Object[]{Direction.EAST, BitWidth.ONE,
-                        GateAttributes.OUTPUT_01, "", StdAttr.DEFAULT_LABEL_FONT});
+        setAttributes(new Attribute[] { StdAttr.FACING, StdAttr.WIDTH,
+                    GateAttributes.ATTR_OUTPUT, StdAttr.LABEL, StdAttr.LABEL_FONT },
+                new Object[] { Direction.EAST, BitWidth.ONE,
+                    GateAttributes.OUTPUT_01, "", StdAttr.DEFAULT_LABEL_FONT });
         setIcon(Icons.getIcon("bufferGate.gif"));
         setFacingAttribute(StdAttr.FACING);
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
-        setPorts(new Port[]{
+        setPorts(new Port[] {
                 new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH),
                 new Port(0, -20, Port.INPUT, StdAttr.WIDTH),
         });
@@ -95,7 +95,7 @@ class Buffer extends InstanceFactory {
     public Object getInstanceFeature(final Instance instance, Object key) {
         if (key == ExpressionComputer.class) {
             return new ExpressionComputer() {
-                public void computeExpression(Map<Location, Expression> expressionMap) {
+                public void computeExpression(Map<Location,Expression> expressionMap) {
                     Expression e = expressionMap.get(instance.getPortLocation(1));
                     if (e != null) {
                         expressionMap.put(instance.getPortLocation(0), e);
@@ -139,14 +139,10 @@ class Buffer extends InstanceFactory {
         GraphicsUtil.switchToWidth(g, 2);
         int[] xp = new int[4];
         int[] yp = new int[4];
-        xp[0] = 0;
-        yp[0] = 0;
-        xp[1] = -19;
-        yp[1] = -7;
-        xp[2] = -19;
-        yp[2] = 7;
-        xp[3] = 0;
-        yp[3] = 0;
+        xp[0] = 0;   yp[0] =  0;
+        xp[1] = -19; yp[1] = -7;
+        xp[2] = -19; yp[2] =  7;
+        xp[3] = 0;   yp[3] =  0;
         g.drawPolyline(xp, yp, 4);
 
         if (rotate != 0.0) {

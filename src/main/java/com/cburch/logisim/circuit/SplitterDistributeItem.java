@@ -15,13 +15,13 @@ class SplitterDistributeItem extends JMenuItem implements ActionListener {
     private Project proj;
     private Splitter splitter;
     private int order;
-
+    
     public SplitterDistributeItem(Project proj, Splitter splitter, int order) {
         this.proj = proj;
         this.splitter = splitter;
         this.order = order;
         addActionListener(this);
-
+        
         SplitterAttributes attrs = (SplitterAttributes) splitter.getAttributeSet();
         byte[] actual = attrs.bit_end;
         byte[] desired = SplitterAttributes.computeDistribution(attrs.fanout,
@@ -35,7 +35,7 @@ class SplitterDistributeItem extends JMenuItem implements ActionListener {
         setEnabled(!same);
         setText(toGetter().get());
     }
-
+    
     private StringGetter toGetter() {
         if (order > 0) {
             return Strings.getter("splitterDistributeAscending");
@@ -43,7 +43,7 @@ class SplitterDistributeItem extends JMenuItem implements ActionListener {
             return Strings.getter("splitterDistributeDescending");
         }
     }
-
+    
     public void actionPerformed(ActionEvent e) {
         SplitterAttributes attrs = (SplitterAttributes) splitter.getAttributeSet();
         byte[] actual = attrs.bit_end;

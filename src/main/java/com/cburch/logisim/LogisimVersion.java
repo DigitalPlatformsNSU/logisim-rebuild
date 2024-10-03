@@ -25,8 +25,7 @@ public class LogisimVersion {
             if (parts.length >= 2) minor = Integer.parseInt(parts[1]);
             if (parts.length >= 3) release = Integer.parseInt(parts[2]);
             if (parts.length >= 4) revision = Integer.parseInt(parts[3]);
-        } catch (NumberFormatException e) {
-        }
+        } catch (NumberFormatException e) { }
         return new LogisimVersion(major, minor, release, revision);
     }
 
@@ -57,7 +56,7 @@ public class LogisimVersion {
         if (other instanceof LogisimVersion) {
             LogisimVersion o = (LogisimVersion) other;
             return this.major == o.major && this.minor == o.minor
-                    && this.release == o.release && this.revision == o.revision;
+                && this.release == o.release && this.revision == o.revision;
         } else {
             return false;
         }

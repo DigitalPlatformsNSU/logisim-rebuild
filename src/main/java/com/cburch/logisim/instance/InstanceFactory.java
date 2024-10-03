@@ -51,11 +51,11 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
     private KeyConfigurator keyConfigurator;
     private Class<? extends InstancePoker> pokerClass;
     private Class<? extends InstanceLogger> loggerClass;
-
+    
     public InstanceFactory(String name) {
         this(name, StringUtil.constantGetter(name));
     }
-
+    
     public InstanceFactory(String name, StringGetter displayName) {
         this.name = name;
         this.displayName = displayName;
@@ -69,42 +69,42 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
         this.facingAttribute = null;
         this.shouldSnap = Boolean.TRUE;
     }
-
+    
     @Override
     public String getName() {
         return name;
     }
-
+    
     @Override
     public String getDisplayName() {
         return getDisplayGetter().get();
     }
-
+    
     @Override
     public StringGetter getDisplayGetter() {
         return displayName;
     }
-
+    
     public void setIconName(String value) {
         iconName = value;
         icon = null;
     }
-
+    
     public void setIcon(Icon value) {
         iconName = "";
         icon = value;
     }
-
+    
     @Override
     public final void paintIcon(ComponentDrawContext context,
-                                int x, int y, AttributeSet attrs) {
+            int x, int y, AttributeSet attrs) {
         InstancePainter painter = context.getInstancePainter();
         painter.setFactory(this, attrs);
         Graphics g = painter.getGraphics();
         g.translate(x, y);
         paintIcon(painter);
         g.translate(-x, -y);
-
+        
         if (painter.getFactory() == null) {
             Icon i = icon;
             if (i == null) {
@@ -121,14 +121,14 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
             }
         }
     }
-
+    
     @Override
     public final Component createComponent(Location loc, AttributeSet attrs) {
         InstanceComponent ret = new InstanceComponent(this, loc, attrs);
         configureNewInstance(ret.getInstance());
         return ret;
     }
-
+    
     public void setOffsetBounds(Bounds value) {
         bounds = value;
     }
@@ -142,35 +142,35 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
         }
         return ret;
     }
-
+    
     public boolean contains(Location loc, AttributeSet attrs) {
         Bounds bds = getOffsetBounds(attrs);
         if (bds == null) return false;
         return bds.contains(loc, 1);
     }
 
-
+    
     public Attribute<Direction> getFacingAttribute() {
         return facingAttribute;
     }
-
+    
     public void setFacingAttribute(Attribute<Direction> value) {
         facingAttribute = value;
     }
-
+    
     public KeyConfigurator getKeyConfigurator() {
         return keyConfigurator;
     }
-
+    
     public void setKeyConfigurator(KeyConfigurator value) {
         keyConfigurator = value;
     }
-
+    
     public void setAttributes(Attribute<?>[] attrs, Object[] defaults) {
         this.attrs = attrs;
         this.defaults = defaults;
     }
-
+    
     @Override
     public AttributeSet createAttributeSet() {
         Attribute<?>[] as = attrs;
@@ -198,15 +198,15 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
         }
     }
 
-
+    
     public void setPorts(Port[] ports) {
         portList = new UnmodifiableList<Port>(ports);
     }
-
+    
     public void setPorts(List<Port> ports) {
         portList = Collections.unmodifiableList(ports);
     }
-
+    
     public List<Port> getPorts() {
         return portList;
     }
@@ -214,27 +214,27 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
     public void setDefaultToolTip(StringGetter value) {
         defaultToolTip = value;
     }
-
+    
     public StringGetter getDefaultToolTip() {
         return defaultToolTip;
     }
-
+    
     public void setInstancePoker(Class<? extends InstancePoker> pokerClass) {
         if (isClassOk(pokerClass, InstancePoker.class)) {
             this.pokerClass = pokerClass;
         }
     }
-
+    
     public void setInstanceLogger(Class<? extends InstanceLogger> loggerClass) {
         if (isClassOk(loggerClass, InstanceLogger.class)) {
             this.loggerClass = loggerClass;
         }
     }
-
+    
     public void setShouldSnap(boolean value) {
         shouldSnap = Boolean.valueOf(value);
     }
-
+    
     private boolean isClassOk(Class<?> sub, Class<?> sup) {
         boolean isSub = sup.isAssignableFrom(sub);
         if (!isSub) {
@@ -251,7 +251,7 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
         }
         return true;
     }
-
+    
     @Override
     public final Object getFeature(Object key, AttributeSet attrs) {
         if (key == FACING_ATTRIBUTE_KEY) return facingAttribute;
@@ -259,10 +259,10 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
         if (key == SHOULD_SNAP) return shouldSnap;
         return super.getFeature(key, attrs);
     }
-
+    
     @Override
     public final void drawGhost(ComponentDrawContext context, Color color,
-                                int x, int y, AttributeSet attrs) {
+            int x, int y, AttributeSet attrs) {
         InstancePainter painter = context.getInstancePainter();
         Graphics g = painter.getGraphics();
         g.setColor(color);
@@ -274,26 +274,21 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
             super.drawGhost(context, color, x, y, attrs);
         }
     }
-
+    
     public void paintIcon(InstancePainter painter) {
         painter.setFactory(null, null);
     }
-
+    
     public void paintGhost(InstancePainter painter) {
         painter.setFactory(null, null);
     }
-
+    
     public abstract void paintInstance(InstancePainter painter);
-
     public abstract void propagate(InstanceState state);
-
+    
     // event methods
-    protected void configureNewInstance(Instance instance) {
-    }
-
-    protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) {
-    }
-
+    protected void configureNewInstance(Instance instance) { }
+    protected void instanceAttributeChanged(Instance instance, Attribute<?> attr) { }
     protected Object getInstanceFeature(Instance instance, Object key) {
         if (key == Pokable.class && pokerClass != null) {
             return new InstancePokerAdapter(instance.getComponent(), pokerClass);
@@ -303,11 +298,11 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
             return null;
         }
     }
-
-    public final InstanceState createInstanceState(CircuitState state, Instance instance) {
+    
+    public InstanceState createInstanceState(CircuitState state, Instance instance) {
         return new InstanceStateImpl(state, instance.getComponent());
     }
-
+    
     public final InstanceState createInstanceState(CircuitState state, Component comp) {
         return createInstanceState(state, ((InstanceComponent) comp).getInstance());
     }

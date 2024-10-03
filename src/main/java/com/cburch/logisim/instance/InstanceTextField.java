@@ -45,7 +45,7 @@ public class InstanceTextField implements AttributeListener, TextFieldListener,
     }
 
     void update(Attribute<String> labelAttr, Attribute<Font> fontAttr,
-                int x, int y, int halign, int valign) {
+            int x, int y, int halign, int valign) {
         boolean wasReg = shouldRegister();
         this.labelAttr = labelAttr;
         this.fontAttr = fontAttr;
@@ -103,8 +103,7 @@ public class InstanceTextField implements AttributeListener, TextFieldListener,
         }
     }
 
-    public void attributeListChanged(AttributeEvent e) {
-    }
+    public void attributeListChanged(AttributeEvent e) { }
 
     public void attributeValueChanged(AttributeEvent e) {
         Attribute<?> attr = e.getAttribute();
@@ -124,7 +123,7 @@ public class InstanceTextField implements AttributeListener, TextFieldListener,
     }
 
     public Action getCommitAction(Circuit circuit, String oldText,
-                                  String newText) {
+            String newText) {
         SetAttributeAction act = new SetAttributeAction(circuit,
                 Strings.getter("changeLabelAction"));
         act.set(comp, labelAttr, newText);
@@ -150,6 +149,6 @@ public class InstanceTextField implements AttributeListener, TextFieldListener,
         int x = event.getX();
         int y = event.getY();
         if (bds.contains(x, y)) return field.getCaret(g, x, y);
-        else return null;
+        else                    return null;
     }
 }

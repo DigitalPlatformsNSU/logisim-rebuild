@@ -42,51 +42,51 @@ class OutputSelector {
             String variable;
             Object selection;
             switch (event.getType()) {
-                case VariableListEvent.ALL_REPLACED:
+            case VariableListEvent.ALL_REPLACED:
+                computePrototypeValue();
+                fireContentsChanged(this, 0, getSize());
+                if (source.isEmpty()) {
+                    select.setSelectedItem(null);
+                } else {
+                    select.setSelectedItem(source.get(0));
+                }
+                break;
+            case VariableListEvent.ADD:
+                variable = event.getVariable();
+                if (prototypeValue == null || variable.length() > prototypeValue.length()) {
                     computePrototypeValue();
-                    fireContentsChanged(this, 0, getSize());
-                    if (source.isEmpty()) {
-                        select.setSelectedItem(null);
-                    } else {
-                        select.setSelectedItem(source.get(0));
-                    }
-                    break;
-                case VariableListEvent.ADD:
-                    variable = event.getVariable();
-                    if (prototypeValue == null || variable.length() > prototypeValue.length()) {
-                        computePrototypeValue();
-                    }
+                }
 
-                    index = source.indexOf(variable);
-                    fireIntervalAdded(this, index, index);
-                    if (select.getSelectedItem() == null) {
-                        select.setSelectedItem(variable);
-                    }
-                    break;
-                case VariableListEvent.REMOVE:
-                    variable = event.getVariable();
-                    if (variable.equals(prototypeValue)) computePrototypeValue();
-                    index = ((Integer) event.getData()).intValue();
-                    fireIntervalRemoved(this, index, index);
-                    selection = select.getSelectedItem();
-                    if (selection != null && selection.equals(variable)) {
-                        selection = source.isEmpty() ? null : source.get(0);
-                        select.setSelectedItem(selection);
-                    }
-                    break;
-                case VariableListEvent.MOVE:
-                    fireContentsChanged(this, 0, getSize());
-                    break;
-                case VariableListEvent.REPLACE:
-                    variable = event.getVariable();
-                    if (variable.equals(prototypeValue)) computePrototypeValue();
-                    index = ((Integer) event.getData()).intValue();
-                    fireContentsChanged(this, index, index);
-                    selection = select.getSelectedItem();
-                    if (selection != null && selection.equals(variable)) {
-                        select.setSelectedItem(event.getSource().get(index));
-                    }
-                    break;
+                index = source.indexOf(variable);
+                fireIntervalAdded(this, index, index);
+                if (select.getSelectedItem() == null) {
+                    select.setSelectedItem(variable);
+                }
+                break;
+            case VariableListEvent.REMOVE:
+                variable = event.getVariable();
+                if (variable.equals(prototypeValue)) computePrototypeValue();
+                index = ((Integer) event.getData()).intValue();
+                fireIntervalRemoved(this, index, index);
+                selection = select.getSelectedItem();
+                if (selection != null && selection.equals(variable)) {
+                    selection = source.isEmpty() ? null : source.get(0);
+                    select.setSelectedItem(selection);
+                }
+                break;
+            case VariableListEvent.MOVE:
+                fireContentsChanged(this, 0, getSize());
+                break;
+            case VariableListEvent.REPLACE:
+                variable = event.getVariable();
+                if (variable.equals(prototypeValue)) computePrototypeValue();
+                index = ((Integer) event.getData()).intValue();
+                fireContentsChanged(this, index, index);
+                selection = select.getSelectedItem();
+                if (selection != null && selection.equals(variable)) {
+                    select.setSelectedItem(event.getSource().get(index));
+                }
+                break;
             }
         }
     }

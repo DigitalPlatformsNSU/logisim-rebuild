@@ -36,8 +36,8 @@ class SimulationTreeCircuitNode extends SimulationTreeNode
     private ArrayList<TreeNode> children;
 
     public SimulationTreeCircuitNode(SimulationTreeModel model,
-                                     SimulationTreeCircuitNode parent, CircuitState circuitState,
-                                     Component subcircComp) {
+            SimulationTreeCircuitNode parent, CircuitState circuitState,
+            Component subcircComp) {
         this.model = model;
         this.parent = parent;
         this.circuitState = circuitState;
@@ -150,10 +150,7 @@ class SimulationTreeCircuitNode extends SimulationTreeNode
             for (TreeNode o : children) {
                 if (o instanceof SimulationTreeCircuitNode) {
                     SimulationTreeCircuitNode n = (SimulationTreeCircuitNode) o;
-                    if (n.circuitState == state) {
-                        toAdd = n;
-                        break;
-                    }
+                    if (n.circuitState == state) { toAdd = n; break; }
                 }
             }
             if (toAdd == null) {
@@ -182,8 +179,7 @@ class SimulationTreeCircuitNode extends SimulationTreeNode
 
     //
     // AttributeListener methods
-    public void attributeListChanged(AttributeEvent e) {
-    }
+    public void attributeListChanged(AttributeEvent e) { }
 
     public void attributeValueChanged(AttributeEvent e) {
         Object attr = e.getAttribute();

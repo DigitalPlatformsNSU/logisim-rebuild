@@ -17,8 +17,7 @@ import com.cburch.draw.model.CanvasModel;
 import com.cburch.draw.model.CanvasObject;
 
 public class ZOrder {
-    private ZOrder() {
-    }
+    private ZOrder() { }
 
     public static int getZIndex(CanvasObject query, CanvasModel model) {
         // returns 0 for bottommost element, large number for topmost
@@ -78,19 +77,19 @@ public class ZOrder {
 
     // returns first object above query in the z-order that overlaps query
     public static CanvasObject getObjectAbove(CanvasObject query,
-                                              CanvasModel model, Collection<? extends CanvasObject> ignore) {
+            CanvasModel model, Collection<? extends CanvasObject> ignore) {
         return getPrevious(query, model.getObjectsFromTop(), model, ignore);
     }
 
     // returns first object below query in the z-order that overlaps query
     public static CanvasObject getObjectBelow(CanvasObject query,
-                                              CanvasModel model, Collection<? extends CanvasObject> ignore) {
+            CanvasModel model, Collection<? extends CanvasObject> ignore) {
         return getPrevious(query, model.getObjectsFromBottom(), model, ignore);
     }
 
     private static CanvasObject getPrevious(CanvasObject query,
-                                            List<CanvasObject> objs, CanvasModel model,
-                                            Collection<? extends CanvasObject> ignore) {
+            List<CanvasObject> objs, CanvasModel model,
+            Collection<? extends CanvasObject> ignore) {
         int index = getIndex(query, objs);
         if (index <= 0) {
             return null;

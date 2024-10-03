@@ -19,8 +19,8 @@ public class MoveResult {
     private int totalDistance;
 
     public MoveResult(MoveRequest request, ReplacementMap replacements,
-                      Collection<ConnectionData> unsatisfiedConnections,
-                      int totalDistance) {
+            Collection<ConnectionData> unsatisfiedConnections,
+            int totalDistance) {
         this.replacements = replacements;
         this.unsatisfiedConnections = unsatisfiedConnections;
         this.totalDistance = totalDistance;

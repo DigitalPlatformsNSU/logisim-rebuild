@@ -24,20 +24,20 @@ import com.cburch.logisim.util.StringUtil;
 public class Register extends InstanceFactory {
     private static final int DELAY = 8;
     private static final int OUT = 0;
-    private static final int IN = 1;
-    private static final int CK = 2;
+    private static final int IN  = 1;
+    private static final int CK  = 2;
     private static final int CLR = 3;
-    private static final int EN = 4;
+    private static final int EN  = 4;
 
     public Register() {
         super("Register", Strings.getter("registerComponent"));
-        setAttributes(new Attribute[]{
+        setAttributes(new Attribute[] {
                 StdAttr.WIDTH, StdAttr.TRIGGER,
                 StdAttr.LABEL, StdAttr.LABEL_FONT
-        }, new Object[]{
+            }, new Object[] {
                 BitWidth.create(8), StdAttr.TRIG_RISING,
                 "", StdAttr.DEFAULT_LABEL_FONT
-        });
+            });
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
         setOffsetBounds(Bounds.create(-30, -20, 30, 40));
         setIconName("register.gif");
@@ -45,11 +45,11 @@ public class Register extends InstanceFactory {
         setInstanceLogger(RegisterLogger.class);
 
         Port[] ps = new Port[5];
-        ps[OUT] = new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH);
-        ps[IN] = new Port(-30, 0, Port.INPUT, StdAttr.WIDTH);
-        ps[CK] = new Port(-20, 20, Port.INPUT, 1);
+        ps[OUT] = new Port(  0,  0, Port.OUTPUT, StdAttr.WIDTH);
+        ps[IN]  = new Port(-30,  0, Port.INPUT, StdAttr.WIDTH);
+        ps[CK]  = new Port(-20, 20, Port.INPUT, 1);
         ps[CLR] = new Port(-10, 20, Port.INPUT, 1);
-        ps[EN] = new Port(-30, 10, Port.INPUT, 1);
+        ps[EN]  = new Port(-30, 10, Port.INPUT, 1);
         ps[OUT].setToolTip(Strings.getter("registerQTip"));
         ps[IN].setToolTip(Strings.getter("registerDTip"));
         ps[CK].setToolTip(Strings.getter("registerClkTip"));
@@ -120,7 +120,7 @@ public class Register extends InstanceFactory {
 
         // draw input and output ports
         if (b == null) {
-            painter.drawPort(IN, "D", Direction.EAST);
+            painter.drawPort(IN,  "D", Direction.EAST);
             painter.drawPort(OUT, "Q", Direction.WEST);
         } else {
             painter.drawPort(IN);

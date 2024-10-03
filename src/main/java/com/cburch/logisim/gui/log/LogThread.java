@@ -31,7 +31,7 @@ class LogThread extends Thread implements ModelListener {
     @Override
     public void run() {
         while (!canceled) {
-            synchronized (lock) {
+            synchronized(lock) {
                 if (writer != null) {
                     if (System.currentTimeMillis() - lastWrite > IDLE_UNTIL_CLOSE) {
                         writer.close();
@@ -43,10 +43,9 @@ class LogThread extends Thread implements ModelListener {
             }
             try {
                 Thread.sleep(FLUSH_FREQUENCY);
-            } catch (InterruptedException e) {
-            }
+            } catch (InterruptedException e) { }
         }
-        synchronized (lock) {
+        synchronized(lock) {
             if (writer != null) {
                 writer.close();
                 writer = null;
@@ -55,7 +54,7 @@ class LogThread extends Thread implements ModelListener {
     }
 
     public void cancel() {
-        synchronized (lock) {
+        synchronized(lock) {
             canceled = true;
             if (writer != null) {
                 writer.close();
@@ -69,13 +68,13 @@ class LogThread extends Thread implements ModelListener {
     }
 
     public void entryAdded(ModelEvent event, Value[] values) {
-        synchronized (lock) {
+        synchronized(lock) {
             if (isFileEnabled()) addEntry(values);
         }
     }
 
     public void filePropertyChanged(ModelEvent event) {
-        synchronized (lock) {
+        synchronized(lock) {
             if (isFileEnabled()) {
                 if (writer == null) {
                     Selection sel = model.getSelection();
@@ -98,7 +97,7 @@ class LogThread extends Thread implements ModelListener {
 
     private boolean isFileEnabled() {
         return !canceled && model.isSelected() && model.isFileEnabled()
-                && model.getFile() != null;
+            && model.getFile() != null;
     }
 
     // Should hold lock and have verified that isFileEnabled() before

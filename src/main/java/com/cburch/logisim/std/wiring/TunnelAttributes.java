@@ -17,9 +17,9 @@ import com.cburch.logisim.instance.StdAttr;
 
 class TunnelAttributes extends AbstractAttributeSet {
     private static final List<Attribute<?>> ATTRIBUTES
-            = Arrays.asList(new Attribute<?>[]{
+        = Arrays.asList(new Attribute<?>[] {
             StdAttr.FACING, StdAttr.WIDTH, StdAttr.LABEL, StdAttr.LABEL_FONT
-    });
+        });
 
     private Direction facing;
     private BitWidth width;
@@ -56,21 +56,10 @@ class TunnelAttributes extends AbstractAttributeSet {
         return offsetBounds;
     }
 
-    int getLabelX() {
-        return labelX;
-    }
-
-    int getLabelY() {
-        return labelY;
-    }
-
-    int getLabelHAlign() {
-        return labelHAlign;
-    }
-
-    int getLabelVAlign() {
-        return labelVAlign;
-    }
+    int getLabelX() { return labelX; }
+    int getLabelY() { return labelY; }
+    int getLabelHAlign() { return labelHAlign; }
+    int getLabelVAlign() { return labelVAlign; }
 
     boolean setOffsetBounds(Bounds value) {
         Bounds old = offsetBounds;

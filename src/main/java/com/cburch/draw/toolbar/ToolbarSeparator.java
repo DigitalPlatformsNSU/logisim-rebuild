@@ -10,15 +10,15 @@ import java.awt.Graphics;
 
 public class ToolbarSeparator implements ToolbarItem {
     private int size;
-
+    
     public ToolbarSeparator(int size) {
         this.size = size;
     }
-
+    
     public boolean isSelectable() {
         return false;
     }
-
+    
     public void paintIcon(Component destination, Graphics g) {
         Dimension dim = destination.getSize();
         g.setColor(Color.GRAY);
@@ -39,11 +39,11 @@ public class ToolbarSeparator implements ToolbarItem {
         }
         g.fillRect(x, y, w, h);
     }
-
+    
     public String getToolTip() {
         return null;
     }
-
+    
     public Dimension getDimension(Object orientation) {
         return new Dimension(size, size);
     }

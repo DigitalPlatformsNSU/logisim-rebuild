@@ -10,12 +10,8 @@ interface MenuItem {
     boolean hasListeners();
 
     public void addActionListener(ActionListener l);
-
     public void removeActionListener(ActionListener l);
-
     public boolean isEnabled();
-
     public void setEnabled(boolean value);
-
     public void actionPerformed(ActionEvent event);
 }

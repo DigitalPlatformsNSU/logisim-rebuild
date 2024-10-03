@@ -18,8 +18,8 @@ public class ModelChangeAttributeAction extends ModelAction {
     private Attribute<?> attr;
 
     public ModelChangeAttributeAction(CanvasModel model,
-                                      Map<AttributeMapKey, Object> oldValues,
-                                      Map<AttributeMapKey, Object> newValues) {
+            Map<AttributeMapKey, Object> oldValues,
+            Map<AttributeMapKey, Object> newValues) {
         super(model);
         this.oldValues = oldValues;
         this.newValues = newValues;
@@ -42,10 +42,7 @@ public class ModelChangeAttributeAction extends ModelAction {
             for (AttributeMapKey key : newValues.keySet()) {
                 Attribute<?> at = key.getAttribute();
                 if (found) {
-                    if (a == null ? at != null : !a.equals(at)) {
-                        a = null;
-                        break;
-                    }
+                    if (a == null ? at != null : !a.equals(at)) { a = null; break; }
                 } else {
                     found = true;
                     a = at;

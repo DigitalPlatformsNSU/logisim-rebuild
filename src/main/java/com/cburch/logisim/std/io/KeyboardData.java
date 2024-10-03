@@ -58,7 +58,7 @@ class KeyboardData implements InstanceData, Cloneable {
     }
 
     public void updateBufferLength(int len) {
-        synchronized (this) {
+        synchronized(this) {
             char[] buf = buffer;
             int oldLen = buf.length;
             if (oldLen != len) {
@@ -194,24 +194,12 @@ class KeyboardData implements InstanceData, Cloneable {
 
             // rearrange start/end so as to include cursor
             if (pos <= i0) {
-                if (pos < i0) {
-                    i1 += pos - i0;
-                    i0 = pos;
-                }
-                if (pos == i0 && i0 > 0) {
-                    i0--;
-                    i1--;
-                }
+                if (pos < i0) { i1 += pos - i0; i0 = pos; }
+                if (pos == i0 && i0 > 0) { i0--; i1--; }
             }
             if (pos >= i1) {
-                if (pos > i1) {
-                    i0 += pos - i1;
-                    i1 = pos;
-                }
-                if (pos == i1 && i1 < len) {
-                    i0++;
-                    i1++;
-                }
+                if (pos > i1) { i0 += pos - i1; i1 = pos; }
+                if (pos == i1 && i1 < len) { i0++; i1++; }
             }
             if (i0 <= 2) i0 = 0;
 
@@ -237,7 +225,7 @@ class KeyboardData implements InstanceData, Cloneable {
     }
 
     private boolean fits(FontMetrics fm, String str, int w0, int w1,
-                         int i0, int i1, int max) {
+            int i0, int i1, int max) {
         if (i0 >= i1) return true;
         int len = str.length();
         if (i0 < 0 || i1 > len) return false;

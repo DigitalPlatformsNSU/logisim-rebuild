@@ -4,8 +4,7 @@
 package com.cburch.logisim.util;
 
 public class StringUtil {
-    private StringUtil() {
-    }
+    private StringUtil() { }
 
     public static String capitalize(String a) {
         return Character.toTitleCase(a.charAt(0)) + a.substring(1);
@@ -20,7 +19,7 @@ public class StringUtil {
     }
 
     public static String format(String fmt, String a1, String a2,
-                                String a3) {
+            String a3) {
         StringBuilder ret = new StringBuilder();
         if (a1 == null) a1 = "(null)";
         if (a2 == null) a2 = "(null)";
@@ -34,40 +33,22 @@ public class StringUtil {
             if (c == 's') {
                 pos = next + 2;
                 switch (arg) {
-                    case 0:
-                        ret.append(a1);
-                        break;
-                    case 1:
-                        ret.append(a2);
-                        break;
-                    default:
-                        ret.append(a3);
+                case 0:     ret.append(a1); break;
+                case 1:     ret.append(a2); break;
+                default:    ret.append(a3);
                 }
                 ++arg;
             } else if (c == '$') {
                 switch (fmt.charAt(next + 2)) {
-                    case '1':
-                        ret.append(a1);
-                        pos = next + 3;
-                        break;
-                    case '2':
-                        ret.append(a2);
-                        pos = next + 3;
-                        break;
-                    case '3':
-                        ret.append(a3);
-                        pos = next + 3;
-                        break;
-                    default:
-                        ret.append("%$");
-                        pos = next + 2;
+                case '1':   ret.append(a1); pos = next + 3; break;
+                case '2':   ret.append(a2); pos = next + 3; break;
+                case '3':   ret.append(a3); pos = next + 3; break;
+                default:    ret.append("%$"); pos = next + 2;
                 }
             } else if (c == '%') {
-                ret.append('%');
-                pos = next + 2;
+                ret.append('%'); pos = next + 2;
             } else {
-                ret.append('%');
-                pos = next + 1;
+                ret.append('%'); pos = next + 1;
             }
             next = fmt.indexOf('%', pos);
         }

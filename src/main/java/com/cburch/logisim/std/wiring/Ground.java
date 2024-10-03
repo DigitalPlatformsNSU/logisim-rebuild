@@ -31,11 +31,11 @@ public class Ground extends InstanceFactory {
     public Ground() {
         super("Ground", Strings.getter("groundComponent"));
         setIconName("ground.gif");
-        setAttributes(new Attribute[]{StdAttr.FACING, StdAttr.WIDTH},
-                new Object[]{Direction.SOUTH, BitWidth.ONE});
+        setAttributes(new Attribute[] { StdAttr.FACING, StdAttr.WIDTH },
+                new Object[] { Direction.SOUTH, BitWidth.ONE });
         setFacingAttribute(StdAttr.FACING);
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
-        setPorts(new Port[]{new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH)});
+        setPorts(new Port[] { new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH) });
     }
 
     @Override
@@ -53,7 +53,7 @@ public class Ground extends InstanceFactory {
     @Override
     public Bounds getOffsetBounds(AttributeSet attrs) {
         return Bounds.create(0, -8, 14, 16)
-                .rotate(Direction.EAST, attrs.getValue(StdAttr.FACING), 0, 0);
+            .rotate(Direction.EAST, attrs.getValue(StdAttr.FACING), 0, 0);
     }
 
     @Override

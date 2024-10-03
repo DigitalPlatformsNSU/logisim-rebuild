@@ -38,16 +38,16 @@ public class Counter extends InstanceFactory {
             Strings.getter("counterMaxAttr"));
     static final Attribute<AttributeOption> ATTR_ON_GOAL = Attributes.forOption("ongoal",
             Strings.getter("counterGoalAttr"),
-            new AttributeOption[]{ON_GOAL_WRAP, ON_GOAL_STAY, ON_GOAL_CONT,
-                    ON_GOAL_LOAD});
+            new AttributeOption[] { ON_GOAL_WRAP, ON_GOAL_STAY, ON_GOAL_CONT,
+                ON_GOAL_LOAD });
 
     private static final int DELAY = 8;
     private static final int OUT = 0;
-    private static final int IN = 1;
-    private static final int CK = 2;
+    private static final int IN  = 1;
+    private static final int CK  = 2;
     private static final int CLR = 3;
-    private static final int LD = 4;
-    private static final int CT = 5;
+    private static final int LD  = 4;
+    private static final int CT  = 5;
     private static final int CARRY = 6;
 
     public Counter() {
@@ -59,13 +59,13 @@ public class Counter extends InstanceFactory {
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
 
         Port[] ps = new Port[7];
-        ps[OUT] = new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH);
-        ps[IN] = new Port(-30, 0, Port.INPUT, StdAttr.WIDTH);
-        ps[CK] = new Port(-20, 20, Port.INPUT, 1);
-        ps[CLR] = new Port(-10, 20, Port.INPUT, 1);
-        ps[LD] = new Port(-30, -10, Port.INPUT, 1);
-        ps[CT] = new Port(-30, 10, Port.INPUT, 1);
-        ps[CARRY] = new Port(0, 10, Port.OUTPUT, 1);
+        ps[OUT] = new Port(  0,   0, Port.OUTPUT, StdAttr.WIDTH);
+        ps[IN]  = new Port(-30,   0, Port.INPUT, StdAttr.WIDTH);
+        ps[CK]  = new Port(-20,  20, Port.INPUT, 1);
+        ps[CLR] = new Port(-10,  20, Port.INPUT, 1);
+        ps[LD]  = new Port(-30, -10, Port.INPUT, 1);
+        ps[CT]  = new Port(-30,  10, Port.INPUT, 1);
+        ps[CARRY] = new Port(0,  10, Port.OUTPUT, 1);
         ps[OUT].setToolTip(Strings.getter("counterQTip"));
         ps[IN].setToolTip(Strings.getter("counterDataTip"));
         ps[CK].setToolTip(Strings.getter("counterClockTip"));
@@ -146,17 +146,17 @@ public class Counter extends InstanceFactory {
             newValue = Value.createKnown(dataWidth, newVal);
             newVal = newValue.toIntValue();
             carry = newVal == (ld && ct ? 0 : max);
-			/* I would want this if I were worried about the carry signal
-			 * outrunning the clock. But the component's delay should be
-			 * enough to take care of it.
-			if (carry) {
-				if (triggerType == StdAttr.TRIG_FALLING) {
-					carry = clock == Value.TRUE;
-				} else {
-					carry = clock == Value.FALSE;
-				}
-			}
-			*/
+            /* I would want this if I were worried about the carry signal
+             * outrunning the clock. But the component's delay should be
+             * enough to take care of it.
+            if (carry) {
+                if (triggerType == StdAttr.TRIG_FALLING) {
+                    carry = clock == Value.TRUE;
+                } else {
+                    carry = clock == Value.FALSE;
+                }
+            }
+            */
         }
 
         data.value = newValue.toIntValue();
@@ -196,7 +196,7 @@ public class Counter extends InstanceFactory {
 
         // draw input and output ports
         if (b == null) {
-            painter.drawPort(IN, "D", Direction.EAST);
+            painter.drawPort(IN,  "D", Direction.EAST);
             painter.drawPort(OUT, "Q", Direction.WEST);
         } else {
             painter.drawPort(IN);

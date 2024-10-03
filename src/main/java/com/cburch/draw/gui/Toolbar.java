@@ -30,14 +30,11 @@ class Toolbar extends JComponent {
         private int toolX;
         private int toolY;
 
-        public void mouseClicked(MouseEvent e) {
-        }
+        public void mouseClicked(MouseEvent e) { }
 
-        public void mouseEntered(MouseEvent e) {
-        }
+        public void mouseEntered(MouseEvent e) { }
 
-        public void mouseExited(MouseEvent e) {
-        }
+        public void mouseExited(MouseEvent e) { }
 
         public void mousePressed(MouseEvent e) {
             int mx = e.getX();
@@ -80,16 +77,15 @@ class Toolbar extends JComponent {
 
             boolean was = inTool;
             boolean now = toolPressed != null
-                    && mx >= x0 && mx < x0 + ICON_WIDTH
-                    && my >= y0 && my < y0 + ICON_HEIGHT;
+                && mx >= x0 && mx < x0 + ICON_WIDTH
+                && my >= y0 && my < y0 + ICON_HEIGHT;
             if (was != now) {
                 inTool = now;
                 repaint();
             }
         }
 
-        public void mouseMoved(MouseEvent e) {
-        }
+        public void mouseMoved(MouseEvent e) { }
 
     }
 
@@ -100,14 +96,14 @@ class Toolbar extends JComponent {
 
     public Toolbar(Canvas canvas, DrawingAttributeSet attrs) {
         this.canvas = canvas;
-        this.tools = new AbstractTool[][]{AbstractTool.getTools(attrs)};
+        this.tools = new AbstractTool[][] { AbstractTool.getTools(attrs) };
         this.listener = new Listener();
 
         AbstractTool[] toolBase = AbstractTool.getTools(attrs);
         this.tools = new AbstractTool[2][];
         this.tools[0] = new AbstractTool[(toolBase.length + 1) / 2];
         this.tools[1] = new AbstractTool[toolBase.length / 2];
-        for (int i = 0; i < toolBase.length; i++) {
+        for(int i = 0; i < toolBase.length; i++) {
             this.tools[i % 2][i / 2] = toolBase[i];
         }
 
@@ -125,11 +121,11 @@ class Toolbar extends JComponent {
     public void paintComponent(Graphics g) {
         g.clearRect(0, 0, getWidth(), getHeight());
         CanvasTool current = canvas.getTool();
-        for (int i = 0; i < tools.length; i++) {
+        for(int i = 0; i < tools.length; i++) {
             AbstractTool[] column = tools[i];
             int x = ICON_SEP + i * (ICON_SEP + ICON_WIDTH);
             int y = ICON_SEP;
-            for (int j = 0; j < column.length; j++) {
+            for(int j = 0; j < column.length; j++) {
                 AbstractTool tool = column[j];
                 if (tool == listener.toolPressed && listener.inTool) {
                     g.setColor(Color.darkGray);

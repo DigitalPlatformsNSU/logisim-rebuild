@@ -9,42 +9,27 @@ import com.cburch.logisim.analyze.model.Expression;
 import com.cburch.logisim.analyze.model.ExpressionVisitor;
 import com.cburch.logisim.comp.ComponentFactory;
 
-/**
- * This represents the actual gate selection used corresponding
+/** This represents the actual gate selection used corresponding
  * to an expression, without any correspondence to how they would
  * be laid down in a circuit. This intermediate representation permits
- * easy manipulation of an expression's translation.
- */
+ * easy manipulation of an expression's translation. */
 abstract class CircuitDetermination {
-    /**
-     * Ensures that all gates have only two inputs.
-     */
-    void convertToTwoInputs() {
-    }
+    /** Ensures that all gates have only two inputs. */
+    void convertToTwoInputs() { }
 
-    /**
-     * Converts all gates to NANDs. Note that this will fail with an
-     * exception if any XOR/XNOR gates are used.
-     */
-    void convertToNands() {
-    }
+    /** Converts all gates to NANDs. Note that this will fail with an
+     * exception if any XOR/XNOR gates are used. */
+    void convertToNands() { }
 
-    /**
-     * Repairs two errors that may have cropped up in creating the
+    /** Repairs two errors that may have cropped up in creating the
      * circuit. First, if there are gates with more inputs than their
      * capacity, we repair them. Second, any XOR/XNOR gates with
-     * more than 2 inputs should really be Odd/Even Parity gates.
-     */
-    void repair() {
-    }
+     * more than 2 inputs should really be Odd/Even Parity gates. */
+    void repair() { }
 
-    /**
-     * A utility method for determining whether this fits the
-     * pattern of a NAND representing a NOT.
-     */
-    boolean isNandNot() {
-        return false;
-    }
+    /** A utility method for determining whether this fits the
+     * pattern of a NAND representing a NOT. */
+    boolean isNandNot() { return false; }
 
     //
     // static members
@@ -52,19 +37,12 @@ abstract class CircuitDetermination {
     static class Gate extends CircuitDetermination {
         private ComponentFactory factory;
         private ArrayList<CircuitDetermination> inputs
-                = new ArrayList<CircuitDetermination>();
+            = new ArrayList<CircuitDetermination>();
 
-        private Gate(ComponentFactory factory) {
-            this.factory = factory;
-        }
+        private Gate(ComponentFactory factory) { this.factory = factory; }
 
-        ComponentFactory getFactory() {
-            return factory;
-        }
-
-        ArrayList<CircuitDetermination> getInputs() {
-            return inputs;
-        }
+        ComponentFactory getFactory() { return factory; }
+        ArrayList<CircuitDetermination> getInputs() { return inputs; }
 
         @Override
         void convertToTwoInputs() {
@@ -88,7 +66,7 @@ abstract class CircuitDetermination {
         }
 
         private CircuitDetermination convertToTwoInputsSub(int start, int stop,
-                                                           ComponentFactory subFactory) {
+                ComponentFactory subFactory) {
             if (stop - start == 1) {
                 CircuitDetermination a = inputs.get(start);
                 a.convertToTwoInputs();
@@ -154,7 +132,7 @@ abstract class CircuitDetermination {
         @Override
         boolean isNandNot() {
             return factory == NandGate.FACTORY
-                    && inputs.size() == 2 && inputs.get(0) == inputs.get(1);
+                && inputs.size() == 2 && inputs.get(0) == inputs.get(1);
         }
 
         @Override
@@ -203,25 +181,17 @@ abstract class CircuitDetermination {
     static class Input extends CircuitDetermination {
         private String name;
 
-        private Input(String name) {
-            this.name = name;
-        }
+        private Input(String name) { this.name = name; }
 
-        String getName() {
-            return name;
-        }
+        String getName() { return name; }
     }
 
     static class Value extends CircuitDetermination {
         private int value;
 
-        private Value(int value) {
-            this.value = value;
-        }
+        private Value(int value) { this.value = value; }
 
-        int getValue() {
-            return value;
-        }
+        int getValue() { return value; }
     }
 
     static CircuitDetermination create(Expression expr) {
@@ -244,7 +214,7 @@ abstract class CircuitDetermination {
         }
 
         private Gate binary(CircuitDetermination aret,
-                            CircuitDetermination bret, ComponentFactory factory) {
+                CircuitDetermination bret, ComponentFactory factory) {
             if (aret instanceof Gate) {
                 Gate a = (Gate) aret;
                 if (a.factory == factory) {

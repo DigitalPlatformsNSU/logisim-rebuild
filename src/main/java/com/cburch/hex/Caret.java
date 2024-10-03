@@ -32,8 +32,7 @@ public class Caret {
 
     private class Listener implements MouseListener, MouseMotionListener,
             KeyListener, FocusListener {
-        public void mouseClicked(MouseEvent e) {
-        }
+        public void mouseClicked(MouseEvent e) { }
 
         public void mousePressed(MouseEvent e) {
             Measures measures = hex.getMeasures();
@@ -46,11 +45,9 @@ public class Caret {
             mouseDragged(e);
         }
 
-        public void mouseEntered(MouseEvent e) {
-        }
+        public void mouseEntered(MouseEvent e) { }
 
-        public void mouseExited(MouseEvent e) {
-        }
+        public void mouseExited(MouseEvent e) { }
 
         public void mouseDragged(MouseEvent e) {
             Measures measures = hex.getMeasures();
@@ -61,8 +58,7 @@ public class Caret {
             // component
         }
 
-        public void mouseMoved(MouseEvent e) {
-        }
+        public void mouseMoved(MouseEvent e) { }
 
         public void keyTyped(KeyEvent e) {
             int mask = e.getModifiers();
@@ -71,28 +67,27 @@ public class Caret {
             char c = e.getKeyChar();
             int cols = hex.getMeasures().getColumnCount();
             switch (c) {
-                case ' ':
-                    if (cursor >= 0) setDot(cursor + 1, (mask & InputEvent.SHIFT_MASK) != 0);
-                    break;
-                case '\n':
-                    if (cursor >= 0) setDot(cursor + cols, (mask & InputEvent.SHIFT_MASK) != 0);
-                    break;
-                case '\u0008':
-                case '\u007f':
-                    hex.delete();
-                    // setDot(cursor - 1, (mask & InputEvent.SHIFT_MASK) != 0);
-                    break;
-                default:
-                    int digit = Character.digit(e.getKeyChar(), 16);
-                    if (digit >= 0) {
-                        HexModel model = hex.getModel();
-                        if (model != null && cursor >= model.getFirstOffset()
-                                && cursor <= model.getLastOffset()) {
-                            int curValue = model.get(cursor);
-                            int newValue = 16 * curValue + digit;
-                            model.set(cursor, newValue);
-                        }
+            case ' ':
+                if (cursor >= 0) setDot(cursor + 1, (mask & InputEvent.SHIFT_MASK) != 0);
+                break;
+            case '\n':
+                if (cursor >= 0) setDot(cursor + cols, (mask & InputEvent.SHIFT_MASK) != 0);
+                break;
+            case '\u0008': case '\u007f':
+                hex.delete();
+                // setDot(cursor - 1, (mask & InputEvent.SHIFT_MASK) != 0);
+                break;
+            default:
+                int digit = Character.digit(e.getKeyChar(), 16);
+                if (digit >= 0) {
+                    HexModel model = hex.getModel();
+                    if (model != null && cursor >= model.getFirstOffset()
+                            && cursor <= model.getLastOffset()) {
+                        int curValue = model.get(cursor);
+                        int newValue = 16 * curValue + digit;
+                        model.set(cursor, newValue);
                     }
+                }
             }
         }
 
@@ -101,67 +96,61 @@ public class Caret {
             int rows;
             boolean shift = (e.getModifiers() & InputEvent.SHIFT_MASK) != 0;
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    if (cursor >= cols) setDot(cursor - cols, shift);
-                    break;
-                case KeyEvent.VK_LEFT:
-                    if (cursor >= 1) setDot(cursor - 1, shift);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    if (cursor >= hex.getModel().getFirstOffset() && cursor <= hex.getModel().getLastOffset() - cols) {
-                        setDot(cursor + cols, shift);
+            case KeyEvent.VK_UP:    if (cursor >= cols) setDot(cursor - cols, shift); break;
+            case KeyEvent.VK_LEFT:  if (cursor >= 1) setDot(cursor - 1, shift); break;
+            case KeyEvent.VK_DOWN:
+                if (cursor >= hex.getModel().getFirstOffset() && cursor <= hex.getModel().getLastOffset() - cols) {
+                    setDot(cursor + cols, shift);
+                }
+                break;
+            case KeyEvent.VK_RIGHT:
+                if (cursor >= hex.getModel().getFirstOffset() && cursor <= hex.getModel().getLastOffset() - 1) {
+                    setDot(cursor + 1, shift);
+                }
+                break;
+            case KeyEvent.VK_HOME:
+                if (cursor >= 0) {
+                    int dist = (int) (cursor % cols);
+                    if (dist == 0) setDot(0, shift);
+                    else setDot(cursor - dist, shift); break;
+                }
+            case KeyEvent.VK_END:
+                if (cursor >= 0) {
+                    HexModel model = hex.getModel();
+                    long dest = (cursor / cols * cols) + cols - 1;
+                    if (model != null) {
+                        long end = model.getLastOffset();
+                        if (dest > end || dest == cursor) dest = end;
+                        setDot(dest, shift);
+                    } else {
+                        setDot(dest, shift);
                     }
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    if (cursor >= hex.getModel().getFirstOffset() && cursor <= hex.getModel().getLastOffset() - 1) {
-                        setDot(cursor + 1, shift);
+                }
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                rows = hex.getVisibleRect().height / hex.getMeasures().getCellHeight();
+                if (rows > 2) rows--;
+                if (cursor >= 0) {
+                    long max = hex.getModel().getLastOffset();
+                    if (cursor + rows * cols <= max) {
+                        setDot(cursor + rows * cols, shift);
+                    } else {
+                        long n = cursor;
+                        while (n + cols < max) n += cols;
+                        setDot(n, shift);
                     }
-                    break;
-                case KeyEvent.VK_HOME:
-                    if (cursor >= 0) {
-                        int dist = (int) (cursor % cols);
-                        if (dist == 0) setDot(0, shift);
-                        else setDot(cursor - dist, shift);
-                        break;
-                    }
-                case KeyEvent.VK_END:
-                    if (cursor >= 0) {
-                        HexModel model = hex.getModel();
-                        long dest = (cursor / cols * cols) + cols - 1;
-                        if (model != null) {
-                            long end = model.getLastOffset();
-                            if (dest > end || dest == cursor) dest = end;
-                            setDot(dest, shift);
-                        } else {
-                            setDot(dest, shift);
-                        }
-                    }
-                    break;
-                case KeyEvent.VK_PAGE_DOWN:
-                    rows = hex.getVisibleRect().height / hex.getMeasures().getCellHeight();
-                    if (rows > 2) rows--;
-                    if (cursor >= 0) {
-                        long max = hex.getModel().getLastOffset();
-                        if (cursor + rows * cols <= max) {
-                            setDot(cursor + rows * cols, shift);
-                        } else {
-                            long n = cursor;
-                            while (n + cols < max) n += cols;
-                            setDot(n, shift);
-                        }
-                    }
-                    break;
-                case KeyEvent.VK_PAGE_UP:
-                    rows = hex.getVisibleRect().height / hex.getMeasures().getCellHeight();
-                    if (rows > 2) rows--;
-                    if (cursor >= rows * cols) setDot(cursor - rows * cols, shift);
-                    else if (cursor >= cols) setDot(cursor % cols, shift);
-                    break;
+                }
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                rows = hex.getVisibleRect().height / hex.getMeasures().getCellHeight();
+                if (rows > 2) rows--;
+                if (cursor >= rows * cols) setDot(cursor - rows * cols, shift);
+                else if (cursor >= cols) setDot(cursor % cols, shift);
+                break;
             }
         }
 
-        public void keyReleased(KeyEvent e) {
-        }
+        public void keyReleased(KeyEvent e) { }
 
         public void focusGained(FocusEvent e) {
             expose(cursor, false);
@@ -194,8 +183,7 @@ public class Caret {
         InputMap imap = hex.getInputMap();
         ActionMap amap = hex.getActionMap();
         AbstractAction nullAction = new AbstractAction() {
-            public void actionPerformed(ActionEvent e) {
-            }
+            public void actionPerformed(ActionEvent e) { }
         };
         String nullKey = "null";
         amap.put(nullKey, nullAction);

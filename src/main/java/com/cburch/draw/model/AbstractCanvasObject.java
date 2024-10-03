@@ -37,21 +37,14 @@ public abstract class AbstractCanvasObject
     }
 
     public abstract String getDisplayName();
-
     public abstract Element toSvgElement(Document doc);
-
     public abstract boolean matches(CanvasObject other);
-
     public abstract int matchesHashCode();
 
     public abstract Bounds getBounds();
-
     public abstract boolean contains(Location loc, boolean assumeFilled);
-
     public abstract void translate(int dx, int dy);
-
     public abstract List<Handle> getHandles(HandleGesture gesture);
-
     protected abstract void updateValue(Attribute<?> attr, Object value);
 
     public abstract void paint(Graphics g, HandleGesture gesture);
@@ -126,7 +119,6 @@ public abstract class AbstractCanvasObject
 
     // methods required by AttributeSet interface
     public abstract List<Attribute<?>> getAttributes();
-
     public abstract <V> V getValue(Attribute<V> attr);
 
     public void addAttributeListener(AttributeListener l) {

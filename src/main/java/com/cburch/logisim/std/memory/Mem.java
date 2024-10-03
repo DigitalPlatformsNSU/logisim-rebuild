@@ -45,7 +45,7 @@ abstract class Mem extends InstanceFactory {
             "addrWidth", Strings.getter("ramAddrWidthAttr"), 2, 24);
     public static final Attribute<BitWidth> DATA_ATTR = Attributes.forBitWidth(
             "dataWidth", Strings.getter("ramDataWidthAttr"));
-
+    
     // port-related constants
     static final int DATA = 0;
     static final int ADDR = 1;
@@ -55,11 +55,11 @@ abstract class Mem extends InstanceFactory {
     // other constants
     static final int DELAY = 10;
 
-    private WeakHashMap<Instance, File> currentInstanceFiles;
+    private WeakHashMap<Instance,File> currentInstanceFiles;
 
     Mem(String name, StringGetter desc, int extraPorts) {
         super(name, desc);
-        currentInstanceFiles = new WeakHashMap<Instance, File>();
+        currentInstanceFiles = new WeakHashMap<Instance,File>();
         setInstancePoker(MemPoker.class);
         setKeyConfigurator(JoinedConfigurator.create(
                 new BitWidthConfigurator(ADDR_ATTR, 2, 24, 0),
@@ -67,18 +67,13 @@ abstract class Mem extends InstanceFactory {
 
         setOffsetBounds(Bounds.create(-140, -40, 140, 80));
     }
-
+    
     abstract void configurePorts(Instance instance);
-
     @Override
     public abstract AttributeSet createAttributeSet();
-
     abstract MemState getState(InstanceState state);
-
     abstract MemState getState(Instance instance, CircuitState state);
-
     abstract HexFrame getHexFrame(Project proj, Instance instance, CircuitState state);
-
     @Override
     public abstract void propagate(InstanceState state);
 
@@ -86,11 +81,11 @@ abstract class Mem extends InstanceFactory {
     protected void configureNewInstance(Instance instance) {
         configurePorts(instance);
     }
-
+    
     void configureStandardPorts(Instance instance, Port[] ps) {
-        ps[DATA] = new Port(0, 0, Port.INOUT, DATA_ATTR);
-        ps[ADDR] = new Port(-140, 0, Port.INPUT, ADDR_ATTR);
-        ps[CS] = new Port(-90, 40, Port.INPUT, 1);
+        ps[DATA] = new Port(   0,  0, Port.INOUT, DATA_ATTR);
+        ps[ADDR] = new Port(-140,  0, Port.INPUT, ADDR_ATTR);
+        ps[CS]   = new Port( -90, 40, Port.INPUT, 1);
         ps[DATA].setToolTip(Strings.getter("memDataTip"));
         ps[ADDR].setToolTip(Strings.getter("memAddrTip"));
         ps[CS].setToolTip(Strings.getter("memCSTip"));
@@ -152,17 +147,17 @@ abstract class Mem extends InstanceFactory {
         g.setColor(Color.GRAY);
         painter.drawPort(CS, Strings.get("ramCSLabel"), Direction.SOUTH);
     }
-
+    
     File getCurrentImage(Instance instance) {
         return currentInstanceFiles.get(instance);
     }
-
+    
     void setCurrentImage(Instance instance, File value) {
         currentInstanceFiles.put(instance, value);
     }
-
+    
     public void loadImage(InstanceState instanceState, File imageFile)
-            throws IOException {
+            throws IOException { 
         MemState s = this.getState(instanceState);
         HexFile.open(s.getContents(), imageFile);
         this.setCurrentImage(instanceState.getInstance(), imageFile);
@@ -173,19 +168,16 @@ abstract class Mem extends InstanceFactory {
         if (key == MenuExtender.class) return new MemMenu(this, instance);
         return super.getInstanceFeature(instance, key);
     }
-
+    
     static class MemListener implements HexModelListener {
         Instance instance;
-
-        MemListener(Instance instance) {
-            this.instance = instance;
-        }
-
-        public void metainfoChanged(HexModel source) {
-        }
+        
+        MemListener(Instance instance) { this.instance = instance; }
+        
+        public void metainfoChanged(HexModel source) { }
 
         public void bytesChanged(HexModel source, long start,
-                                 long numBytes, int[] values) {
+                long numBytes, int[] values) {
             instance.fireInvalidated();
         }
     }

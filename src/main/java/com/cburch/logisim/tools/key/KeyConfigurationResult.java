@@ -10,18 +10,18 @@ import com.cburch.logisim.data.Attribute;
 
 public class KeyConfigurationResult {
     private KeyConfigurationEvent event;
-    private Map<Attribute<?>, Object> attrValueMap;
+    private Map<Attribute<?>,Object> attrValueMap;
 
     public KeyConfigurationResult(KeyConfigurationEvent event, Attribute<?> attr,
-                                  Object value) {
+            Object value) {
         this.event = event;
-        Map<Attribute<?>, Object> singleMap = new HashMap<Attribute<?>, Object>(1);
+        Map<Attribute<?>,Object> singleMap = new HashMap<Attribute<?>,Object>(1);
         singleMap.put(attr, value);
         this.attrValueMap = singleMap;
     }
 
     public KeyConfigurationResult(KeyConfigurationEvent event,
-                                  Map<Attribute<?>, Object> values) {
+            Map<Attribute<?>,Object> values) {
         this.event = event;
         this.attrValueMap = values;
     }
@@ -30,7 +30,7 @@ public class KeyConfigurationResult {
         return event;
     }
 
-    public Map<Attribute<?>, Object> getAttributeValues() {
+    public Map<Attribute<?>,Object> getAttributeValues() {
         return attrValueMap;
     }
 }

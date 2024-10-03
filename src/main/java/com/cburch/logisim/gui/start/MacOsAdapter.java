@@ -22,21 +22,21 @@ class MacOsAdapter { //MAC extends ApplicationAdapter {
             ApplicationEvent event2 = (ApplicationEvent) event;
             int type = event2.getType();
             switch (type) {
-                case ApplicationEvent.ABOUT:
-                    About.showAboutDialog(null);
-                    break;
-                case ApplicationEvent.QUIT_APPLICATION:
-                    ProjectActions.doQuit();
-                    break;
-                case ApplicationEvent.OPEN_DOCUMENT:
-                    Startup.doOpen(event2.getFile());
-                    break;
-                case ApplicationEvent.PRINT_DOCUMENT:
-                    Startup.doPrint(event2.getFile());
-                    break;
-                case ApplicationEvent.PREFERENCES:
-                    PreferencesFrame.showPreferences();
-                    break;
+            case ApplicationEvent.ABOUT:
+                About.showAboutDialog(null);
+                break;
+            case ApplicationEvent.QUIT_APPLICATION:
+                ProjectActions.doQuit();
+                break;
+            case ApplicationEvent.OPEN_DOCUMENT:
+                Startup.doOpen(event2.getFile());
+                break;
+            case ApplicationEvent.PRINT_DOCUMENT:
+                Startup.doPrint(event2.getFile());
+                break;
+            case ApplicationEvent.PREFERENCES:
+                PreferencesFrame.showPreferences();
+                break;
             }
         }
     }
@@ -49,20 +49,20 @@ class MacOsAdapter { //MAC extends ApplicationAdapter {
         MRJAdapter.addQuitApplicationListener(myListener);
         MRJAdapter.addAboutListener(myListener);
     }
-	
-	/* MAC
-	public void handleOpenFile(com.apple.eawt.ApplicationEvent event) {
-		Startup.doOpen(new File(event.getFilename()));
-	}
-	
-	public void handlePrintFile(com.apple.eawt.ApplicationEvent event) {
-		Startup.doPrint(new File(event.getFilename()));
-	}
-	
-	public void handlePreferences(com.apple.eawt.ApplicationEvent event) {
-		PreferencesFrame.showPreferences();
-	}
-	*/
+
+    /* MAC
+    public void handleOpenFile(com.apple.eawt.ApplicationEvent event) {
+        Startup.doOpen(new File(event.getFilename()));
+    }
+
+    public void handlePrintFile(com.apple.eawt.ApplicationEvent event) {
+        Startup.doPrint(new File(event.getFilename()));
+    }
+
+    public void handlePreferences(com.apple.eawt.ApplicationEvent event) {
+        PreferencesFrame.showPreferences();
+    }
+    */
 
     public static void register() {
         //MAC Application.getApplication().addApplicationListener(new MacOsAdapter());

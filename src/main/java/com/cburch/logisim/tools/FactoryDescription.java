@@ -12,8 +12,7 @@ import com.cburch.logisim.comp.ComponentFactory;
 import com.cburch.logisim.util.Icons;
 import com.cburch.logisim.util.StringGetter;
 
-/**
- * This class allows an object to be created holding all the information
+/** This class allows an object to be created holding all the information
  * essential to showing a ComponentFactory in the explorer window, but without
  * actually loading the ComponentFactory unless a program genuinely gets around
  * to needing to use it. Note that for this to work, the relevant
@@ -23,7 +22,7 @@ import com.cburch.logisim.util.StringGetter;
  */
 public class FactoryDescription {
     public static List<Tool> getTools(Class<? extends Library> base,
-                                      FactoryDescription[] descriptions) {
+            FactoryDescription[] descriptions) {
         Tool[] tools = new Tool[descriptions.length];
         for (int i = 0; i < tools.length; i++) {
             tools[i] = new AddTool(base, descriptions[i]);
@@ -42,7 +41,7 @@ public class FactoryDescription {
     private StringGetter toolTip;
 
     public FactoryDescription(String name, StringGetter displayName,
-                              String iconName, String factoryClassName) {
+            String iconName, String factoryClassName) {
         this(name, displayName, factoryClassName);
         this.iconName = iconName;
         this.iconLoadAttempted = false;
@@ -50,7 +49,7 @@ public class FactoryDescription {
     }
 
     public FactoryDescription(String name, StringGetter displayName,
-                              Icon icon, String factoryClassName) {
+            Icon icon, String factoryClassName) {
         this(name, displayName, factoryClassName);
         this.iconName = "???";
         this.iconLoadAttempted = true;
@@ -58,7 +57,7 @@ public class FactoryDescription {
     }
 
     public FactoryDescription(String name, StringGetter displayName,
-                              String factoryClassName) {
+            String factoryClassName) {
         this.name = name;
         this.displayName = displayName;
         this.iconName = "???";

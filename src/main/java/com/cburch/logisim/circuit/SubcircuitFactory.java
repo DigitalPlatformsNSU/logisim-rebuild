@@ -103,23 +103,6 @@ public class SubcircuitFactory extends InstanceFactory {
     }
 
     @Override
-    public boolean contains(Location loc, AttributeSet attrs) {
-        if (super.contains(loc, attrs)) {
-            Direction facing = attrs.getValue(StdAttr.FACING);
-            Direction defaultFacing = source.getAppearance().getFacing();
-            Location query;
-            if (facing.equals(defaultFacing)) {
-                query = loc;
-            } else {
-                query = loc.rotate(facing, defaultFacing, 0, 0);
-            }
-            return source.getAppearance().contains(query);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
     public AttributeSet createAttributeSet() {
         return new CircuitAttributes(source);
     }
@@ -287,7 +270,7 @@ public class SubcircuitFactory extends InstanceFactory {
     }
 
     private void drawCircuitLabel(InstancePainter painter, Bounds bds,
-                                  Direction facing, Direction defaultFacing) {
+            Direction facing, Direction defaultFacing) {
         AttributeSet staticAttrs = source.getStaticAttributes();
         String label = staticAttrs.getValue(CircuitAttributes.CIRCUIT_LABEL_ATTR);
         if (label != null && !label.equals("")) {
@@ -343,8 +326,8 @@ public class SubcircuitFactory extends InstanceFactory {
         }
     }
 
-	/* TODO
-	public String getToolTip(ComponentUserEvent e) {
-		return StringUtil.format(Strings.get("subcircuitCircuitTip"), source.getDisplayName());
-	} */
+    /* TODO
+    public String getToolTip(ComponentUserEvent e) {
+        return StringUtil.format(Strings.get("subcircuitCircuitTip"), source.getDisplayName());
+    } */
 }

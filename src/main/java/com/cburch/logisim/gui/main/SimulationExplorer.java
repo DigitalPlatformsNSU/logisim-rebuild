@@ -69,27 +69,20 @@ class SimulationExplorer extends JPanel
     //
     // MouseListener methods
     //
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    public void mouseExited(MouseEvent e) {
-    }
-
+    public void mouseEntered(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) { }
     public void mousePressed(MouseEvent e) {
         requestFocus();
         checkForPopup(e);
     }
-
     public void mouseReleased(MouseEvent e) {
         checkForPopup(e);
     }
-
     private void checkForPopup(MouseEvent e) {
         if (e.isPopupTrigger()) {
             ; // do nothing
         }
     }
-
     public void mouseClicked(MouseEvent e) {
         if (e.getClickCount() == 2) {
             TreePath path = tree.getPathForLocation(e.getX(), e.getY());

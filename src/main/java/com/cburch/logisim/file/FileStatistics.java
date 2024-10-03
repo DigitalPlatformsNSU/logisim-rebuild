@@ -58,8 +58,8 @@ public class FileStatistics {
 
     public static FileStatistics compute(LogisimFile file, Circuit circuit) {
         Set<Circuit> include = new HashSet<Circuit>(file.getCircuits());
-        Map<Circuit, Map<ComponentFactory, Count>> countMap;
-        countMap = new HashMap<Circuit, Map<ComponentFactory, Count>>();
+        Map<Circuit,Map<ComponentFactory,Count>> countMap;
+        countMap = new HashMap<Circuit,Map<ComponentFactory,Count>>();
         doRecursiveCount(circuit, include, countMap);
         doUniqueCounts(countMap.get(circuit), countMap);
         List<Count> countList = sortCounts(countMap.get(circuit), file);
@@ -67,14 +67,14 @@ public class FileStatistics {
                 getTotal(countList, null));
     }
 
-    private static Map<ComponentFactory, Count> doRecursiveCount(Circuit circuit,
-                                                                 Set<Circuit> include,
-                                                                 Map<Circuit, Map<ComponentFactory, Count>> countMap) {
+    private static Map<ComponentFactory,Count> doRecursiveCount(Circuit circuit,
+            Set<Circuit> include,
+            Map<Circuit,Map<ComponentFactory,Count>> countMap) {
         if (countMap.containsKey(circuit)) {
             return countMap.get(circuit);
         }
 
-        Map<ComponentFactory, Count> counts = doSimpleCount(circuit);
+        Map<ComponentFactory,Count> counts = doSimpleCount(circuit);
         countMap.put(circuit, counts);
         for (Count count : counts.values()) {
             count.uniqueCount = count.simpleCount;
@@ -84,7 +84,7 @@ public class FileStatistics {
             SubcircuitFactory subFactory = sub.getSubcircuitFactory();
             if (counts.containsKey(subFactory)) {
                 int multiplier = counts.get(subFactory).simpleCount;
-                Map<ComponentFactory, Count> subCount;
+                Map<ComponentFactory,Count> subCount;
                 subCount = doRecursiveCount(sub, include, countMap);
                 for (Count subcount : subCount.values()) {
                     ComponentFactory subfactory = subcount.factory;
@@ -101,9 +101,9 @@ public class FileStatistics {
         return counts;
     }
 
-    private static Map<ComponentFactory, Count> doSimpleCount(Circuit circuit) {
-        Map<ComponentFactory, Count> counts;
-        counts = new HashMap<ComponentFactory, Count>();
+    private static Map<ComponentFactory,Count> doSimpleCount(Circuit circuit) {
+        Map<ComponentFactory,Count> counts;
+        counts = new HashMap<ComponentFactory,Count>();
         for (Component comp : circuit.getNonWires()) {
             ComponentFactory factory = comp.getFactory();
             Count count = counts.get(factory);
@@ -116,8 +116,8 @@ public class FileStatistics {
         return counts;
     }
 
-    private static void doUniqueCounts(Map<ComponentFactory, Count> counts,
-                                       Map<Circuit, Map<ComponentFactory, Count>> circuitCounts) {
+    private static void doUniqueCounts(Map<ComponentFactory,Count> counts,
+            Map<Circuit,Map<ComponentFactory,Count>> circuitCounts) {
         for (Count count : counts.values()) {
             ComponentFactory factory = count.getFactory();
             int unique = 0;
@@ -131,8 +131,8 @@ public class FileStatistics {
         }
     }
 
-    private static List<Count> sortCounts(Map<ComponentFactory, Count> counts,
-                                          LogisimFile file) {
+    private static List<Count> sortCounts(Map<ComponentFactory,Count> counts,
+            LogisimFile file) {
         List<Count> ret = new ArrayList<Count>();
         for (AddTool tool : file.getTools()) {
             ComponentFactory factory = tool.getFactory();
@@ -179,7 +179,7 @@ public class FileStatistics {
     private Count totalWith;
 
     private FileStatistics(List<Count> counts, Count totalWithout,
-                           Count totalWith) {
+            Count totalWith) {
         this.counts = Collections.unmodifiableList(counts);
         this.totalWithout = totalWithout;
         this.totalWith = totalWith;

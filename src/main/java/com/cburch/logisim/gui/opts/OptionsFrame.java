@@ -96,7 +96,7 @@ public class OptionsFrame extends LFrame {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setJMenuBar(new LogisimMenuBar(this, project));
 
-        panels = new OptionsPanel[]{
+        panels = new OptionsPanel[] {
                 new SimulateOptions(this),
                 new ToolbarOptions(this),
                 new MouseOptions(this),

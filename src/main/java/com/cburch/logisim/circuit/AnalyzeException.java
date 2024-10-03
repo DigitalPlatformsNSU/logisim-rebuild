@@ -24,8 +24,7 @@ public class AnalyzeException extends Exception {
         }
     }
 
-    public AnalyzeException() {
-    }
+    public AnalyzeException() { }
 
     public AnalyzeException(String message) {
         super(message);

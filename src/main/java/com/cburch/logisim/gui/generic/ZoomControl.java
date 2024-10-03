@@ -63,8 +63,7 @@ public class ZoomControl extends JPanel {
                 try {
                     double zoom = Double.parseDouble(s) / 100.0;
                     model.setZoomFactor(zoom);
-                } catch (NumberFormatException e) {
-                }
+                } catch (NumberFormatException e) { }
             }
         }
 
@@ -112,17 +111,10 @@ public class ZoomControl extends JPanel {
             }
         }
 
-        public void mouseClicked(MouseEvent e) {
-        }
-
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-
-        public void mouseReleased(MouseEvent e) {
-        }
+        public void mouseClicked(MouseEvent e) { }
+        public void mouseEntered(MouseEvent e) { }
+        public void mouseExited(MouseEvent e) { }
+        public void mouseReleased(MouseEvent e) { }
 
         public void mousePressed(MouseEvent e) {
             model.setShowGrid(!state);

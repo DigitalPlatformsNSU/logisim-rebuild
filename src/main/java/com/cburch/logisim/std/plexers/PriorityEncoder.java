@@ -29,11 +29,11 @@ public class PriorityEncoder extends InstanceFactory {
 
     public PriorityEncoder() {
         super("Priority Encoder", Strings.getter("priorityEncoderComponent"));
-        setAttributes(new Attribute[]{
+        setAttributes(new Attribute[] {
                 StdAttr.FACING, Plexers.ATTR_SELECT, Plexers.ATTR_DISABLED
-        }, new Object[]{
+            }, new Object[] {
                 Direction.EAST, BitWidth.create(3), Plexers.DISABLED_FLOATING
-        });
+            });
         setKeyConfigurator(new BitWidthConfigurator(Plexers.ATTR_SELECT, 1, 5, 0));
         setIconName("priencod.gif");
         setFacingAttribute(StdAttr.FACING);
@@ -47,11 +47,11 @@ public class PriorityEncoder extends InstanceFactory {
         int offs = -5 * inputs;
         int len = 10 * inputs + 10;
         if (dir == Direction.NORTH) {
-            return Bounds.create(offs, 0, len, 40);
+            return Bounds.create(offs,   0, len, 40);
         } else if (dir == Direction.SOUTH) {
             return Bounds.create(offs, -40, len, 40);
         } else if (dir == Direction.WEST) {
-            return Bounds.create(0, offs, 40, len);
+            return Bounds.create(  0, offs, 40, len);
         } else { // dir == Direction.EAST
             return Bounds.create(-40, offs, 40, len);
         }

@@ -16,8 +16,7 @@ import java.util.StringTokenizer;
 import com.cburch.hex.HexModel;
 
 public class HexFile {
-    private HexFile() {
-    }
+    private HexFile() { }
 
     private static final String RAW_IMAGE_HEADER = "v2.0 raw";
     private static final String COMMENT_MARKER = "#";
@@ -135,10 +134,7 @@ public class HexFile {
             cur++;
             while (cur <= last && src.get(cur) == val) cur++;
             long len = cur - start;
-            if (len < 4) {
-                cur = start + 1;
-                len = 1;
-            }
+            if (len < 4) { cur = start + 1; len = 1; }
             try {
                 if (tokens > 0) out.write(tokens % 8 == 0 ? '\n' : ' ');
                 if (cur != start + 1) out.write((cur - start) + "*");
@@ -210,8 +206,7 @@ public class HexFile {
         } finally {
             try {
                 if (in != null) in.close();
-            } catch (IOException e) {
-            }
+            } catch (IOException e) { }
         }
     }
 

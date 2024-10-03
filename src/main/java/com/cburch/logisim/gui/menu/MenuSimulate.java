@@ -119,12 +119,8 @@ class MenuSimulate extends Menu {
             }
         }
 
-        public void propagationCompleted(SimulatorEvent e) {
-        }
-
-        public void tickCompleted(SimulatorEvent e) {
-        }
-
+        public void propagationCompleted(SimulatorEvent e) { }
+        public void tickCompleted(SimulatorEvent e) { }
         public void simulatorStateChanged(SimulatorEvent e) {
             Simulator sim = e.getSource();
             if (sim != currentSim) return;
@@ -156,28 +152,28 @@ class MenuSimulate extends Menu {
     private MenuItemImpl tickOnce;
     private JMenu tickFreq = new JMenu();
     private TickFrequencyChoice[] tickFreqs = {
-            new TickFrequencyChoice(4096),
-            new TickFrequencyChoice(2048),
-            new TickFrequencyChoice(1024),
-            new TickFrequencyChoice(512),
-            new TickFrequencyChoice(256),
-            new TickFrequencyChoice(128),
-            new TickFrequencyChoice(64),
-            new TickFrequencyChoice(32),
-            new TickFrequencyChoice(16),
-            new TickFrequencyChoice(8),
-            new TickFrequencyChoice(4),
-            new TickFrequencyChoice(2),
-            new TickFrequencyChoice(1),
-            new TickFrequencyChoice(0.5),
-            new TickFrequencyChoice(0.25),
+        new TickFrequencyChoice(4096),
+        new TickFrequencyChoice(2048),
+        new TickFrequencyChoice(1024),
+        new TickFrequencyChoice(512),
+        new TickFrequencyChoice(256),
+        new TickFrequencyChoice(128),
+        new TickFrequencyChoice(64),
+        new TickFrequencyChoice(32),
+        new TickFrequencyChoice(16),
+        new TickFrequencyChoice(8),
+        new TickFrequencyChoice(4),
+        new TickFrequencyChoice(2),
+        new TickFrequencyChoice(1),
+        new TickFrequencyChoice(0.5),
+        new TickFrequencyChoice(0.25),
     };
     private JMenu downStateMenu = new JMenu();
     private ArrayList<CircuitStateMenuItem> downStateItems
-            = new ArrayList<CircuitStateMenuItem>();
+        = new ArrayList<CircuitStateMenuItem>();
     private JMenu upStateMenu = new JMenu();
     private ArrayList<CircuitStateMenuItem> upStateItems
-            = new ArrayList<CircuitStateMenuItem>();
+        = new ArrayList<CircuitStateMenuItem>();
     private JMenuItem log = new JMenuItem();
 
     public MenuSimulate(LogisimMenuBar menubar) {
@@ -328,7 +324,7 @@ class MenuSimulate extends Menu {
     }
 
     private void recreateStateMenu(JMenu menu,
-                                   ArrayList<CircuitStateMenuItem> items, int code) {
+            ArrayList<CircuitStateMenuItem> items, int code) {
         menu.removeAll();
         menu.setEnabled(items.size() > 0);
         boolean first = true;

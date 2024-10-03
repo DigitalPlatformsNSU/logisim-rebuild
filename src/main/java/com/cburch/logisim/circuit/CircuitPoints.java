@@ -23,13 +23,12 @@ class CircuitPoints {
         // these lists are parallel - ends corresponding to wires are null
     }
 
-    private HashMap<Location, LocationData> map
-            = new HashMap<Location, LocationData>();
-    private HashMap<Location, WidthIncompatibilityData> incompatibilityData
-            = new HashMap<Location, WidthIncompatibilityData>();
+    private HashMap<Location,LocationData> map
+        = new HashMap<Location,LocationData>();
+    private HashMap<Location,WidthIncompatibilityData> incompatibilityData
+        = new HashMap<Location,WidthIncompatibilityData>();
 
-    public CircuitPoints() {
-    }
+    public CircuitPoints() { }
 
     //
     // access methods
@@ -37,17 +36,17 @@ class CircuitPoints {
     Set<Location> getSplitLocations() {
         return map.keySet();
     }
-
+    
     BitWidth getWidth(Location loc) {
         LocationData locData = map.get(loc);
         return locData == null ? BitWidth.UNKNOWN : locData.width;
     }
-
+    
     int getComponentCount(Location loc) {
         LocationData locData = map.get(loc);
-        return locData == null ? 0 : locData.components.size();
+        return locData == null ? 0 : locData.components.size(); 
     }
-
+    
     Component getExclusive(Location loc) {
         LocationData locData = map.get(loc);
         if (locData == null) return null;
@@ -70,44 +69,38 @@ class CircuitPoints {
     Collection<? extends Component> getSplitCauses(Location loc) {
         return getComponents(loc);
     }
-
+    
     Collection<Wire> getWires(Location loc) {
         @SuppressWarnings("unchecked")
         Collection<Wire> ret = (Collection<Wire>) find(loc, true);
         return ret;
     }
-
+    
     Collection<? extends Component> getNonWires(Location loc) {
         return find(loc, false);
     }
-
+    
     private Collection<? extends Component> find(Location loc, boolean isWire) {
         LocationData locData = map.get(loc);
         if (locData == null) return Collections.emptySet();
-
+        
         // first see how many elements we have; we can handle some simple
         // cases without creating any new lists
         ArrayList<Component> list = locData.components;
         int retSize = 0;
         Component retValue = null;
         for (Component o : list) {
-            if ((o instanceof Wire) == isWire) {
-                retValue = o;
-                retSize++;
-            }
+            if ((o instanceof Wire) == isWire) { retValue = o; retSize++; }
         }
         if (retSize == list.size()) return list;
         if (retSize == 0) return Collections.emptySet();
         if (retSize == 1) return Collections.singleton(retValue);
-
+        
         // otherwise we have to create our own list
         Component[] ret = new Component[retSize];
         int retPos = 0;
         for (Component o : list) {
-            if ((o instanceof Wire) == isWire) {
-                ret[retPos] = o;
-                retPos++;
-            }
+            if ((o instanceof Wire) == isWire) { ret[retPos] = o; retPos++; }
         }
         return Arrays.asList(ret);
     }
@@ -116,7 +109,7 @@ class CircuitPoints {
     Collection<WidthIncompatibilityData> getWidthIncompatibilityData() {
         return incompatibilityData.values();
     }
-
+    
     boolean hasConflict(Component comp) {
         if (comp instanceof Wire) {
             return false;
@@ -147,7 +140,7 @@ class CircuitPoints {
             }
         }
     }
-
+    
     void add(Component comp, EndData endData) {
         if (endData != null) addSub(endData.getLocation(), comp, endData);
     }
@@ -165,11 +158,11 @@ class CircuitPoints {
             }
         }
     }
-
+    
     void remove(Component comp, EndData endData) {
         if (endData != null) removeSub(endData.getLocation(), comp);
     }
-
+    
     private void addSub(Location loc, Component comp, EndData endData) {
         LocationData locData = map.get(loc);
         if (locData == null) {
@@ -180,11 +173,11 @@ class CircuitPoints {
         locData.ends.add(endData);
         computeIncompatibilityData(loc, locData);
     }
-
+    
     private void removeSub(Location loc, Component comp) {
         LocationData locData = map.get(loc);
         if (locData == null) return;
-
+        
         int index = locData.components.indexOf(comp);
         if (index < 0) return;
 
@@ -200,7 +193,7 @@ class CircuitPoints {
 
     private void computeIncompatibilityData(Location loc, LocationData locData) {
         WidthIncompatibilityData error = null;
-        if (locData != null) {
+        if (locData != null) { 
             BitWidth width = BitWidth.UNKNOWN;
             for (EndData endData : locData.ends) {
                 if (endData != null) {
@@ -218,7 +211,7 @@ class CircuitPoints {
             }
             locData.width = width;
         }
-
+        
         if (error == null) {
             incompatibilityData.remove(loc);
         } else {

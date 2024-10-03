@@ -29,14 +29,8 @@ import com.cburch.logisim.tools.CustomHandles;
 public class Selection extends SelectionBase {
     public static class Event {
         Object source;
-
-        Event(Object source) {
-            this.source = source;
-        }
-
-        public Object getSource() {
-            return source;
-        }
+        Event(Object source) { this.source = source; }
+        public Object getSource() { return source; }
     }
 
     public static interface Listener {
@@ -44,10 +38,10 @@ public class Selection extends SelectionBase {
     }
 
     private class MyListener implements ProjectListener, CircuitListener {
-        private WeakHashMap<Action, SelectionSave> savedSelections;
+        private WeakHashMap<Action,SelectionSave> savedSelections;
 
         MyListener() {
-            savedSelections = new WeakHashMap<Action, SelectionSave>();
+            savedSelections = new WeakHashMap<Action,SelectionSave>();
         }
 
         public void projectChanged(ProjectEvent event) {
@@ -150,7 +144,7 @@ public class Selection extends SelectionBase {
         if (!(other instanceof Selection)) return false;
         Selection otherSelection = (Selection) other;
         return this.selected.equals(otherSelection.selected)
-                && this.lifted.equals(otherSelection.lifted);
+            && this.lifted.equals(otherSelection.lifted);
     }
 
     public Set<Component> getComponents() {
@@ -224,7 +218,7 @@ public class Selection extends SelectionBase {
                 Graphics g_new = g.create();
                 context.setGraphics(g_new);
                 CustomHandles handler
-                        = (CustomHandles) comp.getFeature(CustomHandles.class);
+                    = (CustomHandles) comp.getFeature(CustomHandles.class);
                 if (handler == null) {
                     context.drawHandles(comp);
                 } else {
@@ -238,7 +232,7 @@ public class Selection extends SelectionBase {
     }
 
     public void drawGhostsShifted(ComponentDrawContext context,
-                                  int dx, int dy) {
+            int dx, int dy) {
         if (shouldSnap()) {
             dx = Canvas.snapXToGrid(dx);
             dy = Canvas.snapYToGrid(dy);
