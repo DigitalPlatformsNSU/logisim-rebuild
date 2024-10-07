@@ -1,53 +1,42 @@
-name: CI
+name: Checkstyle
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+    branches:
+      - main
 
 jobs:
-  build:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./${{ github.event.pull_request.number }}
-    steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
-      - name: Make gradlew executable
-        run: chmod +x ./gradlew
-    
-      - name: Execute Gradle build
-        run: ./gradlew build
-
-      - name: Generate javadoc
-        run: ./gradlew javadoc
-
-      - name: Publish javadoc
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          clean: true
-          folder: ${{ github.event.pull_request.number }}/build/docs/javadoc
-          target-folder: ${{ github.event.pull_request.number }}
-
   checkstyle:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./${{ github.event.pull_request.number }}
+
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Run check style
-        uses: checkstyle-action@master
+      - name: Set up JDK
+        uses: actions/setup-java@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          checkstyle_config: '.github/google_checks.xml'
-          reporter: 'github-pr-check'
+          java-version: '21'
+
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest
+
+      - name: Upload Checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: checkstyle-report
+          path: build/reports/checkstyle
