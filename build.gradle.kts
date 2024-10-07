@@ -41,13 +41,6 @@ tasks {
 }
 
 checkstyle {
-    toolVersion = "1.0"
-    configFile = file(".github/google_checks.xml")
-}
-
-tasks.withType<Checkstyle>().configureEach {
-    reports {
-        xml.required.set(true)
-        html.required.set(false)
-    }
+    toolVersion = "10.0"
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
 }
