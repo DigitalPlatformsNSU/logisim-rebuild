@@ -33,7 +33,24 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Run Checkstyle
-        run: ./gradlew checkstyleMain checkstyleTest
+        run: ./gradlew checkstyleMain checkstyleTest || true  # Не прерывать выполнение при ошибках
+
+      - name: Analyze Checkstyle Report
+        id: checkstyle_analysis
+        run: |
+          # Проверяем на наличие ошибок или предупреждений
+          if grep -q "<error " build/reports/checkstyle/main.xml; then
+            echo "Checkstyle warnings/errors found"
+            echo "::set-output name=checkstyle_failed::true"  # Устанавливаем переменную для неуспешного статуса
+          else
+            echo "::set-output name=checkstyle_failed::false"
+          fi
+
+      - name: Mark build as failed if Checkstyle failed
+        if: steps.checkstyle_analysis.outputs.checkstyle_failed == 'true'
+        run: |
+          echo "Marking check as failed due to Checkstyle errors"
+          exit 1  # Устанавливаем статус как неуспешный
 
       - name: Upload Checkstyle report
         if: always()
