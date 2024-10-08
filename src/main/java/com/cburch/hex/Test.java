@@ -11,8 +11,7 @@ import javax.swing.JScrollPane;
 
 public class Test {
     private static class Model implements HexModel {
-        private ArrayList<HexModelListener> listeners
-            = new ArrayList<HexModelListener>();
+        private ArrayList<HexModelListener> listeners = new ArrayList<HexModelListener>();
         private int[] data = new int[924];
 
         public void addHexModelListener(HexModelListener l) {
@@ -40,7 +39,7 @@ public class Test {
         }
 
         public void set(long address, int value) {
-            int[] oldValues = new int[] { data[(int) (address - 11111)] };
+            int[] oldValues = new int[]{data[(int) (address - 11111)]};
             data[(int) (address - 11111)] = value & 0x1FF;
             for (HexModelListener l : listeners) {
                 l.bytesChanged(this, address, 1, oldValues);

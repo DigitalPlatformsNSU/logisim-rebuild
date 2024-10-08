@@ -9,7 +9,8 @@ import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.tools.Tool;
 
 class ToolbarActions {
-    private ToolbarActions() { }
+    private ToolbarActions() {
+    }
 
     public static Action addTool(ToolbarData toolbar, Tool tool) {
         return new AddTool(toolbar, tool);
@@ -20,12 +21,12 @@ class ToolbarActions {
     }
 
     public static Action moveTool(ToolbarData toolbar,
-            int src, int dest) {
+                                  int src, int dest) {
         return new MoveTool(toolbar, src, dest);
     }
 
     public static Action addSeparator(ToolbarData toolbar,
-            int pos) {
+                                      int pos) {
         return new AddSeparator(toolbar, pos);
     }
 
@@ -121,7 +122,7 @@ class ToolbarActions {
             if (other instanceof MoveTool) {
                 MoveTool o = (MoveTool) other;
                 return this.toolbar == o.toolbar
-                    && o.dest == this.oldpos;
+                        && o.dest == this.oldpos;
             } else {
                 return false;
             }

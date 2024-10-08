@@ -9,7 +9,7 @@ import java.util.prefs.Preferences;
 class PrefMonitorString extends AbstractPrefMonitor<String> {
     private String dflt;
     private String value;
-    
+
     PrefMonitorString(String name, String dflt) {
         super(name);
         this.dflt = dflt;
@@ -17,11 +17,11 @@ class PrefMonitorString extends AbstractPrefMonitor<String> {
         this.value = prefs.get(name, dflt);
         prefs.addPreferenceChangeListener(this);
     }
-    
+
     public String get() {
         return value;
     }
-    
+
     public void set(String newValue) {
         String oldValue = value;
         if (!isSame(oldValue, newValue)) {
@@ -43,7 +43,7 @@ class PrefMonitorString extends AbstractPrefMonitor<String> {
             }
         }
     }
-    
+
     private static boolean isSame(String a, String b) {
         return a == null ? b == null : a.equals(b);
     }

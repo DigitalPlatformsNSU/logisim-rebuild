@@ -31,7 +31,7 @@ public class Text extends AbstractCanvasObject {
     }
 
     private Text(int x, int y, int halign, int valign, String text, Font font,
-        Color color) {
+                 Color color) {
         label = new EditableLabel(x, y, text, font);
         label.setColor(color);
         label.setHorizontalAlignment(halign);
@@ -147,9 +147,9 @@ public class Text extends AbstractCanvasObject {
         int y = bds.getY();
         int w = bds.getWidth();
         int h = bds.getHeight();
-        return UnmodifiableList.create(new Handle[] {
+        return UnmodifiableList.create(new Handle[]{
                 new Handle(this, x, y), new Handle(this, x + w, y),
-                new Handle(this, x + w, y + h), new Handle(this, x, y + h) });
+                new Handle(this, x + w, y + h), new Handle(this, x, y + h)});
     }
 
     @Override

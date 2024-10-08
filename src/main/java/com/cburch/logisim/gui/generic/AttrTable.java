@@ -45,12 +45,23 @@ public class AttrTable extends JPanel implements LocaleListener {
     private static final AttrTableModel NULL_ATTR_MODEL = new NullAttrModel();
 
     private static class NullAttrModel implements AttrTableModel {
-        public void addAttrTableModelListener(AttrTableModelListener listener) { }
-        public void removeAttrTableModelListener(AttrTableModelListener listener) { }
+        public void addAttrTableModelListener(AttrTableModelListener listener) {
+        }
 
-        public String getTitle() { return null; }
-        public int getRowCount() { return 0; }
-        public AttrTableModelRow getRow(int rowIndex) { return null; }
+        public void removeAttrTableModelListener(AttrTableModelListener listener) {
+        }
+
+        public String getTitle() {
+            return null;
+        }
+
+        public int getRowCount() {
+            return 0;
+        }
+
+        public AttrTableModelRow getRow(int rowIndex) {
+            return null;
+        }
     }
 
     private static class TitleLabel extends JLabel {
@@ -144,7 +155,7 @@ public class AttrTable extends JPanel implements LocaleListener {
 
         public String getColumnName(int columnIndex) {
             if (columnIndex == 0) return "Attribute";
-            else                  return "Value";
+            else return "Value";
         }
 
         public Class<?> getColumnClass(int columnIndex) {
@@ -168,7 +179,7 @@ public class AttrTable extends JPanel implements LocaleListener {
         }
 
         public void setValueAt(Object value, int rowIndex,
-                int columnIndex) {
+                               int columnIndex) {
             if (columnIndex > 0) {
                 try {
                     attrModel.getRow(rowIndex).setValue(value);
@@ -282,7 +293,7 @@ public class AttrTable extends JPanel implements LocaleListener {
         }
 
         public Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int rowIndex, int columnIndex) {
+                                                     boolean isSelected, int rowIndex, int columnIndex) {
             AttrTableModel attrModel = tableModel.attrModel;
             AttrTableModelRow row = attrModel.getRow(rowIndex);
 
@@ -343,7 +354,8 @@ public class AttrTable extends JPanel implements LocaleListener {
             }
         }
 
-        public void focusGained(FocusEvent e) { }
+        public void focusGained(FocusEvent e) {
+        }
 
         //
         // ActionListener methods

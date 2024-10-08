@@ -26,15 +26,15 @@ import com.cburch.logisim.util.GraphicsUtil;
 
 public class BitSelector extends InstanceFactory {
     public static final Attribute<BitWidth> GROUP_ATTR
-        = Attributes.forBitWidth("group", Strings.getter("bitSelectorGroupAttr"));
+            = Attributes.forBitWidth("group", Strings.getter("bitSelectorGroupAttr"));
 
     public BitSelector() {
         super("BitSelector", Strings.getter("bitSelectorComponent"));
-        setAttributes(new Attribute[] {
+        setAttributes(new Attribute[]{
                 StdAttr.FACING, StdAttr.WIDTH, GROUP_ATTR
-            }, new Object[] {
+        }, new Object[]{
                 Direction.EAST, BitWidth.create(8), BitWidth.ONE
-            });
+        });
         setKeyConfigurator(JoinedConfigurator.create(
                 new BitWidthConfigurator(GROUP_ATTR, 1, Value.MAX_WIDTH, 0),
                 new BitWidthConfigurator(StdAttr.WIDTH)));
@@ -73,23 +73,26 @@ public class BitSelector extends InstanceFactory {
         int groups = (data.getWidth() + group.getWidth() - 1) / group.getWidth() - 1;
         int selectBits = 1;
         if (groups > 0) {
-            while (groups != 1) { groups >>= 1; selectBits++; }
+            while (groups != 1) {
+                groups >>= 1;
+                selectBits++;
+            }
         }
         BitWidth select = BitWidth.create(selectBits);
 
         Location inPt;
         Location selPt;
         if (facing == Direction.WEST) {
-            inPt  = Location.create(30, 0);
+            inPt = Location.create(30, 0);
             selPt = Location.create(10, 10);
         } else if (facing == Direction.NORTH) {
-            inPt  = Location.create(  0, 30);
+            inPt = Location.create(0, 30);
             selPt = Location.create(-10, 10);
         } else if (facing == Direction.SOUTH) {
-            inPt  = Location.create(  0, -30);
+            inPt = Location.create(0, -30);
             selPt = Location.create(-10, -10);
         } else {
-            inPt  = Location.create(-30, 0);
+            inPt = Location.create(-30, 0);
             selPt = Location.create(-10, 10);
         }
 

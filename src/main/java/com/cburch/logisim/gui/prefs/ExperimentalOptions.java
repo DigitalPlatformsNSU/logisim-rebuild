@@ -21,12 +21,12 @@ class ExperimentalOptions extends OptionsPanel {
         super(window);
 
         accel = new PrefOptionList(AppPreferences.GRAPHICS_ACCELERATION,
-            Strings.getter("accelLabel"), new PrefOption[] {
-                new PrefOption(AppPreferences.ACCEL_DEFAULT, Strings.getter("accelDefault")),
-                new PrefOption(AppPreferences.ACCEL_NONE, Strings.getter("accelNone")),
-                new PrefOption(AppPreferences.ACCEL_OPENGL, Strings.getter("accelOpenGL")),
-                new PrefOption(AppPreferences.ACCEL_D3D, Strings.getter("accelD3D")),
-            });
+                Strings.getter("accelLabel"), new PrefOption[]{
+                    new PrefOption(AppPreferences.ACCEL_DEFAULT, Strings.getter("accelDefault")),
+                    new PrefOption(AppPreferences.ACCEL_NONE, Strings.getter("accelNone")),
+                    new PrefOption(AppPreferences.ACCEL_OPENGL, Strings.getter("accelOpenGL")),
+                    new PrefOption(AppPreferences.ACCEL_D3D, Strings.getter("accelD3D")),
+                });
 
         JPanel accelPanel = new JPanel(new BorderLayout());
         accelPanel.add(accel.getJLabel(), BorderLayout.LINE_START);

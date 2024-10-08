@@ -129,7 +129,7 @@ class MemMenu implements ActionListener, MenuExtender {
                 factory.setCurrentImage(instance, f);
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(frame, e.getMessage(),
-                    Strings.get("ramSaveErrorTitle"), JOptionPane.ERROR_MESSAGE);
+                        Strings.get("ramSaveErrorTitle"), JOptionPane.ERROR_MESSAGE);
             }
         }
     }

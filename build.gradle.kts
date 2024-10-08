@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("checkstyle")
 }
 
 group = "org.example"
@@ -37,4 +38,9 @@ tasks {
     build {
         dependsOn(shadowJar)
     }
+}
+
+checkstyle {
+    toolVersion = "10.0"
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
 }

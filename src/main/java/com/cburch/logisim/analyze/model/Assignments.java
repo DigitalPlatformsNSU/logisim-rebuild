@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Assignments {
-    private Map<String,Boolean> map = new HashMap<String,Boolean>();
+    private Map<String, Boolean> map = new HashMap<String, Boolean>();
 
-    public Assignments() { }
+    public Assignments() {
+    }
 
     public boolean get(String variable) {
         Boolean value = map.get(variable);

@@ -37,11 +37,15 @@ public class Popups {
             super(Strings.get("projMenu"));
             this.proj = proj;
 
-            load.add(loadBuiltin); loadBuiltin.addActionListener(this);
-            load.add(loadLogisim); loadLogisim.addActionListener(this);
-            load.add(loadJar); loadJar.addActionListener(this);
+            load.add(loadBuiltin);
+            loadBuiltin.addActionListener(this);
+            load.add(loadLogisim);
+            loadLogisim.addActionListener(this);
+            load.add(loadJar);
+            loadJar.addActionListener(this);
 
-            add(add); add.addActionListener(this);
+            add(add);
+            add.addActionListener(this);
             add(load);
         }
 
@@ -71,8 +75,10 @@ public class Popups {
             this.proj = proj;
             this.lib = lib;
 
-            add(unload); unload.addActionListener(this);
-            add(reload); reload.addActionListener(this);
+            add(unload);
+            unload.addActionListener(this);
+            add(reload);
+            reload.addActionListener(this);
             unload.setEnabled(is_top);
             reload.setEnabled(is_top && lib instanceof LoadedLibrary);
         }
@@ -106,13 +112,19 @@ public class Popups {
             this.tool = tool;
             this.circuit = circuit;
 
-            add(editLayout); editLayout.addActionListener(this);
-            add(editAppearance); editAppearance.addActionListener(this);
-            add(analyze); analyze.addActionListener(this);
-            add(stats); stats.addActionListener(this);
+            add(editLayout);
+            editLayout.addActionListener(this);
+            add(editAppearance);
+            editAppearance.addActionListener(this);
+            add(analyze);
+            analyze.addActionListener(this);
+            add(stats);
+            stats.addActionListener(this);
             addSeparator();
-            add(main); main.addActionListener(this);
-            add(remove); remove.addActionListener(this);
+            add(main);
+            main.addActionListener(this);
+            add(remove);
+            remove.addActionListener(this);
 
             boolean canChange = proj.getLogisimFile().contains(circuit);
             LogisimFile file = proj.getLogisimFile();

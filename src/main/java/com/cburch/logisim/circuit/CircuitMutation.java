@@ -82,8 +82,8 @@ public final class CircuitMutation extends CircuitTransaction {
     }
 
     @Override
-    protected Map<Circuit,Integer> getAccessedCircuits() {
-        HashMap<Circuit,Integer> accessMap = new HashMap<Circuit,Integer>();
+    protected Map<Circuit, Integer> getAccessedCircuits() {
+        HashMap<Circuit, Integer> accessMap = new HashMap<Circuit, Integer>();
         HashSet<Circuit> supercircsDone = new HashSet<Circuit>();
         for (CircuitChange change : changes) {
             Circuit circ = change.getCircuit();

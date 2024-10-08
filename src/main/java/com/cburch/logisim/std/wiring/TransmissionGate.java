@@ -36,8 +36,8 @@ public class TransmissionGate extends InstanceFactory {
     public TransmissionGate() {
         super("Transmission Gate", Strings.getter("transmissionGateComponent"));
         setIconName("transmis.gif");
-        setAttributes(new Attribute[] { StdAttr.FACING, Wiring.ATTR_GATE, StdAttr.WIDTH },
-                new Object[] { Direction.EAST, Wiring.GATE_TOP_LEFT, BitWidth.ONE });
+        setAttributes(new Attribute[]{StdAttr.FACING, Wiring.ATTR_GATE, StdAttr.WIDTH},
+                new Object[]{Direction.EAST, Wiring.GATE_TOP_LEFT, BitWidth.ONE});
         setFacingAttribute(StdAttr.FACING);
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
     }
@@ -74,7 +74,7 @@ public class TransmissionGate extends InstanceFactory {
 
         Object powerLoc = instance.getAttributeValue(Wiring.ATTR_GATE);
         boolean flip = (facing == Direction.SOUTH || facing == Direction.WEST)
-            == (powerLoc == Wiring.GATE_TOP_LEFT);
+                == (powerLoc == Wiring.GATE_TOP_LEFT);
 
         Port[] ports = new Port[4];
         ports[OUTPUT] = new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH);
@@ -155,7 +155,7 @@ public class TransmissionGate extends InstanceFactory {
         Object powerLoc = painter.getAttributeValue(Wiring.ATTR_GATE);
         Direction facing = painter.getAttributeValue(StdAttr.FACING);
         boolean flip = (facing == Direction.SOUTH || facing == Direction.WEST)
-            == (powerLoc == Wiring.GATE_TOP_LEFT);
+                == (powerLoc == Wiring.GATE_TOP_LEFT);
 
         int degrees = Direction.WEST.toDegrees() - facing.toDegrees();
         if (flip) degrees += 180;

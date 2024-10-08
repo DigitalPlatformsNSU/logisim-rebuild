@@ -34,7 +34,8 @@ import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.util.StringUtil;
 
 public class ProjectCircuitActions {
-    private ProjectCircuitActions() { }
+    private ProjectCircuitActions() {
+    }
 
     public static void doAddCircuit(Project proj) {
         String name = promptForCircuitName(proj.getFrame(), proj.getLogisimFile(), "");
@@ -46,7 +47,7 @@ public class ProjectCircuitActions {
     }
 
     private static String promptForCircuitName(JFrame frame,
-            Library lib, String initialValue) {
+                                               Library lib, String initialValue) {
         JLabel label = new JLabel(Strings.get("circuitNamePrompt"));
         final JTextField field = new JTextField(15);
         field.setText(initialValue);
@@ -61,10 +62,14 @@ public class ProjectCircuitActions {
         gc.weightx = 1.0;
         gc.fill = GridBagConstraints.NONE;
         gc.anchor = GridBagConstraints.LINE_START;
-        gb.setConstraints(label, gc); panel.add(label);
-        gb.setConstraints(field, gc); panel.add(field);
-        gb.setConstraints(error, gc); panel.add(error);
-        gb.setConstraints(strut, gc); panel.add(strut);
+        gb.setConstraints(label, gc);
+        panel.add(label);
+        gb.setConstraints(field, gc);
+        panel.add(field);
+        gb.setConstraints(error, gc);
+        panel.add(error);
+        gb.setConstraints(strut, gc);
+        panel.add(strut);
         JOptionPane pane = new JOptionPane(panel, JOptionPane.QUESTION_MESSAGE,
                 JOptionPane.OK_CANCEL_OPTION);
         pane.setInitialValue(field);
@@ -74,7 +79,8 @@ public class ProjectCircuitActions {
                 field.requestFocus();
             }
 
-            public void windowLostFocus(WindowEvent arg0) { }
+            public void windowLostFocus(WindowEvent arg0) {
+            }
         });
 
         while (true) {
@@ -125,9 +131,9 @@ public class ProjectCircuitActions {
                     JOptionPane.ERROR_MESSAGE);
         } else if (!proj.getDependencies().canRemove(circuit)) {
             JOptionPane.showMessageDialog(proj.getFrame(),
-                Strings.get("circuitRemoveUsedError"),
-                Strings.get("circuitRemoveErrorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+                    Strings.get("circuitRemoveUsedError"),
+                    Strings.get("circuitRemoveErrorTitle"),
+                    JOptionPane.ERROR_MESSAGE);
         } else {
             proj.doAction(LogisimFileActions.removeCircuit(circuit));
         }
@@ -173,8 +179,8 @@ public class ProjectCircuitActions {
     }
 
     private static void configureAnalyzer(Project proj, Circuit circuit,
-            Analyzer analyzer, Map<Instance, String> pinNames,
-            ArrayList<String> inputNames, ArrayList<String> outputNames) {
+                                          Analyzer analyzer, Map<Instance, String> pinNames,
+                                          ArrayList<String> inputNames, ArrayList<String> outputNames) {
         analyzer.getModel().setVariables(inputNames, outputNames);
 
         // If there are no inputs, we stop with that tab selected
@@ -207,8 +213,8 @@ public class ProjectCircuitActions {
 
     private static void analyzeError(Project proj, String message) {
         JOptionPane.showMessageDialog(proj.getFrame(), message,
-            Strings.get("analyzeErrorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                Strings.get("analyzeErrorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return;
     }
 }

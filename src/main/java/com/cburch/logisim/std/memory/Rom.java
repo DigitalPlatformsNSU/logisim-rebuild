@@ -33,12 +33,12 @@ public class Rom extends Mem {
 
     // The following is so that instance's MemListeners aren't freed by the
     // garbage collector until the instance itself is ready to be freed.
-    private WeakHashMap<Instance,MemListener> memListeners;
+    private WeakHashMap<Instance, MemListener> memListeners;
 
     public Rom() {
         super("ROM", Strings.getter("romComponent"), 0);
         setIconName("rom.gif");
-        memListeners = new WeakHashMap<Instance,MemListener>();
+        memListeners = new WeakHashMap<Instance, MemListener>();
     }
 
     @Override
@@ -74,7 +74,7 @@ public class Rom extends Mem {
         }
         return ret;
     }
- 
+
     @Override
     HexFrame getHexFrame(Project proj, Instance instance, CircuitState state) {
         return RomAttributes.getHexFrame(getMemContents(instance), proj);
@@ -149,7 +149,8 @@ public class Rom extends Mem {
             ret.write("addr/data: " + addr + " " + data + "\n");
             try {
                 HexFile.save(ret, state);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
             return ret.toString();
         }
 
@@ -197,12 +198,16 @@ public class Rom extends Mem {
             frame.toFront();
         }
 
-        public void mousePressed(MouseEvent e) { }
+        public void mousePressed(MouseEvent e) {
+        }
 
-        public void mouseReleased(MouseEvent e) { }
+        public void mouseReleased(MouseEvent e) {
+        }
 
-        public void mouseEntered(MouseEvent e) { }
+        public void mouseEntered(MouseEvent e) {
+        }
 
-        public void mouseExited(MouseEvent e) { }
+        public void mouseExited(MouseEvent e) {
+        }
     }
 }

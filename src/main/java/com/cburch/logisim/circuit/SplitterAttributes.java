@@ -18,28 +18,28 @@ import com.cburch.logisim.instance.StdAttr;
 
 class SplitterAttributes extends AbstractAttributeSet {
     public static final AttributeOption APPEAR_LEGACY
-        = new AttributeOption("legacy", Strings.getter("splitterAppearanceLegacy"));
+            = new AttributeOption("legacy", Strings.getter("splitterAppearanceLegacy"));
     public static final AttributeOption APPEAR_LEFT
-        = new AttributeOption("left", Strings.getter("splitterAppearanceLeft"));
+            = new AttributeOption("left", Strings.getter("splitterAppearanceLeft"));
     public static final AttributeOption APPEAR_RIGHT
-        = new AttributeOption("right", Strings.getter("splitterAppearanceRight"));
+            = new AttributeOption("right", Strings.getter("splitterAppearanceRight"));
     public static final AttributeOption APPEAR_CENTER
-        = new AttributeOption("center", Strings.getter("splitterAppearanceCenter"));
+            = new AttributeOption("center", Strings.getter("splitterAppearanceCenter"));
 
     public static final Attribute<AttributeOption> ATTR_APPEARANCE
-        = Attributes.forOption("appear", Strings.getter("splitterAppearanceAttr"),
-                new AttributeOption[] { APPEAR_LEFT, APPEAR_RIGHT, APPEAR_CENTER,
+            = Attributes.forOption("appear", Strings.getter("splitterAppearanceAttr"),
+                new AttributeOption[]{APPEAR_LEFT, APPEAR_RIGHT, APPEAR_CENTER,
                     APPEAR_LEGACY});
 
     public static final Attribute<BitWidth> ATTR_WIDTH
-        = Attributes.forBitWidth("incoming", Strings.getter("splitterBitWidthAttr"));
+            = Attributes.forBitWidth("incoming", Strings.getter("splitterBitWidthAttr"));
     public static final Attribute<Integer> ATTR_FANOUT
-        = Attributes.forIntegerRange("fanout", Strings.getter("splitterFanOutAttr"), 1, 32);
+            = Attributes.forIntegerRange("fanout", Strings.getter("splitterFanOutAttr"), 1, 32);
 
     private static final List<Attribute<?>> INIT_ATTRIBUTES
-        = Arrays.asList(new Attribute<?>[] {
-            StdAttr.FACING, ATTR_FANOUT, ATTR_WIDTH, ATTR_APPEARANCE,
-        });
+            = Arrays.asList(new Attribute<?>[]{
+                    StdAttr.FACING, ATTR_FANOUT, ATTR_WIDTH, ATTR_APPEARANCE,
+            });
 
     private static final String unchosen_val = "none";
 
@@ -134,7 +134,7 @@ class SplitterAttributes extends AbstractAttributeSet {
     Direction facing = Direction.EAST;
     byte fanout = 2;                 // number of ends this splits into
     byte[] bit_end = new byte[2];    // how each bit maps to an end (0 if nowhere);
-                                     //   other values will be between 1 and fanout
+    //   other values will be between 1 and fanout
     BitOutOption[] options = null;
 
     SplitterAttributes() {
@@ -228,7 +228,7 @@ class SplitterAttributes extends AbstractAttributeSet {
             if (value instanceof Integer) {
                 val = ((Integer) value).intValue();
             } else {
-                val= ((BitOutOption) value).value + 1;
+                val = ((BitOutOption) value).value + 1;
             }
             if (val >= 0 && val <= fanout) {
                 bit_end[bitOutAttr.which] = (byte) val;

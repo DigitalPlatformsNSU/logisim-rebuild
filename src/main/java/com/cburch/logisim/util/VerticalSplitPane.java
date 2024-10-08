@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 
 public class VerticalSplitPane extends JPanel {
     private class MyLayout implements LayoutManager {
+
         public void addLayoutComponent(String name, Component comp) { }
+
         public void removeLayoutComponent(Component comp) { }
 
         public Dimension preferredLayoutSize(Container parent) {

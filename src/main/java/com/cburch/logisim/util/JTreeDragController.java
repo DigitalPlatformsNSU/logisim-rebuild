@@ -28,9 +28,9 @@ import javax.swing.JTree;
  */
 
 public interface JTreeDragController {
-    public boolean canPerformAction(JTree target, Object draggedNode,
-            int action, Point location);
+    boolean canPerformAction(JTree target, Object draggedNode,
+                             int action, Point location);
 
-    public boolean executeDrop(JTree tree, Object draggedNode,
-            Object newParentNode, int action);
+    boolean executeDrop(JTree tree, Object draggedNode,
+                        Object newParentNode, int action);
 }

@@ -19,7 +19,7 @@ import com.cburch.logisim.prefs.AppPreferences;
 import com.cburch.logisim.proj.Project;
 
 public class AppearanceView {
-    private static final double[] ZOOM_OPTIONS = { 100, 150, 200, 300, 400, 600, 800 };
+    private static final double[] ZOOM_OPTIONS = {100, 150, 200, 300, 400, 600, 800};
 
     private DrawingAttributeSet attrs;
     private AppearanceCanvas canvas;

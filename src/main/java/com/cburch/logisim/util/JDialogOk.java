@@ -73,7 +73,9 @@ public abstract class JDialogOk extends JDialog {
     }
 
     @Override
-    public Container getContentPane() { return contents; }
+    public Container getContentPane() {
+        return contents;
+    }
 
     public abstract void okClicked();
 

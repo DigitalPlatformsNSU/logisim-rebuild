@@ -34,10 +34,10 @@ class XnorGate extends AbstractGate {
     @Override
     public void paintIconShaped(InstancePainter painter) {
         Graphics g = painter.getGraphics();
-        GraphicsUtil.drawCenteredArc(g,   0, - 5, 22, -90,  53);
-        GraphicsUtil.drawCenteredArc(g,   0, 23, 22,  90, -53);
-        GraphicsUtil.drawCenteredArc(g,  -8,  9, 16, -30, 60);
-        GraphicsUtil.drawCenteredArc(g, -10,  9, 16, -30, 60);
+        GraphicsUtil.drawCenteredArc(g, 0, -5, 22, -90, 53);
+        GraphicsUtil.drawCenteredArc(g, 0, 23, 22, 90, -53);
+        GraphicsUtil.drawCenteredArc(g, -8, 9, 16, -30, 60);
+        GraphicsUtil.drawCenteredArc(g, -10, 9, 16, -30, 60);
         g.drawOval(16, 8, 4, 4);
     }
 
@@ -48,7 +48,7 @@ class XnorGate extends AbstractGate {
 
     @Override
     protected void paintDinShape(InstancePainter painter, int width, int height,
-            int inputs) {
+                                 int inputs) {
         PainterDin.paintXnor(painter, width, height, false);
     }
 
@@ -73,5 +73,7 @@ class XnorGate extends AbstractGate {
     }
 
     @Override
-    protected Value getIdentity() { return Value.FALSE; }
+    protected Value getIdentity() {
+        return Value.FALSE;
+    }
 }

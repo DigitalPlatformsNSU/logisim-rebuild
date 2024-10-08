@@ -37,7 +37,7 @@ import com.cburch.logisim.util.GraphicsUtil;
 public class EditTool extends Tool {
     private static final int CACHE_MAX_SIZE = 32;
     private static final Location NULL_LOCATION
-        = Location.create(Integer.MIN_VALUE, Integer.MIN_VALUE);
+            = Location.create(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
     private class Listener implements CircuitListener, Selection.Listener {
         public void circuitChanged(CircuitEvent event) {
@@ -59,7 +59,7 @@ public class EditTool extends Tool {
     private SelectTool select;
     private WiringTool wiring;
     private Tool current;
-    private LinkedHashMap<Location,Boolean> cache;
+    private LinkedHashMap<Location, Boolean> cache;
     private Canvas lastCanvas;
     private int lastRawX;
     private int lastRawY;
@@ -75,7 +75,7 @@ public class EditTool extends Tool {
         this.select = select;
         this.wiring = wiring;
         this.current = select;
-        this.cache = new LinkedHashMap<Location,Boolean>();
+        this.cache = new LinkedHashMap<Location, Boolean>();
         this.lastX = -1;
         this.wireLoc = NULL_LOCATION;
         this.pressX = -1;
@@ -339,7 +339,9 @@ public class EditTool extends Tool {
         if (at != null && at.size() > 0) return wiring;
 
         for (Wire w : circ.getWires()) {
-            if (w.contains(loc)) { return wiring; }
+            if (w.contains(loc)) {
+                return wiring;
+            }
         }
         return select;
     }
@@ -352,49 +354,55 @@ public class EditTool extends Tool {
     @Override
     public void keyPressed(Canvas canvas, KeyEvent e) {
         switch (e.getKeyCode()) {
-        case KeyEvent.VK_BACK_SPACE:
-        case KeyEvent.VK_DELETE:
-            if (!canvas.getSelection().isEmpty()) {
-                Action act = SelectionActions.clear(canvas.getSelection());
+            case KeyEvent.VK_BACK_SPACE:
+            case KeyEvent.VK_DELETE:
+                if (!canvas.getSelection().isEmpty()) {
+                    Action act = SelectionActions.clear(canvas.getSelection());
+                    canvas.getProject().doAction(act);
+                    e.consume();
+                } else {
+                    wiring.keyPressed(canvas, e);
+                }
+                break;
+            case KeyEvent.VK_INSERT:
+                Action act = SelectionActions.duplicate(canvas.getSelection());
                 canvas.getProject().doAction(act);
                 e.consume();
-            } else {
-                wiring.keyPressed(canvas, e);
-            }
-            break;
-        case KeyEvent.VK_INSERT:
-            Action act = SelectionActions.duplicate(canvas.getSelection());
-            canvas.getProject().doAction(act);
-            e.consume();
-            break;
-        case KeyEvent.VK_UP:
-            if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.NORTH, e);
-            else                         select.keyPressed(canvas, e);
-            break;
-        case KeyEvent.VK_DOWN:
-            if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.SOUTH, e);
-            else                         select.keyPressed(canvas, e);
-            break;
-        case KeyEvent.VK_LEFT:
-            if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.WEST, e);
-            else                         select.keyPressed(canvas, e);
-            break;
-        case KeyEvent.VK_RIGHT:
-            if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.EAST, e);
-            else                         select.keyPressed(canvas, e);
-            break;
-        case KeyEvent.VK_ALT:   updateLocation(canvas, e); e.consume(); break;
-        default:
-            select.keyPressed(canvas, e);
+                break;
+            case KeyEvent.VK_UP:
+                if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.NORTH, e);
+                else select.keyPressed(canvas, e);
+                break;
+            case KeyEvent.VK_DOWN:
+                if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.SOUTH, e);
+                else select.keyPressed(canvas, e);
+                break;
+            case KeyEvent.VK_LEFT:
+                if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.WEST, e);
+                else select.keyPressed(canvas, e);
+                break;
+            case KeyEvent.VK_RIGHT:
+                if (e.getModifiersEx() == 0) attemptReface(canvas, Direction.EAST, e);
+                else select.keyPressed(canvas, e);
+                break;
+            case KeyEvent.VK_ALT:
+                updateLocation(canvas, e);
+                e.consume();
+                break;
+            default:
+                select.keyPressed(canvas, e);
         }
     }
 
     @Override
     public void keyReleased(Canvas canvas, KeyEvent e) {
         switch (e.getKeyCode()) {
-        case KeyEvent.VK_ALT:   updateLocation(canvas, e); e.consume(); break;
-        default:
-            select.keyReleased(canvas, e);
+            case KeyEvent.VK_ALT:
+                updateLocation(canvas, e);
+                e.consume();
+                break;
+            default:
+                select.keyReleased(canvas, e);
         }
     }
 

@@ -41,12 +41,15 @@ class Clipboard {
     public static void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
     }
+
     public static void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(propertyName, listener);
     }
+
     public static void removePropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(listener);
     }
+
     public static void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(propertyName, listener);
     }

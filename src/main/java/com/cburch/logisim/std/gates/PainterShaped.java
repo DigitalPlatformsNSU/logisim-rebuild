@@ -29,46 +29,47 @@ public class PainterShaped {
         PATH_NARROW = new GeneralPath();
         PATH_NARROW.moveTo(0, 0);
         PATH_NARROW.quadTo(-10, -15, -30, -15);
-        PATH_NARROW.quadTo(-22,   0, -30,  15);
-        PATH_NARROW.quadTo(-10,  15,   0,   0);
+        PATH_NARROW.quadTo(-22, 0, -30, 15);
+        PATH_NARROW.quadTo(-10, 15, 0, 0);
         PATH_NARROW.closePath();
 
         PATH_MEDIUM = new GeneralPath();
         PATH_MEDIUM.moveTo(0, 0);
         PATH_MEDIUM.quadTo(-20, -25, -50, -25);
-        PATH_MEDIUM.quadTo(-37,   0, -50,  25);
-        PATH_MEDIUM.quadTo(-20,  25,   0,   0);
+        PATH_MEDIUM.quadTo(-37, 0, -50, 25);
+        PATH_MEDIUM.quadTo(-20, 25, 0, 0);
         PATH_MEDIUM.closePath();
 
         PATH_WIDE = new GeneralPath();
         PATH_WIDE.moveTo(0, 0);
         PATH_WIDE.quadTo(-25, -35, -70, -35);
-        PATH_WIDE.quadTo(-50,   0, -70,  35);
-        PATH_WIDE.quadTo(-25,  35,   0,   0);
+        PATH_WIDE.quadTo(-50, 0, -70, 35);
+        PATH_WIDE.quadTo(-25, 35, 0, 0);
         PATH_WIDE.closePath();
 
         SHIELD_NARROW = new GeneralPath();
         SHIELD_NARROW.moveTo(-30, -15);
-        SHIELD_NARROW.quadTo(-22,   0, -30,  15);
+        SHIELD_NARROW.quadTo(-22, 0, -30, 15);
 
         SHIELD_MEDIUM = new GeneralPath();
         SHIELD_MEDIUM.moveTo(-50, -25);
-        SHIELD_MEDIUM.quadTo(-37,   0, -50,  25);
+        SHIELD_MEDIUM.quadTo(-37, 0, -50, 25);
 
         SHIELD_WIDE = new GeneralPath();
         SHIELD_WIDE.moveTo(-70, -35);
-        SHIELD_WIDE.quadTo(-50,   0, -70,  35);
+        SHIELD_WIDE.quadTo(-50, 0, -70, 35);
     }
 
-    private PainterShaped() { }
+    private PainterShaped() {
+    }
 
-    private static HashMap<Integer,int[]> INPUT_LENGTHS = new HashMap<Integer,int[]>();
+    private static HashMap<Integer, int[]> INPUT_LENGTHS = new HashMap<Integer, int[]>();
 
     static void paintAnd(InstancePainter painter, int width, int height) {
         Graphics g = painter.getGraphics();
         GraphicsUtil.switchToWidth(g, 2);
-        int[] xp = new int[] { -width / 2, -width + 1, -width + 1, -width / 2 };
-        int[] yp = new int[] { -width / 2, -width / 2, width / 2, width / 2 };
+        int[] xp = new int[]{-width / 2, -width + 1, -width + 1, -width / 2};
+        int[] yp = new int[]{-width / 2, -width / 2, width / 2, width / 2};
         GraphicsUtil.drawCenteredArc(g, -width / 2, 0, width / 2, -90, 180);
 
         g.drawPolyline(xp, yp, 4);
@@ -116,19 +117,27 @@ public class PainterShaped {
             GraphicsUtil.switchToWidth(g, 2);
             int[] xp = new int[4];
             int[] yp = new int[4];
-            xp[0] =  -6; yp[0] =  0;
-            xp[1] = -19; yp[1] = -6;
-            xp[2] = -19; yp[2] =  6;
-            xp[3] =  -6; yp[3] =  0;
+            xp[0] = -6;
+            yp[0] = 0;
+            xp[1] = -19;
+            yp[1] = -6;
+            xp[2] = -19;
+            yp[2] = 6;
+            xp[3] = -6;
+            yp[3] = 0;
             g.drawPolyline(xp, yp, 4);
             g.drawOval(-6, -3, 6, 6);
         } else {
             int[] xp = new int[4];
             int[] yp = new int[4];
-            xp[0] = -10; yp[0] = 0;
-            xp[1] = -29; yp[1] = -7;
-            xp[2] = -29; yp[2] = 7;
-            xp[3] = -10; yp[3] = 0;
+            xp[0] = -10;
+            yp[0] = 0;
+            xp[1] = -29;
+            yp[1] = -7;
+            xp[2] = -29;
+            yp[2] = 7;
+            xp[3] = -10;
+            yp[3] = 0;
             g.drawPolyline(xp, yp, 4);
             g.drawOval(-9, -4, 9, 9);
         }
@@ -141,7 +150,7 @@ public class PainterShaped {
     }
 
     private static void paintShield(Graphics g, int xlate,
-            int width, int height) {
+                                    int width, int height) {
         GraphicsUtil.switchToWidth(g, 2);
         g.translate(xlate, 0);
         ((Graphics2D) g).draw(computeShield(width, height));

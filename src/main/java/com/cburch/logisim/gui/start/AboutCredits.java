@@ -18,14 +18,20 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 
 class AboutCredits extends JComponent {
-    /** Time to spend freezing the credits before after after scrolling */
+    /**
+     * Time to spend freezing the credits before after after scrolling
+     */
     private static final int MILLIS_FREEZE = 1000;
 
-    /** Speed of how quickly the scrolling occurs */
+    /**
+     * Speed of how quickly the scrolling occurs
+     */
     private static final int MILLIS_PER_PIXEL = 20;
 
-    /** Path to Hendrix College's logo - if you want your own logo included,
-     * please add it separately rather than replacing this. */
+    /**
+     * Path to Hendrix College's logo - if you want your own logo included,
+     * please add it separately rather than replacing this.
+     */
     private static final String HENDRIX_PATH = "resources/logisim/hendrix.png";
     private static final int HENDRIX_WIDTH = 50;
 
@@ -71,12 +77,12 @@ class AboutCredits extends JComponent {
 
         fadeStop = (float) (About.IMAGE_HEIGHT / 4.0);
 
-        colorBase = new Color[] {
+        colorBase = new Color[]{
                 new Color(143, 0, 0),
                 new Color(48, 0, 96),
                 new Color(48, 0, 96),
         };
-        font = new Font[] {
+        font = new Font[]{
                 new Font("Sans Serif", Font.ITALIC, 20),
                 new Font("Sans Serif", Font.BOLD, 24),
                 new Font("Sans Serif", Font.BOLD, 18),
@@ -182,7 +188,7 @@ class AboutCredits extends JComponent {
                 for (int i = 0; i < paint.length; i++) {
                     Color hue = colorBase[i];
                     paint[i] = new GradientPaint(0.0f, 0.0f, derive(hue, a),
-                        0.0f, fadeStop, hue);
+                            0.0f, fadeStop, hue);
                 }
             }
             yPos = initY;

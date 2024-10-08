@@ -18,7 +18,7 @@ class LayoutOptions extends OptionsPanel {
     public LayoutOptions(PreferencesFrame window) {
         super(window);
 
-        checks = new PrefBoolean[] {
+        checks = new PrefBoolean[]{
                 new PrefBoolean(AppPreferences.PRINTER_VIEW,
                         Strings.getter("layoutPrinterView")),
                 new PrefBoolean(AppPreferences.ATTRIBUTE_HALO,
@@ -29,7 +29,7 @@ class LayoutOptions extends OptionsPanel {
                         Strings.getter("layoutMoveKeepConnect")),
                 new PrefBoolean(AppPreferences.ADD_SHOW_GHOSTS,
                         Strings.getter("layoutAddShowGhosts")),
-            };
+        };
 
         for (int i = 0; i < 2; i++) {
             RadixOption[] opts = RadixOption.OPTIONS;
@@ -47,11 +47,11 @@ class LayoutOptions extends OptionsPanel {
         }
         afterAdd = new PrefOptionList(AppPreferences.ADD_AFTER,
                 Strings.getter("layoutAddAfter"),
-                new PrefOption[] {
-                    new PrefOption(AppPreferences.ADD_AFTER_UNCHANGED,
-                            Strings.getter("layoutAddAfterUnchanged")),
-                    new PrefOption(AppPreferences.ADD_AFTER_EDIT,
-                            Strings.getter("layoutAddAfterEdit")) });
+                new PrefOption[]{
+                        new PrefOption(AppPreferences.ADD_AFTER_UNCHANGED,
+                                Strings.getter("layoutAddAfterUnchanged")),
+                        new PrefOption(AppPreferences.ADD_AFTER_EDIT,
+                                Strings.getter("layoutAddAfterEdit"))});
 
         JPanel panel = new JPanel(new TableLayout(2));
         panel.add(afterAdd.getJLabel());

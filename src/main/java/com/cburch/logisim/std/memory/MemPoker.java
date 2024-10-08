@@ -37,10 +37,12 @@ public class MemPoker extends InstancePoker {
     public Bounds getBounds(InstancePainter state) {
         return sub.getBounds(state);
     }
+
     @Override
     public void paint(InstancePainter painter) {
         sub.paint(painter);
     }
+
     @Override
     public void keyTyped(InstanceState state, KeyEvent e) {
         sub.keyTyped(state, e);

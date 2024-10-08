@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EventSourceWeakSupport<L> implements Iterable<L> {
-    private ConcurrentLinkedQueue<WeakReference<L>> listeners
-        = new ConcurrentLinkedQueue<WeakReference<L>>();
+    private ConcurrentLinkedQueue<WeakReference<L>> listeners = new ConcurrentLinkedQueue<WeakReference<L>>();
 
     public EventSourceWeakSupport() { }
 

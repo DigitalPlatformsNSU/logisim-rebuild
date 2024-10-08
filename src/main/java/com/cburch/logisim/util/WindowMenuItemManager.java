@@ -12,7 +12,9 @@ import javax.swing.JRadioButtonMenuItem;
 
 public abstract class WindowMenuItemManager {
     private class MyListener implements WindowListener {
+
         public void windowOpened(WindowEvent event) { }
+
         public void windowClosing(WindowEvent event) {
             JFrame frame = getJFrame(false);
             if (frame.getDefaultCloseOperation() == JFrame.HIDE_ON_CLOSE) {
@@ -46,8 +48,7 @@ public abstract class WindowMenuItemManager {
     private boolean persistent;
     private boolean listenerAdded = false;
     private boolean inManager = false;
-    private HashMap<WindowMenu,JRadioButtonMenuItem> menuItems
-        = new HashMap<WindowMenu,JRadioButtonMenuItem>();
+    private HashMap<WindowMenu, JRadioButtonMenuItem> menuItems = new HashMap<WindowMenu, JRadioButtonMenuItem>();
     
     public WindowMenuItemManager(String text, boolean persistent) {
         this.text = text;

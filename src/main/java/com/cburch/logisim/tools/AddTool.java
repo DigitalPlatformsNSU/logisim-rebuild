@@ -42,18 +42,19 @@ import com.cburch.logisim.util.StringUtil;
 public class AddTool extends Tool {
     private static int INVALID_COORD = Integer.MIN_VALUE;
 
-    private static int SHOW_NONE    = 0;
-    private static int SHOW_GHOST   = 1;
-    private static int SHOW_ADD     = 2;
-    private static int SHOW_ADD_NO  = 3;
+    private static int SHOW_NONE = 0;
+    private static int SHOW_GHOST = 1;
+    private static int SHOW_ADD = 2;
+    private static int SHOW_ADD_NO = 3;
 
     private static Cursor cursor
-        = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+            = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
 
     private class MyAttributeListener implements AttributeListener {
         public void attributeListChanged(AttributeEvent e) {
             bounds = null;
         }
+
         public void attributeValueChanged(AttributeEvent e) {
             bounds = null;
         }
@@ -111,7 +112,7 @@ public class AddTool extends Tool {
         AddTool o = (AddTool) other;
         if (this.description != null) {
             return this.descriptionBase == o.descriptionBase
-                && this.description.equals(o.description);
+                    && this.description.equals(o.description);
         } else {
             return this.factory.equals(o.factory);
         }
@@ -203,7 +204,7 @@ public class AddTool extends Tool {
     @Override
     public boolean isAllDefaultValues(AttributeSet attrs, LogisimVersion ver) {
         return this.attrs == attrs && attrs instanceof FactoryAttributes
-            && !((FactoryAttributes) attrs).isFactoryInstantiated();
+                && !((FactoryAttributes) attrs).isFactoryInstantiated();
     }
 
     @Override
@@ -235,7 +236,8 @@ public class AddTool extends Tool {
         return ret;
     }
 
-    public void cancelOp() { }
+    public void cancelOp() {
+    }
 
     @Override
     public void select(Canvas canvas) {
@@ -252,7 +254,7 @@ public class AddTool extends Tool {
     }
 
     private synchronized void moveTo(Canvas canvas, Graphics g,
-            int x, int y) {
+                                     int x, int y) {
         if (state != SHOW_NONE) expose(canvas, lastX, lastY);
         lastX = x;
         lastY = y;
@@ -261,7 +263,7 @@ public class AddTool extends Tool {
 
     @Override
     public void mouseEntered(Canvas canvas, Graphics g,
-            MouseEvent e) {
+                             MouseEvent e) {
         if (state == SHOW_GHOST || state == SHOW_NONE) {
             setState(canvas, SHOW_GHOST);
             canvas.requestFocusInWindow();
@@ -273,7 +275,7 @@ public class AddTool extends Tool {
 
     @Override
     public void mouseExited(Canvas canvas, Graphics g,
-            MouseEvent e) {
+                            MouseEvent e) {
         if (state == SHOW_GHOST) {
             moveTo(canvas, canvas.getGraphics(), INVALID_COORD, INVALID_COORD);
             setState(canvas, SHOW_NONE);
@@ -323,7 +325,7 @@ public class AddTool extends Tool {
 
     @Override
     public void mouseReleased(Canvas canvas, Graphics g,
-            MouseEvent e) {
+                              MouseEvent e) {
         Component added = null;
         if (state == SHOW_ADD) {
             Circuit circ = canvas.getCircuit();
@@ -357,7 +359,7 @@ public class AddTool extends Tool {
                 added = c;
             } catch (CircuitException ex) {
                 JOptionPane.showMessageDialog(canvas.getProject().getFrame(),
-                    ex.getMessage());
+                        ex.getMessage());
             }
             setState(canvas, SHOW_GHOST);
         } else if (state == SHOW_ADD_NO) {
@@ -396,15 +398,26 @@ public class AddTool extends Tool {
 
         if (!event.isConsumed() && event.getModifiersEx() == 0) {
             switch (event.getKeyCode()) {
-            case KeyEvent.VK_UP:    setFacing(canvas, Direction.NORTH); break;
-            case KeyEvent.VK_DOWN:  setFacing(canvas, Direction.SOUTH); break;
-            case KeyEvent.VK_LEFT:  setFacing(canvas, Direction.WEST); break;
-            case KeyEvent.VK_RIGHT: setFacing(canvas, Direction.EAST); break;
-            case KeyEvent.VK_BACK_SPACE:
-                if (lastAddition != null && canvas.getProject().getLastAction() == lastAddition) {
-                    canvas.getProject().undoAction();
-                    lastAddition = null;
-                }
+                case KeyEvent.VK_UP:
+                    setFacing(canvas, Direction.NORTH);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    setFacing(canvas, Direction.SOUTH);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    setFacing(canvas, Direction.WEST);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    setFacing(canvas, Direction.EAST);
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                    if (lastAddition != null && canvas.getProject().getLastAction() == lastAddition) {
+                        canvas.getProject().undoAction();
+                        lastAddition = null;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
     }
@@ -474,11 +487,13 @@ public class AddTool extends Tool {
     private void expose(java.awt.Component c, int x, int y) {
         Bounds bds = getBounds();
         c.repaint(x + bds.getX(), y + bds.getY(),
-            bds.getWidth(), bds.getHeight());
+                bds.getWidth(), bds.getHeight());
     }
 
     @Override
-    public Cursor getCursor() { return cursor; }
+    public Cursor getCursor() {
+        return cursor;
+    }
 
     private void setState(Canvas canvas, int value) {
         if (value == SHOW_GHOST) {
@@ -488,7 +503,7 @@ public class AddTool extends Tool {
             } else {
                 state = SHOW_NONE;
             }
-        } else{
+        } else {
             state = value;
         }
     }

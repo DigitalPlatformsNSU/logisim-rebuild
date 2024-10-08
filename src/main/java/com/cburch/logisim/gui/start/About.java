@@ -48,7 +48,8 @@ public class About {
                 panel.repaint();
                 try {
                     Thread.sleep(20);
-                } catch (InterruptedException ex) { }
+                } catch (InterruptedException ex) {
+                }
             }
         }
     }
@@ -91,7 +92,8 @@ public class About {
                 g.setColor(fadeColor);
                 g.fillRect(x, y, IMAGE_WIDTH, IMAGE_HEIGHT);
                 drawText(g, x, y);
-            } catch (Throwable t) { }
+            } catch (Throwable t) {
+            }
         }
 
         private void drawCircuit(Graphics g, int x0, int y0) {
@@ -163,10 +165,14 @@ public class About {
         private void drawNot(Graphics g, int x0, int y0, int x, int y) {
             int[] xp = new int[4];
             int[] yp = new int[4];
-            xp[0] = toX(x0, x - 10); yp[0] = toY(y0, y);
-            xp[1] = toX(x0, x - 29); yp[1] = toY(y0, y - 7);
-            xp[2] = xp[1]; yp[2] = toY(y0, y + 7);
-            xp[3] = xp[0]; yp[3] = yp[0];
+            xp[0] = toX(x0, x - 10);
+            yp[0] = toY(y0, y);
+            xp[1] = toX(x0, x - 29);
+            yp[1] = toY(y0, y - 7);
+            xp[2] = xp[1];
+            yp[2] = toY(y0, y + 7);
+            xp[3] = xp[0];
+            yp[3] = yp[0];
             g.drawPolyline(xp, yp, 4);
             int diam = toDim(10);
             g.drawOval(xp[0], yp[0] - diam / 2, diam, diam);
@@ -175,10 +181,14 @@ public class About {
         private void drawAnd(Graphics g, int x0, int y0, int x, int y) {
             int[] xp = new int[4];
             int[] yp = new int[4];
-            xp[0] = toX(x0, x - 25); yp[0] = toY(y0, y - 25);
-            xp[1] = toX(x0, x - 50); yp[1] = yp[0];
-            xp[2] = xp[1]; yp[2] = toY(y0, y + 25);
-            xp[3] = xp[0]; yp[3] = yp[2];
+            xp[0] = toX(x0, x - 25);
+            yp[0] = toY(y0, y - 25);
+            xp[1] = toX(x0, x - 50);
+            yp[1] = yp[0];
+            xp[2] = xp[1];
+            yp[2] = toY(y0, y + 25);
+            xp[3] = xp[0];
+            yp[3] = yp[2];
             int diam = toDim(50);
             g.drawArc(xp[1], yp[1], diam, diam, -90, 180);
             g.drawPolyline(xp, yp, 4);
@@ -211,10 +221,12 @@ public class About {
             g.setColor(headerColor);
             g.setFont(headerFont);
             g.drawString("Logisim", x, y + 45);
-            g.setFont(copyrightFont); fm = g.getFontMetrics();
+            g.setFont(copyrightFont);
+            fm = g.getFontMetrics();
             str = "\u00a9 " + Main.COPYRIGHT_YEAR;
             g.drawString(str, x + IMAGE_WIDTH - fm.stringWidth(str), y + 16);
-            g.setFont(versionFont); fm = g.getFontMetrics();
+            g.setFont(versionFont);
+            fm = g.getFontMetrics();
             str = "Version " + Main.VERSION_NAME;
             g.drawString(str, x + IMAGE_WIDTH - fm.stringWidth(str), y + 75);
         }
@@ -232,10 +244,12 @@ public class About {
             }
         }
 
-        public void ancestorMoved(AncestorEvent arg0) { }
+        public void ancestorMoved(AncestorEvent arg0) {
+        }
     }
 
-    private About() { }
+    private About() {
+    }
 
     public static MyPanel getImagePanel() {
         return new MyPanel();

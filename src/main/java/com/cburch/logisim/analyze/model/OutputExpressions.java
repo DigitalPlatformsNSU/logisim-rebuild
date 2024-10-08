@@ -122,6 +122,7 @@ public class OutputExpressions {
         }
 
         private boolean invalidating = false;
+
         private void invalidate(boolean initializing, boolean formatChanged) {
             if (invalidating) return;
             invalidating = true;
@@ -225,9 +226,9 @@ public class OutputExpressions {
 
     private MyListener myListener = new MyListener();
     private AnalyzerModel model;
-    private HashMap<String,OutputData> outputData = new HashMap<String,OutputData>();
+    private HashMap<String, OutputData> outputData = new HashMap<String, OutputData>();
     private ArrayList<OutputExpressionsListener> listeners
-        = new ArrayList<OutputExpressionsListener>();
+            = new ArrayList<OutputExpressionsListener>();
     private boolean updatingTable = false;
 
     public OutputExpressions(AnalyzerModel model) {
@@ -358,7 +359,7 @@ public class OutputExpressions {
         for (int i = 0; i < a.length; i++) {
             if (a[i] != b[i]) {
                 boolean bothDefined = (a[i] == Entry.ZERO || a[i] == Entry.ONE)
-                                    && (b[i] == Entry.ZERO || b[i] == Entry.ONE);
+                        && (b[i] == Entry.ZERO || b[i] == Entry.ONE);
                 if (bothDefined) return false;
             }
         }

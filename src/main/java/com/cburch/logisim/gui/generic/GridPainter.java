@@ -57,12 +57,12 @@ public class GridPainter {
     }
 
     public void addPropertyChangeListener(String prop,
-            PropertyChangeListener listener) {
+                                          PropertyChangeListener listener) {
         support.addPropertyChangeListener(prop, listener);
     }
 
     public void removePropertyChangeListener(String prop,
-            PropertyChangeListener listener) {
+                                             PropertyChangeListener listener) {
         support.removePropertyChangeListener(prop, listener);
     }
 

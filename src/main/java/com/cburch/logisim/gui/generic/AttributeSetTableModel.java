@@ -62,7 +62,7 @@ public abstract class AttributeSetTableModel
                 setValueRequested(attr, value);
             } catch (ClassCastException e) {
                 String msg = Strings.get("attributeChangeInvalidError")
-                    + ": " + e;
+                        + ": " + e;
                 throw new AttrTableSetException(msg);
             } catch (NumberFormatException e) {
                 String msg = Strings.get("attributeChangeInvalidError");
@@ -156,7 +156,7 @@ public abstract class AttributeSetTableModel
     }
 
     protected abstract void setValueRequested(Attribute<Object> attr, Object value)
-        throws AttrTableSetException;
+            throws AttrTableSetException;
 
     //
     // AttributeListener methods

@@ -61,7 +61,7 @@ public class JTreeUtil {
 
     private static class TransferableNode implements Transferable {
         private Object node;
-        private DataFlavor[] flavors = { NODE_FLAVOR };
+        private DataFlavor[] flavors = {NODE_FLAVOR};
 
         public TransferableNode(Object nd) {
             node = nd;
@@ -103,7 +103,7 @@ public class JTreeUtil {
         private boolean drawImage;
 
         protected TreeTransferHandler(JTree tree, JTreeDragController controller,
-                int action, boolean drawIcon) {
+                                      int action, boolean drawIcon) {
             this.tree = tree;
             this.controller = controller;
             drawImage = drawIcon;
@@ -182,8 +182,8 @@ public class JTreeUtil {
                 draggedNode = path.getLastPathComponent();
                 if (drawImage) {
                     Rectangle pathBounds = tree.getPathBounds(path); // getpathbounds
-                                                                        // of
-                                                                        // selectionpath
+                    // of
+                    // selectionpath
                     JComponent lbl = (JComponent) tree
                             .getCellRenderer()
                             .getTreeCellRendererComponent(
@@ -191,31 +191,31 @@ public class JTreeUtil {
                                     draggedNode,
                                     false,
                                     tree.isExpanded(path),
-                                    tree.getModel() .isLeaf(path.getLastPathComponent()),
-                                    0, false);// returning the label
-                    lbl.setBounds(pathBounds);// setting bounds to lbl
+                                    tree.getModel().isLeaf(path.getLastPathComponent()),
+                                    0, false); // returning the label
+                    lbl.setBounds(pathBounds); // setting bounds to lbl
                     image = new BufferedImage(lbl.getWidth(), lbl.getHeight(),
-                            java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE);// buffered
-                                                                            // image
-                                                                            // reference
-                                                                            // passing
-                                                                            // the
-                                                                            // label's
-                                                                            // ht
-                                                                            // and
-                                                                            // width
-                    Graphics2D graphics = image.createGraphics();// creating
-                                                                    // the
-                                                                    // graphics
-                                                                    // for
-                                                                    // buffered
-                                                                    // image
+                            java.awt.image.BufferedImage.TYPE_INT_ARGB_PRE); // buffered
+                    // image
+                    // reference
+                    // passing
+                    // the
+                    // label's
+                    // ht
+                    // and
+                    // width
+                    Graphics2D graphics = image.createGraphics(); // creating
+                    // the
+                    // graphics
+                    // for
+                    // buffered
+                    // image
                     graphics.setComposite(AlphaComposite.getInstance(
                             AlphaComposite.SRC_OVER, 0.5f)); // Sets the
-                                                                // Composite for
-                                                                // the
-                                                                // Graphics2D
-                                                                // context
+                    // Composite for
+                    // the
+                    // Graphics2D
+                    // context
                     lbl.setOpaque(false);
                     lbl.paint(graphics); // painting the graphics to label
                     graphics.dispose();

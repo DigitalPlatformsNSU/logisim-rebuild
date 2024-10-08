@@ -21,7 +21,7 @@ class FactoryAttributes implements AttributeSet, AttributeListener, Cloneable {
     private ArrayList<AttributeListener> listeners;
 
     public FactoryAttributes(Class<? extends Library> descBase,
-            FactoryDescription desc) {
+                             FactoryDescription desc) {
         this.descBase = descBase;
         this.desc = desc;
         this.factory = null;

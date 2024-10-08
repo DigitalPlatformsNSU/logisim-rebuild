@@ -36,7 +36,7 @@ public class LayoutThumbnail extends JComponent {
     }
 
     public void setCircuit(CircuitState circuitState,
-            Collection<Instance> ports) {
+                           Collection<Instance> ports) {
         this.circuitState = circuitState;
         this.ports = ports;
         repaint();

@@ -10,8 +10,7 @@ class WindowMenuManager {
     private WindowMenuManager() { }
 
     private static ArrayList<WindowMenu> menus = new ArrayList<WindowMenu>();
-    private static ArrayList<WindowMenuItemManager> managers
-        = new ArrayList<WindowMenuItemManager>();
+    private static ArrayList<WindowMenuItemManager> managers = new ArrayList<WindowMenuItemManager>();
     private static WindowMenuItemManager currentManager = null;
 
     public static void addMenu(WindowMenu menu) {
@@ -49,9 +48,11 @@ class WindowMenuManager {
         if (value == currentManager) return;
 
         boolean doEnable = (currentManager == null) != (value == null);
-        if (currentManager == null) setNullItems(false); else currentManager.setSelected(false);
+        if (currentManager == null) setNullItems(false);
+        else currentManager.setSelected(false);
         currentManager = value;
-        if (currentManager == null) setNullItems(true); else currentManager.setSelected(true);
+        if (currentManager == null) setNullItems(true);
+        else currentManager.setSelected(true);
         if (doEnable) enableAll();
     }
 

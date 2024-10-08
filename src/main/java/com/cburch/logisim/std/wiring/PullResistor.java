@@ -29,11 +29,10 @@ import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.Icons;
 
 public class PullResistor extends InstanceFactory {
-    public static final Attribute<AttributeOption> ATTR_PULL_TYPE
-        = Attributes.forOption("pull", Strings.getter("pullTypeAttr"),
-                new AttributeOption[] {
+    public static final Attribute<AttributeOption> ATTR_PULL_TYPE = Attributes.forOption("pull", Strings.getter("pullTypeAttr"),
+            new AttributeOption[]{
                     new AttributeOption(Value.FALSE, "0", Strings.getter("pullZeroType")),
-                    new AttributeOption(Value.TRUE,  "1", Strings.getter("pullOneType")),
+                    new AttributeOption(Value.TRUE, "1", Strings.getter("pullOneType")),
                     new AttributeOption(Value.ERROR, "X", Strings.getter("pullErrorType"))
             });
 
@@ -44,8 +43,8 @@ public class PullResistor extends InstanceFactory {
 
     public PullResistor() {
         super("Pull Resistor", Strings.getter("pullComponent"));
-        setAttributes(new Attribute[] { StdAttr.FACING, ATTR_PULL_TYPE },
-                new Object[] { Direction.SOUTH, ATTR_PULL_TYPE.parse("0") });
+        setAttributes(new Attribute[]{StdAttr.FACING, ATTR_PULL_TYPE},
+                new Object[]{Direction.SOUTH, ATTR_PULL_TYPE.parse("0")});
         setFacingAttribute(StdAttr.FACING);
     }
 
@@ -98,7 +97,7 @@ public class PullResistor extends InstanceFactory {
     }
 
     private void paintBase(InstancePainter painter, Value pullValue,
-            Color inColor, Color outColor) {
+                           Color inColor, Color outColor) {
         boolean color = painter.shouldDrawColor();
         Direction facing = painter.getAttributeValue(StdAttr.FACING);
         Graphics g = painter.getGraphics();
@@ -131,8 +130,8 @@ public class PullResistor extends InstanceFactory {
         g.setColor(baseColor);
         GraphicsUtil.switchToWidth(g, 2);
         if (painter.getGateShape() == AppPreferences.SHAPE_SHAPED) {
-            int[] xp = {   0,  -5,   5,  -5,   5, -5,  0 };
-            int[] yp = { -25, -23, -19, -15, -11, -7, -5};
+            int[] xp = {0, -5, 5, -5, 5, -5, 0};
+            int[] yp = {-25, -23, -19, -15, -11, -7, -5};
             g.drawPolyline(xp, yp, xp.length);
         } else {
             g.drawRect(-5, -25, 10, 20);
@@ -148,9 +147,9 @@ public class PullResistor extends InstanceFactory {
     @Override
     protected void configureNewInstance(Instance instance) {
         instance.addAttributeListener();
-        instance.setPorts(new Port[] {
+        instance.setPorts(new Port[]{
                 new Port(0, 0, Port.INOUT, BitWidth.UNKNOWN)
-            });
+        });
     }
 
     @Override

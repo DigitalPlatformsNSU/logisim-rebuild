@@ -23,11 +23,11 @@ import com.cburch.logisim.util.WindowMenuItemManager;
 
 public class PreferencesFrame extends LFrame {
     private static WindowMenuManager MENU_MANAGER = null;
-    
+
     public static void initializeManager() {
         MENU_MANAGER = new WindowMenuManager();
     }
-    
+
     private static class WindowMenuManager extends WindowMenuItemManager
             implements LocaleListener {
         private PreferencesFrame window = null;
@@ -36,7 +36,7 @@ public class PreferencesFrame extends LFrame {
             super(Strings.get("preferencesFrameMenuItem"), true);
             LocaleManager.addLocaleListener(this);
         }
-        
+
         @Override
         public JFrame getJFrame(boolean create) {
             if (create) {
@@ -47,7 +47,7 @@ public class PreferencesFrame extends LFrame {
             }
             return window;
         }
-        
+
         public void localeChanged() {
             setText(Strings.get("preferencesFrameMenuItem"));
         }
@@ -63,7 +63,7 @@ public class PreferencesFrame extends LFrame {
                 PreferencesFrame.this.processWindowEvent(e);
             }
         }
-        
+
         public void localeChanged() {
             setTitle(Strings.get("preferencesFrameTitle"));
             for (int i = 0; i < panels.length; i++) {
@@ -74,9 +74,9 @@ public class PreferencesFrame extends LFrame {
             close.setText(Strings.get("closeButton"));
         }
     }
-    
+
     private MyListener myListener = new MyListener();
-    
+
     private OptionsPanel[] panels;
     private JTabbedPane tabbedPane;
     private JButton close = new JButton();
@@ -84,8 +84,8 @@ public class PreferencesFrame extends LFrame {
     private PreferencesFrame() {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setJMenuBar(new LogisimMenuBar(this, null));
-        
-        panels = new OptionsPanel[] {
+
+        panels = new OptionsPanel[]{
                 new TemplateOptions(this),
                 new IntlOptions(this),
                 new WindowOptions(this),
@@ -108,14 +108,14 @@ public class PreferencesFrame extends LFrame {
         tabbedPane.setPreferredSize(new Dimension(450, 300));
         contents.add(tabbedPane, BorderLayout.CENTER);
         contents.add(buttonPanel, BorderLayout.SOUTH);
-        
+
         if (intlIndex >= 0) tabbedPane.setSelectedIndex(intlIndex);
 
         LocaleManager.addLocaleListener(myListener);
         myListener.localeChanged();
         pack();
     }
-    
+
     public static void showPreferences() {
         JFrame frame = MENU_MANAGER.getJFrame(true);
         frame.setVisible(true);

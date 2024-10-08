@@ -41,7 +41,8 @@ public class Probe extends InstanceFactory {
     }
 
     public static class ProbeLogger extends InstanceLogger {
-        public ProbeLogger() { }
+        public ProbeLogger() {
+        }
 
         @Override
         public String getLogName(InstanceState state, Object option) {
@@ -81,7 +82,7 @@ public class Probe extends InstanceFactory {
         Graphics g = painter.getGraphics();
         Bounds bds = painter.getOffsetBounds();
         g.drawOval(bds.getX() + 1, bds.getY() + 1,
-            bds.getWidth() - 1, bds.getHeight() - 1);
+                bds.getWidth() - 1, bds.getHeight() - 1);
     }
 
     @Override
@@ -97,10 +98,10 @@ public class Probe extends InstanceFactory {
         g.setColor(Color.GRAY);
         if (value.getWidth() <= 1) {
             g.drawOval(x + 1, y + 1,
-                bds.getWidth() - 2, bds.getHeight() - 2);
+                    bds.getWidth() - 2, bds.getHeight() - 2);
         } else {
             g.drawRoundRect(x + 1, y + 1,
-                bds.getWidth() - 2, bds.getHeight() - 2, 6, 6);
+                    bds.getWidth() - 2, bds.getHeight() - 2, 6, 6);
         }
 
         g.setColor(Color.BLACK);
@@ -109,7 +110,7 @@ public class Probe extends InstanceFactory {
         if (!painter.getShowState()) {
             if (value.getWidth() > 0) {
                 GraphicsUtil.drawCenteredText(g, "x" + value.getWidth(),
-                    bds.getX() + bds.getWidth() / 2, bds.getY() + bds.getHeight() / 2);
+                        bds.getX() + bds.getWidth() / 2, bds.getY() + bds.getHeight() / 2);
             }
         } else {
             paintValue(painter, value);
@@ -144,7 +145,7 @@ public class Probe extends InstanceFactory {
             int cur = 0;
             for (int k = 0; k < wid; k++) {
                 GraphicsUtil.drawCenteredText(g,
-                    value.get(k).toDisplayString(), cx, cy);
+                        value.get(k).toDisplayString(), cx, cy);
                 ++cur;
                 if (cur == 8) {
                     cur = 0;
@@ -167,7 +168,7 @@ public class Probe extends InstanceFactory {
     //
     @Override
     protected void configureNewInstance(Instance instance) {
-        instance.setPorts(new Port[] { new Port(0, 0, Port.INPUT, BitWidth.UNKNOWN) });
+        instance.setPorts(new Port[]{new Port(0, 0, Port.INPUT, BitWidth.UNKNOWN)});
         instance.addAttributeListener();
         configureLabel(instance);
     }
@@ -222,92 +223,248 @@ public class Probe extends InstanceFactory {
     // static methods
     //
     static Bounds getOffsetBounds(Direction dir, BitWidth width,
-            RadixOption radix) {
+                                  RadixOption radix) {
         Bounds ret = null;
         int len = radix == null || radix == RadixOption.RADIX_2 ? width.getWidth() : radix.getMaxLength(width);
         if (dir == Direction.EAST) {
             switch (len) {
-            case 0:
-            case 1: ret = Bounds.create(-20, -10, 20, 20); break;
-            case 2: ret = Bounds.create(-20, -10, 20, 20); break;
-            case 3: ret = Bounds.create(-30, -10, 30, 20); break;
-            case 4: ret = Bounds.create(-40, -10, 40, 20); break;
-            case 5: ret = Bounds.create(-50, -10, 50, 20); break;
-            case 6: ret = Bounds.create(-60, -10, 60, 20); break;
-            case 7: ret = Bounds.create(-70, -10, 70, 20); break;
-            case 8: ret = Bounds.create(-80, -10, 80, 20); break;
-            case  9: case 10: case 11: case 12:
-            case 13: case 14: case 15: case 16:
-                ret = Bounds.create(-80, -20, 80, 40); break;
-            case 17: case 18: case 19: case 20:
-            case 21: case 22: case 23: case 24:
-                ret = Bounds.create(-80, -30, 80, 60); break;
-            case 25: case 26: case 27: case 28:
-            case 29: case 30: case 31: case 32:
-                ret = Bounds.create(-80, -40, 80, 80); break;
+                case 0:
+                case 1:
+                    ret = Bounds.create(-20, -10, 20, 20);
+                    break;
+                case 2:
+                    ret = Bounds.create(-20, -10, 20, 20);
+                    break;
+                case 3:
+                    ret = Bounds.create(-30, -10, 30, 20);
+                    break;
+                case 4:
+                    ret = Bounds.create(-40, -10, 40, 20);
+                    break;
+                case 5:
+                    ret = Bounds.create(-50, -10, 50, 20);
+                    break;
+                case 6:
+                    ret = Bounds.create(-60, -10, 60, 20);
+                    break;
+                case 7:
+                    ret = Bounds.create(-70, -10, 70, 20);
+                    break;
+                case 8:
+                    ret = Bounds.create(-80, -10, 80, 20);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    ret = Bounds.create(-80, -20, 80, 40);
+                    break;
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                    ret = Bounds.create(-80, -30, 80, 60);
+                    break;
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                    ret = Bounds.create(-80, -40, 80, 80);
+                    break;
+                default:
+                    break;
             }
         } else if (dir == Direction.WEST) {
             switch (len) {
-            case 0:
-            case 1: ret = Bounds.create(0, -10, 20, 20); break;
-            case 2: ret = Bounds.create(0, -10, 20, 20); break;
-            case 3: ret = Bounds.create(0, -10, 30, 20); break;
-            case 4: ret = Bounds.create(0, -10, 40, 20); break;
-            case 5: ret = Bounds.create(0, -10, 50, 20); break;
-            case 6: ret = Bounds.create(0, -10, 60, 20); break;
-            case 7: ret = Bounds.create(0, -10, 70, 20); break;
-            case 8: ret = Bounds.create(0, -10, 80, 20); break;
-            case  9: case 10: case 11: case 12:
-            case 13: case 14: case 15: case 16:
-                ret = Bounds.create(0, -20, 80, 40); break;
-            case 17: case 18: case 19: case 20:
-            case 21: case 22: case 23: case 24:
-                ret = Bounds.create(0, -30, 80, 60); break;
-            case 25: case 26: case 27: case 28:
-            case 29: case 30: case 31: case 32:
-                ret = Bounds.create(0, -40, 80, 80); break;
+                case 0:
+                case 1:
+                    ret = Bounds.create(0, -10, 20, 20);
+                    break;
+                case 2:
+                    ret = Bounds.create(0, -10, 20, 20);
+                    break;
+                case 3:
+                    ret = Bounds.create(0, -10, 30, 20);
+                    break;
+                case 4:
+                    ret = Bounds.create(0, -10, 40, 20);
+                    break;
+                case 5:
+                    ret = Bounds.create(0, -10, 50, 20);
+                    break;
+                case 6:
+                    ret = Bounds.create(0, -10, 60, 20);
+                    break;
+                case 7:
+                    ret = Bounds.create(0, -10, 70, 20);
+                    break;
+                case 8:
+                    ret = Bounds.create(0, -10, 80, 20);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    ret = Bounds.create(0, -20, 80, 40);
+                    break;
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                    ret = Bounds.create(0, -30, 80, 60);
+                    break;
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                    ret = Bounds.create(0, -40, 80, 80);
+                    break;
+                default:
+                    break;
             }
         } else if (dir == Direction.SOUTH) {
             switch (len) {
-            case 0:
-            case 1: ret = Bounds.create(-10, -20, 20, 20); break;
-            case 2: ret = Bounds.create(-10, -20, 20, 20); break;
-            case 3: ret = Bounds.create(-15, -20, 30, 20); break;
-            case 4: ret = Bounds.create(-20, -20, 40, 20); break;
-            case 5: ret = Bounds.create(-25, -20, 50, 20); break;
-            case 6: ret = Bounds.create(-30, -20, 60, 20); break;
-            case 7: ret = Bounds.create(-35, -20, 70, 20); break;
-            case 8: ret = Bounds.create(-40, -20, 80, 20); break;
-            case  9: case 10: case 11: case 12:
-            case 13: case 14: case 15: case 16:
-                ret = Bounds.create(-40, -40, 80, 40); break;
-            case 17: case 18: case 19: case 20:
-            case 21: case 22: case 23: case 24:
-                ret = Bounds.create(-40, -60, 80, 60); break;
-            case 25: case 26: case 27: case 28:
-            case 29: case 30: case 31: case 32:
-                ret = Bounds.create(-40, -80, 80, 80); break;
+                case 0:
+                case 1:
+                    ret = Bounds.create(-10, -20, 20, 20);
+                    break;
+                case 2:
+                    ret = Bounds.create(-10, -20, 20, 20);
+                    break;
+                case 3:
+                    ret = Bounds.create(-15, -20, 30, 20);
+                    break;
+                case 4:
+                    ret = Bounds.create(-20, -20, 40, 20);
+                    break;
+                case 5:
+                    ret = Bounds.create(-25, -20, 50, 20);
+                    break;
+                case 6:
+                    ret = Bounds.create(-30, -20, 60, 20);
+                    break;
+                case 7:
+                    ret = Bounds.create(-35, -20, 70, 20);
+                    break;
+                case 8:
+                    ret = Bounds.create(-40, -20, 80, 20);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    ret = Bounds.create(-40, -40, 80, 40);
+                    break;
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                    ret = Bounds.create(-40, -60, 80, 60);
+                    break;
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                    ret = Bounds.create(-40, -80, 80, 80);
+                    break;
+                default:
+                    break;
             }
         } else if (dir == Direction.NORTH) {
             switch (len) {
-            case 0:
-            case 1: ret = Bounds.create(-10, 0, 20, 20); break;
-            case 2: ret = Bounds.create(-10, 0, 20, 20); break;
-            case 3: ret = Bounds.create(-15, 0, 30, 20); break;
-            case 4: ret = Bounds.create(-20, 0, 40, 20); break;
-            case 5: ret = Bounds.create(-25, 0, 50, 20); break;
-            case 6: ret = Bounds.create(-30, 0, 60, 20); break;
-            case 7: ret = Bounds.create(-35, 0, 70, 20); break;
-            case 8: ret = Bounds.create(-40, 0, 80, 20); break;
-            case  9: case 10: case 11: case 12:
-            case 13: case 14: case 15: case 16:
-                ret = Bounds.create(-40, 0, 80, 40); break;
-            case 17: case 18: case 19: case 20:
-            case 21: case 22: case 23: case 24:
-                ret = Bounds.create(-40, 0, 80, 60); break;
-            case 25: case 26: case 27: case 28:
-            case 29: case 30: case 31: case 32:
-                ret = Bounds.create(-40, 0, 80, 80); break;
+                case 0:
+                case 1:
+                    ret = Bounds.create(-10, 0, 20, 20);
+                    break;
+                case 2:
+                    ret = Bounds.create(-10, 0, 20, 20);
+                    break;
+                case 3:
+                    ret = Bounds.create(-15, 0, 30, 20);
+                    break;
+                case 4:
+                    ret = Bounds.create(-20, 0, 40, 20);
+                    break;
+                case 5:
+                    ret = Bounds.create(-25, 0, 50, 20);
+                    break;
+                case 6:
+                    ret = Bounds.create(-30, 0, 60, 20);
+                    break;
+                case 7:
+                    ret = Bounds.create(-35, 0, 70, 20);
+                    break;
+                case 8:
+                    ret = Bounds.create(-40, 0, 80, 20);
+                    break;
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                case 15:
+                case 16:
+                    ret = Bounds.create(-40, 0, 80, 40);
+                    break;
+                case 17:
+                case 18:
+                case 19:
+                case 20:
+                case 21:
+                case 22:
+                case 23:
+                case 24:
+                    ret = Bounds.create(-40, 0, 80, 60);
+                    break;
+                case 25:
+                case 26:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                    ret = Bounds.create(-40, 0, 80, 80);
+                    break;
+                default:
+                    break;
             }
         }
         if (ret == null) {
@@ -317,7 +474,7 @@ public class Probe extends InstanceFactory {
     }
 
     static void configureLabel(Instance instance, Direction labelLoc,
-            Direction facing) {
+                               Direction facing) {
         Bounds bds = instance.getBounds();
         int x;
         int y;

@@ -36,12 +36,10 @@ public class SmallSet<E> extends AbstractSet<E> {
                 pos = 1;
                 hasNext = false;
                 removeOk = true;
-                @SuppressWarnings("unchecked")
-                E ret = (E) myValues;
+                @SuppressWarnings("unchecked") E ret = (E) myValues;
                 return ret;
             } else {
-                @SuppressWarnings("unchecked")
-                E ret = ((E[]) myValues)[pos];
+                @SuppressWarnings("unchecked") E ret = ((E[]) myValues)[pos];
                 ++pos;
                 hasNext = pos < size;
                 removeOk = true;
@@ -85,7 +83,8 @@ public class SmallSet<E> extends AbstractSet<E> {
     private int version = 0;
     private Object values = null;
 
-    public SmallSet() { }
+    public SmallSet() {
+    }
 
     @Override
     public SmallSet<E> clone() {
@@ -98,8 +97,7 @@ public class SmallSet<E> extends AbstractSet<E> {
             Object[] retVals = new Object[size];
             for (int i = size - 1; i >= 0; i--) retVals[i] = oldVals[i];
         } else {
-            @SuppressWarnings("unchecked")
-            HashSet<E> oldVals = (HashSet<E>) this.values;
+            @SuppressWarnings("unchecked") HashSet<E> oldVals = (HashSet<E>) this.values;
             values = oldVals.clone();
         }
         return ret;
@@ -110,7 +108,7 @@ public class SmallSet<E> extends AbstractSet<E> {
         Object vals = values;
         int sz = size;
         if (sz == 1) {
-            return new Object[] { vals };
+            return new Object[]{vals};
         } else if (sz <= HASH_POINT) {
             Object[] ret = new Object[sz];
             System.arraycopy(vals, 0, ret, 0, sz);
@@ -173,8 +171,7 @@ public class SmallSet<E> extends AbstractSet<E> {
                 }
             }
         } else if (oldSize <= HASH_POINT) {
-            @SuppressWarnings("unchecked")
-            E[] vals = (E[]) oldValues;
+            @SuppressWarnings("unchecked") E[] vals = (E[]) oldValues;
             for (int i = 0; i < oldSize; i++) {
                 Object val = vals[i];
                 boolean same = val == null ? value == null : val.equals(value);
@@ -195,8 +192,7 @@ public class SmallSet<E> extends AbstractSet<E> {
                 return true;
             }
         } else {
-            @SuppressWarnings("unchecked")
-            HashSet<E> vals = (HashSet<E>) oldValues;
+            @SuppressWarnings("unchecked") HashSet<E> vals = (HashSet<E>) oldValues;
             if (vals.add(value)) {
                 version = newVersion;
                 return true;
@@ -221,8 +217,7 @@ public class SmallSet<E> extends AbstractSet<E> {
             }
             return false;
         } else {
-            @SuppressWarnings("unchecked")
-            HashSet<E> vals = (HashSet<E>) values;
+            @SuppressWarnings("unchecked") HashSet<E> vals = (HashSet<E>) values;
             return vals.contains(value);
         }
     }
@@ -236,16 +231,14 @@ public class SmallSet<E> extends AbstractSet<E> {
                 return new ArrayIterator();
             }
         } else {
-            @SuppressWarnings("unchecked")
-            HashSet<E> set = (HashSet<E>) values;
+            @SuppressWarnings("unchecked") HashSet<E> set = (HashSet<E>) values;
             return set.iterator();
         }
     }
 
     public static void main(String[] args) throws java.io.IOException {
         SmallSet<String> set = new SmallSet<String>();
-        java.io.BufferedReader in = new java.io.BufferedReader(
-                new java.io.InputStreamReader(System.in));
+        java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(System.in));
         while (true) {
             System.out.print(set.size() + ":"); //OK
             for (Iterator<String> it = set.iterator(); it.hasNext(); ) {

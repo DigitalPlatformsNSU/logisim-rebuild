@@ -7,23 +7,23 @@ import com.cburch.logisim.util.StringGetter;
 
 public class Direction implements AttributeOptionInterface {
     public static final Direction EAST
-        = new Direction("east", Strings.getter("directionEastOption"),
-                Strings.getter("directionEastVertical"), 0);
+            = new Direction("east", Strings.getter("directionEastOption"),
+            Strings.getter("directionEastVertical"), 0);
     public static final Direction WEST
-        = new Direction("west", Strings.getter("directionWestOption"),
-                Strings.getter("directionWestVertical"), 1);
+            = new Direction("west", Strings.getter("directionWestOption"),
+            Strings.getter("directionWestVertical"), 1);
     public static final Direction NORTH
-        = new Direction("north", Strings.getter("directionNorthOption"),
-                Strings.getter("directionNorthVertical"), 2);
+            = new Direction("north", Strings.getter("directionNorthOption"),
+            Strings.getter("directionNorthVertical"), 2);
     public static final Direction SOUTH
-        = new Direction("south", Strings.getter("directionSouthOption"),
-                Strings.getter("directionSouthVertical"), 3);
+            = new Direction("south", Strings.getter("directionSouthOption"),
+            Strings.getter("directionSouthVertical"), 3);
     public static final Direction[] cardinals
-        = { NORTH, EAST, SOUTH, WEST };
+            = {NORTH, EAST, SOUTH, WEST};
 
     public static Direction parse(String str) {
-        if (str.equals(EAST.name))  return EAST;
-        if (str.equals(WEST.name))  return WEST;
+        if (str.equals(EAST.name)) return EAST;
+        if (str.equals(WEST.name)) return WEST;
         if (str.equals(NORTH.name)) return NORTH;
         if (str.equals(SOUTH.name)) return SOUTH;
         throw new NumberFormatException("illegal direction '" + str + "'");

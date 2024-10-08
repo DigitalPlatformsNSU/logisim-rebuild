@@ -14,7 +14,7 @@ public class AnalyzerManager extends WindowMenuItemManager
     public static void initialize() {
         analysisManager = new AnalyzerManager();
     }
-    
+
     public static Analyzer getAnalyzer() {
         if (analysisWindow == null) {
             analysisWindow = new Analyzer();
@@ -23,7 +23,7 @@ public class AnalyzerManager extends WindowMenuItemManager
         }
         return analysisWindow;
     }
-    
+
     private static Analyzer analysisWindow = null;
     private static AnalyzerManager analysisManager = null;
 
@@ -31,7 +31,7 @@ public class AnalyzerManager extends WindowMenuItemManager
         super(Strings.get("analyzerWindowTitle"), true);
         LocaleManager.addLocaleListener(this);
     }
-    
+
     @Override
     public JFrame getJFrame(boolean create) {
         if (create) {

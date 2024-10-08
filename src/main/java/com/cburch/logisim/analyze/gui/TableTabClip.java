@@ -30,7 +30,7 @@ class TableTabClip implements ClipboardOwner {
         }
 
         public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[] { binaryFlavor, DataFlavor.stringFlavor };
+            return new DataFlavor[]{binaryFlavor, DataFlavor.stringFlavor};
         }
 
         public boolean isDataFlavorSupported(DataFlavor flavor) {
@@ -71,8 +71,16 @@ class TableTabClip implements ClipboardOwner {
         int r0 = caret.getCursorRow();
         int c1 = caret.getMarkCol();
         int r1 = caret.getMarkRow();
-        if (c1 < c0) { int t = c0; c0 = c1; c1 = t; }
-        if (r1 < r0) { int t = r0; r0 = r1; r1 = t; }
+        if (c1 < c0) {
+            int t = c0;
+            c0 = c1;
+            c1 = t;
+        }
+        if (r1 < r0) {
+            int t = r0;
+            r0 = r1;
+            r1 = t;
+        }
 
         TruthTable t = table.getTruthTable();
         int inputs = t.getInputColumnCount();
@@ -176,9 +184,9 @@ class TableTabClip implements ClipboardOwner {
             }
         } else {
             JOptionPane.showMessageDialog(table.getRootPane(),
-                Strings.get("clipPasteSupportedError"),
-                Strings.get("clipPasteErrorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+                    Strings.get("clipPasteSupportedError"),
+                    Strings.get("clipPasteErrorTitle"),
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -202,8 +210,16 @@ class TableTabClip implements ClipboardOwner {
                 return;
             }
         } else {
-            if (r0 > r1) { int t = r0; r0 = r1; r1 = t; }
-            if (c0 > c1) { int t = c0; c0 = c1; c1 = t; }
+            if (r0 > r1) {
+                int t = r0;
+                r0 = r1;
+                r1 = t;
+            }
+            if (c0 > c1) {
+                int t = c0;
+                c0 = c1;
+                c1 = t;
+            }
 
             if (r1 - r0 + 1 != entries.length
                     || c1 - c0 + 1 != entries[0].length) {
@@ -224,6 +240,7 @@ class TableTabClip implements ClipboardOwner {
         }
     }
 
-    public void lostOwnership(Clipboard clip, Transferable transfer) { }
+    public void lostOwnership(Clipboard clip, Transferable transfer) {
+    }
 
 }

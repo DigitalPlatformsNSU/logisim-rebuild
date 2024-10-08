@@ -23,29 +23,29 @@ import com.cburch.logisim.util.GraphicsUtil;
 public class Adder extends InstanceFactory {
     static final int PER_DELAY = 1;
 
-    private static final int IN0   = 0;
-    private static final int IN1   = 1;
-    private static final int OUT   = 2;
-    private static final int C_IN  = 3;
+    private static final int IN0 = 0;
+    private static final int IN1 = 1;
+    private static final int OUT = 2;
+    private static final int C_IN = 3;
     private static final int C_OUT = 4;
 
     public Adder() {
         super("Adder", Strings.getter("adderComponent"));
-        setAttributes(new Attribute[] {
+        setAttributes(new Attribute[]{
                 StdAttr.WIDTH
-            }, new Object[] {
+        }, new Object[]{
                 BitWidth.create(8)
-            });
+        });
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
         setOffsetBounds(Bounds.create(-40, -20, 40, 40));
         setIconName("adder.gif");
 
         Port[] ps = new Port[5];
-        ps[IN0]   = new Port(-40, -10, Port.INPUT,  StdAttr.WIDTH);
-        ps[IN1]   = new Port(-40,  10, Port.INPUT,  StdAttr.WIDTH);
-        ps[OUT]   = new Port(  0,   0, Port.OUTPUT, StdAttr.WIDTH);
-        ps[C_IN]  = new Port(-20, -20, Port.INPUT,  1);
-        ps[C_OUT] = new Port(-20,  20, Port.INPUT,  1);
+        ps[IN0] = new Port(-40, -10, Port.INPUT, StdAttr.WIDTH);
+        ps[IN1] = new Port(-40, 10, Port.INPUT, StdAttr.WIDTH);
+        ps[OUT] = new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH);
+        ps[C_IN] = new Port(-20, -20, Port.INPUT, 1);
+        ps[C_OUT] = new Port(-20, 20, Port.INPUT, 1);
         ps[IN0].setToolTip(Strings.getter("adderInputTip"));
         ps[IN1].setToolTip(Strings.getter("adderInputTip"));
         ps[OUT].setToolTip(Strings.getter("adderOutputTip"));
@@ -67,7 +67,7 @@ public class Adder extends InstanceFactory {
 
         // propagate them
         int delay = (dataWidth.getWidth() + 2) * PER_DELAY;
-        state.setPort(OUT,   outs[0], delay);
+        state.setPort(OUT, outs[0], delay);
         state.setPort(C_OUT, outs[1], delay);
     }
 
@@ -80,7 +80,7 @@ public class Adder extends InstanceFactory {
         painter.drawPort(IN0);
         painter.drawPort(IN1);
         painter.drawPort(OUT);
-        painter.drawPort(C_IN,  "c in",  Direction.NORTH);
+        painter.drawPort(C_IN, "c in", Direction.NORTH);
         painter.drawPort(C_OUT, "c out", Direction.SOUTH);
 
         Location loc = painter.getLocation();
@@ -103,12 +103,12 @@ public class Adder extends InstanceFactory {
                 long bx = (long) b.toIntValue() & mask;
                 long cx = (long) c_in.toIntValue() & mask;
                 long sum = ax + bx + cx;
-                return new Value[] { Value.createKnown(width, (int) sum),
-                    ((sum >> w) & 1) == 0 ? Value.FALSE : Value.TRUE };
+                return new Value[]{Value.createKnown(width, (int) sum),
+                        ((sum >> w) & 1) == 0 ? Value.FALSE : Value.TRUE};
             } else {
                 int sum = a.toIntValue() + b.toIntValue() + c_in.toIntValue();
-                return new Value[] { Value.createKnown(width, sum),
-                    ((sum >> w) & 1) == 0 ? Value.FALSE : Value.TRUE };
+                return new Value[]{Value.createKnown(width, sum),
+                        ((sum >> w) & 1) == 0 ? Value.FALSE : Value.TRUE};
             }
         } else {
             Value[] bits = new Value[w];
@@ -129,14 +129,14 @@ public class Adder extends InstanceFactory {
                         carry = Value.UNKNOWN;
                     } else {
                         int sum = (ab == Value.TRUE ? 1 : 0)
-                            + (bb == Value.TRUE ? 1 : 0)
-                            + (carry == Value.TRUE ? 1 : 0);
+                                + (bb == Value.TRUE ? 1 : 0)
+                                + (carry == Value.TRUE ? 1 : 0);
                         bits[i] = (sum & 1) == 1 ? Value.TRUE : Value.FALSE;
                         carry = (sum >= 2) ? Value.TRUE : Value.FALSE;
                     }
                 }
             }
-            return new Value[] { Value.create(bits), carry };
+            return new Value[]{Value.create(bits), carry};
         }
     }
 }

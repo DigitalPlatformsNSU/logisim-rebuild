@@ -36,11 +36,12 @@ public class JFileChoosers {
     }
 
     private static final String[] PROP_NAMES = {
-        null, "user.home", "user.dir", "java.home", "java.io.tmpdir" };
+            null, "user.home", "user.dir", "java.home", "java.io.tmpdir"};
 
     private static String currentDirectory = "";
 
-    private JFileChoosers() { }
+    private JFileChoosers() {
+    }
 
     public static String getCurrentDirectory() {
         return currentDirectory;
@@ -54,13 +55,13 @@ public class JFileChoosers {
                 String dirname;
                 if (prop == null) {
                     dirname = currentDirectory;
-                    if (dirname.equals("")) {
+                    if (dirname.isEmpty()) {
                         dirname = AppPreferences.DIALOG_DIRECTORY.get();
                     }
                 } else {
                     dirname = System.getProperty(prop);
                 }
-                if (dirname.equals("")) {
+                if (dirname.isEmpty()) {
                     return new LogisimFileChooser();
                 } else {
                     File dir = new File(dirname);
@@ -85,8 +86,9 @@ public class JFileChoosers {
                 return new LogisimFileChooser(openDirectory);
             } catch (RuntimeException t) {
                 if (t.getCause() instanceof IOException) {
-                    try { return create(); }
-                    catch (RuntimeException u) {}
+                    try {
+                        return create();
+                    } catch (RuntimeException u) { }
                 }
                 throw t;
             }

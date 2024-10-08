@@ -35,9 +35,15 @@ class ToolbarOptions extends OptionsPanel {
             if (target instanceof Tool) doAddTool((Tool) target);
         }
 
-        public void moveRequested(Event event, AddTool dragged, AddTool target) { }
-        public void deleteRequested(Event event) { }
-        public JPopupMenu menuRequested(Event event) { return null; }
+        public void moveRequested(Event event, AddTool dragged, AddTool target) {
+        }
+
+        public void deleteRequested(Event event) {
+        }
+
+        public JPopupMenu menuRequested(Event event) {
+            return null;
+        }
 
         public void actionPerformed(ActionEvent event) {
             Object src = event.getSource();
@@ -139,14 +145,17 @@ class ToolbarOptions extends OptionsPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gridbag.setConstraints(explorerPane, gbc); add(explorerPane);
+        gridbag.setConstraints(explorerPane, gbc);
+        add(explorerPane);
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.weightx = 0.0;
-        gridbag.setConstraints(middle, gbc); add(middle);
+        gridbag.setConstraints(middle, gbc);
+        add(middle);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gridbag.setConstraints(listPane, gbc); add(listPane);
+        gridbag.setConstraints(listPane, gbc);
+        add(listPane);
     }
 
     @Override

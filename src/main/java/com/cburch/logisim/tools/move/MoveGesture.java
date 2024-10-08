@@ -25,16 +25,16 @@ public class MoveGesture {
 
     private transient Set<ConnectionData> connections;
     private transient AvoidanceMap initAvoid;
-    private HashMap<MoveRequest,MoveResult> cachedResults;
+    private HashMap<MoveRequest, MoveResult> cachedResults;
 
     public MoveGesture(MoveRequestListener listener, Circuit circuit,
-            Collection<Component> selected) {
+                       Collection<Component> selected) {
         this.listener = listener;
         this.circuit = circuit;
         this.selected = new HashSet<Component>(selected);
         this.connections = null;
         this.initAvoid = null;
-        this.cachedResults = new HashMap<MoveRequest,MoveResult>();
+        this.cachedResults = new HashMap<MoveRequest, MoveResult>();
     }
 
     HashSet<Component> getSelected() {
@@ -111,7 +111,7 @@ public class MoveGesture {
     }
 
     private static Set<ConnectionData> computeConnections(Circuit circuit,
-            Set<Component> selected) {
+                                                          Set<Component> selected) {
         if (selected == null || selected.isEmpty()) return Collections.emptySet();
 
         // first identify locations that might be connected
@@ -142,8 +142,7 @@ public class MoveGesture {
                 } else {
                     wirePath = new ArrayList<Wire>();
                     Location cur = loc;
-                    for (Wire w = lastOnPath; w != null;
-                            w = findWire(circuit, cur, selected, w)) {
+                    for (Wire w = lastOnPath; w != null; w = findWire(circuit, cur, selected, w)) {
                         wirePath.add(w);
                         cur = w.getOtherEnd(cur);
                     }
@@ -169,7 +168,7 @@ public class MoveGesture {
     }
 
     private static Wire findWire(Circuit circ, Location loc,
-            Set<Component> ignore, Wire ignoreW) {
+                                 Set<Component> ignore, Wire ignoreW) {
         Wire ret = null;
         for (Component comp : circ.getComponents(loc)) {
             if (!ignore.contains(comp) && comp != ignoreW) {

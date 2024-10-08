@@ -11,17 +11,17 @@ import com.cburch.logisim.data.Attributes;
 
 public class Options {
     public static final AttributeOption GATE_UNDEFINED_IGNORE
-    = new AttributeOption("ignore", Strings.getter("gateUndefinedIgnore"));
+            = new AttributeOption("ignore", Strings.getter("gateUndefinedIgnore"));
     public static final AttributeOption GATE_UNDEFINED_ERROR
-        = new AttributeOption("error", Strings.getter("gateUndefinedError"));
+            = new AttributeOption("error", Strings.getter("gateUndefinedError"));
 
     public static final Attribute<Integer> sim_limit_attr
-        = Attributes.forInteger("simlimit", Strings.getter("simLimitOption"));
+            = Attributes.forInteger("simlimit", Strings.getter("simLimitOption"));
     public static final Attribute<Integer> sim_rand_attr
-        = Attributes.forInteger("simrand", Strings.getter("simRandomOption"));
+            = Attributes.forInteger("simrand", Strings.getter("simRandomOption"));
     public static final Attribute<AttributeOption> ATTR_GATE_UNDEFINED
-        = Attributes.forOption("gateUndefined", Strings.getter("gateUndefinedOption"),
-                new AttributeOption[] { GATE_UNDEFINED_IGNORE, GATE_UNDEFINED_ERROR });
+            = Attributes.forOption("gateUndefined", Strings.getter("gateUndefinedOption"),
+                new AttributeOption[]{GATE_UNDEFINED_IGNORE, GATE_UNDEFINED_ERROR});
 
     public static final Integer sim_rand_dflt = Integer.valueOf(32);
 

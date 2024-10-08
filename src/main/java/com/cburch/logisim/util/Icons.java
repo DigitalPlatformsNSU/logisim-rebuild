@@ -33,11 +33,11 @@ public class Icons {
         double cx = x + icon.getIconWidth() / 2.0;
         double cy = y + icon.getIconHeight() / 2.0;
         if (dir == Direction.WEST) {
-            g2.rotate( Math.PI, cx, cy);
+            g2.rotate(Math.PI, cx, cy);
         } else if (dir == Direction.NORTH) {
             g2.rotate(-Math.PI / 2.0, cx, cy);
         } else if (dir == Direction.SOUTH) {
-            g2.rotate( Math.PI / 2.0, cx, cy);
+            g2.rotate(Math.PI / 2.0, cx, cy);
         } else {
             g2.translate(-x, -y);
         }

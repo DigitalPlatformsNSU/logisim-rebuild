@@ -82,7 +82,7 @@ public class SelectionAttributes extends AbstractAttributeSet {
             SelectionAttributes.this.selAttrs = attrs;
             SelectionAttributes.this.selValues = values;
             SelectionAttributes.this.attrsView
-                = Collections.unmodifiableList(Arrays.asList(attrs));
+                    = Collections.unmodifiableList(Arrays.asList(attrs));
             fireAttributeListChanged();
         }
 
@@ -182,7 +182,7 @@ public class SelectionAttributes extends AbstractAttributeSet {
     }
 
     private static Object getSelectionValue(Attribute<?> attr,
-            Set<AttributeSet> sel) {
+                                            Set<AttributeSet> sel) {
         Object ret = null;
         for (AttributeSet attrs : sel) {
             if (attrs.containsAttribute(attr)) {

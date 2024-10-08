@@ -28,15 +28,15 @@ public class Joystick extends InstanceFactory {
 
     public Joystick() {
         super("Joystick", Strings.getter("joystickComponent"));
-        setAttributes(new Attribute[] { ATTR_WIDTH, Io.ATTR_COLOR },
-                new Object[] { BitWidth.create(4), Color.RED });
+        setAttributes(new Attribute[]{ATTR_WIDTH, Io.ATTR_COLOR},
+                new Object[]{BitWidth.create(4), Color.RED});
         setKeyConfigurator(new BitWidthConfigurator(ATTR_WIDTH, 2, 5));
         setOffsetBounds(Bounds.create(-30, -10, 30, 30));
         setIconName("joystick.gif");
-        setPorts(new Port[] {
+        setPorts(new Port[]{
                 new Port(0, 0, Port.OUTPUT, ATTR_WIDTH),
                 new Port(0, 10, Port.OUTPUT, ATTR_WIDTH),
-            });
+        });
         setInstancePoker(Poker.class);
     }
 
@@ -46,8 +46,13 @@ public class Joystick extends InstanceFactory {
         int dx;
         int dy;
         State s = (State) state.getData();
-        if (s == null) { dx = 0; dy = 0; }
-        else { dx = s.xPos; dy = s.yPos; }
+        if (s == null) {
+            dx = 0;
+            dy = 0;
+        } else {
+            dx = s.xPos;
+            dy = s.yPos;
+        }
 
         int steps = (1 << bits.getWidth()) - 1;
         dx = (dx + 14) * steps / 29 + 1;
@@ -82,7 +87,7 @@ public class Joystick extends InstanceFactory {
     }
 
     private static void drawBall(Graphics g, int x, int y, Color c,
-            boolean inColor) {
+                                 boolean inColor) {
         if (inColor) {
             g.setColor(c == null ? Color.RED : c);
         } else {
@@ -100,12 +105,18 @@ public class Joystick extends InstanceFactory {
         private int xPos;
         private int yPos;
 
-        public State(int x, int y) { xPos = x; yPos = y; }
+        public State(int x, int y) {
+            xPos = x;
+            yPos = y;
+        }
 
         @Override
         public Object clone() {
-            try { return super.clone(); }
-            catch (CloneNotSupportedException e) { return null; }
+            try {
+                return super.clone();
+            } catch (CloneNotSupportedException e) {
+                return null;
+            }
         }
     }
 

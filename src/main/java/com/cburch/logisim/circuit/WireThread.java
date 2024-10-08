@@ -7,8 +7,7 @@ import com.cburch.logisim.util.SmallSet;
 
 class WireThread {
     private WireThread parent;
-    private SmallSet<CircuitWires.ThreadBundle> bundles
-        = new SmallSet<CircuitWires.ThreadBundle>();
+    private SmallSet<CircuitWires.ThreadBundle> bundles = new SmallSet<CircuitWires.ThreadBundle>();
 
     WireThread() {
         parent = this;
@@ -27,7 +26,8 @@ class WireThread {
     WireThread find() {
         WireThread ret = this;
         if (ret.parent != ret) {
-            do ret = ret.parent; while (ret.parent != ret);
+            do ret = ret.parent;
+            while (ret.parent != ret);
             this.parent = ret;
         }
         return ret;

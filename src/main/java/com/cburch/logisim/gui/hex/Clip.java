@@ -28,7 +28,7 @@ class Clip implements ClipboardOwner {
         }
 
         public DataFlavor[] getTransferDataFlavors() {
-            return new DataFlavor[] { binaryFlavor, DataFlavor.stringFlavor };
+            return new DataFlavor[]{binaryFlavor, DataFlavor.stringFlavor};
         }
 
         public boolean isDataFlavorSupported(DataFlavor flavor) {
@@ -77,7 +77,9 @@ class Clip implements ClipboardOwner {
         long p1 = caret.getDot();
         if (p0 < 0 || p1 < 0) return;
         if (p0 > p1) {
-            long t = p0; p0 = p1; p1 = t;
+            long t = p0;
+            p0 = p1;
+            p1 = t;
         }
         p1++;
 
@@ -131,9 +133,9 @@ class Clip implements ClipboardOwner {
             }
         } else {
             JOptionPane.showMessageDialog(editor.getRootPane(),
-                Strings.get("hexPasteSupportedError"),
-                Strings.get("hexPasteErrorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+                    Strings.get("hexPasteSupportedError"),
+                    Strings.get("hexPasteErrorTitle"),
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -153,7 +155,9 @@ class Clip implements ClipboardOwner {
         } else {
             if (p0 < 0 || p1 < 0) return;
             if (p0 > p1) {
-                long t = p0; p0 = p1; p1 = t;
+                long t = p0;
+                p0 = p1;
+                p1 = t;
             }
             p1++;
 
@@ -169,6 +173,7 @@ class Clip implements ClipboardOwner {
         }
     }
 
-    public void lostOwnership(Clipboard clip, Transferable transfer) { }
+    public void lostOwnership(Clipboard clip, Transferable transfer) {
+    }
 
 }

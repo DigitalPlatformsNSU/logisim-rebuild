@@ -59,11 +59,11 @@ public class BitWidth implements Comparable<BitWidth> {
     public int getWidth() {
         return width;
     }
-    
+
     public int getMask() {
-        if (width == 0)       return 0;
+        if (width == 0) return 0;
         else if (width == 32) return -1;
-        else                 return (1 << width) - 1;
+        else return (1 << width) - 1;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class BitWidth implements Comparable<BitWidth> {
                 return UNKNOWN;
             } else {
                 throw new IllegalArgumentException("width " + width
-                    + " must be positive");
+                        + " must be positive");
             }
         } else if (width - 1 < prefab.length) {
             return prefab[width - 1];

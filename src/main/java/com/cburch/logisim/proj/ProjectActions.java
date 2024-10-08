@@ -27,7 +27,8 @@ import com.cburch.logisim.util.JFileChoosers;
 import com.cburch.logisim.util.StringUtil;
 
 public class ProjectActions {
-    private ProjectActions() { }
+    private ProjectActions() {
+    }
 
     private static class CreateFrame implements Runnable {
         private Loader loader;
@@ -66,7 +67,10 @@ public class ProjectActions {
         } catch (LoadFailedException ex) {
             displayException(monitor, ex);
         } finally {
-            try { templReader.close(); } catch (IOException e) { }
+            try {
+                templReader.close();
+            } catch (IOException e) {
+            }
         }
         if (file == null) file = createEmptyFile(loader);
         return completeProject(monitor, loader, file, isStartupScreen);
@@ -88,13 +92,16 @@ public class ProjectActions {
             file = LogisimFile.createNew(loader);
             file.addCircuit(new Circuit("main"));
         } finally {
-            try { templReader.close(); } catch (IOException e) { }
+            try {
+                templReader.close();
+            } catch (IOException e) {
+            }
         }
         return file;
     }
 
     private static Project completeProject(SplashScreen monitor, Loader loader,
-            LogisimFile file, boolean isStartup) {
+                                           LogisimFile file, boolean isStartup) {
         if (monitor != null) monitor.setProgress(SplashScreen.PROJECT_CREATE);
         Project ret = new Project(file);
 
@@ -118,7 +125,10 @@ public class ProjectActions {
             }
             file = createEmptyFile(loader);
         } finally {
-            try { templReader.close(); } catch (IOException e) { }
+            try {
+                templReader.close();
+            } catch (IOException e) {
+            }
         }
         return file;
     }
@@ -146,7 +156,7 @@ public class ProjectActions {
     }
 
     public static Project doOpen(SplashScreen monitor, File source,
-            Map<File,File> substitutions) throws LoadFailedException {
+                                 Map<File, File> substitutions) throws LoadFailedException {
         if (monitor != null) monitor.setProgress(SplashScreen.FILE_LOAD);
         Loader loader = new Loader(monitor);
         LogisimFile file = loader.openLogisimFile(source, substitutions);
@@ -177,7 +187,7 @@ public class ProjectActions {
     }
 
     public static Project doOpen(Component parent,
-            Project baseProject, File f) {
+                                 Project baseProject, File f) {
         Project proj = Projects.findProjectFor(f);
         Loader loader = null;
         if (proj != null) {
@@ -190,7 +200,7 @@ public class ProjectActions {
                         Strings.get("openAlreadyLoseChangesOption"),
                         Strings.get("openAlreadyNewWindowOption"),
                         Strings.get("openAlreadyCancelOption"),
-                    };
+                };
                 int result = JOptionPane.showOptionDialog(proj.getFrame(),
                         message, Strings.get("openAlreadyTitle"), 0,
                         JOptionPane.QUESTION_MESSAGE, null,
@@ -225,10 +235,10 @@ public class ProjectActions {
         } catch (LoadFailedException ex) {
             if (!ex.isShown()) {
                 JOptionPane.showMessageDialog(parent,
-                    StringUtil.format(Strings.get("fileOpenError"),
-                        ex.toString()),
-                    Strings.get("fileOpenErrorTitle"),
-                    JOptionPane.ERROR_MESSAGE);
+                        StringUtil.format(Strings.get("fileOpenError"),
+                                ex.toString()),
+                        Strings.get("fileOpenErrorTitle"),
+                        JOptionPane.ERROR_MESSAGE);
             }
             return null;
         }
@@ -271,7 +281,7 @@ public class ProjectActions {
                         Strings.get("replaceExtensionReplaceOpt", ext),
                         Strings.get("replaceExtensionAddOpt", circExt),
                         Strings.get("replaceExtensionKeepOpt")
-                    };
+                };
                 JOptionPane dlog = new JOptionPane(msg);
                 dlog.setMessageType(JOptionPane.QUESTION_MESSAGE);
                 dlog.setOptions(options);
@@ -289,9 +299,9 @@ public class ProjectActions {
 
         if (f.exists()) {
             int confirm = JOptionPane.showConfirmDialog(proj.getFrame(),
-                Strings.get("confirmOverwriteMessage"),
-                Strings.get("confirmOverwriteTitle"),
-                JOptionPane.YES_NO_OPTION);
+                    Strings.get("confirmOverwriteMessage"),
+                    Strings.get("confirmOverwriteTitle"),
+                    JOptionPane.YES_NO_OPTION);
             if (confirm != JOptionPane.YES_OPTION) return false;
         }
         return doSave(proj, f);

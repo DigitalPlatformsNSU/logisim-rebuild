@@ -74,22 +74,23 @@ class TtyState implements InstanceData, Cloneable {
 
         int lastLength = lastRow.length();
         switch (c) {
-        case 12: // control-L
-            row = 0;
-            lastRow.delete(0, lastLength);
-            Arrays.fill(rowData, "");
-            break;
-        case '\b': // backspace
-            if (lastLength > 0) lastRow.delete(lastLength - 1, lastLength);
-            break;
-        case '\n': case '\r': // newline
-            commit();
-            break;
-        default:
-            if (!Character.isISOControl(c)) {
-                if (lastLength == colCount) commit();
-                lastRow.append(c);
-            }
+            case 12: // control-L
+                row = 0;
+                lastRow.delete(0, lastLength);
+                Arrays.fill(rowData, "");
+                break;
+            case '\b': // backspace
+                if (lastLength > 0) lastRow.delete(lastLength - 1, lastLength);
+                break;
+            case '\n':
+            case '\r': // newline
+                commit();
+                break;
+            default:
+                if (!Character.isISOControl(c)) {
+                    if (lastLength == colCount) commit();
+                    lastRow.append(c);
+                }
         }
     }
 
@@ -120,7 +121,7 @@ class TtyState implements InstanceData, Cloneable {
         }
 
         int oldCols = colCount;
-        if (cols != oldCols){
+        if (cols != oldCols) {
             colCount = cols;
             if (cols < oldCols) { // will need to trim any long rows
                 for (int i = 0; i < rows - 1; i++) {

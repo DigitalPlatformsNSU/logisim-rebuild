@@ -126,9 +126,17 @@ public class Print {
             add(comp);
         }
 
-        boolean getRotateToFit() { return rotateToFit.isSelected(); }
-        boolean getPrinterView() { return printerView.isSelected(); }
-        String getHeader() { return header.getText(); }
+        boolean getRotateToFit() {
+            return rotateToFit.isSelected();
+        }
+
+        boolean getPrinterView() {
+            return printerView.isSelected();
+        }
+
+        String getHeader() {
+            return header.getText();
+        }
     }
 
     private static class MyPrintable implements Printable {
@@ -139,7 +147,7 @@ public class Print {
         boolean printerView;
 
         MyPrintable(Project proj, List<Circuit> circuits, String header,
-                boolean rotateToFit, boolean printerView) {
+                    boolean rotateToFit, boolean printerView) {
             this.proj = proj;
             this.circuits = circuits;
             this.header = header;
@@ -156,9 +164,9 @@ public class Print {
             Graphics2D g2 = g instanceof Graphics2D ? (Graphics2D) g : null;
             FontMetrics fm = g.getFontMetrics();
             String head = (header != null && !header.equals(""))
-                ? format(header, pageIndex + 1, circuits.size(),
-                        circ.getName())
-                : null;
+                    ? format(header, pageIndex + 1, circuits.size(),
+                    circ.getName())
+                    : null;
             int headHeight = (head == null ? 0 : fm.getHeight());
 
             // Compute image size
@@ -233,20 +241,28 @@ public class Print {
     }
 
     private static String format(String header, int index, int max,
-            String circName) {
+                                 String circName) {
         int mark = header.indexOf('%');
         if (mark < 0) return header;
         StringBuilder ret = new StringBuilder();
         int start = 0;
-        for (; mark >= 0 && mark + 1 < header.length();
-        start = mark + 2, mark = header.indexOf('%', start)) {
+        for (; mark >= 0 && mark + 1 < header.length(); start = mark + 2, mark = header.indexOf('%', start)) {
             ret.append(header.substring(start, mark));
             switch (header.charAt(mark + 1)) {
-            case 'n': ret.append(circName); break;
-            case 'p': ret.append("" + index); break;
-            case 'P': ret.append("" + max); break;
-            case '%': ret.append("%"); break;
-            default:  ret.append("%" + header.charAt(mark + 1));
+                case 'n':
+                    ret.append(circName);
+                    break;
+                case 'p':
+                    ret.append("" + index);
+                    break;
+                case 'P':
+                    ret.append("" + max);
+                    break;
+                case '%':
+                    ret.append("%");
+                    break;
+                default:
+                    ret.append("%" + header.charAt(mark + 1));
             }
         }
         if (start < header.length()) {

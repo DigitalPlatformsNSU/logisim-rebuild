@@ -9,26 +9,51 @@ import java.util.Collections;
 import java.util.List;
 
 public class AttributeSets {
-    private AttributeSets() { }
+    private AttributeSets() {
+    }
 
     public static final AttributeSet EMPTY = new AttributeSet() {
         @Override
-        public Object clone() { return this; }
-        public void addAttributeListener(AttributeListener l) { }
-        public void removeAttributeListener(AttributeListener l) { }
+        public Object clone() {
+            return this;
+        }
 
-        public List<Attribute<?>> getAttributes() { return Collections.emptyList(); }
-        public boolean containsAttribute(Attribute<?> attr) { return false; }
-        public Attribute<?> getAttribute(String name) { return null; }
+        public void addAttributeListener(AttributeListener l) {
+        }
 
-        public boolean isReadOnly(Attribute<?> attr) { return true; }
+        public void removeAttributeListener(AttributeListener l) {
+        }
+
+        public List<Attribute<?>> getAttributes() {
+            return Collections.emptyList();
+        }
+
+        public boolean containsAttribute(Attribute<?> attr) {
+            return false;
+        }
+
+        public Attribute<?> getAttribute(String name) {
+            return null;
+        }
+
+        public boolean isReadOnly(Attribute<?> attr) {
+            return true;
+        }
+
         public void setReadOnly(Attribute<?> attr, boolean value) {
             throw new UnsupportedOperationException();
         }
-        public boolean isToSave(Attribute<?> attr) { return true; }
 
-        public <V> V getValue(Attribute<V> attr) { return null; }
-        public <V> void setValue(Attribute<V> attr, V value) { }
+        public boolean isToSave(Attribute<?> attr) {
+            return true;
+        }
+
+        public <V> V getValue(Attribute<V> attr) {
+            return null;
+        }
+
+        public <V> void setValue(Attribute<V> attr, V value) {
+        }
     };
 
     public static <V> AttributeSet fixedSet(Attribute<V> attr, V initValue) {

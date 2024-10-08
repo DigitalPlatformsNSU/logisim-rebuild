@@ -49,7 +49,7 @@ class ToolbarList extends JList {
     private static class ListRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList list, Object value,
-                int index, boolean isSelected, boolean cellHasFocus) {
+                                                      int index, boolean isSelected, boolean cellHasFocus) {
             Component ret;
             Icon icon;
             if (value instanceof Tool) {
@@ -87,7 +87,9 @@ class ToolbarList extends JList {
             fireContentsChanged(this, 0, getSize());
         }
 
-        public void attributeListChanged(AttributeEvent e) { }
+        public void attributeListChanged(AttributeEvent e) {
+        }
+
         public void attributeValueChanged(AttributeEvent e) {
             repaint();
         }

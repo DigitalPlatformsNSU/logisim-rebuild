@@ -52,7 +52,8 @@ class ExportImage {
 
     private static final int BORDER_SIZE = 5;
 
-    private ExportImage() { }
+    private ExportImage() {
+    }
 
     static void doExport(Project proj) {
         // First display circuit/parameter selection dialog
@@ -79,21 +80,21 @@ class ExportImage {
         ImageFileFilter filter;
         int fmt = options.getImageFormat();
         switch (options.getImageFormat()) {
-        case FORMAT_GIF:
-            filter = new ImageFileFilter(fmt, Strings.getter("exportGifFilter"),
-                new String[] { "gif" });
-            break;
-        case FORMAT_PNG:
-            filter = new ImageFileFilter(fmt, Strings.getter("exportPngFilter"),
-                new String[] { "png" });
-            break;
-        case FORMAT_JPG:
-            filter = new ImageFileFilter(fmt, Strings.getter("exportJpgFilter"),
-                new String[] { "jpg", "jpeg", "jpe", "jfi", "jfif", "jfi" });
-            break;
-        default:
-            System.err.println("unexpected format; aborted"); //OK
-            return;
+            case FORMAT_GIF:
+                filter = new ImageFileFilter(fmt, Strings.getter("exportGifFilter"),
+                        new String[]{"gif"});
+                break;
+            case FORMAT_PNG:
+                filter = new ImageFileFilter(fmt, Strings.getter("exportPngFilter"),
+                        new String[]{"png"});
+                break;
+            case FORMAT_JPG:
+                filter = new ImageFileFilter(fmt, Strings.getter("exportJpgFilter"),
+                        new String[]{"jpg", "jpeg", "jpe", "jfi", "jfif", "jfi"});
+                break;
+            default:
+                System.err.println("unexpected format; aborted"); //OK
+                return;
         }
 
         // Then display file chooser
@@ -115,9 +116,9 @@ class ExportImage {
         if (dest.exists()) {
             if (!dest.isDirectory()) {
                 int confirm = JOptionPane.showConfirmDialog(proj.getFrame(),
-                    Strings.get("confirmOverwriteMessage"),
-                    Strings.get("confirmOverwriteTitle"),
-                    JOptionPane.YES_NO_OPTION);
+                        Strings.get("confirmOverwriteMessage"),
+                        Strings.get("confirmOverwriteTitle"),
+                        JOptionPane.YES_NO_OPTION);
                 if (confirm != JOptionPane.YES_OPTION) return;
             }
         } else {
@@ -230,7 +231,9 @@ class ExportImage {
             return Math.pow(2.0, (double) slider.getValue() / SLIDER_DIVISIONS);
         }
 
-        boolean getPrinterView() { return printerView.isSelected(); }
+        boolean getPrinterView() {
+            return printerView.isSelected();
+        }
 
         int getImageFormat() {
             if (formatGif.isSelected()) return FORMAT_GIF;
@@ -285,8 +288,8 @@ class ExportImage {
         ProgressMonitor monitor;
 
         ExportThread(Frame frame, Canvas canvas, File dest, ImageFileFilter f,
-                List<Circuit> circuits, double scale, boolean printerView,
-                ProgressMonitor monitor) {
+                     List<Circuit> circuits, double scale, boolean printerView,
+                     ProgressMonitor monitor) {
             this.frame = frame;
             this.canvas = canvas;
             this.dest = dest;
@@ -306,7 +309,7 @@ class ExportImage {
 
         private void export(Circuit circuit) {
             Bounds bds = circuit.getBounds(canvas.getGraphics())
-                .expand(BORDER_SIZE);
+                    .expand(BORDER_SIZE);
             int width = (int) Math.round(bds.getWidth() * scale);
             int height = (int) Math.round(bds.getHeight() * scale);
             BufferedImage img = new BufferedImage(width, height,
@@ -341,9 +344,17 @@ class ExportImage {
             }
             try {
                 switch (filter.type) {
-                case FORMAT_GIF: GifEncoder.toFile(img, where, monitor); break;
-                case FORMAT_PNG: ImageIO.write(img, "PNG", where); break;
-                case FORMAT_JPG: ImageIO.write(img, "JPEG", where); break;
+                    case FORMAT_GIF:
+                        GifEncoder.toFile(img, where, monitor);
+                        break;
+                    case FORMAT_PNG:
+                        ImageIO.write(img, "PNG", where);
+                        break;
+                    case FORMAT_JPG:
+                        ImageIO.write(img, "JPEG", where);
+                        break;
+                    default:
+                        break;
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(frame,

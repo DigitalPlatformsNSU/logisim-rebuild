@@ -13,13 +13,13 @@ public abstract class CircuitTransaction {
     public static final Integer READ_ONLY = Integer.valueOf(1);
     public static final Integer READ_WRITE = Integer.valueOf(2);
 
-    protected abstract Map<Circuit,Integer> getAccessedCircuits();
+    protected abstract Map<Circuit, Integer> getAccessedCircuits();
 
     protected abstract void run(CircuitMutator mutator);
 
     public final CircuitTransactionResult execute() {
         CircuitMutatorImpl mutator = new CircuitMutatorImpl();
-        Map<Circuit,Lock> locks = CircuitLocker.acquireLocks(this, mutator);
+        Map<Circuit, Lock> locks = CircuitLocker.acquireLocks(this, mutator);
         CircuitTransactionResult result;
         try {
             this.run(mutator);

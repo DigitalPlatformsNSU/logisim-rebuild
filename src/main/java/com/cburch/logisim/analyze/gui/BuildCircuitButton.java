@@ -81,7 +81,10 @@ class BuildCircuitButton extends JButton {
             for (int i = 0; i < outputs.size(); i++) {
                 String output = outputs.get(i);
                 Expression expr = model.getOutputExpressions().getExpression(output);
-                if (expr != null && expr.containsXor()) { enableNands = false; break; }
+                if (expr != null && expr.containsXor()) {
+                    enableNands = false;
+                    break;
+                }
             }
             nands.setEnabled(enableNands);
 
@@ -91,20 +94,26 @@ class BuildCircuitButton extends JButton {
             gc.anchor = GridBagConstraints.LINE_START;
             gc.fill = GridBagConstraints.NONE;
 
-              gc.gridx = 0;
-              gc.gridy = 0;
-            gb.setConstraints(projectLabel, gc); add(projectLabel);
-              gc.gridx = 1;
-            gb.setConstraints(project, gc); add(project);
-              gc.gridy++;
-              gc.gridx = 0;
-            gb.setConstraints(nameLabel, gc); add(nameLabel);
-              gc.gridx = 1;
-            gb.setConstraints(name, gc); add(name);
-              gc.gridy++;
-            gb.setConstraints(twoInputs, gc); add(twoInputs);
-              gc.gridy++;
-            gb.setConstraints(nands, gc); add(nands);
+            gc.gridx = 0;
+            gc.gridy = 0;
+            gb.setConstraints(projectLabel, gc);
+            add(projectLabel);
+            gc.gridx = 1;
+            gb.setConstraints(project, gc);
+            add(project);
+            gc.gridy++;
+            gc.gridx = 0;
+            gb.setConstraints(nameLabel, gc);
+            add(nameLabel);
+            gc.gridx = 1;
+            gb.setConstraints(name, gc);
+            add(name);
+            gc.gridy++;
+            gb.setConstraints(twoInputs, gc);
+            add(twoInputs);
+            gc.gridy++;
+            gb.setConstraints(nands, gc);
+            add(nands);
 
             projectLabel.setText(Strings.get("buildProjectLabel"));
             nameLabel.setText(Strings.get("buildNameLabel"));
@@ -178,7 +187,7 @@ class BuildCircuitButton extends JButton {
     }
 
     private void performAction(Project dest, String name, boolean replace,
-            final boolean twoInputs, final boolean useNands) {
+                               final boolean twoInputs, final boolean useNands) {
         if (replace) {
             final Circuit circuit = dest.getLogisimFile().getCircuit(name);
             if (circuit == null) {

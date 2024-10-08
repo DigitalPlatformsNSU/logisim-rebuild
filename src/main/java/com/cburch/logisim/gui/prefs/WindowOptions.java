@@ -16,26 +16,26 @@ class WindowOptions extends OptionsPanel {
     public WindowOptions(PreferencesFrame window) {
         super(window);
 
-        checks = new PrefBoolean[] {
+        checks = new PrefBoolean[]{
                 new PrefBoolean(AppPreferences.SHOW_TICK_RATE,
                         Strings.getter("windowTickRate")),
-            };
+        };
 
         toolbarPlacement = new PrefOptionList(AppPreferences.TOOLBAR_PLACEMENT,
                 Strings.getter("windowToolbarLocation"),
-                new PrefOption[] {
-                    new PrefOption(Direction.NORTH.toString(),
-                            Direction.NORTH.getDisplayGetter()),
-                    new PrefOption(Direction.SOUTH.toString(),
-                            Direction.SOUTH.getDisplayGetter()),
-                    new PrefOption(Direction.EAST.toString(),
-                            Direction.EAST.getDisplayGetter()),
-                    new PrefOption(Direction.WEST.toString(),
-                            Direction.WEST.getDisplayGetter()),
-                    new PrefOption(AppPreferences.TOOLBAR_DOWN_MIDDLE,
-                            Strings.getter("windowToolbarDownMiddle")),
-                    new PrefOption(AppPreferences.TOOLBAR_HIDDEN,
-                            Strings.getter("windowToolbarHidden")) });
+                new PrefOption[]{
+                        new PrefOption(Direction.NORTH.toString(),
+                                Direction.NORTH.getDisplayGetter()),
+                        new PrefOption(Direction.SOUTH.toString(),
+                                Direction.SOUTH.getDisplayGetter()),
+                        new PrefOption(Direction.EAST.toString(),
+                                Direction.EAST.getDisplayGetter()),
+                        new PrefOption(Direction.WEST.toString(),
+                                Direction.WEST.getDisplayGetter()),
+                        new PrefOption(AppPreferences.TOOLBAR_DOWN_MIDDLE,
+                                Strings.getter("windowToolbarDownMiddle")),
+                        new PrefOption(AppPreferences.TOOLBAR_HIDDEN,
+                                Strings.getter("windowToolbarHidden"))});
 
         JPanel panel = new JPanel(new TableLayout(2));
         panel.add(toolbarPlacement.getJLabel());

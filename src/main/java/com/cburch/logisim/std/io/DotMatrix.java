@@ -26,42 +26,40 @@ import com.cburch.logisim.util.GraphicsUtil;
 
 public class DotMatrix extends InstanceFactory {
     static final AttributeOption INPUT_SELECT
-        = new AttributeOption("select", Strings.getter("ioInputSelect"));
+            = new AttributeOption("select", Strings.getter("ioInputSelect"));
     static final AttributeOption INPUT_COLUMN
-        = new AttributeOption("column", Strings.getter("ioInputColumn"));
+            = new AttributeOption("column", Strings.getter("ioInputColumn"));
     static final AttributeOption INPUT_ROW
-        = new AttributeOption("row", Strings.getter("ioInputRow"));
+            = new AttributeOption("row", Strings.getter("ioInputRow"));
 
     static final AttributeOption SHAPE_CIRCLE
-        = new AttributeOption("circle", Strings.getter("ioShapeCircle"));
+            = new AttributeOption("circle", Strings.getter("ioShapeCircle"));
     static final AttributeOption SHAPE_SQUARE
-        = new AttributeOption("square", Strings.getter("ioShapeSquare"));
+            = new AttributeOption("square", Strings.getter("ioShapeSquare"));
 
     static final Attribute<AttributeOption> ATTR_INPUT_TYPE
-        = Attributes.forOption("inputtype", Strings.getter("ioMatrixInput"),
-            new AttributeOption[] { INPUT_COLUMN, INPUT_ROW, INPUT_SELECT });
+            = Attributes.forOption("inputtype", Strings.getter("ioMatrixInput"), new AttributeOption[]{INPUT_COLUMN, INPUT_ROW, INPUT_SELECT});
     static final Attribute<Integer> ATTR_MATRIX_COLS
-        = Attributes.forIntegerRange("matrixcols",
-                Strings.getter("ioMatrixCols"), 1, Value.MAX_WIDTH);
+            = Attributes.forIntegerRange("matrixcols",
+            Strings.getter("ioMatrixCols"), 1, Value.MAX_WIDTH);
     static final Attribute<Integer> ATTR_MATRIX_ROWS
-        = Attributes.forIntegerRange("matrixrows",
-                Strings.getter("ioMatrixRows"), 1, Value.MAX_WIDTH);
+            = Attributes.forIntegerRange("matrixrows",
+            Strings.getter("ioMatrixRows"), 1, Value.MAX_WIDTH);
     static final Attribute<AttributeOption> ATTR_DOT_SHAPE
-        = Attributes.forOption("dotshape", Strings.getter("ioMatrixShape"),
-            new AttributeOption[] { SHAPE_CIRCLE, SHAPE_SQUARE });
+            = Attributes.forOption("dotshape", Strings.getter("ioMatrixShape"), new AttributeOption[]{SHAPE_CIRCLE, SHAPE_SQUARE});
     static final Attribute<Integer> ATTR_PERSIST = new DurationAttribute("persist",
             Strings.getter("ioMatrixPersistenceAttr"), 0, Integer.MAX_VALUE);
 
     public DotMatrix() {
         super("DotMatrix", Strings.getter("dotMatrixComponent"));
-        setAttributes(new Attribute<?>[] {
+        setAttributes(new Attribute<?>[]{
                 ATTR_INPUT_TYPE, ATTR_MATRIX_COLS, ATTR_MATRIX_ROWS,
                 Io.ATTR_ON_COLOR, Io.ATTR_OFF_COLOR,
                 ATTR_PERSIST, ATTR_DOT_SHAPE
-            }, new Object[] {
+        }, new Object[]{
                 INPUT_COLUMN, Integer.valueOf(5), Integer.valueOf(7),
                 Color.GREEN, Color.DARK_GRAY, Integer.valueOf(0), SHAPE_SQUARE
-            });
+        });
         setIconName("dotmat.gif");
     }
 
@@ -115,11 +113,11 @@ public class DotMatrix extends InstanceFactory {
             }
         } else {
             if (rows <= 1) {
-                ps = new Port[] { new Port(0, 0, Port.INPUT, cols) };
+                ps = new Port[]{new Port(0, 0, Port.INPUT, cols)};
             } else if (cols <= 1) {
-                ps = new Port[] { new Port(0, 0, Port.INPUT, rows) };
+                ps = new Port[]{new Port(0, 0, Port.INPUT, rows)};
             } else {
-                ps = new Port[] {
+                ps = new Port[]{
                         new Port(0, 0, Port.INPUT, cols),
                         new Port(0, 10, Port.INPUT, rows)
                 };

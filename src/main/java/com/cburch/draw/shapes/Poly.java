@@ -166,7 +166,7 @@ public class Poly extends FillableCanvasObject {
     public void translate(int dx, int dy) {
         Handle[] hs = handles;
         Handle[] is = new Handle[hs.length];
-        for(int i = 0; i < hs.length; i++) {
+        for (int i = 0; i < hs.length; i++) {
             is[i] = new Handle(this, hs[i].getX() + dx, hs[i].getY() + dy);
         }
         setHandles(is);
@@ -293,7 +293,7 @@ public class Poly extends FillableCanvasObject {
         }
         Handle[] is = new Handle[hs.length + 1];
         boolean inserted = false;
-        for(int i = 0; i < hs.length; i++) {
+        for (int i = 0; i < hs.length; i++) {
             if (inserted) {
                 is[i + 1] = hs[i];
             } else if (hs[i].equals(prev)) {
@@ -368,7 +368,7 @@ public class Poly extends FillableCanvasObject {
         int y0 = hs[0].getY();
         int x1 = x0;
         int y1 = y0;
-        for(int i = 1; i < hs.length; i++) {
+        for (int i = 1; i < hs.length; i++) {
             int x = hs[i].getX();
             int y = hs[i].getY();
             if (x < x0) x0 = x;
