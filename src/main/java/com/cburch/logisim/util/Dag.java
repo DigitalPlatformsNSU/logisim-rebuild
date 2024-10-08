@@ -49,7 +49,9 @@ public class Dag {
 
         Node src = createNode(srcData);
         Node dst = createNode(dstData);
-        if (src.succs.add(dst)) ++dst.numPreds; // add since not already present
+        if (src.succs.add(dst)) {
+            ++dst.numPreds; // add since not already present
+        }
         return true;
     }
 

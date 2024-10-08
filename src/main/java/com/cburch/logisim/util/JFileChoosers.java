@@ -54,13 +54,13 @@ public class JFileChoosers {
                 String dirname;
                 if (prop == null) {
                     dirname = currentDirectory;
-                    if (dirname.equals("")) {
+                    if (dirname.isEmpty()) {
                         dirname = AppPreferences.DIALOG_DIRECTORY.get();
                     }
                 } else {
                     dirname = System.getProperty(prop);
                 }
-                if (dirname.equals("")) {
+                if (dirname.isEmpty()) {
                     return new LogisimFileChooser();
                 } else {
                     File dir = new File(dirname);

@@ -54,7 +54,7 @@ public class GraphicsUtil {
         switch (halign) {
             case H_CENTER: ret.translate(-(width / 2), 0); break;
             case H_RIGHT:  ret.translate(-width, 0); break;
-            default: ;
+            default:
         }
         switch (valign) {
             case V_TOP:      break;
@@ -62,7 +62,7 @@ public class GraphicsUtil {
             case V_CENTER_OVERALL: ret.translate(0, -(height / 2)); break;
             case V_BASELINE: ret.translate(0, -ascent); break;
             case V_BOTTOM:   ret.translate(0, -height); break;
-            default: ;
+            default:
         }
         return ret;
     }
@@ -76,7 +76,7 @@ public class GraphicsUtil {
     }
     static public void drawText(Graphics g, String text,
             int x, int y, int halign, int valign) {
-        if (text.length() == 0) return;
+        if (text.isEmpty()) return;
         Rectangle bd = getTextBounds(g, text, x, y, halign, valign);
         g.drawString(text, bd.x, bd.y + g.getFontMetrics().getAscent());
     }

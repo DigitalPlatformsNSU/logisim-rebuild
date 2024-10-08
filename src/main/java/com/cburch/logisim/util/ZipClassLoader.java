@@ -20,10 +20,10 @@ public class ZipClassLoader extends ClassLoader {
     // opening and closing the file.
     private static final int OPEN_TIME = 5000;
     private static final int DEBUG = 0;
-        // 0 = no debug messages
-        // 1 = open/close ZIP file only
-        // 2 = also each resource request
-        // 3 = all messages while retrieving resource
+    // 0 = no debug messages
+    // 1 = open/close ZIP file only
+    // 2 = also each resource request
+    // 3 = all messages while retrieving resource
     
     private static final int REQUEST_FIND = 0;
     private static final int REQUEST_LOAD = 1;
@@ -48,7 +48,7 @@ public class ZipClassLoader extends ClassLoader {
         }
         
         void setResponse(Object value) {
-            synchronized(this) {
+            synchronized (this) {
                 response = value;
                 responseSent = true;
                 notifyAll();
@@ -57,7 +57,7 @@ public class ZipClassLoader extends ClassLoader {
         
         void ensureDone() {
             boolean aborted = false;
-            synchronized(this) {
+            synchronized (this) {
                 if (!responseSent) {
                     aborted = true;
                     responseSent = true;
@@ -71,9 +71,11 @@ public class ZipClassLoader extends ClassLoader {
         }
         
         Object getResponse() {
-            synchronized(this) {
+            synchronized (this) {
                 while (!responseSent) {
-                    try { this.wait(1000); } catch (InterruptedException e) { }
+                    try {
+                        this.wait(1000);
+                    } catch (InterruptedException e) { }
                 }
                 return response;
             }
@@ -94,8 +96,14 @@ public class ZipClassLoader extends ClassLoader {
                     if (DEBUG >= 2) System.err.println("processing " + request); //OK
                     try {
                         switch (request.action) {
-                        case REQUEST_LOAD: performLoad(request); break;
-                        case REQUEST_FIND: performFind(request); break;
+                            case REQUEST_LOAD:
+                                performLoad(request);
+                                break;
+                            case REQUEST_FIND:
+                                performFind(request);
+                                break;
+                            default:
+                                break;
                         }
                     } finally {
                         request.ensureDone();
@@ -103,7 +111,10 @@ public class ZipClassLoader extends ClassLoader {
                     if (DEBUG >= 2) System.err.println("processed: " + request.getResponse()); //OK
                 }
             } catch (Throwable t) {
-                if (DEBUG >= 3) { System.err.print("uncaught: "); t.printStackTrace(); } //OK
+                if (DEBUG >= 3) {
+                    System.err.print("uncaught: ");
+                    t.printStackTrace();
+                } //OK
             } finally {
                 if (zipFile != null) {
                     try {
@@ -118,7 +129,7 @@ public class ZipClassLoader extends ClassLoader {
         }
         
         private Request waitForNextRequest() {
-            synchronized(bgLock) {
+            synchronized (bgLock) {
                 long start = System.currentTimeMillis();
                 while (requests.isEmpty()) {
                     long elapse = System.currentTimeMillis() - start;
@@ -179,7 +190,7 @@ public class ZipClassLoader extends ClassLoader {
                 if (DEBUG >= 3) System.err.println("  error retrieving data"); //OK
                 ex.printStackTrace();
             } finally {
-                if (bis!=null) {
+                if (bis != null) {
                     try {
                         if (DEBUG >= 3) System.err.println("  close file"); //OK
                         bis.close();
@@ -205,14 +216,14 @@ public class ZipClassLoader extends ClassLoader {
     }
     
     private File zipPath;
-    private HashMap<String,Object> classes = new HashMap<String,Object>();
+    private HashMap<String, Object> classes = new HashMap<String, Object>();
     private Object bgLock = new Object();
     private WorkThread bgThread = null;
- 
+
     public ZipClassLoader(String zipFileName) {
         this(new File(zipFileName));
     }
- 
+
     public ZipClassLoader(File zipFile) {
         zipPath = zipFile;
     }
@@ -234,7 +245,7 @@ public class ZipClassLoader extends ClassLoader {
         Object result = null;
 
         // check whether we have loaded this class before
-        synchronized(classes) {
+        synchronized (classes) {
             found = classes.containsKey(className);
             if (found) result = classes.get(className);
         }
@@ -256,7 +267,9 @@ public class ZipClassLoader extends ClassLoader {
                 }
             }
 
-            synchronized(classes) { classes.put(className, result); }
+            synchronized (classes) {
+                classes.put(className, result);
+            }
         }
         
         if (result instanceof Class) {
@@ -272,7 +285,7 @@ public class ZipClassLoader extends ClassLoader {
     
     private Object request(int action, String resourceName) {
         Request request;
-        synchronized(bgLock) {
+        synchronized (bgLock) {
             if (bgThread == null) { // start the thread if it isn't working
                 bgThread = new WorkThread();
                 bgThread.start();

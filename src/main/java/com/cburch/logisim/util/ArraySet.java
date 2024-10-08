@@ -142,8 +142,8 @@ public class ArraySet<E> extends AbstractSet<E> {
             String cmd = in.readLine();
             if (cmd == null) break;
             cmd = cmd.trim();
-            if (cmd.equals("")) {
-                ;
+            if (cmd.isEmpty()) {
+                continue;
             } else if (cmd.startsWith("+")) {
                 set.add(cmd.substring(1));
             } else if (cmd.startsWith("-")) {
