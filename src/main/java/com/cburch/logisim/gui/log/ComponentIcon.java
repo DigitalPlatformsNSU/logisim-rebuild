@@ -36,7 +36,7 @@ class ComponentIcon implements Icon {
     }
 
     public void paintIcon(java.awt.Component c, Graphics g,
-            int x, int y) {
+                          int x, int y) {
         // draw tool icon
         Graphics gIcon = g.create();
         ComponentDrawContext context = new ComponentDrawContext(c, null, null, g, gIcon);
@@ -47,11 +47,11 @@ class ComponentIcon implements Icon {
             int[] xp;
             int[] yp;
             if (triangleState == TRIANGLE_CLOSED) {
-                xp = new int[] { x + 13, x + 13, x + 17 };
-                yp = new int[] { y + 11, y + 19, y + 15 };
+                xp = new int[]{x + 13, x + 13, x + 17};
+                yp = new int[]{y + 11, y + 19, y + 15};
             } else {
-                xp = new int[] { x + 11, x + 19, x + 15 };
-                yp = new int[] { y + 13, y + 13, y + 17 };
+                xp = new int[]{x + 11, x + 19, x + 15};
+                yp = new int[]{y + 13, y + 13, y + 17};
             }
             g.setColor(Color.LIGHT_GRAY);
             g.fillPolygon(xp, yp, 3);

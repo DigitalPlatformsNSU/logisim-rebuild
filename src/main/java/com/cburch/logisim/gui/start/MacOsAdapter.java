@@ -22,21 +22,23 @@ class MacOsAdapter { //MAC extends ApplicationAdapter {
             ApplicationEvent event2 = (ApplicationEvent) event;
             int type = event2.getType();
             switch (type) {
-            case ApplicationEvent.ABOUT:
-                About.showAboutDialog(null);
-                break;
-            case ApplicationEvent.QUIT_APPLICATION:
-                ProjectActions.doQuit();
-                break;
-            case ApplicationEvent.OPEN_DOCUMENT:
-                Startup.doOpen(event2.getFile());
-                break;
-            case ApplicationEvent.PRINT_DOCUMENT:
-                Startup.doPrint(event2.getFile());
-                break;
-            case ApplicationEvent.PREFERENCES:
-                PreferencesFrame.showPreferences();
-                break;
+                case ApplicationEvent.ABOUT:
+                    About.showAboutDialog(null);
+                    break;
+                case ApplicationEvent.QUIT_APPLICATION:
+                    ProjectActions.doQuit();
+                    break;
+                case ApplicationEvent.OPEN_DOCUMENT:
+                    Startup.doOpen(event2.getFile());
+                    break;
+                case ApplicationEvent.PRINT_DOCUMENT:
+                    Startup.doPrint(event2.getFile());
+                    break;
+                case ApplicationEvent.PREFERENCES:
+                    PreferencesFrame.showPreferences();
+                    break;
+                default:
+                    break;
             }
         }
     }

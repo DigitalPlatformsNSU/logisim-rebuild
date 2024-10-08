@@ -12,15 +12,16 @@ import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.proj.Projects;
 
 class ProjectsDirty {
-    private ProjectsDirty() { }
-    
+    private ProjectsDirty() {
+    }
+
     private static class DirtyListener implements LibraryListener {
         Project proj;
-        
+
         DirtyListener(Project proj) {
             this.proj = proj;
         }
-        
+
         public void libraryChanged(LibraryEvent event) {
             if (event.getAction() == LibraryEvent.DIRTY_STATE) {
                 LogisimFile lib = proj.getLogisimFile();
@@ -29,7 +30,7 @@ class ProjectsDirty {
             }
         }
     }
-    
+
     private static class ProjectListListener implements PropertyChangeListener {
         public synchronized void propertyChange(PropertyChangeEvent event) {
             for (DirtyListener l : listeners) {
@@ -40,13 +41,13 @@ class ProjectsDirty {
                 DirtyListener l = new DirtyListener(proj);
                 proj.addLibraryListener(l);
                 listeners.add(l);
-                
+
                 LogisimFile lib = proj.getLogisimFile();
                 LibraryManager.instance.setDirty(lib.getLoader().getMainFile(), lib.isDirty());
             }
         }
     }
-    
+
     private static ProjectListListener projectListListener = new ProjectListListener();
     private static ArrayList<DirtyListener> listeners = new ArrayList<DirtyListener>();
 

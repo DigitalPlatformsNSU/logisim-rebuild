@@ -20,16 +20,16 @@ class CanvasListener implements MouseListener, MouseMotionListener, KeyListener,
         CanvasModelListener {
     private Canvas canvas;
     private CanvasTool tool;
-    
+
     public CanvasListener(Canvas canvas) {
         this.canvas = canvas;
         tool = null;
     }
-    
+
     public CanvasTool getTool() {
         return tool;
     }
-    
+
     public void setTool(CanvasTool value) {
         CanvasTool oldValue = tool;
         if (value != oldValue) {
@@ -74,7 +74,8 @@ class CanvasListener implements MouseListener, MouseMotionListener, KeyListener,
         }
     }
 
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e) {
+    }
 
     public void mouseEntered(MouseEvent e) {
         if (tool != null) tool.mouseEntered(canvas, e);
@@ -100,11 +101,11 @@ class CanvasListener implements MouseListener, MouseMotionListener, KeyListener,
         canvas.getSelection().modelChanged(event);
         canvas.repaint();
     }
-    
+
     private boolean isButton1(MouseEvent e) {
         return (e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0;
     }
-    
+
     private void handlePopupTrigger(MouseEvent e) {
         Location loc = Location.create(e.getX(), e.getY());
         List<CanvasObject> objects = canvas.getModel().getObjectsFromTop();

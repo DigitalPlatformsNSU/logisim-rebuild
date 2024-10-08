@@ -31,15 +31,15 @@ abstract class AbstractFlipFlop extends InstanceFactory {
     private Attribute<AttributeOption> triggerAttribute;
 
     protected AbstractFlipFlop(String name, String iconName, StringGetter desc,
-            int numInputs, boolean allowLevelTriggers) {
+                               int numInputs, boolean allowLevelTriggers) {
         super(name, desc);
         setIconName(iconName);
         triggerAttribute = allowLevelTriggers ? StdAttr.TRIGGER : StdAttr.EDGE_TRIGGER;
-        setAttributes(new Attribute[] {
+        setAttributes(new Attribute[]{
                 triggerAttribute, StdAttr.LABEL, StdAttr.LABEL_FONT
-            }, new Object[] {
+        }, new Object[]{
                 StdAttr.TRIG_RISING, "", StdAttr.DEFAULT_LABEL_FONT
-            });
+        });
         setOffsetBounds(Bounds.create(-40, -10, 40, 40));
         setInstancePoker(Poker.class);
         setInstanceLogger(Logger.class);
@@ -47,19 +47,19 @@ abstract class AbstractFlipFlop extends InstanceFactory {
         Port[] ps = new Port[numInputs + STD_PORTS];
         if (numInputs == 1) {
             ps[0] = new Port(-40, 20, Port.INPUT, 1);
-            ps[1] = new Port(-40,  0, Port.INPUT, 1);
+            ps[1] = new Port(-40, 0, Port.INPUT, 1);
         } else if (numInputs == 2) {
-            ps[0] = new Port(-40,  0, Port.INPUT, 1);
+            ps[0] = new Port(-40, 0, Port.INPUT, 1);
             ps[1] = new Port(-40, 20, Port.INPUT, 1);
             ps[2] = new Port(-40, 10, Port.INPUT, 1);
         } else {
             throw new RuntimeException("flip-flop input > 2");
         }
-        ps[numInputs + 1] = new Port(  0,  0, Port.OUTPUT, 1);
-        ps[numInputs + 2] = new Port(  0, 20, Port.OUTPUT, 1);
-        ps[numInputs + 3] = new Port(-10, 30, Port.INPUT,  1);
-        ps[numInputs + 4] = new Port(-30, 30, Port.INPUT,  1);
-        ps[numInputs + 5] = new Port(-20, 30, Port.INPUT,  1);
+        ps[numInputs + 1] = new Port(0, 0, Port.OUTPUT, 1);
+        ps[numInputs + 2] = new Port(0, 20, Port.OUTPUT, 1);
+        ps[numInputs + 3] = new Port(-10, 30, Port.INPUT, 1);
+        ps[numInputs + 4] = new Port(-30, 30, Port.INPUT, 1);
+        ps[numInputs + 5] = new Port(-20, 30, Port.INPUT, 1);
         ps[numInputs].setToolTip(Strings.getter("flipFlopClockTip"));
         ps[numInputs + 1].setToolTip(Strings.getter("flipFlopQTip"));
         ps[numInputs + 2].setToolTip(Strings.getter("flipFlopNotQTip"));
@@ -75,7 +75,7 @@ abstract class AbstractFlipFlop extends InstanceFactory {
     protected abstract String getInputName(int index);
 
     protected abstract Value computeValue(Value[] inputs,
-            Value curValue);
+                                          Value curValue);
 
     //
     // concrete methods not intended to be overridden
@@ -141,7 +141,7 @@ abstract class AbstractFlipFlop extends InstanceFactory {
                 g.fillOval(x - 26, y + 4, 13, 13);
                 g.setColor(Color.WHITE);
                 GraphicsUtil.drawCenteredText(g,
-                    myState.curValue.toDisplayString(), x - 19, y + 9);
+                        myState.curValue.toDisplayString(), x - 19, y + 9);
                 g.setColor(Color.BLACK);
             }
         }
@@ -161,7 +161,7 @@ abstract class AbstractFlipFlop extends InstanceFactory {
     }
 
     private static class StateData extends ClockState implements InstanceData {
-        Value curValue  = Value.FALSE;
+        Value curValue = Value.FALSE;
     }
 
     public static class Logger extends InstanceLogger {

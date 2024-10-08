@@ -177,7 +177,7 @@ public class ToolbarData {
     //
     // package-protected methods
     //
-    void replaceAll(Map<Tool,Tool> toolMap) {
+    void replaceAll(Map<Tool, Tool> toolMap) {
         boolean changed = false;
         for (ListIterator<Tool> it = contents.listIterator(); it.hasNext(); ) {
             Object old = it.next();

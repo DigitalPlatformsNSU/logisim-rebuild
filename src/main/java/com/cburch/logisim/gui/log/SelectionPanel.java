@@ -25,7 +25,7 @@ import javax.swing.tree.TreePath;
 class SelectionPanel extends LogPanel {
     private class Listener extends MouseAdapter
             implements ActionListener, TreeSelectionListener,
-                ListSelectionListener {
+            ListSelectionListener {
         @Override
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
@@ -45,9 +45,14 @@ class SelectionPanel extends LogPanel {
                 if (sel != null) {
                     int radix = sel.getRadix();
                     switch (radix) {
-                    case 2:  sel.setRadix(10); break;
-                    case 10: sel.setRadix(16); break;
-                    default: sel.setRadix(2);
+                        case 2:
+                            sel.setRadix(10);
+                            break;
+                        case 10:
+                            sel.setRadix(16);
+                            break;
+                        default:
+                            sel.setRadix(2);
                     }
                 }
             } else if (src == moveUp) {
@@ -160,14 +165,17 @@ class SelectionPanel extends LogPanel {
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
-        gridbag.setConstraints(explorerPane, gbc); add(explorerPane);
+        gridbag.setConstraints(explorerPane, gbc);
+        add(explorerPane);
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.NORTH;
         gbc.weightx = 0.0;
-        gridbag.setConstraints(buttons, gbc); add(buttons);
+        gridbag.setConstraints(buttons, gbc);
+        add(buttons);
         gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
-        gridbag.setConstraints(listPane, gbc); add(listPane);
+        gridbag.setConstraints(listPane, gbc);
+        add(listPane);
     }
 
     @Override

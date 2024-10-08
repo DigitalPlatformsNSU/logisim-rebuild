@@ -5,5 +5,6 @@ package com.cburch.logisim.util;
 
 public interface JInputComponent {
     Object getValue();
+
     void setValue(Object value);
 }

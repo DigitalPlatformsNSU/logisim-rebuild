@@ -23,26 +23,26 @@ import com.cburch.logisim.util.GraphicsUtil;
 public class Multiplier extends InstanceFactory {
     static final int PER_DELAY = 1;
 
-    private static final int IN0   = 0;
-    private static final int IN1   = 1;
-    private static final int OUT   = 2;
-    private static final int C_IN  = 3;
+    private static final int IN0 = 0;
+    private static final int IN1 = 1;
+    private static final int OUT = 2;
+    private static final int C_IN = 3;
     private static final int C_OUT = 4;
 
     public Multiplier() {
         super("Multiplier", Strings.getter("multiplierComponent"));
-        setAttributes(new Attribute[] { StdAttr.WIDTH },
-                new Object[] { BitWidth.create(8) });
+        setAttributes(new Attribute[]{StdAttr.WIDTH},
+                new Object[]{BitWidth.create(8)});
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
         setOffsetBounds(Bounds.create(-40, -20, 40, 40));
         setIconName("multiplier.gif");
 
         Port[] ps = new Port[5];
-        ps[IN0]   = new Port(-40, -10, Port.INPUT,  StdAttr.WIDTH);
-        ps[IN1]   = new Port(-40,  10, Port.INPUT,  StdAttr.WIDTH);
-        ps[OUT]   = new Port(  0,   0, Port.OUTPUT, StdAttr.WIDTH);
-        ps[C_IN]  = new Port(-20, -20, Port.INPUT,  StdAttr.WIDTH);
-        ps[C_OUT] = new Port(-20,  20, Port.OUTPUT, StdAttr.WIDTH);
+        ps[IN0] = new Port(-40, -10, Port.INPUT, StdAttr.WIDTH);
+        ps[IN1] = new Port(-40, 10, Port.INPUT, StdAttr.WIDTH);
+        ps[OUT] = new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH);
+        ps[C_IN] = new Port(-20, -20, Port.INPUT, StdAttr.WIDTH);
+        ps[C_OUT] = new Port(-20, 20, Port.OUTPUT, StdAttr.WIDTH);
         ps[IN0].setToolTip(Strings.getter("multiplierInputTip"));
         ps[IN1].setToolTip(Strings.getter("multiplierInputTip"));
         ps[OUT].setToolTip(Strings.getter("multiplierOutputTip"));
@@ -64,7 +64,7 @@ public class Multiplier extends InstanceFactory {
 
         // propagate them
         int delay = dataWidth.getWidth() * (dataWidth.getWidth() + 2) * PER_DELAY;
-        state.setPort(OUT,   outs[0], delay);
+        state.setPort(OUT, outs[0], delay);
         state.setPort(C_OUT, outs[1], delay);
     }
 
@@ -77,7 +77,7 @@ public class Multiplier extends InstanceFactory {
         painter.drawPort(IN0);
         painter.drawPort(IN1);
         painter.drawPort(OUT);
-        painter.drawPort(C_IN,  "c in",  Direction.NORTH);
+        painter.drawPort(C_IN, "c in", Direction.NORTH);
         painter.drawPort(C_OUT, "c out", Direction.SOUTH);
 
         Location loc = painter.getLocation();
@@ -96,9 +96,9 @@ public class Multiplier extends InstanceFactory {
         if (c_in == Value.NIL || c_in.isUnknown()) c_in = Value.createKnown(width, 0);
         if (a.isFullyDefined() && b.isFullyDefined() && c_in.isFullyDefined()) {
             long sum = (long) a.toIntValue() * (long) b.toIntValue()
-                + (long) c_in.toIntValue();
-            return new Value[] { Value.createKnown(width, (int) sum),
-                Value.createKnown(width, (int) (sum >> w)) };
+                    + (long) c_in.toIntValue();
+            return new Value[]{Value.createKnown(width, (int) sum),
+                    Value.createKnown(width, (int) (sum >> w))};
         } else {
             Value[] avals = a.getAll();
             int aOk = findUnknown(avals);
@@ -127,8 +127,8 @@ public class Multiplier extends InstanceFactory {
                     bits[i] = Value.ERROR;
                 }
             }
-            return new Value[] { Value.create(bits),
-                    error < w ? Value.createError(width) : Value.createUnknown(width) };
+            return new Value[]{Value.create(bits),
+                    error < w ? Value.createError(width) : Value.createUnknown(width)};
         }
     }
 

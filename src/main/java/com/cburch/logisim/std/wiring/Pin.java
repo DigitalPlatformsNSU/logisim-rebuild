@@ -43,21 +43,20 @@ import com.cburch.logisim.util.Icons;
 
 public class Pin extends InstanceFactory {
     public static final Attribute<Boolean> ATTR_TRISTATE
-        = Attributes.forBoolean("tristate", Strings.getter("pinThreeStateAttr"));
+            = Attributes.forBoolean("tristate", Strings.getter("pinThreeStateAttr"));
     public static final Attribute<Boolean> ATTR_TYPE
-        = Attributes.forBoolean("output", Strings.getter("pinOutputAttr"));
+            = Attributes.forBoolean("output", Strings.getter("pinOutputAttr"));
     public static final Attribute<Direction> ATTR_LABEL_LOC
-        = Attributes.forDirection("labelloc", Strings.getter("pinLabelLocAttr"));
+            = Attributes.forDirection("labelloc", Strings.getter("pinLabelLocAttr"));
 
     public static final AttributeOption PULL_NONE
-        = new AttributeOption("none", Strings.getter("pinPullNoneOption"));
+            = new AttributeOption("none", Strings.getter("pinPullNoneOption"));
     public static final AttributeOption PULL_UP
-        = new AttributeOption("up", Strings.getter("pinPullUpOption"));
+            = new AttributeOption("up", Strings.getter("pinPullUpOption"));
     public static final AttributeOption PULL_DOWN
-        = new AttributeOption("down", Strings.getter("pinPullDownOption"));
+            = new AttributeOption("down", Strings.getter("pinPullDownOption"));
     public static final Attribute<AttributeOption> ATTR_PULL
-        = Attributes.forOption("pull", Strings.getter("pinPullAttr"),
-                new AttributeOption[] { PULL_NONE, PULL_UP, PULL_DOWN });
+            = Attributes.forOption("pull", Strings.getter("pinPullAttr"), new AttributeOption[]{PULL_NONE, PULL_UP, PULL_DOWN});
 
     public static final Pin FACTORY = new Pin();
 
@@ -70,8 +69,8 @@ public class Pin extends InstanceFactory {
         super("Pin", Strings.getter("pinComponent"));
         setFacingAttribute(StdAttr.FACING);
         setKeyConfigurator(JoinedConfigurator.create(
-            new BitWidthConfigurator(StdAttr.WIDTH),
-            new DirectionConfigurator(ATTR_LABEL_LOC, KeyEvent.ALT_DOWN_MASK)));
+                new BitWidthConfigurator(StdAttr.WIDTH),
+                new DirectionConfigurator(ATTR_LABEL_LOC, KeyEvent.ALT_DOWN_MASK)));
         setInstanceLogger(PinLogger.class);
         setInstancePoker(PinPoker.class);
     }
@@ -122,11 +121,17 @@ public class Pin extends InstanceFactory {
                 return;
             }
         }
-        int pinx = 16; int piny = 9;
+        int pinx = 16;
+        int piny = 9;
         if (dir == Direction.EAST) { // keep defaults
-        } else if (dir == Direction.WEST) { pinx = 4;
-        } else if (dir == Direction.NORTH) { pinx = 9; piny = 4;
-        } else if (dir == Direction.SOUTH) { pinx = 9; piny = 16;
+        } else if (dir == Direction.WEST) {
+            pinx = 4;
+        } else if (dir == Direction.NORTH) {
+            pinx = 9;
+            piny = 4;
+        } else if (dir == Direction.SOUTH) {
+            pinx = 9;
+            piny = 16;
         }
 
         g.setColor(Color.black);
@@ -136,7 +141,7 @@ public class Pin extends InstanceFactory {
             g.drawRect(4, 4, 13, 13);
         }
         g.setColor(Value.TRUE.getColor());
-        g.fillOval(7, 7,  8,  8);
+        g.fillOval(7, 7, 8, 8);
         g.fillOval(pinx, piny, 3, 3);
     }
 
@@ -154,14 +159,14 @@ public class Pin extends InstanceFactory {
             BitWidth width = attrs.getValue(StdAttr.WIDTH);
             if (width == BitWidth.ONE) {
                 g.drawOval(x + bds.getX() + 1, y + bds.getY() + 1,
-                    bds.getWidth() - 1, bds.getHeight() - 1);
+                        bds.getWidth() - 1, bds.getHeight() - 1);
             } else {
                 g.drawRoundRect(x + bds.getX() + 1, y + bds.getY() + 1,
-                    bds.getWidth() - 1, bds.getHeight() - 1, 6, 6);
+                        bds.getWidth() - 1, bds.getHeight() - 1, 6, 6);
             }
         } else {
             g.drawRect(x + bds.getX() + 1, y + bds.getY() + 1,
-                bds.getWidth() - 1, bds.getHeight() - 1);
+                    bds.getWidth() - 1, bds.getHeight() - 1);
         }
     }
 
@@ -177,14 +182,14 @@ public class Pin extends InstanceFactory {
         if (attrs.type == EndData.OUTPUT_ONLY) {
             if (attrs.width.getWidth() == 1) {
                 g.drawOval(x + 1, y + 1,
-                    bds.getWidth() - 1, bds.getHeight() - 1);
+                        bds.getWidth() - 1, bds.getHeight() - 1);
             } else {
                 g.drawRoundRect(x + 1, y + 1,
-                    bds.getWidth() - 1, bds.getHeight() - 1, 6, 6);
+                        bds.getWidth() - 1, bds.getHeight() - 1, 6, 6);
             }
         } else {
             g.drawRect(x + 1, y + 1,
-                bds.getWidth() - 1, bds.getHeight() - 1);
+                    bds.getWidth() - 1, bds.getHeight() - 1);
         }
 
         painter.drawLabel();
@@ -203,7 +208,7 @@ public class Pin extends InstanceFactory {
                 if (attrs.width.getWidth() == 1) {
                     g.setColor(Color.WHITE);
                     GraphicsUtil.drawCenteredText(g,
-                        state.sending.toDisplayString(), x + 11, y + 9);
+                            state.sending.toDisplayString(), x + 11, y + 9);
                 }
             } else {
                 Probe.paintValue(painter, state.sending);
@@ -245,7 +250,7 @@ public class Pin extends InstanceFactory {
         } else {
             port.setToolTip(Strings.getter("pinInputToolTip"));
         }
-        instance.setPorts(new Port[] { port });
+        instance.setPorts(new Port[]{port});
     }
 
     @Override
@@ -370,8 +375,11 @@ public class Pin extends InstanceFactory {
 
         @Override
         public Object clone() {
-            try { return super.clone(); }
-            catch (CloneNotSupportedException e) { return null; }
+            try {
+                return super.clone();
+            } catch (CloneNotSupportedException e) {
+                return null;
+            }
         }
     }
 
@@ -453,7 +461,7 @@ public class Pin extends InstanceFactory {
             String ret = attrs.label;
             if (ret == null || ret.equals("")) {
                 String type = attrs.type == EndData.INPUT_ONLY
-                    ? Strings.get("pinInputName") : Strings.get("pinOutputName");
+                        ? Strings.get("pinInputName") : Strings.get("pinOutputName");
                 return type + state.getInstance().getLocation();
             } else {
                 return ret;

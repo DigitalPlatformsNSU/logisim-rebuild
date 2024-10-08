@@ -36,28 +36,28 @@ public class Tty extends InstanceFactory {
     private static final Font DEFAULT_FONT = new Font("monospaced", Font.PLAIN, 12);
 
     private static final Attribute<Integer> ATTR_COLUMNS
-        = Attributes.forIntegerRange("cols",
+            = Attributes.forIntegerRange("cols",
             Strings.getter("ttyColsAttr"), 1, 120);
     private static final Attribute<Integer> ATTR_ROWS
-        = Attributes.forIntegerRange("rows",
+            = Attributes.forIntegerRange("rows",
             Strings.getter("ttyRowsAttr"), 1, 48);
 
     public Tty() {
         super("TTY", Strings.getter("ttyComponent"));
-        setAttributes(new Attribute[] {
+        setAttributes(new Attribute[]{
                 ATTR_ROWS, ATTR_COLUMNS, StdAttr.EDGE_TRIGGER,
                 Io.ATTR_COLOR, Io.ATTR_BACKGROUND
-            }, new Object[] {
+        }, new Object[]{
                 Integer.valueOf(8), Integer.valueOf(32), StdAttr.TRIG_RISING,
                 Color.BLACK, DEFAULT_BACKGROUND
-            });
+        });
         setIconName("tty.gif");
 
         Port[] ps = new Port[4];
-        ps[CLR] = new Port(20,  10, Port.INPUT, 1);
-        ps[CK]  = new Port( 0,   0, Port.INPUT, 1);
-        ps[WE]  = new Port(10,  10, Port.INPUT, 1);
-        ps[IN]  = new Port( 0, -10, Port.INPUT, 7);
+        ps[CLR] = new Port(20, 10, Port.INPUT, 1);
+        ps[CK] = new Port(0, 0, Port.INPUT, 1);
+        ps[WE] = new Port(10, 10, Port.INPUT, 1);
+        ps[IN] = new Port(0, -10, Port.INPUT, 7);
         ps[CLR].setToolTip(Strings.getter("ttyClearTip"));
         ps[CK].setToolTip(Strings.getter("ttyClockTip"));
         ps[WE].setToolTip(Strings.getter("ttyEnableTip"));
@@ -97,7 +97,7 @@ public class Tty extends InstanceFactory {
         Value enable = circState.getPort(WE);
         Value in = circState.getPort(IN);
 
-        synchronized(state) {
+        synchronized (state) {
             Value lastClock = state.setLastClock(clock);
             if (clear == Value.TRUE) {
                 state.clear();
@@ -150,7 +150,7 @@ public class Tty extends InstanceFactory {
             int curRow;
             int curCol;
             TtyState state = getTtyState(painter);
-            synchronized(state) {
+            synchronized (state) {
                 for (int i = 0; i < rows; i++) {
                     rowData[i] = state.getRowString(i);
                 }

@@ -13,14 +13,14 @@ import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.util.GraphicsUtil;
 
 public class TextField {
-    public static final int H_LEFT    = GraphicsUtil.H_LEFT;
-    public static final int H_CENTER    = GraphicsUtil.H_CENTER;
-    public static final int H_RIGHT  = GraphicsUtil.H_RIGHT;
-    public static final int V_TOP      = GraphicsUtil.V_TOP;
-    public static final int V_CENTER    = GraphicsUtil.V_CENTER;
-    public static final int V_CENTER_OVERALL    = GraphicsUtil.V_CENTER_OVERALL;
-    public static final int V_BASELINE  = GraphicsUtil.V_BASELINE;
-    public static final int V_BOTTOM    = GraphicsUtil.V_BOTTOM;
+    public static final int H_LEFT = GraphicsUtil.H_LEFT;
+    public static final int H_CENTER = GraphicsUtil.H_CENTER;
+    public static final int H_RIGHT = GraphicsUtil.H_RIGHT;
+    public static final int V_TOP = GraphicsUtil.V_TOP;
+    public static final int V_CENTER = GraphicsUtil.V_CENTER;
+    public static final int V_CENTER_OVERALL = GraphicsUtil.V_CENTER_OVERALL;
+    public static final int V_BASELINE = GraphicsUtil.V_BASELINE;
+    public static final int V_BOTTOM = GraphicsUtil.V_BOTTOM;
 
     private int x;
     private int y;
@@ -35,7 +35,7 @@ public class TextField {
     }
 
     public TextField(int x, int y, int halign, int valign,
-            Font font) {
+                     Font font) {
         this.x = x;
         this.y = y;
         this.halign = halign;
@@ -63,12 +63,29 @@ public class TextField {
     //
     // access methods
     //
-    public int getX() { return x; }
-    public int getY() { return y; }
-    public int getHAlign() { return halign; }
-    public int getVAlign() { return valign; }
-    public Font getFont() { return font; }
-    public String getText() { return text; }
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getHAlign() {
+        return halign;
+    }
+
+    public int getVAlign() {
+        return valign;
+    }
+
+    public Font getFont() {
+        return font;
+    }
+
+    public String getText() {
+        return text;
+    }
 
     public TextFieldCaret getCaret(Graphics g, int pos) {
         return new TextFieldCaret(this, g, pos);
@@ -125,22 +142,36 @@ public class TextField {
         int x = this.x;
         int y = this.y;
         FontMetrics fm;
-        if (font == null)   fm = g.getFontMetrics();
-        else                fm = g.getFontMetrics(font);
+        if (font == null) fm = g.getFontMetrics();
+        else fm = g.getFontMetrics(font);
         int width = fm.stringWidth(text);
         int ascent = fm.getAscent();
         int descent = fm.getDescent();
         switch (halign) {
-        case TextField.H_CENTER:    x -= width / 2; break;
-        case TextField.H_RIGHT:  x -= width; break;
-        default:                    break;
+            case TextField.H_CENTER:
+                x -= width / 2;
+                break;
+            case TextField.H_RIGHT:
+                x -= width;
+                break;
+            default:
+                break;
         }
         switch (valign) {
-        case TextField.V_TOP:      y += ascent; break;
-        case TextField.V_CENTER:    y += ascent/ 2; break;
-        case TextField.V_CENTER_OVERALL: y += (ascent - descent) / 2; break;
-        case TextField.V_BOTTOM:    y -= descent; break;
-        default:                    break;
+            case TextField.V_TOP:
+                y += ascent;
+                break;
+            case TextField.V_CENTER:
+                y += ascent / 2;
+                break;
+            case TextField.V_CENTER_OVERALL:
+                y += (ascent - descent) / 2;
+                break;
+            case TextField.V_BOTTOM:
+                y -= descent;
+                break;
+            default:
+                break;
         }
         return Bounds.create(x, y - ascent, width, ascent + descent);
     }
@@ -156,16 +187,30 @@ public class TextField {
         int ascent = fm.getAscent();
         int descent = fm.getDescent();
         switch (halign) {
-        case TextField.H_CENTER:    x -= width / 2; break;
-        case TextField.H_RIGHT:  x -= width; break;
-        default:                    break;
+            case TextField.H_CENTER:
+                x -= width / 2;
+                break;
+            case TextField.H_RIGHT:
+                x -= width;
+                break;
+            default:
+                break;
         }
         switch (valign) {
-        case TextField.V_TOP:      y += ascent; break;
-        case TextField.V_CENTER:    y += ascent/ 2; break;
-        case TextField.V_CENTER_OVERALL: y += (ascent - descent) / 2; break;
-        case TextField.V_BOTTOM:    y -= descent; break;
-        default:                    break;
+            case TextField.V_TOP:
+                y += ascent;
+                break;
+            case TextField.V_CENTER:
+                y += ascent / 2;
+                break;
+            case TextField.V_CENTER_OVERALL:
+                y += (ascent - descent) / 2;
+                break;
+            case TextField.V_BOTTOM:
+                y -= descent;
+                break;
+            default:
+                break;
         }
         g.drawString(text, x, y);
         g.setFont(old);

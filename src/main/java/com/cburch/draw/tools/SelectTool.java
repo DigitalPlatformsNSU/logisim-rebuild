@@ -230,50 +230,52 @@ public class SelectTool extends AbstractTool {
         int x1 = e.getX();
         int y1 = e.getY();
         switch (action) {
-        case MOVE_ALL:
-            Location moveDelta = selection.getMovingDelta();
-            if (dragEffective && !moveDelta.equals(Location.create(0, 0))) {
-                canvas.doAction(new ModelTranslateAction(model, selected,
-                        moveDelta.getX(), moveDelta.getY()));
-            }
-            break;
-        case MOVE_HANDLE:
-            HandleGesture gesture = curGesture;
-            curGesture = null;
-            if (dragEffective && gesture != null) {
-                ModelMoveHandleAction act;
-                act = new ModelMoveHandleAction(model, gesture);
-                canvas.doAction(act);
-                Handle result = act.getNewHandle();
-                if (result != null) {
-                    Handle h = result.getObject().canDeleteHandle(result.getLocation());
-                    selection.setHandleSelected(h);
+            case MOVE_ALL:
+                Location moveDelta = selection.getMovingDelta();
+                if (dragEffective && !moveDelta.equals(Location.create(0, 0))) {
+                    canvas.doAction(new ModelTranslateAction(model, selected,
+                            moveDelta.getX(), moveDelta.getY()));
                 }
-            }
-            break;
-        case RECT_SELECT:
-            if (dragEffective) {
-                Bounds bds = Bounds.create(start).add(x1, y1);
-                selection.setSelected(canvas.getModel().getObjectsIn(bds), true);
-            } else {
-                CanvasObject clicked;
-                clicked = getObjectAt(model, start.getX(), start.getY(), true);
-                if (clicked != null) {
-                    selection.clearSelected();
-                    selection.setSelected(clicked, true);
+                break;
+            case MOVE_HANDLE:
+                HandleGesture gesture = curGesture;
+                curGesture = null;
+                if (dragEffective && gesture != null) {
+                    ModelMoveHandleAction act;
+                    act = new ModelMoveHandleAction(model, gesture);
+                    canvas.doAction(act);
+                    Handle result = act.getNewHandle();
+                    if (result != null) {
+                        Handle h = result.getObject().canDeleteHandle(result.getLocation());
+                        selection.setHandleSelected(h);
+                    }
                 }
-            }
-            break;
-        case RECT_TOGGLE:
-            if (dragEffective) {
-                Bounds bds = Bounds.create(start).add(x1, y1);
-                selection.toggleSelected(canvas.getModel().getObjectsIn(bds));
-            } else {
-                CanvasObject clicked;
-                clicked = getObjectAt(model, start.getX(), start.getY(), true);
-                selection.setSelected(clicked, !selected.contains(clicked));
-            }
-            break;
+                break;
+            case RECT_SELECT:
+                if (dragEffective) {
+                    Bounds bds = Bounds.create(start).add(x1, y1);
+                    selection.setSelected(canvas.getModel().getObjectsIn(bds), true);
+                } else {
+                    CanvasObject clicked;
+                    clicked = getObjectAt(model, start.getX(), start.getY(), true);
+                    if (clicked != null) {
+                        selection.clearSelected();
+                        selection.setSelected(clicked, true);
+                    }
+                }
+                break;
+            case RECT_TOGGLE:
+                if (dragEffective) {
+                    Bounds bds = Bounds.create(start).add(x1, y1);
+                    selection.toggleSelected(canvas.getModel().getObjectsIn(bds));
+                } else {
+                    CanvasObject clicked;
+                    clicked = getObjectAt(model, start.getX(), start.getY(), true);
+                    selection.setSelected(clicked, !selected.contains(clicked));
+                }
+                break;
+            default:
+                break;
         }
         selection.clearDrawsSuppressed();
         repaintArea(canvas);
@@ -338,40 +340,42 @@ public class SelectTool extends AbstractTool {
         }
 
         switch (curAction) {
-        case MOVE_HANDLE:
-            HandleGesture gesture = curGesture;
-            if (ctrl) {
-                Handle h = gesture.getHandle();
-                dx = canvas.snapX(h.getX() + dx) - h.getX();
-                dy = canvas.snapY(h.getY() + dy) - h.getY();
-            }
-            curGesture = new HandleGesture(gesture.getHandle(), dx, dy, mods);
-            canvas.getSelection().setHandleGesture(curGesture);
-            break;
-        case MOVE_ALL:
-            if (ctrl) {
-                int minX = Integer.MAX_VALUE;
-                int minY = Integer.MAX_VALUE;
-                for (CanvasObject o : canvas.getSelection().getSelected()) {
-                    for (Handle handle : o.getHandles(null)) {
-                        int x = handle.getX();
-                        int y = handle.getY();
-                        if (x < minX) minX = x;
-                        if (y < minY) minY = y;
+            case MOVE_HANDLE:
+                HandleGesture gesture = curGesture;
+                if (ctrl) {
+                    Handle h = gesture.getHandle();
+                    dx = canvas.snapX(h.getX() + dx) - h.getX();
+                    dy = canvas.snapY(h.getY() + dy) - h.getY();
+                }
+                curGesture = new HandleGesture(gesture.getHandle(), dx, dy, mods);
+                canvas.getSelection().setHandleGesture(curGesture);
+                break;
+            case MOVE_ALL:
+                if (ctrl) {
+                    int minX = Integer.MAX_VALUE;
+                    int minY = Integer.MAX_VALUE;
+                    for (CanvasObject o : canvas.getSelection().getSelected()) {
+                        for (Handle handle : o.getHandles(null)) {
+                            int x = handle.getX();
+                            int y = handle.getY();
+                            if (x < minX) minX = x;
+                            if (y < minY) minY = y;
+                        }
+                    }
+                    dx = canvas.snapX(minX + dx) - minX;
+                    dy = canvas.snapY(minY + dy) - minY;
+                }
+                if (shift) {
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        dy = 0;
+                    } else {
+                        dx = 0;
                     }
                 }
-                dx = canvas.snapX(minX + dx) - minX;
-                dy = canvas.snapY(minY + dy) - minY;
-            }
-            if (shift) {
-                if (Math.abs(dx) > Math.abs(dy)) {
-                    dy = 0;
-                } else {
-                    dx = 0;
-                }
-            }
-            canvas.getSelection().setMovingDelta(dx, dy);
-            break;
+                canvas.getSelection().setMovingDelta(dx, dy);
+                break;
+            default:
+                break;
         }
         repaintArea(canvas);
     }
@@ -390,15 +394,15 @@ public class SelectTool extends AbstractTool {
         HandleGesture gesture = null;
         boolean drawHandles;
         switch (action) {
-        case MOVE_ALL:
-            drawHandles = !dragEffective;
-            break;
-        case MOVE_HANDLE:
-            drawHandles = !dragEffective;
-            if (dragEffective) gesture = curGesture;
-            break;
-        default:
-            drawHandles = true;
+            case MOVE_ALL:
+                drawHandles = !dragEffective;
+                break;
+            case MOVE_HANDLE:
+                drawHandles = !dragEffective;
+                if (dragEffective) gesture = curGesture;
+                break;
+            default:
+                drawHandles = true;
         }
 
         CanvasObject moveHandleObj = null;
@@ -449,8 +453,8 @@ public class SelectTool extends AbstractTool {
                 }
                 x = (int) Math.round(zoom * x);
                 y = (int) Math.round(zoom * y);
-                int[] xs = { x - offs, x, x + offs, x };
-                int[] ys = { y, y - offs, y, y + offs };
+                int[] xs = {x - offs, x, x + offs, x};
+                int[] ys = {y, y - offs, y, y + offs};
                 gCopy.setColor(Color.WHITE);
                 gCopy.fillPolygon(xs, ys, 4);
                 gCopy.setColor(Color.BLACK);
@@ -459,36 +463,46 @@ public class SelectTool extends AbstractTool {
         }
 
         switch (action) {
-        case RECT_SELECT:
-        case RECT_TOGGLE:
-            if (dragEffective) {
-                // find rectangle currently to show
-                int x0 = start.getX();
-                int y0 = start.getY();
-                int x1 = end.getX();
-                int y1 = end.getY();
-                if (x1 < x0) { int t = x0; x0 = x1; x1 = t; }
-                if (y1 < y0) { int t = y0; y0 = y1; y1 = t; }
+            case RECT_SELECT:
+            case RECT_TOGGLE:
+                if (dragEffective) {
+                    // find rectangle currently to show
+                    int x0 = start.getX();
+                    int y0 = start.getY();
+                    int x1 = end.getX();
+                    int y1 = end.getY();
+                    if (x1 < x0) {
+                        int t = x0;
+                        x0 = x1;
+                        x1 = t;
+                    }
+                    if (y1 < y0) {
+                        int t = y0;
+                        y0 = y1;
+                        y1 = t;
+                    }
 
-                // make the region that's not being selected darker
-                int w = canvas.getWidth();
-                int h = canvas.getHeight();
-                g.setColor(RECT_SELECT_BACKGROUND);
-                g.fillRect(0, 0, w, y0);
-                g.fillRect(0, y0, x0, y1 - y0);
-                g.fillRect(x1, y0, w - x1, y1 - y0);
-                g.fillRect(0, y1, w, h - y1);
+                    // make the region that's not being selected darker
+                    int w = canvas.getWidth();
+                    int h = canvas.getHeight();
+                    g.setColor(RECT_SELECT_BACKGROUND);
+                    g.fillRect(0, 0, w, y0);
+                    g.fillRect(0, y0, x0, y1 - y0);
+                    g.fillRect(x1, y0, w - x1, y1 - y0);
+                    g.fillRect(0, y1, w, h - y1);
 
-                // now draw the rectangle
-                g.setColor(Color.GRAY);
-                g.drawRect(x0, y0, x1 - x0, y1 - y0);
-            }
-            break;
+                    // now draw the rectangle
+                    g.setColor(Color.GRAY);
+                    g.drawRect(x0, y0, x1 - x0, y1 - y0);
+                }
+                break;
+            default:
+                break;
         }
     }
 
     private static CanvasObject getObjectAt(CanvasModel model, int x, int y,
-            boolean assumeFilled) {
+                                            boolean assumeFilled) {
         Location loc = Location.create(x, y);
         for (CanvasObject o : model.getObjectsFromTop()) {
             if (o.contains(loc, assumeFilled)) return o;

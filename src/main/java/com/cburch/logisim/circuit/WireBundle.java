@@ -82,7 +82,8 @@ class WireBundle {
     WireBundle find() {
         WireBundle ret = this;
         if (ret.parent != ret) {
-            do ret = ret.parent; while (ret.parent != ret);
+            do ret = ret.parent;
+            while (ret.parent != ret);
             this.parent = ret;
         }
         return ret;

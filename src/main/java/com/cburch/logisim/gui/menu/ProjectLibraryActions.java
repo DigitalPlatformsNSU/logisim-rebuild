@@ -22,13 +22,20 @@ import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.tools.Library;
 
 public class ProjectLibraryActions {
-    private ProjectLibraryActions() { }
+    private ProjectLibraryActions() {
+    }
 
     private static class BuiltinOption {
         Library lib;
-        BuiltinOption(Library lib) { this.lib = lib; }
+
+        BuiltinOption(Library lib) {
+            this.lib = lib;
+        }
+
         @Override
-        public String toString() { return lib.getDisplayName(); }
+        public String toString() {
+            return lib.getDisplayName();
+        }
     }
 
     private static class LibraryJList extends JList {
@@ -114,16 +121,19 @@ public class ProjectLibraryActions {
                 // if opening the JAR file failed, do nothing
             } finally {
                 if (jarFile != null) {
-                    try { jarFile.close(); } catch (IOException e) { }
+                    try {
+                        jarFile.close();
+                    } catch (IOException e) {
+                    }
                 }
             }
 
             // if the class name was not found, go back to the good old dialog
             if (className == null) {
                 className = JOptionPane.showInputDialog(proj.getFrame(),
-                    Strings.get("jarClassNamePrompt"),
-                    Strings.get("jarClassNameTitle"),
-                    JOptionPane.QUESTION_MESSAGE);
+                        Strings.get("jarClassNamePrompt"),
+                        Strings.get("jarClassNameTitle"),
+                        JOptionPane.QUESTION_MESSAGE);
                 // if user canceled selection, abort
                 if (className == null) return;
             }
@@ -164,7 +174,7 @@ public class ProjectLibraryActions {
         String message = proj.getLogisimFile().getUnloadLibraryMessage(lib);
         if (message != null) {
             JOptionPane.showMessageDialog(proj.getFrame(), message,
-                Strings.get("unloadErrorTitle"), JOptionPane.ERROR_MESSAGE);
+                    Strings.get("unloadErrorTitle"), JOptionPane.ERROR_MESSAGE);
         } else {
             proj.doAction(LogisimFileActions.unloadLibrary(lib));
         }

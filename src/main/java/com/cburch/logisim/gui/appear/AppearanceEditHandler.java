@@ -190,8 +190,8 @@ public class AppearanceEditHandler extends EditHandler
 
         if (!remove.isEmpty()) {
             canvas.getProject().doAction(new SelectionAction(canvas,
-                Strings.getter("deleteSelectionAction"), remove, null, select,
-                anchorLocation, anchorFacing));
+                    Strings.getter("deleteSelectionAction"), remove, null, select,
+                    anchorLocation, anchorFacing));
         }
     }
 
@@ -214,8 +214,8 @@ public class AppearanceEditHandler extends EditHandler
 
         if (!clones.isEmpty()) {
             canvas.getProject().doAction(new SelectionAction(canvas,
-                Strings.getter("duplicateSelectionAction"), null, clones, select,
-                null, null));
+                    Strings.getter("duplicateSelectionAction"), null, clones, select,
+                    null, null));
         }
     }
 

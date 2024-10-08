@@ -82,9 +82,13 @@ public class ProjectExplorer extends JTree implements LocaleListener {
 
     public static interface Listener {
         public void selectionChanged(Event event);
+
         public void doubleClicked(Event event);
+
         public void moveRequested(Event event, AddTool dragged, AddTool target);
+
         public void deleteRequested(Event event);
+
         public JPopupMenu menuRequested(Event event);
     }
 
@@ -94,12 +98,15 @@ public class ProjectExplorer extends JTree implements LocaleListener {
         public void addTreeModelListener(TreeModelListener l) {
             listeners.add(l);
         }
+
         public void removeTreeModelListener(TreeModelListener l) {
             listeners.remove(l);
         }
+
         public Object getRoot() {
             return proj.getLogisimFile();
         }
+
         private List<?> getChildren(Object parent) {
             if (parent == proj.getLogisimFile()) {
                 return ((Library) parent).getElements();
@@ -109,12 +116,15 @@ public class ProjectExplorer extends JTree implements LocaleListener {
                 return Collections.EMPTY_LIST;
             }
         }
+
         public Object getChild(Object parent, int index) {
             return getChildren(parent).get(index);
         }
+
         public int getChildCount(Object parent) {
             return getChildren(parent).size();
         }
+
         public int getIndexOfChild(Object parent, Object query) {
             if (parent == null || query == null) return -1;
             int index = -1;
@@ -124,6 +134,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
             }
             return -1;
         }
+
         public boolean isLeaf(Object node) {
             return node != proj && !(node instanceof Library);
         }
@@ -143,7 +154,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
 
         void fireStructureChanged() {
             TreeModelEvent e = new TreeModelEvent(ProjectExplorer.this,
-                new Object[] { model.getRoot() });
+                    new Object[]{model.getRoot()});
             for (TreeModelListener l : listeners) {
                 l.treeStructureChanged(e);
             }
@@ -158,7 +169,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
         }
 
         private void findPathsSub(Object value, Object node,
-                ArrayList<Object> stack, ArrayList<TreeModelEvent> paths) {
+                                  ArrayList<Object> stack, ArrayList<TreeModelEvent> paths) {
             stack.add(node);
             if (node == value) {
                 TreePath path = new TreePath(stack.toArray());
@@ -178,7 +189,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
         }
 
         private void findPathsForToolsSub(Library value, Object node,
-                ArrayList<Object> stack, ArrayList<TreeModelEvent> paths) {
+                                          ArrayList<Object> stack, ArrayList<TreeModelEvent> paths) {
             stack.add(node);
             if (node == value) {
                 TreePath path = new TreePath(stack.toArray());
@@ -221,7 +232,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
         }
 
         public void paintIcon(java.awt.Component c, Graphics g,
-                int x, int y) {
+                              int x, int y) {
             // draw halo if appropriate
             if (tool == haloedTool && AppPreferences.ATTRIBUTE_HALO.getBoolean()) {
                 g.setColor(Canvas.HALO_COLOR);
@@ -239,8 +250,8 @@ public class ProjectExplorer extends JTree implements LocaleListener {
             if (circ == proj.getCurrentCircuit()) {
                 int tx = x + 13;
                 int ty = y + 13;
-                int[] xp = { tx - 1, x + 18, x + 20, tx + 1 };
-                int[] yp = { ty + 1, y + 20, y + 18, ty - 1 };
+                int[] xp = {tx - 1, x + 18, x + 20, tx + 1};
+                int[] yp = {ty + 1, y + 20, y + 18, ty - 1};
                 g.setColor(MAGNIFYING_INTERIOR);
                 g.fillOval(x + 5, y + 5, 10, 10);
                 g.setColor(Color.BLACK);
@@ -258,7 +269,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
                 boolean hasFocus) {
             java.awt.Component ret;
             ret = super.getTreeCellRendererComponent(tree, value,
-                selected, expanded, leaf, row, hasFocus);
+                    selected, expanded, leaf, row, hasFocus);
 
             if (ret instanceof JComponent) {
                 JComponent comp = (JComponent) ret;
@@ -334,7 +345,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
 
     private class DragController implements JTreeDragController {
         public boolean canPerformAction(JTree targetTree,
-                Object draggedNode, int action, Point location) {
+                                        Object draggedNode, int action, Point location) {
             TreePath pathTarget = targetTree.getPathForLocation(location.x, location.y);
             if (pathTarget == null) {
                 targetTree.setSelectionPath(null);
@@ -352,7 +363,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
         }
 
         public boolean executeDrop(JTree targetTree, Object draggedNode,
-                Object targetNode, int action) {
+                                   Object targetNode, int action) {
             if (action == DnDConstants.ACTION_COPY) {
                 return false;
             } else if (action == DnDConstants.ACTION_MOVE) {
@@ -393,19 +404,25 @@ public class ProjectExplorer extends JTree implements LocaleListener {
 
     private class MyListener
             implements MouseListener, TreeSelectionListener,
-                ProjectListener, LibraryListener, CircuitListener, PropertyChangeListener {
+            ProjectListener, LibraryListener, CircuitListener, PropertyChangeListener {
         //
         // MouseListener methods
         //
-        public void mouseEntered(MouseEvent e) { }
-        public void mouseExited(MouseEvent e) { }
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+
         public void mousePressed(MouseEvent e) {
             ProjectExplorer.this.requestFocus();
             checkForPopup(e);
         }
+
         public void mouseReleased(MouseEvent e) {
             checkForPopup(e);
         }
+
         private void checkForPopup(MouseEvent e) {
             if (e.isPopupTrigger()) {
                 TreePath path = getPathForLocation(e.getX(), e.getY());
@@ -417,6 +434,7 @@ public class ProjectExplorer extends JTree implements LocaleListener {
                 }
             }
         }
+
         public void mouseClicked(MouseEvent e) {
             if (e.getClickCount() == 2) {
                 TreePath path = getPathForLocation(e.getX(), e.getY());
@@ -482,17 +500,17 @@ public class ProjectExplorer extends JTree implements LocaleListener {
             }
             Library lib = event.getSource();
             switch (act) {
-            case LibraryEvent.DIRTY_STATE:
-            case LibraryEvent.SET_NAME:
-                model.fireNodesChanged(model.findPaths(lib));
-                break;
-            case LibraryEvent.MOVE_TOOL:
-                model.fireNodesChanged(model.findPathsForTools(lib));
-                break;
-            case LibraryEvent.SET_MAIN:
-                break;
-            default:
-                model.fireStructureChanged();
+                case LibraryEvent.DIRTY_STATE:
+                case LibraryEvent.SET_NAME:
+                    model.fireNodesChanged(model.findPaths(lib));
+                    break;
+                case LibraryEvent.MOVE_TOOL:
+                    model.fireNodesChanged(model.findPathsForTools(lib));
+                    break;
+                case LibraryEvent.SET_MAIN:
+                    break;
+                default:
+                    model.fireStructureChanged();
             }
         }
 

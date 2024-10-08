@@ -48,7 +48,7 @@ class SelectionItem implements AttributeListener, CircuitListener {
         String newShort = log.getLogName(option);
         if (newShort == null || newShort.equals("")) {
             newShort = comp.getFactory().getDisplayName()
-                + comp.getLocation().toString();
+                    + comp.getLocation().toString();
             if (option != null) {
                 newShort += "." + option.toString();
             }
@@ -120,7 +120,8 @@ class SelectionItem implements AttributeListener, CircuitListener {
         return log == null ? Value.NIL : log.getLogValue(cur, option);
     }
 
-    public void attributeListChanged(AttributeEvent e) { }
+    public void attributeListChanged(AttributeEvent e) {
+    }
 
     public void attributeValueChanged(AttributeEvent e) {
         if (computeDescriptors()) {

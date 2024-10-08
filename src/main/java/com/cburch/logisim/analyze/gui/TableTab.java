@@ -106,7 +106,7 @@ class TableTab extends JPanel implements TruthTablePanel, TabInterface {
         provisionalValue = value;
 
         int top = (getHeight() - tableHeight) / 2 + cellHeight + HEADER_SEP
-            + y * cellHeight;
+                + y * cellHeight;
         repaint(0, top, getWidth(), cellHeight);
     }
 
@@ -137,7 +137,7 @@ class TableTab extends JPanel implements TruthTablePanel, TabInterface {
 
         g.setColor(Color.GRAY);
         int lineX = left + (cellWidth + COLUMN_SEP) * inputs
-            - COLUMN_SEP / 2;
+                - COLUMN_SEP / 2;
         if (inputs == 0) lineX = left + cellWidth + COLUMN_SEP / 2;
         int lineY = top + cellHeight + HEADER_SEP / 2;
         g.drawLine(left, lineY, left + tableWidth, lineY);
@@ -207,8 +207,13 @@ class TableTab extends JPanel implements TruthTablePanel, TabInterface {
         caret.paintForeground(g);
     }
 
-    int getCellWidth() { return cellWidth; }
-    int getCellHeight() { return cellHeight; }
+    int getCellWidth() {
+        return cellWidth;
+    }
+
+    int getCellHeight() {
+        return cellHeight;
+    }
 
     int getX(int col) {
         Dimension sz = getSize();
@@ -225,7 +230,7 @@ class TableTab extends JPanel implements TruthTablePanel, TabInterface {
     }
 
     private int paintHeader(String header, int x, int y,
-            Graphics g, FontMetrics fm) {
+                            Graphics g, FontMetrics fm) {
         int width = fm.stringWidth(header);
         g.drawString(header, x + (cellWidth - width) / 2, y);
         return x + cellWidth + COLUMN_SEP;
@@ -287,12 +292,12 @@ class TableTab extends JPanel implements TruthTablePanel, TabInterface {
                 if (numCells <= 0) numCells = 1;
                 if (direction > 0) {
                     return curY > 0
-                        ? numCells * cellHeight
-                        : numCells * cellHeight + HEADER_SEP;
+                            ? numCells * cellHeight
+                            : numCells * cellHeight + HEADER_SEP;
                 } else {
                     return curY > cellHeight + HEADER_SEP
-                        ? numCells * cellHeight
-                        : numCells * cellHeight + HEADER_SEP;
+                            ? numCells * cellHeight
+                            : numCells * cellHeight + HEADER_SEP;
                 }
             }
         };
@@ -315,8 +320,16 @@ class TableTab extends JPanel implements TruthTablePanel, TabInterface {
         int c0 = caret.getCursorCol();
         int c1 = caret.getMarkCol();
         if (r0 < 0 || r1 < 0) return;
-        if (r1 < r0) { int t = r0; r0 = r1; r1 = t; }
-        if (c1 < c0) { int t = c0; c0 = c1; c1 = t; }
+        if (r1 < r0) {
+            int t = r0;
+            r0 = r1;
+            r1 = t;
+        }
+        if (c1 < c0) {
+            int t = c0;
+            c0 = c1;
+            c1 = t;
+        }
         int inputs = table.getInputColumnCount();
         for (int c = c0; c <= c1; c++) {
             if (c >= inputs) {

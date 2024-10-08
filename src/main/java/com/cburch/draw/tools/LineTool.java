@@ -92,7 +92,7 @@ public class LineTool extends AbstractTool {
             if (!start.equals(end)) {
                 active = false;
                 CanvasModel model = canvas.getModel();
-                Location[] ends = { start, end };
+                Location[] ends = {start, end};
                 List<Location> locs = UnmodifiableList.create(ends);
                 add = attrs.applyTo(new Poly(false, locs));
                 add.setValue(DrawAttr.PAINT_TYPE, DrawAttr.PAINT_STROKE);

@@ -32,10 +32,13 @@ public class SplitterFactory extends AbstractComponentFactory {
 
     private static final Icon toolIcon = Icons.getIcon("splitter.gif");
 
-    private SplitterFactory() { }
+    private SplitterFactory() {
+    }
 
     @Override
-    public String getName() { return "Splitter"; }
+    public String getName() {
+        return "Splitter";
+    }
 
     @Override
     public StringGetter getDisplayGetter() {
@@ -88,7 +91,7 @@ public class SplitterFactory extends AbstractComponentFactory {
     //
     @Override
     public void drawGhost(ComponentDrawContext context,
-            Color color, int x, int y, AttributeSet attrsBase) {
+                          Color color, int x, int y, AttributeSet attrsBase) {
         SplitterAttributes attrs = (SplitterAttributes) attrsBase;
         context.getGraphics().setColor(color);
         Location loc = Location.create(x, y);
@@ -101,7 +104,7 @@ public class SplitterFactory extends AbstractComponentFactory {
 
     @Override
     public void paintIcon(ComponentDrawContext c,
-            int x, int y, AttributeSet attrs) {
+                          int x, int y, AttributeSet attrs) {
         Graphics g = c.getGraphics();
         if (toolIcon != null) {
             toolIcon.paintIcon(c.getDestination(), g, x + 2, y + 2);
@@ -118,8 +121,8 @@ public class SplitterFactory extends AbstractComponentFactory {
                     new IntegerConfigurator(SplitterAttributes.ATTR_FANOUT,
                             1, 32, InputEvent.ALT_DOWN_MASK));
             return JoinedConfigurator.create(
-                new IntegerConfigurator(SplitterAttributes.ATTR_FANOUT, 1, 32, 0),
-                altConfig);
+                    new IntegerConfigurator(SplitterAttributes.ATTR_FANOUT, 1, 32, 0),
+                    altConfig);
         }
         return super.getFeature(key, attrs);
     }

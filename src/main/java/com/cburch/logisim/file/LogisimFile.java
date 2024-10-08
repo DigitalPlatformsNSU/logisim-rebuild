@@ -51,19 +51,19 @@ public class LogisimFile extends Library implements LibraryEventSource {
                 file.write(out, file.loader);
             } catch (IOException e) {
                 file.loader.showError(StringUtil.format(
-                    Strings.get("fileDuplicateError"), e.toString()));
+                        Strings.get("fileDuplicateError"), e.toString()));
             }
             try {
                 out.close();
             } catch (IOException e) {
                 file.loader.showError(StringUtil.format(
-                    Strings.get("fileDuplicateError"), e.toString()));
+                        Strings.get("fileDuplicateError"), e.toString()));
             }
         }
     }
 
     private EventSourceWeakSupport<LibraryListener> listeners
-        = new EventSourceWeakSupport<LibraryListener>();
+            = new EventSourceWeakSupport<LibraryListener>();
     private Loader loader;
     private LinkedList<String> messages = new LinkedList<String>();
     private Options options = new Options();
@@ -92,10 +92,14 @@ public class LogisimFile extends Library implements LibraryEventSource {
     // access methods
     //
     @Override
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     @Override
-    public boolean isDirty() { return dirty; }
+    public boolean isDirty() {
+        return dirty;
+    }
 
     public String getMessage() {
         if (messages.size() == 0) return null;
@@ -320,7 +324,7 @@ public class LogisimFile extends Library implements LibraryEventSource {
             reader.connect(writer);
         } catch (IOException e) {
             newloader.showError(StringUtil.format(
-                Strings.get("fileDuplicateError"), e.toString()));
+                    Strings.get("fileDuplicateError"), e.toString()));
             return null;
         }
         new WritingThread(writer, this).start();
@@ -328,7 +332,7 @@ public class LogisimFile extends Library implements LibraryEventSource {
             return LogisimFile.load(reader, newloader);
         } catch (IOException e) {
             newloader.showError(StringUtil.format(
-                Strings.get("fileDuplicateError"), e.toString()));
+                    Strings.get("fileDuplicateError"), e.toString()));
             return null;
         }
     }
@@ -384,7 +388,8 @@ public class LogisimFile extends Library implements LibraryEventSource {
             } finally {
                 try {
                     in.close();
-                } catch (Throwable t) { }
+                } catch (Throwable t) {
+                }
             }
         }
 
@@ -397,7 +402,7 @@ public class LogisimFile extends Library implements LibraryEventSource {
             return loadSub(in, loader);
         } catch (SAXException e) {
             loader.showError(StringUtil.format(
-                Strings.get("xmlFormatError"), e.toString()));
+                    Strings.get("xmlFormatError"), e.toString()));
             return null;
         }
     }

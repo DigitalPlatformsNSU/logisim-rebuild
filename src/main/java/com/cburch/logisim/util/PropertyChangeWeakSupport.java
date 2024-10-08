@@ -15,6 +15,7 @@ public class PropertyChangeWeakSupport {
     private static class ListenerData {
         String property;
         WeakReference<PropertyChangeListener> listener;
+
         ListenerData(String property, PropertyChangeListener listener) {
             this.property = property;
             this.listener = new WeakReference<PropertyChangeListener>(listener);
@@ -81,7 +82,7 @@ public class PropertyChangeWeakSupport {
                     || data.property.equals(property)) {
                 if (e == null) {
                     e = new PropertyChangeEvent(source, property,
-                        Integer.valueOf(oldValue), Integer.valueOf(newValue));
+                            Integer.valueOf(oldValue), Integer.valueOf(newValue));
                 }
                 l.propertyChange(e);
             }
@@ -99,7 +100,7 @@ public class PropertyChangeWeakSupport {
                     || data.property.equals(property)) {
                 if (e == null) {
                     e = new PropertyChangeEvent(source, property,
-                        Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
+                            Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
                 }
                 l.propertyChange(e);
             }

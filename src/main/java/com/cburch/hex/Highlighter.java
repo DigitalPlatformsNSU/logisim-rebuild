@@ -32,7 +32,9 @@ class Highlighter {
         HexModel model = hex.getModel();
         if (model == null) return null;
         if (start > end) {
-            long t = start; start = end; end = t;
+            long t = start;
+            start = end;
+            end = t;
         }
         if (start < model.getFirstOffset()) start = model.getFirstOffset();
         if (end > model.getLastOffset()) end = model.getLastOffset();
@@ -54,7 +56,7 @@ class Highlighter {
     public synchronized void clear() {
         ArrayList<Entry> oldEntries = entries;
         entries = new ArrayList<Entry>();
-        for(int n = oldEntries.size(); n >= 0; n--) {
+        for (int n = oldEntries.size(); n >= 0; n--) {
             expose(oldEntries.get(n));
         }
     }

@@ -89,9 +89,11 @@ class ToolbarButton extends JComponent implements MouseListener {
         }
     }
 
-    public void mouseClicked(MouseEvent e) { }
+    public void mouseClicked(MouseEvent e) {
+    }
 
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) {
+    }
 
     public void mouseExited(MouseEvent e) {
         toolbar.setPressed(null);

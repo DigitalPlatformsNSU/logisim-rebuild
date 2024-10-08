@@ -18,8 +18,13 @@ class Selection {
         components = new ArrayList<SelectionItem>();
     }
 
-    public void addModelListener(ModelListener l) { model.addModelListener(l); }
-    public void removeModelListener(ModelListener l) { model.removeModelListener(l); }
+    public void addModelListener(ModelListener l) {
+        model.addModelListener(l);
+    }
+
+    public void removeModelListener(ModelListener l) {
+        model.removeModelListener(l);
+    }
 
     public CircuitState getCircuitState() {
         return root;

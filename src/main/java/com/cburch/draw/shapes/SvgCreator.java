@@ -14,14 +14,15 @@ import com.cburch.draw.model.Handle;
 import com.cburch.logisim.data.Location;
 
 class SvgCreator {
-    private SvgCreator() { }
+    private SvgCreator() {
+    }
 
     public static Element createRectangle(Document doc, Rectangle rect) {
         return createRectangular(doc, rect);
     }
 
     public static Element createRoundRectangle(Document doc,
-            RoundRectangle rrect) {
+                                               RoundRectangle rrect) {
         Element elt = createRectangular(doc, rrect);
         int r = rrect.getValue(DrawAttr.CORNER_RADIUS).intValue();
         elt.setAttribute("rx", "" + r);
@@ -169,13 +170,13 @@ class SvgCreator {
 
     private static boolean colorMatches(Color a, Color b) {
         return a.getRed() == b.getRed() && a.getGreen() == b.getGreen()
-            && a.getBlue() == b.getBlue();
+                && a.getBlue() == b.getBlue();
     }
 
     private static String getColorString(Color color) {
         return String.format("#%02x%02x%02x",
-            Integer.valueOf(color.getRed()), Integer.valueOf(color.getGreen()),
-            Integer.valueOf(color.getBlue()));
+                Integer.valueOf(color.getRed()), Integer.valueOf(color.getGreen()),
+                Integer.valueOf(color.getBlue()));
     }
 
     private static boolean showOpacity(Color color) {

@@ -28,12 +28,12 @@ class ToolboxToolbarModel extends AbstractToolbarModel
         itemDelete = new LogisimToolbarItem(menu, "projdel.gif", LogisimMenuBar.REMOVE_CIRCUIT,
                 Strings.getter("projectRemoveCircuitTip"));
 
-        items = UnmodifiableList.create(new ToolbarItem[] {
+        items = UnmodifiableList.create(new ToolbarItem[]{
                 itemAdd,
                 itemUp,
                 itemDown,
                 itemDelete,
-            });
+        });
 
         menu.addEnabledListener(this);
     }

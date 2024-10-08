@@ -35,7 +35,7 @@ public class Loader implements LibraryLoader {
         @Override
         public boolean accept(File f) {
             return f.isDirectory()
-                || f.getName().endsWith(LOGISIM_EXTENSION);
+                    || f.getName().endsWith(LOGISIM_EXTENSION);
         }
 
         @Override
@@ -48,7 +48,7 @@ public class Loader implements LibraryLoader {
         @Override
         public boolean accept(File f) {
             return f.isDirectory()
-                || f.getName().endsWith(".jar");
+                    || f.getName().endsWith(".jar");
         }
 
         @Override
@@ -64,7 +64,7 @@ public class Loader implements LibraryLoader {
     // to be cleared with each new file
     private File mainFile = null;
     private Stack<File> filesOpening = new Stack<File>();
-    private Map<File,File> substitutions = new HashMap<File,File>();
+    private Map<File, File> substitutions = new HashMap<File, File>();
 
     public Loader(Component parent) {
         this.parent = parent;
@@ -118,7 +118,7 @@ public class Loader implements LibraryLoader {
         mainFile = null;
     }
 
-    public LogisimFile openLogisimFile(File file, Map<File,File> substitutions)
+    public LogisimFile openLogisimFile(File file, Map<File, File> substitutions)
             throws LoadFailedException {
         this.substitutions = substitutions;
         try {
@@ -187,7 +187,8 @@ public class Loader implements LibraryLoader {
         try {
             try {
                 MacCompatibility.setFileCreatorAndType(dest, "LGSM", "circ");
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
             fwrite = new FileOutputStream(dest);
             file.write(fwrite, this);
             file.setName(toProjectName(dest));
@@ -199,10 +200,10 @@ public class Loader implements LibraryLoader {
             if (backupCreated) recoverBackup(backup, dest);
             if (dest.exists() && dest.length() == 0) dest.delete();
             JOptionPane.showMessageDialog(parent,
-                StringUtil.format(Strings.get("fileSaveError"),
-                    e.toString()),
-                Strings.get("fileSaveErrorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+                    StringUtil.format(Strings.get("fileSaveError"),
+                            e.toString()),
+                    Strings.get("fileSaveErrorTitle"),
+                    JOptionPane.ERROR_MESSAGE);
             return false;
         } finally {
             if (fwrite != null) {
@@ -212,10 +213,10 @@ public class Loader implements LibraryLoader {
                     if (backupCreated) recoverBackup(backup, dest);
                     if (dest.exists() && dest.length() == 0) dest.delete();
                     JOptionPane.showMessageDialog(parent,
-                        StringUtil.format(Strings.get("fileSaveCloseError"),
-                            e.toString()),
-                        Strings.get("fileSaveErrorTitle"),
-                        JOptionPane.ERROR_MESSAGE);
+                            StringUtil.format(Strings.get("fileSaveCloseError"),
+                                    e.toString()),
+                            Strings.get("fileSaveErrorTitle"),
+                            JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             }
@@ -385,8 +386,8 @@ public class Loader implements LibraryLoader {
         String message = source.getMessage();
         while (message != null) {
             JOptionPane.showMessageDialog(parent,
-                message, Strings.get("fileMessageTitle"),
-                JOptionPane.INFORMATION_MESSAGE);
+                    message, Strings.get("fileMessageTitle"),
+                    JOptionPane.INFORMATION_MESSAGE);
             message = source.getMessage();
         }
     }
@@ -404,8 +405,8 @@ public class Loader implements LibraryLoader {
         while (!file.canRead()) {
             // It doesn't exist. Figure it out from the user.
             JOptionPane.showMessageDialog(parent,
-                StringUtil.format(Strings.get("fileLibraryMissingError"),
-                    file.getName()));
+                    StringUtil.format(Strings.get("fileLibraryMissingError"),
+                            file.getName()));
             JFileChooser chooser = createChooser();
             chooser.setFileFilter(filter);
             chooser.setDialogTitle(StringUtil.format(Strings.get("fileLibraryMissingTitle"), file.getName()));

@@ -270,7 +270,7 @@ public class SubcircuitFactory extends InstanceFactory {
     }
 
     private void drawCircuitLabel(InstancePainter painter, Bounds bds,
-            Direction facing, Direction defaultFacing) {
+                                  Direction facing, Direction defaultFacing) {
         AttributeSet staticAttrs = source.getStaticAttributes();
         String label = staticAttrs.getValue(CircuitAttributes.CIRCUIT_LABEL_ATTR);
         if (label != null && !label.equals("")) {

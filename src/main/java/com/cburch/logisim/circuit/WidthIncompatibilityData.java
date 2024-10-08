@@ -51,7 +51,10 @@ public class WidthIncompatibilityData {
             for (int j = 0; j < o.size(); j++) {
                 Location q = this.getPoint(j);
                 BitWidth x = this.getBitWidth(j);
-                if (p.equals(q) && w.equals(x)) { matched = true; break; }
+                if (p.equals(q) && w.equals(x)) {
+                    matched = true;
+                    break;
+                }
             }
             if (!matched) return false;
         }

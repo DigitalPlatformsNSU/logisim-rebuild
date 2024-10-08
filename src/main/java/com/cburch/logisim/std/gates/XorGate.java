@@ -42,10 +42,10 @@ class XorGate extends AbstractGate {
     @Override
     public void paintIconShaped(InstancePainter painter) {
         Graphics g = painter.getGraphics();
-        GraphicsUtil.drawCenteredArc(g,   2, -5, 22, -90,  53);
-        GraphicsUtil.drawCenteredArc(g,   2, 23, 22,  90, -53);
-        GraphicsUtil.drawCenteredArc(g, -10,  9, 16, -30, 60);
-        GraphicsUtil.drawCenteredArc(g, -12,  9, 16, -30, 60);
+        GraphicsUtil.drawCenteredArc(g, 2, -5, 22, -90, 53);
+        GraphicsUtil.drawCenteredArc(g, 2, 23, 22, 90, -53);
+        GraphicsUtil.drawCenteredArc(g, -10, 9, 16, -30, 60);
+        GraphicsUtil.drawCenteredArc(g, -12, 9, 16, -30, 60);
     }
 
     @Override
@@ -55,13 +55,13 @@ class XorGate extends AbstractGate {
 
     @Override
     protected void paintDinShape(InstancePainter painter, int width, int height,
-            int inputs) {
+                                 int inputs) {
         PainterDin.paintXor(painter, width, height, false);
     }
 
     @Override
     protected Value computeOutput(Value[] inputs, int numInputs,
-            InstanceState state) {
+                                  InstanceState state) {
         Object behavior = state.getAttributeValue(GateAttributes.ATTR_XOR);
         if (behavior == GateAttributes.XOR_ODD) {
             return GateFunctions.computeOddParity(inputs, numInputs);
@@ -81,7 +81,9 @@ class XorGate extends AbstractGate {
     }
 
     @Override
-    protected Value getIdentity() { return Value.FALSE; }
+    protected Value getIdentity() {
+        return Value.FALSE;
+    }
 
     protected static Expression xorExpression(Expression[] inputs, int numInputs) {
         if (numInputs > 2) {

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Implicant implements Comparable<Implicant> {
     static Implicant MINIMAL_IMPLICANT = new Implicant(0, -1);
-    static List<Implicant> MINIMAL_LIST = Arrays.asList(new Implicant[] { MINIMAL_IMPLICANT });
+    static List<Implicant> MINIMAL_LIST = Arrays.asList(new Implicant[]{MINIMAL_IMPLICANT});
 
     private static class TermIterator
             implements Iterable<Implicant>, Iterator<Implicant> {
@@ -45,7 +45,8 @@ public class Implicant implements Comparable<Implicant> {
             return new Implicant(0, ret);
         }
 
-        public void remove() { }
+        public void remove() {
+        }
     }
 
     private int unknowns;
@@ -65,9 +66,9 @@ public class Implicant implements Comparable<Implicant> {
 
     public int compareTo(Implicant o) {
         if (this.values < o.values) return -1;
-        if (this.values > o.values) return  1;
+        if (this.values > o.values) return 1;
         if (this.unknowns < o.unknowns) return -1;
-        if (this.unknowns > o.unknowns) return  1;
+        if (this.unknowns > o.unknowns) return 1;
         return 0;
     }
 
@@ -140,18 +141,18 @@ public class Implicant implements Comparable<Implicant> {
     }
 
     static List<Implicant> computeMinimal(int format, AnalyzerModel model,
-            String variable) {
+                                          String variable) {
         TruthTable table = model.getTruthTable();
         int column = model.getOutputs().indexOf(variable);
         if (column < 0) return Collections.emptyList();
 
         Entry desired = format == AnalyzerModel.FORMAT_SUM_OF_PRODUCTS
-            ? Entry.ONE : Entry.ZERO;
+                ? Entry.ONE : Entry.ZERO;
         Entry undesired = desired == Entry.ONE ? Entry.ZERO : Entry.ONE;
 
         // determine the first-cut implicants, as well as the rows
         // that we need to cover.
-        HashMap<Implicant,Entry> base = new HashMap<Implicant,Entry>();
+        HashMap<Implicant, Entry> base = new HashMap<Implicant, Entry>();
         HashSet<Implicant> toCover = new HashSet<Implicant>();
         boolean knownFound = false;
         for (int i = 0; i < table.getRowCount(); i++) {
@@ -173,11 +174,11 @@ public class Implicant implements Comparable<Implicant> {
         // work up to more general implicants, discovering
         // any prime implicants.
         HashSet<Implicant> primes = new HashSet<Implicant>();
-        HashMap<Implicant,Entry> current = base;
+        HashMap<Implicant, Entry> current = base;
         while (current.size() > 1) {
             HashSet<Implicant> toRemove = new HashSet<Implicant>();
-            HashMap<Implicant,Entry> next = new HashMap<Implicant,Entry>();
-            for (Map.Entry<Implicant,Entry> curEntry : current.entrySet()) {
+            HashMap<Implicant, Entry> next = new HashMap<Implicant, Entry>();
+            for (Map.Entry<Implicant, Entry> curEntry : current.entrySet()) {
                 Implicant imp = curEntry.getKey();
                 Entry detEntry = curEntry.getValue();
                 for (int j = 1; j <= imp.values; j *= 2) {
@@ -201,7 +202,7 @@ public class Implicant implements Comparable<Implicant> {
                 }
             }
 
-            for (Map.Entry<Implicant,Entry> curEntry : current.entrySet()) {
+            for (Map.Entry<Implicant, Entry> curEntry : current.entrySet()) {
                 Implicant det = curEntry.getKey();
                 if (!toRemove.contains(det) && curEntry.getValue() == desired) {
                     primes.add(det);
@@ -213,7 +214,7 @@ public class Implicant implements Comparable<Implicant> {
 
         // we won't have more than one implicant left, but it
         // is probably prime.
-        for (Map.Entry<Implicant,Entry> curEntry : current.entrySet()) {
+        for (Map.Entry<Implicant, Entry> curEntry : current.entrySet()) {
             Implicant imp = curEntry.getKey();
             if (current.get(imp) == desired) {
                 primes.add(imp);
@@ -230,7 +231,10 @@ public class Implicant implements Comparable<Implicant> {
             for (Implicant imp : primes) {
                 if ((row & ~imp.unknowns) == imp.values) {
                     if (essential == null) essential = imp;
-                    else { essential = null; break; }
+                    else {
+                        essential = null;
+                        break;
+                    }
                 }
             }
             if (essential != null) {

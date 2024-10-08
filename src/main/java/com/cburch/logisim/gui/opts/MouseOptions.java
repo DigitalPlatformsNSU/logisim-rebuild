@@ -85,7 +85,7 @@ class MouseOptions extends OptionsPanel {
 
     private class MyListener
             implements ActionListener, MouseListener, ListSelectionListener,
-                MouseMappings.MouseMappingsListener, ProjectExplorer.Listener {
+            MouseMappings.MouseMappingsListener, ProjectExplorer.Listener {
         //
         // ActionListener method
         //
@@ -94,7 +94,7 @@ class MouseOptions extends OptionsPanel {
             if (src == remove) {
                 int row = mappings.getSelectedRow();
                 getProject().doAction(OptionsActions.removeMapping(getOptions().getMouseMappings(),
-                    model.getKey(row)));
+                        model.getKey(row)));
                 row = Math.min(row, model.getRowCount() - 1);
                 if (row >= 0) setSelectedRow(row);
             }
@@ -103,9 +103,15 @@ class MouseOptions extends OptionsPanel {
         //
         // MouseListener methods
         //
-        public void mouseClicked(MouseEvent e) { }
-        public void mouseEntered(MouseEvent e) { }
-        public void mouseExited(MouseEvent e) { }
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+
         public void mousePressed(MouseEvent e) {
             if (e.getSource() == addArea && curTool != null) {
                 Tool t = curTool.cloneTool();
@@ -114,7 +120,9 @@ class MouseOptions extends OptionsPanel {
                 setSelectedRow(model.getRow(mods));
             }
         }
-        public void mouseReleased(MouseEvent e) { }
+
+        public void mouseReleased(MouseEvent e) {
+        }
 
         //
         // ListSelectionListener method
@@ -157,10 +165,18 @@ class MouseOptions extends OptionsPanel {
             }
         }
 
-        public void doubleClicked(Event event) { }
-        public void moveRequested(Event event, AddTool dragged, AddTool target) { }
-        public void deleteRequested(Event event) { }
-        public JPopupMenu menuRequested(Event event) { return null; }
+        public void doubleClicked(Event event) {
+        }
+
+        public void moveRequested(Event event, AddTool dragged, AddTool target) {
+        }
+
+        public void deleteRequested(Event event) {
+        }
+
+        public JPopupMenu menuRequested(Event event) {
+            return null;
+        }
     }
 
     private class MappingsModel extends AbstractTableModel {
@@ -266,15 +282,24 @@ class MouseOptions extends OptionsPanel {
         gbc.weightx = 0.0;
         JPanel gap = new JPanel();
         gap.setPreferredSize(new Dimension(10, 10));
-        gridbag.setConstraints(gap, gbc); add(gap);
+        gridbag.setConstraints(gap, gbc);
+        add(gap);
         gbc.weightx = 1.0;
         gbc.gridheight = 1;
         gbc.gridx = 2;
         gbc.gridy = GridBagConstraints.RELATIVE;
-        gbc.weighty = 0.0; gridbag.setConstraints(addArea, gbc); add(addArea);
-        gbc.weighty = 1.0; gridbag.setConstraints(mapPane, gbc); add(mapPane);
-        gbc.weighty = 0.0; gridbag.setConstraints(removeArea, gbc); add(removeArea);
-        gbc.weighty = 1.0; gridbag.setConstraints(attrTable, gbc); add(attrTable);
+        gbc.weighty = 0.0;
+        gridbag.setConstraints(addArea, gbc);
+        add(addArea);
+        gbc.weighty = 1.0;
+        gridbag.setConstraints(mapPane, gbc);
+        add(mapPane);
+        gbc.weighty = 0.0;
+        gridbag.setConstraints(removeArea, gbc);
+        add(removeArea);
+        gbc.weighty = 1.0;
+        gridbag.setConstraints(attrTable, gbc);
+        add(attrTable);
 
         getOptions().getMouseMappings().addMouseMappingsListener(listener);
         setCurrentTool(null);

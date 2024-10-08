@@ -20,8 +20,9 @@ public class HexEditor extends JComponent implements Scrollable {
             measures.recompute();
             repaint();
         }
+
         public void bytesChanged(HexModel source, long start, long numBytes,
-                int[] oldValues) {
+                                 int[] oldValues) {
             repaint(0, measures.toY(start),
                     getWidth(), measures.toY(start + numBytes) + measures.getCellHeight());
         }
@@ -47,9 +48,13 @@ public class HexEditor extends JComponent implements Scrollable {
         measures.recompute();
     }
 
-    Measures getMeasures() { return measures; }
+    Measures getMeasures() {
+        return measures;
+    }
 
-    Highlighter getHighlighter() { return highlighter; }
+    Highlighter getHighlighter() {
+        return highlighter;
+    }
 
     public HexModel getModel() {
         return model;
@@ -134,13 +139,13 @@ public class HexEditor extends JComponent implements Scrollable {
         int labelChars = measures.getLabelChars();
         int cellWidth = measures.getCellWidth();
         int cellChars = measures.getCellChars();
-        for(long a = xaddr0; a < xaddr1; a += cols, baseY += dy) {
+        for (long a = xaddr0; a < xaddr1; a += cols, baseY += dy) {
             String label = toHex(a, labelChars);
             g.setFont(labelFont);
             g.drawString(label, baseX - labelWidth + (labelWidth - labelFm.stringWidth(label)) / 2, baseY);
             g.setFont(baseFont);
             long b = a;
-            for(int j = 0; j < cols; j++, b++) {
+            for (int j = 0; j < cols; j++, b++) {
                 if (b >= addr0 && b <= addr1) {
                     String val = toHex(model.get(b), cellChars);
                     int x = measures.toX(b) + (cellWidth - baseFm.stringWidth(val)) / 2;
@@ -157,7 +162,7 @@ public class HexEditor extends JComponent implements Scrollable {
         int retLen = ret.length();
         if (retLen < chars) {
             ret = "0" + ret;
-            for(int i = retLen + 1; i < chars; i++) {
+            for (int i = retLen + 1; i < chars; i++) {
                 ret = "0" + ret;
             }
             return ret;
@@ -185,7 +190,9 @@ public class HexEditor extends JComponent implements Scrollable {
         long p1 = caret.getDot();
         if (p0 < 0 || p1 < 0) return;
         if (p0 > p1) {
-            long t = p0; p0 = p1; p1 = t;
+            long t = p0;
+            p0 = p1;
+            p1 = t;
         }
         model.fill(p0, p1 - p0 + 1, 0);
     }
@@ -198,7 +205,7 @@ public class HexEditor extends JComponent implements Scrollable {
     }
 
     public int getScrollableUnitIncrement(Rectangle vis,
-            int orientation, int direction) {
+                                          int orientation, int direction) {
         if (orientation == SwingConstants.VERTICAL) {
             int ret = measures.getCellHeight();
             if (ret < 1) {
@@ -213,7 +220,7 @@ public class HexEditor extends JComponent implements Scrollable {
     }
 
     public int getScrollableBlockIncrement(Rectangle vis,
-            int orientation, int direction) {
+                                           int orientation, int direction) {
         if (orientation == SwingConstants.VERTICAL) {
             int height = measures.getCellHeight();
             if (height < 1) {

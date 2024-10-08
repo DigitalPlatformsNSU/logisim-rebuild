@@ -18,10 +18,13 @@ import com.cburch.logisim.util.StringGetter;
 class WireFactory extends AbstractComponentFactory {
     public static final WireFactory instance = new WireFactory();
 
-    private WireFactory() { }
+    private WireFactory() {
+    }
 
     @Override
-    public String getName() { return "Wire"; }
+    public String getName() {
+        return "Wire";
+    }
 
     @Override
     public StringGetter getDisplayGetter() {
@@ -62,7 +65,7 @@ class WireFactory extends AbstractComponentFactory {
     //
     @Override
     public void drawGhost(ComponentDrawContext context,
-            Color color, int x, int y, AttributeSet attrs) {
+                          Color color, int x, int y, AttributeSet attrs) {
         Graphics g = context.getGraphics();
         Object dir = attrs.getValue(Wire.dir_attr);
         int len = attrs.getValue(Wire.len_attr).intValue();
