@@ -57,12 +57,18 @@ public class StatisticsDialog extends JDialog implements ActionListener {
         @Override
         public String getColumnName(int column) {
             switch (column) {
-            case 0: return Strings.get("statsComponentColumn");
-            case 1: return Strings.get("statsLibraryColumn");
-            case 2: return Strings.get("statsSimpleCountColumn");
-            case 3: return Strings.get("statsUniqueCountColumn");
-            case 4: return Strings.get("statsRecursiveCountColumn");
-            default: return "??"; // should never happen
+                case 0:
+                    return Strings.get("statsComponentColumn");
+                case 1:
+                    return Strings.get("statsLibraryColumn");
+                case 2:
+                    return Strings.get("statsSimpleCountColumn");
+                case 3:
+                    return Strings.get("statsUniqueCountColumn");
+                case 4:
+                    return Strings.get("statsRecursiveCountColumn");
+                default:
+                    return "??"; // should never happen
             }
         }
 
@@ -75,25 +81,29 @@ public class StatisticsDialog extends JDialog implements ActionListener {
             else if (row == countsLen) count = stats.getTotalWithoutSubcircuits();
             else count = stats.getTotalWithSubcircuits();
             switch (column) {
-            case 0:
-                if (row < countsLen) {
-                    return count.getFactory().getDisplayName();
-                } else if (row == countsLen) {
-                    return Strings.get("statsTotalWithout");
-                } else {
-                    return Strings.get("statsTotalWith");
-                }
-            case 1:
-                if (row < countsLen) {
-                    Library lib = count.getLibrary();
-                    return lib == null ? "-" : lib.getDisplayName();
-                } else {
-                    return "";
-                }
-            case 2: return Integer.valueOf(count.getSimpleCount());
-            case 3: return Integer.valueOf(count.getUniqueCount());
-            case 4: return Integer.valueOf(count.getRecursiveCount());
-            default: return ""; // should never happen
+                case 0:
+                    if (row < countsLen) {
+                        return count.getFactory().getDisplayName();
+                    } else if (row == countsLen) {
+                        return Strings.get("statsTotalWithout");
+                    } else {
+                        return Strings.get("statsTotalWith");
+                    }
+                case 1:
+                    if (row < countsLen) {
+                        Library lib = count.getLibrary();
+                        return lib == null ? "-" : lib.getDisplayName();
+                    } else {
+                        return "";
+                    }
+                case 2:
+                    return Integer.valueOf(count.getSimpleCount());
+                case 3:
+                    return Integer.valueOf(count.getUniqueCount());
+                case 4:
+                    return Integer.valueOf(count.getRecursiveCount());
+                default:
+                    return ""; // should never happen
             }
         }
     }
@@ -119,7 +129,7 @@ public class StatisticsDialog extends JDialog implements ActionListener {
         @Override
         public void setBounds(int x, int y, int width, int height) {
             super.setBounds(x, y, width, height);
-            setPreferredColumnWidths(new double[] { 0.45, 0.25, 0.1, 0.1, 0.1 });
+            setPreferredColumnWidths(new double[]{0.45, 0.25, 0.1, 0.1, 0.1});
         }
 
         protected void setPreferredColumnWidths(double[] percentages) {
@@ -139,7 +149,7 @@ public class StatisticsDialog extends JDialog implements ActionListener {
     }
 
     private StatisticsDialog(JFrame parent, String circuitName,
-            StatisticsTableModel model) {
+                             StatisticsTableModel model) {
         super(parent, true);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setTitle(Strings.get("statsDialogTitle", circuitName));

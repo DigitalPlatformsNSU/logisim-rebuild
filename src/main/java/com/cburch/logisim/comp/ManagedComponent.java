@@ -16,7 +16,7 @@ import com.cburch.logisim.util.EventSourceWeakSupport;
 
 public abstract class ManagedComponent extends AbstractComponent {
     private EventSourceWeakSupport<ComponentListener> listeners
-        = new EventSourceWeakSupport<ComponentListener>();
+            = new EventSourceWeakSupport<ComponentListener>();
     private Location loc;
     private AttributeSet attrs;
     private ArrayList<EndData> ends;
@@ -186,7 +186,7 @@ public abstract class ManagedComponent extends AbstractComponent {
         java.awt.Component dest = context.getDestination();
         if (bounds != null) {
             dest.repaint(bounds.getX() - 5, bounds.getY() - 5,
-                bounds.getWidth() + 10, bounds.getHeight() + 10);
+                    bounds.getWidth() + 10, bounds.getHeight() + 10);
         }
     }
 

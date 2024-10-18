@@ -38,9 +38,9 @@ import com.cburch.logisim.proj.Project;
 public class AppearanceCanvas extends Canvas
         implements CanvasPaneContents, ActionDispatcher {
     private static final int BOUNDS_BUFFER = 70;
-        // pixels shown in canvas beyond outermost boundaries
+    // pixels shown in canvas beyond outermost boundaries
     private static final int THRESH_SIZE_UPDATE = 10;
-        // don't bother to update the size if it hasn't changed more than this
+    // don't bother to update the size if it hasn't changed more than this
 
     private class Listener
             implements CanvasModelListener, PropertyChangeListener {
@@ -331,7 +331,7 @@ public class AppearanceCanvas extends Canvas
     }
 
     public int getScrollableBlockIncrement(Rectangle visibleRect,
-            int orientation, int direction) {
+                                           int orientation, int direction) {
         return canvasPane.supportScrollableBlockIncrement(visibleRect, orientation, direction);
     }
 
@@ -344,7 +344,7 @@ public class AppearanceCanvas extends Canvas
     }
 
     public int getScrollableUnitIncrement(Rectangle visibleRect,
-            int orientation, int direction) {
+                                          int orientation, int direction) {
         return canvasPane.supportScrollableUnitIncrement(visibleRect, orientation, direction);
     }
 

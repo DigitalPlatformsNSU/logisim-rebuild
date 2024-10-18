@@ -33,6 +33,7 @@ public class Startup {
     static void doOpen(File file) {
         if (startupTemp != null) startupTemp.doOpenFile(file);
     }
+
     static void doPrint(File file) {
         if (startupTemp != null) startupTemp.doPrintFile(file);
     }
@@ -68,7 +69,8 @@ public class Startup {
         } catch (Throwable t) {
             try {
                 MacOsAdapter.addListeners(false);
-            } catch (Throwable t2) { }
+            } catch (Throwable t2) {
+            }
         }
     }
 
@@ -80,7 +82,7 @@ public class Startup {
     private ArrayList<File> filesToOpen = new ArrayList<File>();
     private boolean showSplash;
     private File loadFile;
-    private HashMap<File,File> substitutions = new HashMap<File,File>();
+    private HashMap<File, File> substitutions = new HashMap<File, File>();
     private int ttyFormat = 0;
 
     // from other sources
@@ -105,7 +107,7 @@ public class Startup {
         return ttyFormat;
     }
 
-    Map<File,File> getSubstitutions() {
+    Map<File, File> getSubstitutions() {
         return Collections.unmodifiableMap(substitutions);
     }
 
@@ -139,7 +141,7 @@ public class Startup {
         if (showSplash) monitor.setProgress(SplashScreen.LIBRARIES);
         Loader templLoader = new Loader(monitor);
         int count = templLoader.getBuiltin().getLibrary("Base").getTools().size()
-             + templLoader.getBuiltin().getLibrary("Gates").getTools().size();
+                + templLoader.getBuiltin().getLibrary("Gates").getTools().size();
         if (count < 0) {
             // this will never happen, but the optimizer doesn't know that...
             System.err.println("FATAL ERROR - no components"); //OK
@@ -209,7 +211,7 @@ public class Startup {
     }
 
     private void loadTemplate(Loader loader, File templFile,
-            boolean templEmpty) {
+                              boolean templEmpty) {
         if (showSplash) monitor.setProgress(SplashScreen.TEMPLATE_OPEN);
         if (templFile != null) {
             AppPreferences.setTemplateFile(templFile);
@@ -256,7 +258,8 @@ public class Startup {
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ex) { }
+        } catch (Exception ex) {
+        }
 
         // parse arguments
         for (int i = 0; i < args.length; i++) {
@@ -367,10 +370,10 @@ public class Startup {
                 if (i >= args.length) printUsage();
                 ret.templFile = new File(args[i]);
                 if (!ret.templFile.exists()) {
-                    System.err.println(StringUtil.format( //OK
+                    System.err.println(StringUtil.format(//OK
                             Strings.get("templateMissingError"), args[i]));
                 } else if (!ret.templFile.canRead()) {
-                    System.err.println(StringUtil.format( //OK
+                    System.err.println(StringUtil.format(//OK
                             Strings.get("templateCannotReadError"), args[i]));
                 }
             } else if (arg.equals("-nosplash")) {

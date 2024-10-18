@@ -25,7 +25,7 @@ public class ModelAddAction extends ModelAction {
     }
 
     public ModelAddAction(CanvasModel model, Collection<CanvasObject> added,
-            int index) {
+                          int index) {
         super(model);
         this.added = new ArrayList<CanvasObject>(added);
         this.addIndex = index;

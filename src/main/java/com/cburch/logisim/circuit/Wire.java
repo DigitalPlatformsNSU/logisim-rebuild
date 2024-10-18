@@ -28,21 +28,23 @@ import com.cburch.logisim.util.GraphicsUtil;
 
 public final class Wire implements Component, AttributeSet, CustomHandles,
         Iterable<Location> {
-    /** Stroke width when drawing wires. */
+    /**
+     * Stroke width when drawing wires.
+     */
     public static final int WIDTH = 3;
 
     public static final AttributeOption VALUE_HORZ
-        = new AttributeOption("horz", Strings.getter("wireDirectionHorzOption"));
+            = new AttributeOption("horz", Strings.getter("wireDirectionHorzOption"));
     public static final AttributeOption VALUE_VERT
-        = new AttributeOption("vert", Strings.getter("wireDirectionVertOption"));
+            = new AttributeOption("vert", Strings.getter("wireDirectionVertOption"));
     public static final Attribute<AttributeOption> dir_attr
-        = Attributes.forOption("direction", Strings.getter("wireDirectionAttr"),
-            new AttributeOption[] { VALUE_HORZ, VALUE_VERT });
+            = Attributes.forOption("direction", Strings.getter("wireDirectionAttr"),
+                new AttributeOption[]{VALUE_HORZ, VALUE_VERT});
     public static final Attribute<Integer> len_attr
-        = Attributes.forInteger("length", Strings.getter("wireLengthAttr"));
+            = Attributes.forInteger("length", Strings.getter("wireLengthAttr"));
 
     private static final List<Attribute<?>> ATTRIBUTES
-        = Arrays.asList(new Attribute<?>[] { dir_attr, len_attr });
+            = Arrays.asList(new Attribute<?>[]{dir_attr, len_attr});
     private static final Cache cache = new Cache();
 
     public static Wire create(Location e0, Location e1) {
@@ -54,8 +56,11 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
         public EndData get(int i) {
             return getEnd(i);
         }
+
         @Override
-        public int size() { return 2; }
+        public int size() {
+            return 2;
+        }
     }
 
     final Location e0;
@@ -108,8 +113,11 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     // Component methods
     //
     // (Wire never issues ComponentEvents, so we don't need to track listeners)
-    public void addComponentListener(ComponentListener e) { }
-    public void removeComponentListener(ComponentListener e) { }
+    public void addComponentListener(ComponentListener e) {
+    }
+
+    public void removeComponentListener(ComponentListener e) {
+    }
 
     public ComponentFactory getFactory() {
         return WireFactory.instance;
@@ -128,7 +136,7 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
         int x0 = e0.getX();
         int y0 = e0.getY();
         return Bounds.create(x0 - 2, y0 - 2,
-            e1.getX() - x0 + 5, e1.getY() - y0 + 5);
+                e1.getX() - x0 + 5, e1.getY() - y0 + 5);
     }
 
     public Bounds getBounds(Graphics g) {
@@ -141,11 +149,11 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
         if (is_x_equal) {
             int wx = e0.getX();
             return qx >= wx - 2 && qx <= wx + 2
-                && e0.getY() <= qy && qy <= e1.getY();
+                    && e0.getY() <= qy && qy <= e1.getY();
         } else {
             int wy = e0.getY();
             return qy >= wy - 2 && qy <= wy + 2
-                && e0.getX() <= qx && qx <= e1.getX();
+                    && e0.getX() <= qx && qx <= e1.getX();
         }
     }
 
@@ -195,7 +203,7 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
         GraphicsUtil.switchToWidth(g, WIDTH);
         g.setColor(state.getValue(e0).getColor());
         g.drawLine(e0.getX(), e0.getY(),
-            e1.getX(), e1.getY());
+                e1.getX(), e1.getY());
     }
 
     public Object getFeature(Object key) {
@@ -211,21 +219,39 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     // after all it is immutable.
     //
     @Override
-    public Object clone() { return this; }
-    public void addAttributeListener(AttributeListener l) { }
-    public void removeAttributeListener(AttributeListener l) { }
-    public List<Attribute<?>> getAttributes() { return ATTRIBUTES; }
-    public boolean containsAttribute(Attribute<?> attr) { return ATTRIBUTES.contains(attr); }
+    public Object clone() {
+        return this;
+    }
+
+    public void addAttributeListener(AttributeListener l) {
+    }
+
+    public void removeAttributeListener(AttributeListener l) {
+    }
+
+    public List<Attribute<?>> getAttributes() {
+        return ATTRIBUTES;
+    }
+
+    public boolean containsAttribute(Attribute<?> attr) {
+        return ATTRIBUTES.contains(attr);
+    }
+
     public Attribute<?> getAttribute(String name) {
         for (Attribute<?> attr : ATTRIBUTES) {
             if (name.equals(attr.getName())) return attr;
         }
         return null;
     }
-    public boolean isReadOnly(Attribute<?> attr) { return true; }
+
+    public boolean isReadOnly(Attribute<?> attr) {
+        return true;
+    }
+
     public void setReadOnly(Attribute<?> attr, boolean value) {
         throw new UnsupportedOperationException();
     }
+
     public boolean isToSave(Attribute<?> attr) {
         return false;
     }
@@ -248,13 +274,21 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     //
     // other methods
     //
-    public boolean isVertical() { return is_x_equal; }
+    public boolean isVertical() {
+        return is_x_equal;
+    }
 
-    public Location getEndLocation(int index) { return index == 0 ? e0 : e1; }
+    public Location getEndLocation(int index) {
+        return index == 0 ? e0 : e1;
+    }
 
-    public Location getEnd0() { return e0; }
+    public Location getEnd0() {
+        return e0;
+    }
 
-    public Location getEnd1() { return e1; }
+    public Location getEnd1() {
+        return e1;
+    }
 
     public Location getOtherEnd(Location loc) {
         return (loc.equals(e0) ? e1 : e0);
@@ -262,7 +296,7 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
 
     public boolean sharesEnd(Wire other) {
         return this.e0.equals(other.e0) || this.e1.equals(other.e0)
-            || this.e0.equals(other.e1) || this.e1.equals(other.e1);
+                || this.e0.equals(other.e1) || this.e1.equals(other.e1);
     }
 
     public boolean overlaps(Wire other, boolean includeEnds) {

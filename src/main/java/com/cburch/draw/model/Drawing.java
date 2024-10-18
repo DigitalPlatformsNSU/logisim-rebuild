@@ -134,7 +134,7 @@ public class Drawing implements CanvasModel {
     }
 
     public void translateObjects(Collection<? extends CanvasObject> shapes,
-            int dx, int dy) {
+                                 int dx, int dy) {
         List<CanvasObject> found = restrict(shapes);
         CanvasModelEvent e = CanvasModelEvent.forTranslate(this, found, dx, dy);
         if (!found.isEmpty() && (dx != 0 || dy != 0) && isChangeAllowed(e)) {

@@ -19,7 +19,8 @@ import com.cburch.logisim.data.Location;
 import com.cburch.logisim.util.UnmodifiableList;
 
 public class SvgReader {
-    private SvgReader() { }
+    private SvgReader() {
+    }
 
     private static final Pattern PATH_REGEX = Pattern.compile("[a-zA-Z]|[-0-9.]+");
 
@@ -173,24 +174,25 @@ public class SvgReader {
             tokens.add(token);
             if (Character.isLetter(token.charAt(0))) {
                 switch (token.charAt(0)) {
-                case 'M':
-                    if (type == -1) type = 0;
-                    else type = -1;
-                    break;
-                case 'Q': case 'q':
-                    if (type == 0) type = 1;
-                    else type = -1;
-                    break;
-                /* not supported
-                case 'L': case 'l':
-                case 'H': case 'h':
-                case 'V': case 'v':
-                    if (type == 0 || type == 2) type = 2;
-                    else type = -1;
-                    break;
-                */
-                default:
-                    type = -1;
+                    case 'M':
+                        if (type == -1) type = 0;
+                        else type = -1;
+                        break;
+                    case 'Q':
+                    case 'q':
+                        if (type == 0) type = 1;
+                        else type = -1;
+                        break;
+                        /* not supported
+                        case 'L': case 'l':
+                        case 'H': case 'h':
+                        case 'V': case 'v':
+                            if (type == 0 || type == 2) type = 2;
+                            else type = -1;
+                            break;
+                        */
+                    default:
+                        type = -1;
                 }
                 if (type == -1) {
                     throw new NumberFormatException("Unrecognized path command '" + token.charAt(0) + "'");

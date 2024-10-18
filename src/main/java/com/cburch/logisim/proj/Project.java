@@ -74,8 +74,8 @@ public class Project {
     private Simulator simulator = new Simulator();
     private LogisimFile file;
     private CircuitState circuitState;
-    private HashMap<Circuit,CircuitState> stateMap
-        = new HashMap<Circuit,CircuitState>();
+    private HashMap<Circuit, CircuitState> stateMap
+            = new HashMap<Circuit, CircuitState>();
     private Frame frame = null;
     private OptionsFrame optionsFrame = null;
     private LogFrame logFrame = null;
@@ -83,11 +83,11 @@ public class Project {
     private LinkedList<ActionData> undoLog = new LinkedList<ActionData>();
     private int undoMods = 0;
     private EventSourceWeakSupport<ProjectListener> projectListeners
-        = new EventSourceWeakSupport<ProjectListener>();
+            = new EventSourceWeakSupport<ProjectListener>();
     private EventSourceWeakSupport<LibraryListener> fileListeners
-        = new EventSourceWeakSupport<LibraryListener>();
+            = new EventSourceWeakSupport<LibraryListener>();
     private EventSourceWeakSupport<CircuitListener> circuitListeners
-        = new EventSourceWeakSupport<CircuitListener>();
+            = new EventSourceWeakSupport<CircuitListener>();
     private Dependencies depends;
     private MyListener myListener = new MyListener();
     private boolean startupScreen = false;

@@ -13,8 +13,10 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.instance.StdAttr;
 
-/** This component takes a multibit input and outputs the value that follows it
- * in Gray Code. For instance, given input 0100 the output is 1100. */
+/**
+ * This component takes a multibit input and outputs the value that follows it
+ * in Gray Code. For instance, given input 0100 the output is 1100.
+ */
 class GrayIncrementer extends InstanceFactory {
     /* Note that there are no instance variables. There is only one instance of
      * this class created, which manages all instances of the component. Any
@@ -22,7 +24,9 @@ class GrayIncrementer extends InstanceFactory {
      * through attributes. For GrayIncrementer, each instance has a "bit width"
      * that it works with, and so we'll have an attribute. */
 
-    /** The constructor configures the factory. */
+    /**
+     * The constructor configures the factory.
+     */
     GrayIncrementer() {
         super("Gray Code Incrementer");
 
@@ -33,8 +37,8 @@ class GrayIncrementer extends InstanceFactory {
          * StdAttr attributes when appropriate: A user can then select several
          * components (even from differing factories) with the same attribute
          * and modify them all at once. */
-        setAttributes(new Attribute[] { StdAttr.WIDTH },
-                new Object[] { BitWidth.create(4) });
+        setAttributes(new Attribute[]{StdAttr.WIDTH},
+                new Object[]{BitWidth.create(4)});
 
         /* The "offset bounds" is the location of the bounding rectangle
          * relative to the mouse location. Here, we're choosing the component to
@@ -50,16 +54,18 @@ class GrayIncrementer extends InstanceFactory {
          * input/output/both, and finally the expected bit width for the port.
          * The bit width can be a constant (like 1) or an attribute (as here).
          */
-        setPorts(new Port[] {
+        setPorts(new Port[]{
                 new Port(-30, 0, Port.INPUT, StdAttr.WIDTH),
                 new Port(0, 0, Port.OUTPUT, StdAttr.WIDTH),
-            });
+        });
     }
 
-    /** Computes the current output for this component. This method is invoked
+    /**
+     * Computes the current output for this component. This method is invoked
      * any time any of the inputs change their values; it may also be invoked in
      * other circumstances, even if there is no reason to expect it to change
-     * anything. */
+     * anything.
+     */
     @Override
     public void propagate(InstanceState state) {
         // First we retrieve the value being fed into the input. Note that in
@@ -80,7 +86,9 @@ class GrayIncrementer extends InstanceFactory {
         state.setPort(1, out, out.getWidth() + 1);
     }
 
-    /** Says how an individual instance should appear on the canvas. */
+    /**
+     * Says how an individual instance should appear on the canvas.
+     */
     @Override
     public void paintInstance(InstancePainter painter) {
         // As it happens, InstancePainter contains several convenience methods
@@ -91,9 +99,11 @@ class GrayIncrementer extends InstanceFactory {
         painter.drawPorts();
     }
 
-    /** Computes the next gray value in the sequence after prev. This static
+    /**
+     * Computes the next gray value in the sequence after prev. This static
      * method just does some bit twiddling; it doesn't have much to do with
-     * Logisim except that it manipulates Value and BitWidth objects. */
+     * Logisim except that it manipulates Value and BitWidth objects.
+     */
     static Value nextGray(Value prev) {
         BitWidth bits = prev.getBitWidth();
         if (!prev.isFullyDefined()) return Value.createError(bits);

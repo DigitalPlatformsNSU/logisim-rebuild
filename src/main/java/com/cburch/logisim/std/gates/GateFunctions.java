@@ -6,7 +6,8 @@ package com.cburch.logisim.std.gates;
 import com.cburch.logisim.data.Value;
 
 class GateFunctions {
-    private GateFunctions() { }
+    private GateFunctions() {
+    }
 
     static Value computeOr(Value[] inputs, int numInputs) {
         Value ret = inputs[0];

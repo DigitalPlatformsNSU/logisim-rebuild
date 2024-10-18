@@ -64,7 +64,7 @@ public class Simulator {
             }
         }
 
-        public synchronized void requestTick()  {
+        public synchronized void requestTick() {
             if (ticksRequested < 16) {
                 ticksRequested++;
             }
@@ -79,13 +79,14 @@ public class Simulator {
         @Override
         public void run() {
             while (!complete) {
-                synchronized(this) {
+                synchronized (this) {
                     while (!complete && !propagateRequested
                             && !resetRequested && ticksRequested == 0
                             && stepsRequested == 0) {
                         try {
                             wait();
-                        } catch (InterruptedException e) { }
+                        } catch (InterruptedException e) {
+                        }
                     }
                 }
 
@@ -131,7 +132,7 @@ public class Simulator {
                                 doTick();
                             }
 
-                            synchronized(this) {
+                            synchronized (this) {
                                 stepsRequested--;
                             }
                             exceptionEncountered = false;
@@ -151,7 +152,7 @@ public class Simulator {
         }
 
         private void doTick() {
-            synchronized(this) {
+            synchronized (this) {
                 ticksRequested--;
             }
             propagator.tick();
@@ -166,7 +167,7 @@ public class Simulator {
     private PropagationManager manager;
     private SimulatorTicker ticker;
     private ArrayList<SimulatorListener> listeners
-        = new ArrayList<SimulatorListener>();
+            = new ArrayList<SimulatorListener>();
 
     public Simulator() {
         manager = new PropagationManager();
@@ -175,7 +176,8 @@ public class Simulator {
             manager.setPriority(manager.getPriority() - 1);
             ticker.setPriority(ticker.getPriority() - 1);
         } catch (SecurityException e) {
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException e) {
+        }
         manager.start();
         ticker.start();
 
@@ -207,7 +209,7 @@ public class Simulator {
     }
 
     public void step() {
-        synchronized(manager) {
+        synchronized (manager) {
             manager.stepsRequested++;
             manager.notifyAll();
         }
@@ -282,20 +284,28 @@ public class Simulator {
         return prop != null && prop.isOscillating();
     }
 
-    public void addSimulatorListener(SimulatorListener l) { listeners.add(l); }
-    public void removeSimulatorListener(SimulatorListener l) { listeners.remove(l); }
+    public void addSimulatorListener(SimulatorListener l) {
+        listeners.add(l);
+    }
+
+    public void removeSimulatorListener(SimulatorListener l) {
+        listeners.remove(l);
+    }
+
     void firePropagationCompleted() {
         SimulatorEvent e = new SimulatorEvent(this);
         for (SimulatorListener l : new ArrayList<SimulatorListener>(listeners)) {
             l.propagationCompleted(e);
         }
     }
+
     void fireTickCompleted() {
         SimulatorEvent e = new SimulatorEvent(this);
         for (SimulatorListener l : new ArrayList<SimulatorListener>(listeners)) {
             l.tickCompleted(e);
         }
     }
+
     void fireSimulatorStateChanged() {
         SimulatorEvent e = new SimulatorEvent(this);
         for (SimulatorListener l : new ArrayList<SimulatorListener>(listeners)) {

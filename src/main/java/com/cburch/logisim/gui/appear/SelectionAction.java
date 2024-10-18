@@ -32,9 +32,9 @@ class SelectionAction extends Action {
     private Direction anchorOldFacing;
 
     public SelectionAction(AppearanceCanvas canvas, StringGetter displayName,
-            Collection<CanvasObject> toRemove, Collection<CanvasObject> toAdd,
-            Collection<CanvasObject> newSelection, Location anchorLocation,
-            Direction anchorFacing) {
+                           Collection<CanvasObject> toRemove, Collection<CanvasObject> toAdd,
+                           Collection<CanvasObject> newSelection, Location anchorLocation,
+                           Direction anchorFacing) {
         this.canvas = canvas;
         this.canvasModel = canvas.getModel();
         this.displayName = displayName;

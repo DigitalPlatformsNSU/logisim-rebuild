@@ -68,11 +68,11 @@ public class Frame extends LFrame implements LocaleListener {
     public static final String VIEW_TOOLBOX = "toolbox";
     public static final String VIEW_SIMULATION = "simulation";
 
-    private static final double[] ZOOM_OPTIONS = { 20, 50, 75, 100, 133, 150, 200, 250, 300, 400 };
+    private static final double[] ZOOM_OPTIONS = {20, 50, 75, 100, 133, 150, 200, 250, 300, 400};
 
     class MyProjectListener
             implements ProjectListener, LibraryListener, CircuitListener,
-                PropertyChangeListener, ChangeListener {
+            PropertyChangeListener, ChangeListener {
         public void projectChanged(ProjectEvent event) {
             int action = event.getAction();
 
@@ -115,7 +115,8 @@ public class Frame extends LFrame implements LocaleListener {
             getRootPane().putClientProperty("windowModified", Boolean.valueOf(ok));
         }
 
-        public void attributeListChanged(AttributeEvent e) { }
+        public void attributeListChanged(AttributeEvent e) {
+        }
 
         public void propertyChange(PropertyChangeEvent event) {
             if (AppPreferences.TOOLBAR_PLACEMENT.isSource(event)) {
@@ -148,29 +149,29 @@ public class Frame extends LFrame implements LocaleListener {
         }
     }
 
-    private Project         proj;
+    private Project proj;
     private MyProjectListener myProjectListener = new MyProjectListener();
 
     // GUI elements shared between views
-    private LogisimMenuBar  menubar;
-    private MenuListener    menuListener;
-    private Toolbar         toolbar;
+    private LogisimMenuBar menubar;
+    private MenuListener menuListener;
+    private Toolbar toolbar;
     private HorizontalSplitPane leftRegion;
     private VerticalSplitPane mainRegion;
-    private JPanel          mainPanelSuper;
-    private CardPanel       mainPanel;
+    private JPanel mainPanelSuper;
+    private CardPanel mainPanel;
     // left-side elements
-    private Toolbar         projectToolbar;
-    private CardPanel       explorerPane;
-    private Toolbox         toolbox;
+    private Toolbar projectToolbar;
+    private CardPanel explorerPane;
+    private Toolbox toolbox;
     private SimulationExplorer simExplorer;
-    private AttrTable       attrTable;
-    private ZoomControl     zoom;
+    private AttrTable attrTable;
+    private ZoomControl zoom;
 
     // for the Layout view
     private LayoutToolbarModel layoutToolbarModel;
-    private Canvas          layoutCanvas;
-    private ZoomModel       layoutZoomModel;
+    private Canvas layoutCanvas;
+    private ZoomModel layoutZoomModel;
     private LayoutEditHandler layoutEditHandler;
     private AttrTableSelectionModel attrTableSelectionModel;
 
@@ -284,10 +285,10 @@ public class Frame extends LFrame implements LocaleListener {
             Object value = BorderLayout.NORTH;
             for (Direction dir : Direction.cardinals) {
                 if (dir.toString().equals(loc)) {
-                    if (dir == Direction.EAST)       value = BorderLayout.EAST;
+                    if (dir == Direction.EAST) value = BorderLayout.EAST;
                     else if (dir == Direction.SOUTH) value = BorderLayout.SOUTH;
-                    else if (dir == Direction.WEST)  value = BorderLayout.WEST;
-                    else                             value = BorderLayout.NORTH;
+                    else if (dir == Direction.WEST) value = BorderLayout.WEST;
+                    else value = BorderLayout.NORTH;
                 }
             }
 
@@ -379,7 +380,7 @@ public class Frame extends LFrame implements LocaleListener {
         String name = proj.getLogisimFile().getName();
         if (circuit != null) {
             s = StringUtil.format(Strings.get("titleCircFileKnown"),
-                circuit.getName(), name);
+                    circuit.getName(), name);
         } else {
             s = StringUtil.format(Strings.get("titleFileKnown"), name);
         }
@@ -406,7 +407,7 @@ public class Frame extends LFrame implements LocaleListener {
         if (newAttrs == null) {
             AttrTableModel oldModel = attrTable.getAttrTableModel();
             boolean same = oldModel instanceof AttrTableToolModel
-                && ((AttrTableToolModel) oldModel).getTool() == oldTool;
+                    && ((AttrTableToolModel) oldModel).getTool() == oldTool;
             if (!force && !same && !(oldModel instanceof AttrTableCircuitModel)) {
                 return;
             }
@@ -468,7 +469,7 @@ public class Frame extends LFrame implements LocaleListener {
 
         if (!proj.isFileDirty()) return true;
         toFront();
-        String[] options = { Strings.get("saveOption"), Strings.get("discardOption"), Strings.get("cancelOption") };
+        String[] options = {Strings.get("saveOption"), Strings.get("discardOption"), Strings.get("cancelOption")};
         int result = JOptionPane.showOptionDialog(this,
                 message, title, 0, JOptionPane.QUESTION_MESSAGE, null,
                 options, options[0]);

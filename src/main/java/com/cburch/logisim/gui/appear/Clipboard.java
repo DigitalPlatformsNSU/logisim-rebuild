@@ -8,13 +8,14 @@ import java.beans.PropertyChangeListener;
 import com.cburch.logisim.util.PropertyChangeWeakSupport;
 
 class Clipboard {
-    private Clipboard() { }
+    private Clipboard() {
+    }
 
     public static final String contentsProperty = "appearance";
 
     private static ClipboardContents current = ClipboardContents.EMPTY;
     private static PropertyChangeWeakSupport propertySupport
-        = new PropertyChangeWeakSupport(Clipboard.class);
+            = new PropertyChangeWeakSupport(Clipboard.class);
 
     public static boolean isEmpty() {
         return current == null || current.getElements().isEmpty();
@@ -36,12 +37,15 @@ class Clipboard {
     public static void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
     }
+
     public static void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(propertyName, listener);
     }
+
     public static void removePropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(listener);
     }
+
     public static void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(propertyName, listener);
     }

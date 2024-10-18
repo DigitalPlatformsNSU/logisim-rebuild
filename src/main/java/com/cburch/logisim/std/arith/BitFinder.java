@@ -23,24 +23,23 @@ import com.cburch.logisim.util.GraphicsUtil;
 
 public class BitFinder extends InstanceFactory {
     static final AttributeOption LOW_ONE
-        = new AttributeOption("low1", Strings.getter("bitFinderLowOption", "1"));
+            = new AttributeOption("low1", Strings.getter("bitFinderLowOption", "1"));
     static final AttributeOption HIGH_ONE
-    = new AttributeOption("high1", Strings.getter("bitFinderHighOption", "1"));
+            = new AttributeOption("high1", Strings.getter("bitFinderHighOption", "1"));
     static final AttributeOption LOW_ZERO
-        = new AttributeOption("low0", Strings.getter("bitFinderLowOption", "0"));
+            = new AttributeOption("low0", Strings.getter("bitFinderLowOption", "0"));
     static final AttributeOption HIGH_ZERO
-        = new AttributeOption("high0", Strings.getter("bitFinderHighOption", "0"));
+            = new AttributeOption("high0", Strings.getter("bitFinderHighOption", "0"));
     static final Attribute<AttributeOption> TYPE
-        = Attributes.forOption("type", Strings.getter("bitFinderTypeAttr"),
-                new AttributeOption[] { LOW_ONE, HIGH_ONE, LOW_ZERO, HIGH_ZERO });
+            = Attributes.forOption("type", Strings.getter("bitFinderTypeAttr"), new AttributeOption[]{LOW_ONE, HIGH_ONE, LOW_ZERO, HIGH_ZERO});
 
     public BitFinder() {
         super("BitFinder", Strings.getter("bitFinderComponent"));
-        setAttributes(new Attribute[] {
+        setAttributes(new Attribute[]{
                 StdAttr.WIDTH, TYPE
-            }, new Object[] {
+        }, new Object[]{
                 BitWidth.create(8), LOW_ONE
-            });
+        });
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
         setIconName("bitfindr.gif");
     }
@@ -70,9 +69,9 @@ public class BitFinder extends InstanceFactory {
         int outWidth = computeOutputBits(inWidth.getWidth() - 1);
 
         Port[] ps = new Port[3];
-        ps[0] = new Port(-20,  20, Port.OUTPUT, BitWidth.ONE);
-        ps[1] = new Port(  0,   0, Port.OUTPUT, BitWidth.create(outWidth));
-        ps[2] = new Port(-40,   0, Port.INPUT,  inWidth);
+        ps[0] = new Port(-20, 20, Port.OUTPUT, BitWidth.ONE);
+        ps[1] = new Port(0, 0, Port.OUTPUT, BitWidth.create(outWidth));
+        ps[2] = new Port(-40, 0, Port.INPUT, inWidth);
 
         Object type = instance.getAttributeValue(TYPE);
         if (type == HIGH_ZERO) {
@@ -109,16 +108,20 @@ public class BitFinder extends InstanceFactory {
         int i;
         if (type == HIGH_ZERO) {
             want = Value.FALSE;
-            for (i = bits.length - 1; i >= 0 && bits[i] == Value.TRUE; i--) { }
+            for (i = bits.length - 1; i >= 0 && bits[i] == Value.TRUE; i--) {
+            }
         } else if (type == LOW_ZERO) {
             want = Value.FALSE;
-            for (i = 0; i < bits.length && bits[i] == Value.TRUE; i++) { }
+            for (i = 0; i < bits.length && bits[i] == Value.TRUE; i++) {
+            }
         } else if (type == HIGH_ONE) {
             want = Value.TRUE;
-            for (i = bits.length - 1; i >= 0 && bits[i] == Value.FALSE; i--) { }
+            for (i = bits.length - 1; i >= 0 && bits[i] == Value.FALSE; i--) {
+            }
         } else {
             want = Value.TRUE;
-            for (i = 0; i < bits.length && bits[i] == Value.FALSE; i++) { }
+            for (i = 0; i < bits.length && bits[i] == Value.FALSE; i++) {
+            }
         }
 
         Value present;

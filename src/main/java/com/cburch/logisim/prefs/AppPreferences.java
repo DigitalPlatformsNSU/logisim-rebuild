@@ -31,7 +31,7 @@ public class AppPreferences {
     private static Preferences prefs = null;
     private static MyListener myListener = null;
     private static PropertyChangeWeakSupport propertySupport
-        = new PropertyChangeWeakSupport(AppPreferences.class);
+            = new PropertyChangeWeakSupport(AppPreferences.class);
 
     // Template preferences
     public static final int TEMPLATE_UNKNOWN = -1;
@@ -57,44 +57,42 @@ public class AppPreferences {
     public static final String SHAPE_DIN40700 = "din40700";
 
     public static final PrefMonitor<String> GATE_SHAPE
-        = create(new PrefMonitorStringOpts("gateShape",
-            new String[] { SHAPE_SHAPED, SHAPE_RECTANGULAR, SHAPE_DIN40700 },
+            = create(new PrefMonitorStringOpts("gateShape", new String[]{SHAPE_SHAPED, SHAPE_RECTANGULAR, SHAPE_DIN40700},
             SHAPE_SHAPED));
     public static final PrefMonitor<String> LOCALE
-        = create(new LocalePreference());
+            = create(new LocalePreference());
     public static final PrefMonitor<Boolean> ACCENTS_REPLACE
-        = create(new PrefMonitorBoolean("accentsReplace", false));
+            = create(new PrefMonitorBoolean("accentsReplace", false));
 
     // Window preferences
     public static final String TOOLBAR_HIDDEN = "hidden";
     public static final String TOOLBAR_DOWN_MIDDLE = "downMiddle";
 
     public static final PrefMonitor<Boolean> SHOW_TICK_RATE
-        = create(new PrefMonitorBoolean("showTickRate", false));
+            = create(new PrefMonitorBoolean("showTickRate", false));
     public static final PrefMonitor<String> TOOLBAR_PLACEMENT
-        = create(new PrefMonitorStringOpts("toolbarPlacement", new String[] {
-                    Direction.NORTH.toString(), Direction.SOUTH.toString(),
-                    Direction.EAST.toString(), Direction.WEST.toString(),
-                    TOOLBAR_DOWN_MIDDLE, TOOLBAR_HIDDEN },
-                Direction.NORTH.toString()));
+            = create(new PrefMonitorStringOpts("toolbarPlacement", new String[]{
+            Direction.NORTH.toString(), Direction.SOUTH.toString(),
+            Direction.EAST.toString(), Direction.WEST.toString(),
+                TOOLBAR_DOWN_MIDDLE, TOOLBAR_HIDDEN},
+                    Direction.NORTH.toString()));
 
     // Layout preferences
     public static final String ADD_AFTER_UNCHANGED = "unchanged";
     public static final String ADD_AFTER_EDIT = "edit";
 
     public static final PrefMonitor<Boolean> PRINTER_VIEW
-        = create(new PrefMonitorBoolean("printerView", false));
+            = create(new PrefMonitorBoolean("printerView", false));
     public static final PrefMonitor<Boolean> ATTRIBUTE_HALO
-        = create(new PrefMonitorBoolean("attributeHalo", true));
+            = create(new PrefMonitorBoolean("attributeHalo", true));
     public static final PrefMonitor<Boolean> COMPONENT_TIPS
-        = create(new PrefMonitorBoolean("componentTips", true));
+            = create(new PrefMonitorBoolean("componentTips", true));
     public static final PrefMonitor<Boolean> MOVE_KEEP_CONNECT
-        = create(new PrefMonitorBoolean("keepConnected", true));
+            = create(new PrefMonitorBoolean("keepConnected", true));
     public static final PrefMonitor<Boolean> ADD_SHOW_GHOSTS
-        = create(new PrefMonitorBoolean("showGhosts", true));
+            = create(new PrefMonitorBoolean("showGhosts", true));
     public static final PrefMonitor<String> ADD_AFTER
-        = create(new PrefMonitorStringOpts("afterAdd",
-            new String[] { ADD_AFTER_EDIT, ADD_AFTER_UNCHANGED }, ADD_AFTER_EDIT));
+            = create(new PrefMonitorStringOpts("afterAdd", new String[]{ADD_AFTER_EDIT, ADD_AFTER_UNCHANGED}, ADD_AFTER_EDIT));
     public static PrefMonitor<String> POKE_WIRE_RADIX1;
     public static PrefMonitor<String> POKE_WIRE_RADIX2;
 
@@ -117,9 +115,8 @@ public class AppPreferences {
     public static final String ACCEL_D3D = "d3d";
 
     public static final PrefMonitor<String> GRAPHICS_ACCELERATION
-        = create(new PrefMonitorStringOpts("graphicsAcceleration",
-                new String[] { ACCEL_DEFAULT, ACCEL_NONE, ACCEL_OPENGL, ACCEL_D3D },
-                ACCEL_DEFAULT));
+            = create(new PrefMonitorStringOpts("graphicsAcceleration", new String[]{ACCEL_DEFAULT, ACCEL_NONE, ACCEL_OPENGL, ACCEL_D3D},
+            ACCEL_DEFAULT));
 
     // hidden window preferences - not part of the preferences dialog, changes
     // to preference does not affect current windows, and the values are not
@@ -127,29 +124,29 @@ public class AppPreferences {
     public static final String RECENT_PROJECTS = "recentProjects";
     private static final RecentProjects recentProjects = new RecentProjects();
     public static final PrefMonitor<Double> TICK_FREQUENCY
-        = create(new PrefMonitorDouble("tickFrequency", 1.0));
+            = create(new PrefMonitorDouble("tickFrequency", 1.0));
     public static final PrefMonitor<Boolean> LAYOUT_SHOW_GRID
-        = create(new PrefMonitorBoolean("layoutGrid", true));
+            = create(new PrefMonitorBoolean("layoutGrid", true));
     public static final PrefMonitor<Double> LAYOUT_ZOOM
-        = create(new PrefMonitorDouble("layoutZoom", 1.0));
+            = create(new PrefMonitorDouble("layoutZoom", 1.0));
     public static final PrefMonitor<Boolean> APPEARANCE_SHOW_GRID
-        = create(new PrefMonitorBoolean("appearanceGrid", true));
+            = create(new PrefMonitorBoolean("appearanceGrid", true));
     public static final PrefMonitor<Double> APPEARANCE_ZOOM
-        = create(new PrefMonitorDouble("appearanceZoom", 1.0));
+            = create(new PrefMonitorDouble("appearanceZoom", 1.0));
     public static final PrefMonitor<Integer> WINDOW_STATE
-        = create(new PrefMonitorInt("windowState", JFrame.NORMAL));
+            = create(new PrefMonitorInt("windowState", JFrame.NORMAL));
     public static final PrefMonitor<Integer> WINDOW_WIDTH
-        = create(new PrefMonitorInt("windowWidth", 640));
+            = create(new PrefMonitorInt("windowWidth", 640));
     public static final PrefMonitor<Integer> WINDOW_HEIGHT
-        = create(new PrefMonitorInt("windowHeight", 480));
+            = create(new PrefMonitorInt("windowHeight", 480));
     public static final PrefMonitor<String> WINDOW_LOCATION
-        = create(new PrefMonitorString("windowLocation", "0,0"));
+            = create(new PrefMonitorString("windowLocation", "0,0"));
     public static final PrefMonitor<Double> WINDOW_MAIN_SPLIT
-        = create(new PrefMonitorDouble("windowMainSplit", 0.25));
+            = create(new PrefMonitorDouble("windowMainSplit", 0.25));
     public static final PrefMonitor<Double> WINDOW_LEFT_SPLIT
-        = create(new PrefMonitorDouble("windowLeftSplit", 0.5));
+            = create(new PrefMonitorDouble("windowLeftSplit", 0.5));
     public static final PrefMonitor<String> DIALOG_DIRECTORY
-        = create(new PrefMonitorString("dialogDirectory", ""));
+            = create(new PrefMonitorString("dialogDirectory", ""));
 
     //
     // methods for accessing preferences
@@ -199,7 +196,10 @@ public class AppPreferences {
 
     public static void clear() {
         Preferences p = getPrefs(true);
-        try { p.clear(); } catch (BackingStoreException e) { }
+        try {
+            p.clear();
+        } catch (BackingStoreException e) {
+        }
     }
 
     static Preferences getPrefs() {
@@ -208,11 +208,14 @@ public class AppPreferences {
 
     private static Preferences getPrefs(boolean shouldClear) {
         if (prefs == null) {
-            synchronized(AppPreferences.class) {
+            synchronized (AppPreferences.class) {
                 if (prefs == null) {
                     Preferences p = Preferences.userNodeForPackage(Main.class);
                     if (shouldClear) {
-                        try { p.clear(); } catch (BackingStoreException e) { }
+                        try {
+                            p.clear();
+                        } catch (BackingStoreException e) {
+                        }
                     }
                     myListener = new MyListener();
                     p.addPreferenceChangeListener(myListener);
@@ -241,12 +244,15 @@ public class AppPreferences {
     public static void addPropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(listener);
     }
+
     public static void removePropertyChangeListener(PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(listener);
     }
+
     public static void addPropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.addPropertyChangeListener(propertyName, listener);
     }
+
     public static void removePropertyChangeListener(String propertyName, PropertyChangeListener listener) {
         propertySupport.removePropertyChangeListener(propertyName, listener);
     }
@@ -254,6 +260,7 @@ public class AppPreferences {
     static void firePropertyChange(String property, boolean oldVal, boolean newVal) {
         propertySupport.firePropertyChange(property, oldVal, newVal);
     }
+
     static void firePropertyChange(String property, Object oldVal, Object newVal) {
         propertySupport.firePropertyChange(property, oldVal, newVal);
     }
@@ -298,7 +305,8 @@ public class AppPreferences {
                 customTemplateFile = template == null ? null : value;
                 customTemplate = template;
                 getPrefs().put(TEMPLATE_FILE, value == null ? "" : value.getCanonicalPath());
-            } catch (IOException ex) { }
+            } catch (IOException ex) {
+            }
         }
     }
 
@@ -315,7 +323,8 @@ public class AppPreferences {
                 System.setProperty("sun.java2d.opengl", "False");
                 System.setProperty("sun.java2d.d3d", "True");
             }
-        } catch (Throwable t) { }
+        } catch (Throwable t) {
+        }
     }
 
     //
@@ -324,10 +333,14 @@ public class AppPreferences {
     public static Template getTemplate() {
         getPrefs();
         switch (templateType) {
-        case TEMPLATE_PLAIN: return getPlainTemplate();
-        case TEMPLATE_EMPTY: return getEmptyTemplate();
-        case TEMPLATE_CUSTOM: return getCustomTemplate();
-        default: return getPlainTemplate();
+            case TEMPLATE_PLAIN:
+                return getPlainTemplate();
+            case TEMPLATE_EMPTY:
+                return getEmptyTemplate();
+            case TEMPLATE_CUSTOM:
+                return getCustomTemplate();
+            default:
+                return getPlainTemplate();
         }
     }
 
@@ -375,7 +388,10 @@ public class AppPreferences {
                     customTemplateFile = null;
                 } finally {
                     if (reader != null) {
-                        try { reader.close(); } catch (IOException e) { }
+                        try {
+                            reader.close();
+                        } catch (IOException e) {
+                        }
                     }
                 }
             }
@@ -419,7 +435,7 @@ public class AppPreferences {
         private static Locale findLocale(String lang) {
             Locale[] check;
             for (int set = 0; set < 2; set++) {
-                if (set == 0) check = new Locale[] { Locale.getDefault(), Locale.ENGLISH };
+                if (set == 0) check = new Locale[]{Locale.getDefault(), Locale.ENGLISH};
                 else check = Locale.getAvailableLocales();
                 for (int i = 0; i < check.length; i++) {
                     Locale loc = check[i];

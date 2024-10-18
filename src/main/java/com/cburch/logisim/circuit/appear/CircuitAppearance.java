@@ -73,7 +73,7 @@ public class CircuitAppearance extends Drawing {
     }
 
     void replaceAutomatically(List<AppearancePort> removes,
-            List<AppearancePort> adds) {
+                              List<AppearancePort> adds) {
         // this should be called only when substituting ports via PortManager
         boolean oldSuppress = suppressRecompute;
         try {

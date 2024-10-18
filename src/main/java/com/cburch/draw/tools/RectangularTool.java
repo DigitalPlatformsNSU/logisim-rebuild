@@ -29,7 +29,9 @@ abstract class RectangularTool extends AbstractTool {
     }
 
     public abstract CanvasObject createShape(int x, int y, int w, int h);
+
     public abstract void drawShape(Graphics g, int x, int y, int w, int h);
+
     public abstract void fillShape(Graphics g, int x, int y, int w, int h);
 
     @Override

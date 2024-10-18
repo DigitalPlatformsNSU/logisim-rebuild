@@ -80,7 +80,7 @@ public class HexFrame extends LFrame {
                         lastFile = f;
                     } catch (IOException e) {
                         JOptionPane.showMessageDialog(HexFrame.this, e.getMessage(),
-                            Strings.get("hexSaveErrorTitle"), JOptionPane.ERROR_MESSAGE);
+                                Strings.get("hexSaveErrorTitle"), JOptionPane.ERROR_MESSAGE);
                     }
                 }
             } else if (src == close) {

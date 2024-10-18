@@ -26,10 +26,11 @@ import com.cburch.logisim.std.wiring.Constant;
 import com.cburch.logisim.std.wiring.Pin;
 
 public class CircuitBuilder {
-    private CircuitBuilder() { }
+    private CircuitBuilder() {
+    }
 
     public static CircuitMutation build(Circuit destCirc, AnalyzerModel model,
-            boolean twoInputs, boolean useNands) {
+                                        boolean twoInputs, boolean useNands) {
         CircuitMutation result = new CircuitMutation(destCirc);
         result.clear();
 
@@ -86,7 +87,7 @@ public class CircuitBuilder {
     private static class Layout {
         // initialized by parent
         int y; // top edge relative to parent's top edge
-           // (or edge corresponding to input)
+        // (or edge corresponding to input)
 
         // initialized by self
         int width;
@@ -99,8 +100,7 @@ public class CircuitBuilder {
         String inputName; // for references directly to inputs
 
         Layout(int width, int height, int outputY,
-                ComponentFactory factory, AttributeSet attrs,
-                Layout[] subLayouts, int subX) {
+                ComponentFactory factory, AttributeSet attrs, Layout[] subLayouts, int subX) {
             this.width = width;
             this.height = roundUp(height);
             this.outputY = outputY;
@@ -271,9 +271,10 @@ public class CircuitBuilder {
     private static class InputData {
         int startX;
         String[] names;
-        HashMap<String,SingleInput> inputs = new HashMap<String,SingleInput>();
+        HashMap<String, SingleInput> inputs = new HashMap<String, SingleInput>();
 
-        InputData() { }
+        InputData() {
+        }
 
         int getStartX() {
             return startX;
@@ -294,23 +295,26 @@ public class CircuitBuilder {
         int spineX;
         ArrayList<Location> ys = new ArrayList<Location>();
 
-        SingleInput(int spineX) { this.spineX = spineX; }
+        SingleInput(int spineX) {
+            this.spineX = spineX;
+        }
     }
 
     //
     // placeComponents
     //
+
     /**
-     * @param circuit  the circuit where to place the components.
-     * @param layout   the layout specifying the gates to place there.
-     * @param x        the left edge of where the layout should be placed.
-     * @param y        the top edge of where the layout should be placed.
-     * @param inputData  information about how to reach inputs.
-     * @param output   a point to which the output should be connected.
+     * @param circuit   the circuit where to place the components.
+     * @param layout    the layout specifying the gates to place there.
+     * @param x         the left edge of where the layout should be placed.
+     * @param y         the top edge of where the layout should be placed.
+     * @param inputData information about how to reach inputs.
+     * @param output    a point to which the output should be connected.
      */
     private static void placeComponents(CircuitMutation result,
-            Layout layout, int x, int y, InputData inputData,
-            Location output) {
+                                        Layout layout, int x, int y, InputData inputData,
+                                        Location output) {
         if (layout.inputName != null) {
             int inputX = inputData.getSpineX(layout.inputName);
             Location input = Location.create(inputX, output.getY());
@@ -475,7 +479,7 @@ public class CircuitBuilder {
                     result.replace(existing, replace);
                 } else {
                  */
-                    result.add(Wire.create(loc, spineLoc));
+                result.add(Wire.create(loc, spineLoc));
                 // }
 
                 // create spine

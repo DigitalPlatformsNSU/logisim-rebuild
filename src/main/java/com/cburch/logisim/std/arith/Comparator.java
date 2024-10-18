@@ -20,33 +20,31 @@ import com.cburch.logisim.tools.key.BitWidthConfigurator;
 
 public class Comparator extends InstanceFactory {
     private static final AttributeOption SIGNED_OPTION
-        = new AttributeOption("twosComplement", "twosComplement", Strings.getter("twosComplementOption"));
+            = new AttributeOption("twosComplement", "twosComplement", Strings.getter("twosComplementOption"));
     private static final AttributeOption UNSIGNED_OPTION
-        = new AttributeOption("unsigned", "unsigned", Strings.getter("unsignedOption"));
+            = new AttributeOption("unsigned", "unsigned", Strings.getter("unsignedOption"));
     private static final Attribute<AttributeOption> MODE_ATTRIBUTE
-        = Attributes.forOption("mode", Strings.getter("comparatorType"),
-                new AttributeOption[] { SIGNED_OPTION, UNSIGNED_OPTION });
+            = Attributes.forOption("mode", Strings.getter("comparatorType"), new AttributeOption[]{SIGNED_OPTION, UNSIGNED_OPTION});
 
-    private static final int IN0   = 0;
-    private static final int IN1   = 1;
-    private static final int GT    = 2;
-    private static final int EQ    = 3;
-    private static final int LT    = 4;
+    private static final int IN0 = 0;
+    private static final int IN1 = 1;
+    private static final int GT = 2;
+    private static final int EQ = 3;
+    private static final int LT = 4;
 
     public Comparator() {
         super("Comparator", Strings.getter("comparatorComponent"));
-        setAttributes(new Attribute[] { StdAttr.WIDTH, MODE_ATTRIBUTE },
-                new Object[] { BitWidth.create(8), SIGNED_OPTION });
+        setAttributes(new Attribute[]{StdAttr.WIDTH, MODE_ATTRIBUTE}, new Object[]{BitWidth.create(8), SIGNED_OPTION});
         setKeyConfigurator(new BitWidthConfigurator(StdAttr.WIDTH));
         setOffsetBounds(Bounds.create(-40, -20, 40, 40));
         setIconName("comparator.gif");
 
         Port[] ps = new Port[5];
-        ps[IN0] = new Port(-40, -10, Port.INPUT,  StdAttr.WIDTH);
-        ps[IN1] = new Port(-40,  10, Port.INPUT,  StdAttr.WIDTH);
-        ps[GT]  = new Port(  0, -10, Port.OUTPUT, 1);
-        ps[EQ]  = new Port(  0,   0, Port.OUTPUT, 1);
-        ps[LT]  = new Port(  0,  10, Port.OUTPUT, 1);
+        ps[IN0] = new Port(-40, -10, Port.INPUT, StdAttr.WIDTH);
+        ps[IN1] = new Port(-40, 10, Port.INPUT, StdAttr.WIDTH);
+        ps[GT] = new Port(0, -10, Port.OUTPUT, 1);
+        ps[EQ] = new Port(0, 0, Port.OUTPUT, 1);
+        ps[LT] = new Port(0, 10, Port.OUTPUT, 1);
         ps[IN0].setToolTip(Strings.getter("comparatorInputATip"));
         ps[IN1].setToolTip(Strings.getter("comparatorInputBTip"));
         ps[GT].setToolTip(Strings.getter("comparatorGreaterTip"));
@@ -95,7 +93,7 @@ public class Comparator extends InstanceFactory {
             } else if (ab != bb) {
                 eq = Value.FALSE;
                 if (ab == Value.TRUE) gt = Value.TRUE;
-                else                 lt = Value.TRUE;
+                else lt = Value.TRUE;
                 break;
             }
         }

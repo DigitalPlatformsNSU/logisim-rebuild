@@ -21,7 +21,7 @@ class SplitterPainter {
     private static final int SPINE_DOT = Wire.WIDTH + 4;
 
     static void drawLines(ComponentDrawContext context,
-            SplitterAttributes attrs, Location origin) {
+                          SplitterAttributes attrs, Location origin) {
         boolean showState = context.getShowState();
         CircuitState state = showState ? context.getCircuitState() : null;
         if (state == null) showState = false;
@@ -86,14 +86,14 @@ class SplitterPainter {
                 g.drawLine(spine0x, spine0y, spine1x, spine1y);
             }
         } else {
-            int[] xSpine = { spine0x, spine1x, x0 + parms.getSpine1X() / 4 };
-            int[] ySpine = { spine0y, spine1y, y0 + parms.getSpine1Y() / 4 };
+            int[] xSpine = {spine0x, spine1x, x0 + parms.getSpine1X() / 4};
+            int[] ySpine = {spine0y, spine1y, y0 + parms.getSpine1Y() / 4};
             g.drawPolyline(xSpine, ySpine, 3);
         }
     }
 
     static void drawLabels(ComponentDrawContext context,
-            SplitterAttributes attrs, Location origin) {
+                           SplitterAttributes attrs, Location origin) {
         // compute labels
         String[] ends = new String[attrs.fanout + 1];
         int curEnd = -1;
@@ -135,8 +135,12 @@ class SplitterPainter {
         if (parms.getTextAngle() != 0) {
             ((Graphics2D) g).rotate(Math.PI / 2.0);
             int t;
-            t = -x; x = y; y = t;
-            t = -dx; dx = dy; dy = t;
+            t = -x;
+            x = y;
+            y = t;
+            t = -dx;
+            dx = dy;
+            dy = t;
         }
         int halign = parms.getTextHorzAlign();
         int valign = parms.getTextVertAlign();
@@ -155,7 +159,7 @@ class SplitterPainter {
     }
 
     static void drawLegacy(ComponentDrawContext context, SplitterAttributes attrs,
-            Location origin) {
+                           Location origin) {
         Graphics g = context.getGraphics();
         CircuitState state = context.getCircuitState();
         Direction facing = attrs.facing;

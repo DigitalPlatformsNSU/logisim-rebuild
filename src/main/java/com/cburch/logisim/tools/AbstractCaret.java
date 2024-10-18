@@ -22,28 +22,61 @@ public class AbstractCaret implements Caret {
     }
 
     // listener methods
-    public void addCaretListener(CaretListener e) { listeners.add(e); }
-    public void removeCaretListener(CaretListener e) { listeners.remove(e); }
-    protected List<CaretListener> getCaretListeners() { return listenersView; }
+    public void addCaretListener(CaretListener e) {
+        listeners.add(e);
+    }
+
+    public void removeCaretListener(CaretListener e) {
+        listeners.remove(e);
+    }
+
+    protected List<CaretListener> getCaretListeners() {
+        return listenersView;
+    }
 
     // configuration methods
-    public void setBounds(Bounds value) { bds = value; }
+    public void setBounds(Bounds value) {
+        bds = value;
+    }
 
     // query/Graphics methods
-    public String getText() { return ""; }
-    public Bounds getBounds(Graphics g) { return bds; }
-    public void draw(Graphics g) { }
+    public String getText() {
+        return "";
+    }
+
+    public Bounds getBounds(Graphics g) {
+        return bds;
+    }
+
+    public void draw(Graphics g) {
+    }
 
     // finishing
-    public void commitText(String text) { }
-    public void cancelEditing() { }
-    public void stopEditing() { }
+    public void commitText(String text) {
+    }
+
+    public void cancelEditing() {
+    }
+
+    public void stopEditing() {
+    }
 
     // events to handle
-    public void mousePressed(MouseEvent e) { }
-    public void mouseDragged(MouseEvent e) { }
-    public void mouseReleased(MouseEvent e) { }
-    public void keyPressed(KeyEvent e) { }
-    public void keyReleased(KeyEvent e) { }
-    public void keyTyped(KeyEvent e) { }
+    public void mousePressed(MouseEvent e) {
+    }
+
+    public void mouseDragged(MouseEvent e) {
+    }
+
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    public void keyPressed(KeyEvent e) {
+    }
+
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
 }

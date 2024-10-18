@@ -20,12 +20,12 @@ import javax.swing.KeyStroke;
 
 public class WindowMenu extends JMenu {
     private class MyListener implements LocaleListener, ActionListener {
+
         public void localeChanged() {
             WindowMenu.this.setText(Strings.get("windowMenu"));
             minimize.setText(Strings.get("windowMinimizeItem"));
             close.setText(Strings.get("windowCloseItem"));
-            zoom.setText(MacCompatibility.isQuitAutomaticallyPresent() ?
-                    Strings.get("windowZoomItemMac") : Strings.get("windowZoomItem"));
+            zoom.setText(MacCompatibility.isQuitAutomaticallyPresent() ? Strings.get("windowZoomItemMac") : Strings.get("windowZoomItem"));
         }
 
         public void actionPerformed(ActionEvent e) {

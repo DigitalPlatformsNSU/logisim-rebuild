@@ -91,7 +91,7 @@ public class Location implements Comparable<Location> {
 
     public int compareTo(Location other) {
         if (this.x != other.x) return this.x - other.x;
-        else                  return this.y - other.y;
+        else return this.y - other.y;
     }
 
     @Override
@@ -119,7 +119,7 @@ public class Location implements Comparable<Location> {
             int len = value.length();
             if (value.charAt(len - 1) != ')') {
                 throw new NumberFormatException("invalid point '"
-                    + base + "'");
+                        + base + "'");
             }
             value = value.substring(1, len - 1);
         }
@@ -129,7 +129,7 @@ public class Location implements Comparable<Location> {
             comma = value.indexOf(' ');
             if (comma < 0) {
                 throw new NumberFormatException("invalid point '"
-                    + base + "'");
+                        + base + "'");
             }
         }
         int x = Integer.parseInt(value.substring(0, comma).trim());

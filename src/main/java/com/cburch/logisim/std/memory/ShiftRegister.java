@@ -29,22 +29,22 @@ public class ShiftRegister extends InstanceFactory {
     static final Attribute<Boolean> ATTR_LOAD = Attributes.forBoolean("parallel",
             Strings.getter("shiftRegParallelAttr"));
 
-    private static final int IN  = 0;
-    private static final int SH  = 1;
-    private static final int CK  = 2;
+    private static final int IN = 0;
+    private static final int SH = 1;
+    private static final int CK = 2;
     private static final int CLR = 3;
     private static final int OUT = 4;
-    private static final int LD  = 5;
+    private static final int LD = 5;
 
     public ShiftRegister() {
         super("Shift Register", Strings.getter("shiftRegisterComponent"));
-        setAttributes(new Attribute[] {
+        setAttributes(new Attribute[]{
                 StdAttr.WIDTH, ATTR_LENGTH, ATTR_LOAD, StdAttr.EDGE_TRIGGER,
                 StdAttr.LABEL, StdAttr.LABEL_FONT
-            }, new Object[] {
+        }, new Object[]{
                 BitWidth.ONE, Integer.valueOf(8), Boolean.TRUE,
                 StdAttr.TRIG_RISING, "", StdAttr.DEFAULT_LABEL_FONT
-            });
+        });
         setKeyConfigurator(JoinedConfigurator.create(
                 new IntegerConfigurator(ATTR_LENGTH, 1, 32, 0),
                 new BitWidthConfigurator(StdAttr.WIDTH)));
@@ -92,17 +92,17 @@ public class ShiftRegister extends InstanceFactory {
             ps[LD] = new Port(10, -20, Port.INPUT, 1);
             ps[LD].setToolTip(Strings.getter("shiftRegLoadTip"));
             for (int i = 0; i < len; i++) {
-                ps[6 + 2 * i]     = new Port(20 + 10 * i, -20, Port.INPUT, width);
-                ps[6 + 2 * i + 1] = new Port(20 + 10 * i,  20, Port.OUTPUT, width);
+                ps[6 + 2 * i] = new Port(20 + 10 * i, -20, Port.INPUT, width);
+                ps[6 + 2 * i + 1] = new Port(20 + 10 * i, 20, Port.OUTPUT, width);
             }
         } else {
             ps = new Port[5];
         }
         ps[OUT] = new Port(bds.getWidth(), 0, Port.OUTPUT, width);
-        ps[SH]  = new Port( 0, -10, Port.INPUT, 1);
-        ps[IN]  = new Port( 0,   0, Port.INPUT, width);
-        ps[CK]  = new Port( 0,  10, Port.INPUT, 1);
-        ps[CLR] = new Port(10,  20, Port.INPUT, 1);
+        ps[SH] = new Port(0, -10, Port.INPUT, 1);
+        ps[IN] = new Port(0, 0, Port.INPUT, width);
+        ps[CK] = new Port(0, 10, Port.INPUT, 1);
+        ps[CLR] = new Port(10, 20, Port.INPUT, 1);
         ps[OUT].setToolTip(Strings.getter("shiftRegOutTip"));
         ps[SH].setToolTip(Strings.getter("shiftRegShiftTip"));
         ps[IN].setToolTip(Strings.getter("shiftRegInTip"));

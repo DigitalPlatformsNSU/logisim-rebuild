@@ -126,11 +126,11 @@ public class CircuitState implements InstanceData {
     private ArraySet<CircuitState> substates = new ArraySet<CircuitState>();
 
     private CircuitWires.State wireData = null;
-    private HashMap<Component,Object> componentData = new HashMap<Component,Object>();
-    private Map<Location,Value> values = new HashMap<Location,Value>();
+    private HashMap<Component, Object> componentData = new HashMap<Component, Object>();
+    private Map<Location, Value> values = new HashMap<Location, Value>();
     private SmallSet<Component> dirtyComponents = new SmallSet<Component>();
     private SmallSet<Location> dirtyPoints = new SmallSet<Location>();
-    HashMap<Location,SetData> causes = new HashMap<Location,SetData>();
+    HashMap<Location, SetData> causes = new HashMap<Location, SetData>();
 
     private static int lastId = 0;
     private int id = lastId++;
@@ -166,7 +166,7 @@ public class CircuitState implements InstanceData {
         this.base = base;
         this.parentComp = src.parentComp;
         this.parentState = src.parentState;
-        HashMap<CircuitState,CircuitState> substateData = new HashMap<CircuitState,CircuitState>();
+        HashMap<CircuitState, CircuitState> substateData = new HashMap<CircuitState, CircuitState>();
         this.substates = new ArraySet<CircuitState>();
         for (CircuitState oldSub : src.substates) {
             CircuitState newSub = new CircuitState(src.proj, oldSub.circuit);
@@ -370,7 +370,10 @@ public class CircuitState implements InstanceData {
                     break;
                 } catch (ConcurrentModificationException e) {
                     // try again...
-                    try { Thread.sleep(1); } catch (InterruptedException e2) { }
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e2) {
+                    }
                     if (i == 0) e.printStackTrace();
                 }
             }

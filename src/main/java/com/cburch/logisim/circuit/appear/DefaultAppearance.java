@@ -24,7 +24,8 @@ import com.cburch.logisim.instance.StdAttr;
 class DefaultAppearance {
     private static final int OFFS = 50;
 
-    private DefaultAppearance() { }
+    private DefaultAppearance() {
+    }
 
     private static class CompareLocations implements Comparator<Instance> {
         private boolean byX;
@@ -65,8 +66,8 @@ class DefaultAppearance {
 
 
     public static List<CanvasObject> build(Collection<Instance> pins) {
-        Map<Direction,List<Instance>> edge;
-        edge = new HashMap<Direction,List<Instance>>();
+        Map<Direction, List<Instance>> edge;
+        edge = new HashMap<Direction, List<Instance>>();
         edge.put(Direction.NORTH, new ArrayList<Instance>());
         edge.put(Direction.SOUTH, new ArrayList<Instance>());
         edge.put(Direction.EAST, new ArrayList<Instance>());
@@ -134,13 +135,13 @@ class DefaultAppearance {
         ret.add(notch);
         ret.add(rect);
         placePins(ret, edge.get(Direction.WEST),
-                rx,             ry + offsWest,  0, 10);
+                rx, ry + offsWest, 0, 10);
         placePins(ret, edge.get(Direction.EAST),
-                rx + width,     ry + offsEast,  0, 10);
+                rx + width, ry + offsEast, 0, 10);
         placePins(ret, edge.get(Direction.NORTH),
-                rx + offsNorth, ry,            10,  0);
+                rx + offsNorth, ry, 10, 0);
         placePins(ret, edge.get(Direction.SOUTH),
-                rx + offsSouth, ry + height,   10,  0);
+                rx + offsSouth, ry + height, 10, 0);
         ret.add(new AppearanceAnchor(Location.create(rx + ax, ry + ay)));
         return ret;
     }
@@ -159,21 +160,21 @@ class DefaultAppearance {
         int maxThis = Math.max(numFacing, numOpposite);
         int maxOffs;
         switch (maxThis) {
-        case 0:
-        case 1:
-            maxOffs = (maxOthers == 0 ? 15 : 10);
-            break;
-        case 2:
-            maxOffs = 10;
-            break;
-        default:
-            maxOffs = (maxOthers == 0 ? 5 : 10);
+            case 0:
+            case 1:
+                maxOffs = (maxOthers == 0 ? 15 : 10);
+                break;
+            case 2:
+                maxOffs = 10;
+                break;
+            default:
+                maxOffs = (maxOthers == 0 ? 5 : 10);
         }
         return maxOffs + 10 * ((maxThis - numFacing) / 2);
     }
 
     private static void placePins(List<CanvasObject> dest, List<Instance> pins,
-            int x, int y, int dx, int dy) {
+                                  int x, int y, int dx, int dy) {
         for (Instance pin : pins) {
             dest.add(new AppearancePort(Location.create(x, y), pin));
             x += dx;

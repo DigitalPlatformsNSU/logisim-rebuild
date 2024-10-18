@@ -6,7 +6,8 @@ package com.cburch.draw.shapes;
 import com.cburch.logisim.data.Location;
 
 public class LineUtil {
-    private LineUtil() { }
+    private LineUtil() {
+    }
 
     // a value we consider "small enough" to equal it to zero:
     // (this is used for double solutions in 2nd or 3d degree equation)
@@ -23,7 +24,7 @@ public class LineUtil {
     }
 
     public static double ptDistSqSegment(double x0, double y0,
-            double x1, double y1, double xq, double yq) {
+                                         double x1, double y1, double xq, double yq) {
         double dx = x1 - x0;
         double dy = y1 - y0;
         double len2 = dx * dx + dy * dy;
@@ -38,23 +39,23 @@ public class LineUtil {
     }
 
     public static double[] nearestPointSegment(double xq, double yq,
-            double x0, double y0, double x1, double y1) {
+                                               double x0, double y0, double x1, double y1) {
         return nearestPoint(xq, yq, x0, y0, x1, y1, true);
     }
 
     public static double[] nearestPointInfinite(double xq, double yq,
-            double x0, double y0, double x1, double y1) {
+                                                double x0, double y0, double x1, double y1) {
         return nearestPoint(xq, yq, x0, y0, x1, y1, false);
     }
 
     private static double[] nearestPoint(double xq, double yq,
-            double x0, double y0, double x1, double y1, boolean isSegment) {
+                                         double x0, double y0, double x1, double y1, boolean isSegment) {
         double dx = x1 - x0;
         double dy = y1 - y0;
         double len2 = dx * dx + dy * dy;
         if (len2 < zeroMax * zeroMax) {
             // the "line" is essentially a point - return that
-            return new double[] { (x0 + x1) / 2, (y0 + y1) / 2 };
+            return new double[]{(x0 + x1) / 2, (y0 + y1) / 2};
         }
 
         double num = (xq - x0) * dx + (yq - y0) * dy;
@@ -66,7 +67,7 @@ public class LineUtil {
         } else {
             u = num / len2;
         }
-        return new double[] { x0 + u * dx, y0 + u * dy };
+        return new double[]{x0 + u * dx, y0 + u * dy};
     }
 
     public static Location snapTo8Cardinals(Location from, int mx, int my) {
@@ -77,20 +78,23 @@ public class LineUtil {
             int d45 = (Math.abs(mx - px) + Math.abs(my - py)) / 2;
             int d = (int) (4 * ang / Math.PI + 4.5);
             switch (d) {
-            case 0: case 8: // going west
-            case 4: // going east
-                return Location.create(mx, py);
-            case 2: // going north
-            case 6: // going south
-                return Location.create(px, my);
-            case 1: // going northwest
-                return Location.create(px - d45, py - d45);
-            case 3: // going northeast
-                return Location.create(px + d45, py - d45);
-            case 5: // going southeast
-                return Location.create(px + d45, py + d45);
-            case 7: // going southwest
-                return Location.create(px - d45, py + d45);
+                case 0:
+                case 8: // going west
+                case 4: // going east
+                    return Location.create(mx, py);
+                case 2: // going north
+                case 6: // going south
+                    return Location.create(px, my);
+                case 1: // going northwest
+                    return Location.create(px - d45, py - d45);
+                case 3: // going northeast
+                    return Location.create(px + d45, py - d45);
+                case 5: // going southeast
+                    return Location.create(px + d45, py + d45);
+                case 7: // going southwest
+                    return Location.create(px - d45, py + d45);
+                default:
+                    break;
             }
         }
         return Location.create(mx, my); // should never happen

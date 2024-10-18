@@ -35,6 +35,7 @@ class TextFieldCaret implements Caret, TextFieldListener {
 
         field.addTextFieldListener(this);
     }
+
     public TextFieldCaret(TextField field, Graphics g, int x, int y) {
         this(field, g, 0);
         moveCaret(x, y);
@@ -48,7 +49,9 @@ class TextFieldCaret implements Caret, TextFieldListener {
         listeners.remove(l);
     }
 
-    public String getText() { return curText; }
+    public String getText() {
+        return curText;
+    }
 
     public void commitText(String text) {
         curText = text;
@@ -76,15 +79,27 @@ class TextFieldCaret implements Caret, TextFieldListener {
         int ascent = fm.getAscent();
         int descent = fm.getDescent();
         switch (field.getHAlign()) {
-            case TextField.H_CENTER:    x -= width / 2; break;
-            case TextField.H_RIGHT:  x -= width; break;
-            default:                    break;
+            case TextField.H_CENTER:
+                x -= width / 2;
+                break;
+            case TextField.H_RIGHT:
+                x -= width;
+                break;
+            default:
+                break;
         }
         switch (field.getVAlign()) {
-            case TextField.V_TOP:      y += ascent; break;
-            case TextField.V_CENTER:    y += (ascent - descent) / 2; break;
-            case TextField.V_BOTTOM:    y -= descent; break;
-            default:                    break;
+            case TextField.V_TOP:
+                y += ascent;
+                break;
+            case TextField.V_CENTER:
+                y += (ascent - descent) / 2;
+                break;
+            case TextField.V_BOTTOM:
+                y -= descent;
+                break;
+            default:
+                break;
         }
         g.drawString(curText, x, y);
 
@@ -98,22 +113,34 @@ class TextFieldCaret implements Caret, TextFieldListener {
         int y = field.getY();
         Font font = field.getFont();
         FontMetrics fm;
-        if (font == null)   fm = g.getFontMetrics();
-        else                fm = g.getFontMetrics(font);
+        if (font == null) fm = g.getFontMetrics();
+        else fm = g.getFontMetrics(font);
         int width = fm.stringWidth(curText);
         int ascent = fm.getAscent();
         int descent = fm.getDescent();
         int height = ascent + descent;
         switch (field.getHAlign()) {
-            case TextField.H_CENTER:    x -= width / 2; break;
-            case TextField.H_RIGHT:  x -= width; break;
-            default:                    break;
+            case TextField.H_CENTER:
+                x -= width / 2;
+                break;
+            case TextField.H_RIGHT:
+                x -= width;
+                break;
+            default:
+                break;
         }
         switch (field.getVAlign()) {
-            case TextField.V_TOP:      y += ascent; break;
-            case TextField.V_CENTER:    y += (ascent - descent) / 2; break;
-            case TextField.V_BOTTOM:    y -= descent; break;
-            default:                    break;
+            case TextField.V_TOP:
+                y += ascent;
+                break;
+            case TextField.V_CENTER:
+                y += (ascent - descent) / 2;
+                break;
+            case TextField.V_BOTTOM:
+                y -= descent;
+                break;
+            default:
+                break;
         }
         return Bounds.create(x, y - ascent, width, height)
                 .add(field.getBounds(g))
@@ -155,63 +182,64 @@ class TextFieldCaret implements Caret, TextFieldListener {
 
     public void keyPressed(KeyEvent e) {
         int ign = InputEvent.ALT_MASK | InputEvent.CTRL_MASK
-            | InputEvent.META_MASK;
+                | InputEvent.META_MASK;
         if ((e.getModifiers() & ign) != 0) return;
         switch (e.getKeyCode()) {
-        case KeyEvent.VK_LEFT:
-        case KeyEvent.VK_KP_LEFT:
-            if (pos > 0) --pos;
-            break;
-        case KeyEvent.VK_RIGHT:
-        case KeyEvent.VK_KP_RIGHT:
-            if (pos < curText.length()) ++pos;
-            break;
-        case KeyEvent.VK_HOME:
-            pos = 0;
-            break;
-        case KeyEvent.VK_END:
-            pos = curText.length();
-            break;
-        case KeyEvent.VK_ESCAPE:
-        case KeyEvent.VK_CANCEL:
-            cancelEditing();
-            break;
-        case KeyEvent.VK_CLEAR:
-            curText = "";
-            pos = 0;
-            break;
-        case KeyEvent.VK_ENTER:
-            stopEditing();
-            break;
-        case KeyEvent.VK_BACK_SPACE:
-            if (pos > 0) {
-                curText = curText.substring(0, pos - 1)
-                    + curText.substring(pos);
-                --pos;
-            }
-            break;
-        case KeyEvent.VK_DELETE:
-            if (pos < curText.length()) {
-                curText = curText.substring(0, pos)
-                    + curText.substring(pos + 1);
-            }
-            break;
-        case KeyEvent.VK_INSERT:
-        case KeyEvent.VK_COPY:
-        case KeyEvent.VK_CUT:
-        case KeyEvent.VK_PASTE:
-            //TODO: enhance label editing
-            break;
-        default:
-            ; // ignore
+            case KeyEvent.VK_LEFT:
+            case KeyEvent.VK_KP_LEFT:
+                if (pos > 0) --pos;
+                break;
+            case KeyEvent.VK_RIGHT:
+            case KeyEvent.VK_KP_RIGHT:
+                if (pos < curText.length()) ++pos;
+                break;
+            case KeyEvent.VK_HOME:
+                pos = 0;
+                break;
+            case KeyEvent.VK_END:
+                pos = curText.length();
+                break;
+            case KeyEvent.VK_ESCAPE:
+            case KeyEvent.VK_CANCEL:
+                cancelEditing();
+                break;
+            case KeyEvent.VK_CLEAR:
+                curText = "";
+                pos = 0;
+                break;
+            case KeyEvent.VK_ENTER:
+                stopEditing();
+                break;
+            case KeyEvent.VK_BACK_SPACE:
+                if (pos > 0) {
+                    curText = curText.substring(0, pos - 1)
+                            + curText.substring(pos);
+                    --pos;
+                }
+                break;
+            case KeyEvent.VK_DELETE:
+                if (pos < curText.length()) {
+                    curText = curText.substring(0, pos)
+                            + curText.substring(pos + 1);
+                }
+                break;
+            case KeyEvent.VK_INSERT:
+            case KeyEvent.VK_COPY:
+            case KeyEvent.VK_CUT:
+            case KeyEvent.VK_PASTE:
+                //TODO: enhance label editing
+                break;
+            default:
+                ; // ignore
         }
     }
 
-    public void keyReleased(KeyEvent e) { }
+    public void keyReleased(KeyEvent e) {
+    }
 
     public void keyTyped(KeyEvent e) {
         int ign = InputEvent.ALT_MASK | InputEvent.CTRL_MASK
-            | InputEvent.META_MASK;
+                | InputEvent.META_MASK;
         if ((e.getModifiers() & ign) != 0) return;
 
         char c = e.getKeyChar();
@@ -221,7 +249,7 @@ class TextFieldCaret implements Caret, TextFieldListener {
                 && !Character.isISOControl(c)) {
             if (pos < curText.length()) {
                 curText = curText.substring(0, pos) + c
-                    + curText.substring(pos);
+                        + curText.substring(pos);
             } else {
                 curText += c;
             }

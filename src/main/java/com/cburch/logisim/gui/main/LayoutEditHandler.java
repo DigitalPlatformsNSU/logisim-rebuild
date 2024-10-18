@@ -46,7 +46,7 @@ public class LayoutEditHandler extends EditHandler
         setEnabled(LogisimMenuBar.CUT, !selEmpty && selectAvailable && canChange);
         setEnabled(LogisimMenuBar.COPY, !selEmpty && selectAvailable);
         setEnabled(LogisimMenuBar.PASTE, selectAvailable && canChange
-            && !Clipboard.isEmpty());
+                && !Clipboard.isEmpty());
         setEnabled(LogisimMenuBar.DELETE, !selEmpty && selectAvailable && canChange);
         setEnabled(LogisimMenuBar.DUPLICATE, !selEmpty && selectAvailable && canChange);
         setEnabled(LogisimMenuBar.SELECT_ALL, selectAvailable);

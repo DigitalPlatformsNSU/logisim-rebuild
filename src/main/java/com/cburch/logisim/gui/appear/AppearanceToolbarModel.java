@@ -29,7 +29,7 @@ class AppearanceToolbarModel extends AbstractToolbarModel
     private List<ToolbarItem> items;
 
     public AppearanceToolbarModel(AbstractTool selectTool, Canvas canvas,
-            DrawingAttributeSet attrs) {
+                                  DrawingAttributeSet attrs) {
         this.canvas = canvas;
 
         AbstractTool[] tools = {
@@ -42,7 +42,7 @@ class AppearanceToolbarModel extends AbstractToolbarModel
                 new RoundRectangleTool(attrs),
                 new OvalTool(attrs),
                 new PolyTool(true, attrs),
-            };
+        };
 
         ArrayList<ToolbarItem> rawItems = new ArrayList<ToolbarItem>();
         for (AbstractTool tool : tools) {
