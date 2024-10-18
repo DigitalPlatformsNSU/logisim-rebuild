@@ -57,7 +57,7 @@ public class TestFreq {
         for (int i = 0; i < countChecks; i++) {
             sum += getRealFreq();
         }
-        System.out.println("Average ticks = " + sum / 100);
+        System.out.println("Average ticks = " + sum / countChecks);
     }
 
 }
