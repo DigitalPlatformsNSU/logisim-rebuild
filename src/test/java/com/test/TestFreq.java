@@ -31,7 +31,7 @@ public class TestFreq {
     }
     Project proj;
     long ticks = 0;
-    int countChecks = 0;
+    int countChecks = 100;
 
     long getRealFreq() {
         ticks = 0;
