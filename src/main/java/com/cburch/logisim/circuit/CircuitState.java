@@ -341,6 +341,7 @@ public class CircuitState implements InstanceData {
                     }
                 }
             }
+
             dirtyComponents.clear();
             for (Object compObj : toProcess) {
                 if (compObj instanceof Component) {
