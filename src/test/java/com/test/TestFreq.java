@@ -57,7 +57,6 @@ public class TestFreq {
         proj.getSimulator().addSimulatorListener(new MyListener());
         long sum = 0;
         for (int i = 0; i < countChecks; i++) {
-            System.out.println(i);
             sum += getRealFreq();
         }
         double res = (double) sum / countChecks;
@@ -74,7 +73,6 @@ public class TestFreq {
         proj.getSimulator().addSimulatorListener(new MyListener());
         long sum = 0;
         for (int i = 0; i < countChecks; i++) {
-            System.out.println(i);
             sum += getRealFreq();
         }
         double res = (double) sum / countChecks;

@@ -328,7 +328,19 @@ public class CircuitState implements InstanceData {
             // if we used an iterator instead.
             Object[] toProcess;
             RuntimeException firstException = null;
-            toProcess = dirtyComponents.toArray();
+            for (int tries = 4; true; tries--) {
+                try {
+                    toProcess = dirtyComponents.toArray();
+                    break;
+                } catch (RuntimeException e) {
+                    if (firstException == null) firstException = e;
+                    if (tries == 0) {
+                        toProcess = new Object[0];
+                        dirtyComponents = new SmallSet<Component>();
+                        throw firstException;
+                    }
+                }
+            }
 
             dirtyComponents.clear();
             for (Object compObj : toProcess) {
