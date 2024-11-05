@@ -29,7 +29,6 @@ import com.cburch.logisim.std.wiring.PullResistor;
 import com.cburch.logisim.std.wiring.Tunnel;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.IteratorUtil;
-import com.cburch.logisim.util.SmallSet;
 
 class CircuitWires {
     static class SplitterData {
@@ -323,7 +322,7 @@ class CircuitWires {
     //
     void propagate(CircuitState circState, Set<Location> points) {
         BundleMap map = getBundleMap();
-        SmallSet<WireThread> dirtyThreads = new SmallSet<WireThread>(); // affected threads
+        HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
 
         // get state, or create a new one if current state is outdated
         State s = circState.getWireData();
@@ -350,7 +349,7 @@ class CircuitWires {
                 WireThread[] th = pb.threads;
                 if (!pb.isValid() || th == null) {
                     // immediately propagate NILs across invalid bundles
-                    SmallSet<Location> pbPoints = pb.points;
+                    HashSet<Location> pbPoints = pb.points;
                     if (pbPoints == null) {
                         circState.setValueByWire(p, Value.NIL);
                     } else {

@@ -26,7 +26,6 @@ import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.std.wiring.Clock;
 import com.cburch.logisim.std.wiring.Pin;
 import com.cburch.logisim.util.ArraySet;
-import com.cburch.logisim.util.SmallSet;
 
 public class CircuitState implements InstanceData {
     private class MyCircuitListener implements CircuitListener {
@@ -128,8 +127,8 @@ public class CircuitState implements InstanceData {
     private CircuitWires.State wireData = null;
     private HashMap<Component, Object> componentData = new HashMap<Component, Object>();
     private Map<Location, Value> values = new HashMap<Location, Value>();
-    private SmallSet<Component> dirtyComponents = new SmallSet<Component>();
-    private SmallSet<Location> dirtyPoints = new SmallSet<Location>();
+    private HashSet<Component> dirtyComponents = new HashSet<Component>();
+    private HashSet<Location> dirtyPoints = new HashSet<Location>();
     HashMap<Location, SetData> causes = new HashMap<Location, SetData>();
 
     private static int lastId = 0;
@@ -283,7 +282,7 @@ public class CircuitState implements InstanceData {
         try {
             dirtyComponents.add(comp);
         } catch (RuntimeException e) {
-            SmallSet<Component> set = new SmallSet<Component>();
+            HashSet<Component> set = new HashSet<Component>();
             set.add(comp);
             dirtyComponents = set;
         }
@@ -328,19 +327,15 @@ public class CircuitState implements InstanceData {
             // if we used an iterator instead.
             Object[] toProcess;
             RuntimeException firstException = null;
-            for (int tries = 4; true; tries--) {
-                try {
-                    toProcess = dirtyComponents.toArray();
-                    break;
-                } catch (RuntimeException e) {
-                    if (firstException == null) firstException = e;
-                    if (tries == 0) {
-                        toProcess = new Object[0];
-                        dirtyComponents = new SmallSet<Component>();
-                        throw firstException;
-                    }
-                }
+            try {
+                toProcess = dirtyComponents.toArray();
+            } catch (RuntimeException e) {
+                if (firstException == null) firstException = e;
+                toProcess = new Object[0];
+                dirtyComponents = new HashSet<Component>();
+                throw firstException;
             }
+
             dirtyComponents.clear();
             for (Object compObj : toProcess) {
                 if (compObj instanceof Component) {
@@ -364,18 +359,15 @@ public class CircuitState implements InstanceData {
         HashSet<Location> dirty = new HashSet<Location>(dirtyPoints);
         dirtyPoints.clear();
         if (circuit.wires.isMapVoided()) {
-            for (int i = 3; i >= 0; i--) {
+            try {
+                dirty.addAll(circuit.wires.points.getSplitLocations());
+            } catch (ConcurrentModificationException e) {
+                // try again...
                 try {
-                    dirty.addAll(circuit.wires.points.getSplitLocations());
-                    break;
-                } catch (ConcurrentModificationException e) {
-                    // try again...
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e2) {
-                    }
-                    if (i == 0) e.printStackTrace();
+                    Thread.sleep(1);
+                } catch (InterruptedException e2) {
                 }
+                e.printStackTrace();
             }
         }
         if (!dirty.isEmpty()) {

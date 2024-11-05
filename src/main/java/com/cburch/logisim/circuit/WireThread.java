@@ -3,17 +3,17 @@
 
 package com.cburch.logisim.circuit;
 
-import com.cburch.logisim.util.SmallSet;
+import java.util.HashSet;
 
 class WireThread {
     private WireThread parent;
-    private SmallSet<CircuitWires.ThreadBundle> bundles = new SmallSet<CircuitWires.ThreadBundle>();
+    private HashSet<CircuitWires.ThreadBundle> bundles = new HashSet<CircuitWires.ThreadBundle>();
 
     WireThread() {
         parent = this;
     }
 
-    SmallSet<CircuitWires.ThreadBundle> getBundles() {
+    HashSet<CircuitWires.ThreadBundle> getBundles() {
         return bundles;
     }
 
