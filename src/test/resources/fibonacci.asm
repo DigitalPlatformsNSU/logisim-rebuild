@@ -10,7 +10,7 @@ dc default_handler, 0   # Unaligned SP
 dc default_handler, 0   # Unaligned PC 
 dc default_handler, 0   # Invalid instruction 
 dc default_handler, 0   # Double fault 
-align 0x16              # Reserve space for the rest  
+align 0x80              # Reserve space for the rest  
                         # of IVT 
  
 # Exception handlers section 
@@ -29,7 +29,7 @@ main>
 	push 1
 	ldi r0, 0xFFFE
 	ldi r1, 0xFFFC
-	ldi r4, 22
+	ldi r4, 24
 
 	while
 		tst r4
@@ -66,7 +66,5 @@ main>
 	
 INPUTS>
 	fib: dc 0x6ff1, 0x452f, 0x2ac2, 0x1a6d, 0x1055, 0x0a18, 0x063d, 0x03db, 0x0262, 0x0179, 0x00e9, 0x0090, 0x0059, 0x0037, 0x0022, 0x0015, 0x000d, 0x0008, 0x0005, 0x0003, 0x0002, 0x0001, 0x0001, 0x0000, 0x0000
-
-end
 
 end.
