@@ -1,26 +1,26 @@
-package com.cburch.logisim.circuit;
+/* Copyright (c) 2010, Carl Burch. License information is located in the
+ * com.cburch.logisim.Main source code and at www.cburch.com/logisim/. */
 
-import java.awt.Graphics;
-import java.util.*;
+package com.cburch.logisim.circuit.mywire;
 
 import com.cburch.logisim.comp.Component;
-import com.cburch.logisim.comp.ComponentFactory;
-import com.cburch.logisim.comp.ComponentDrawContext;
-import com.cburch.logisim.comp.ComponentListener;
-import com.cburch.logisim.comp.EndData;
-import com.cburch.logisim.data.Attribute;
-import com.cburch.logisim.data.AttributeListener;
-import com.cburch.logisim.data.AttributeOption;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Attributes;
-import com.cburch.logisim.data.BitWidth;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Location;
+import com.cburch.logisim.comp.*;
+import com.cburch.logisim.data.*;
 import com.cburch.logisim.tools.CustomHandles;
 import com.cburch.logisim.util.Cache;
 import com.cburch.logisim.util.GraphicsUtil;
 
-public final class MyWire implements Component, AttributeSet, CustomHandles, Iterable<Location> {
+import java.awt.*;
+import java.util.AbstractList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+public final class Wire implements Component, AttributeSet, CustomHandles,
+        Iterable<Location> {
+    /**
+     * Stroke width when drawing wires.
+     */
     public static final int WIDTH = 3;
 
     public static final AttributeOption VALUE_HORZ
@@ -29,7 +29,7 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
             = new AttributeOption("vert", Strings.getter("wireDirectionVertOption"));
     public static final Attribute<AttributeOption> dir_attr
             = Attributes.forOption("direction", Strings.getter("wireDirectionAttr"),
-            new AttributeOption[]{VALUE_HORZ, VALUE_VERT});
+                new AttributeOption[]{VALUE_HORZ, VALUE_VERT});
     public static final Attribute<Integer> len_attr
             = Attributes.forInteger("length", Strings.getter("wireLengthAttr"));
 
@@ -37,8 +37,8 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
             = Arrays.asList(new Attribute<?>[]{dir_attr, len_attr});
     private static final Cache cache = new Cache();
 
-    public static MyWire create(Location e0, Location e1) {
-        return (MyWire) cache.get(new MyWire(e0, e1));
+    public static Wire create(Location e0, Location e1) {
+        return (Wire) cache.get(new Wire(e0, e1));
     }
 
     private class EndList extends AbstractList<EndData> {
@@ -52,14 +52,12 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
             return 2;
         }
     }
-    private HashSet<Location> Exits = new HashSet<Location>();
-    private HashSet<Wire> IncludedWires = new HashSet<Wire>();
 
     final Location e0;
     final Location e1;
     final boolean is_x_equal;
 
-    private MyWire(Location e0, Location e1) {
+    private Wire(Location e0, Location e1) {
         this.is_x_equal = e0.getX() == e1.getX();
         if (is_x_equal) {
             if (e0.getY() > e1.getY()) {
@@ -82,8 +80,8 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
 
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof MyWire)) return false;
-        MyWire w = (MyWire) other;
+        if (!(other instanceof Wire)) return false;
+        Wire w = (Wire) other;
         return w.e0.equals(this.e0) && w.e1.equals(this.e1);
     }
 
@@ -157,7 +155,7 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     // propagation methods
     //
     public List<EndData> getEnds() {
-        return new MyWire.EndList();
+        return new EndList();
     }
 
     public EndData getEnd(int index) {
@@ -286,12 +284,12 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
         return (loc.equals(e0) ? e1 : e0);
     }
 
-    public boolean sharesEnd(MyWire other) {
+    public boolean sharesEnd(Wire other) {
         return this.e0.equals(other.e0) || this.e1.equals(other.e0)
                 || this.e0.equals(other.e1) || this.e1.equals(other.e1);
     }
 
-    public boolean overlaps(MyWire other, boolean includeEnds) {
+    public boolean overlaps(Wire other, boolean includeEnds) {
         return overlaps(other.e0, other.e1, includeEnds);
     }
 
@@ -315,7 +313,7 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
         }
     }
 
-    public boolean isParallel(MyWire other) {
+    public boolean isParallel(Wire other) {
         return this.is_x_equal == other.is_x_equal;
     }
 
