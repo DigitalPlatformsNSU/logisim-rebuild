@@ -3,7 +3,10 @@ package com.cburch.logisim.circuit.mywire;
 import java.awt.Graphics;
 import java.util.*;
 
-import com.cburch.logisim.circuit.*;
+import com.cburch.logisim.circuit.CircuitState;
+import com.cburch.logisim.circuit.mywire.Strings;
+import com.cburch.logisim.circuit.mywire.WireFactory;
+import com.cburch.logisim.circuit.mywire.WireIterator;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.ComponentFactory;
 import com.cburch.logisim.comp.ComponentDrawContext;
@@ -38,10 +41,6 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
             = Arrays.asList(new Attribute<?>[]{dir_attr, len_attr});
     private static final Cache cache = new Cache();
 
-    public static MyWire create(Location e0, Location e1) {
-        return (MyWire) cache.get(new MyWire(e0, e1));
-    }
-
     private class EndList extends AbstractList<EndData> {
         @Override
         public EndData get(int i) {
@@ -56,36 +55,26 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     private HashSet<Location> Exits = new HashSet<Location>();
     private HashSet<Wire> IncludedWires = new HashSet<Wire>();
 
+    private Wire wExample;
     final Location e0;
     final Location e1;
-    final boolean is_x_equal;
 
-    private MyWire(Location e0, Location e1) {
-        this.is_x_equal = e0.getX() == e1.getX();
-        if (is_x_equal) {
-            if (e0.getY() > e1.getY()) {
-                this.e0 = e1;
-                this.e1 = e0;
-            } else {
-                this.e0 = e0;
-                this.e1 = e1;
-            }
-        } else {
-            if (e0.getX() > e1.getX()) {
-                this.e0 = e1;
-                this.e1 = e0;
-            } else {
-                this.e0 = e0;
-                this.e1 = e1;
-            }
+    private MyWire(HashSet<Wire> wires) {
+        this.IncludedWires = wires;
+        for (Wire w : wires){
+            this.Exits.add(w.e0);
+            this.Exits.add(w.e1);
+            this.wExample = w.clone();
         }
+        this.e0 = this.wExample.e0;
+        this.e1 = this.wExample.e1;
     }
 
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof MyWire)) return false;
         MyWire w = (MyWire) other;
-        return w.e0.equals(this.e0) && w.e1.equals(this.e1);
+        return w.Exits.equals(this.Exits);
     }
 
     @Override
@@ -94,7 +83,7 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     }
 
     public int getLength() {
-        return (e1.getY() - e0.getY()) + (e1.getX() - e0.getX());
+        return (1);
     }
 
     @Override
@@ -106,11 +95,9 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     // Component methods
     //
     // (Wire never issues ComponentEvents, so we don't need to track listeners)
-    public void addComponentListener(ComponentListener e) {
-    }
+    public void addComponentListener(ComponentListener e) {}
 
-    public void removeComponentListener(ComponentListener e) {
-    }
+    public void removeComponentListener(ComponentListener e) {}
 
     public ComponentFactory getFactory() {
         return WireFactory.instance;
@@ -122,7 +109,7 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
 
     // location/extent methods
     public Location getLocation() {
-        return e0;
+        return null;
     }
 
     public Bounds getBounds() {
@@ -137,21 +124,11 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     }
 
     public boolean contains(Location q) {
-        int qx = q.getX();
-        int qy = q.getY();
-        if (is_x_equal) {
-            int wx = e0.getX();
-            return qx >= wx - 2 && qx <= wx + 2
-                    && e0.getY() <= qy && qy <= e1.getY();
-        } else {
-            int wy = e0.getY();
-            return qy >= wy - 2 && qy <= wy + 2
-                    && e0.getX() <= qx && qx <= e1.getX();
-        }
+        return true;
     }
 
     public boolean contains(Location pt, Graphics g) {
-        return contains(pt);
+        return true;
     }
 
     //
@@ -168,19 +145,13 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     }
 
     public boolean endsAt(Location pt) {
-        return e0.equals(pt) || e1.equals(pt);
-    }
-
-    @Override
-    public void propagate(com.cburch.logisim.circuit.CircuitState state) {
-
+        return Exits.contains(pt);
     }
 
     public void propagate(CircuitState state) {
-        // Normally this is handled by CircuitWires, and so it won't get
-        // called. The exception is when a wire is added or removed
-        state.markPointAsDirty(e0);
-        state.markPointAsDirty(e1);
+        for (Location x : Exits){
+            state.markPointAsDirty(x);
+        }
     }
 
     //
@@ -194,15 +165,7 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
                 e1.getX() - x0 + 10, e1.getY() - y0 + 10);
     }
 
-    public void draw(ComponentDrawContext context) {
-        com.cburch.logisim.circuit.CircuitState state = context.getCircuitState();
-        Graphics g = context.getGraphics();
-
-        GraphicsUtil.switchToWidth(g, WIDTH);
-        g.setColor(state.getValue(e0).getColor());
-        g.drawLine(e0.getX(), e0.getY(),
-                e1.getX(), e1.getY());
-    }
+    public void draw(ComponentDrawContext context) {}
 
     public Object getFeature(Object key) {
         if (key == CustomHandles.class) return this;
@@ -257,7 +220,7 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     @SuppressWarnings("unchecked")
     public <V> V getValue(Attribute<V> attr) {
         if (attr == dir_attr) {
-            return (V) (is_x_equal ? VALUE_VERT : VALUE_HORZ);
+            return (V) (VALUE_VERT);
         } else if (attr == len_attr) {
             return (V) Integer.valueOf(getLength());
         } else {
@@ -269,12 +232,6 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
         throw new IllegalArgumentException("read only attribute");
     }
 
-    //
-    // other methods
-    //
-    public boolean isVertical() {
-        return is_x_equal;
-    }
 
     public Location getEndLocation(int index) {
         return index == 0 ? e0 : e1;
@@ -286,6 +243,10 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
 
     public Location getEnd1() {
         return e1;
+    }
+
+    public HashSet <Location> getExits() {
+        return Exits;
     }
 
     public Location getOtherEnd(Location loc) {
@@ -302,27 +263,13 @@ public final class MyWire implements Component, AttributeSet, CustomHandles, Ite
     }
 
     private boolean overlaps(Location q0, Location q1, boolean includeEnds) {
-        if (is_x_equal) {
-            int x0 = q0.getX();
-            if (x0 != q1.getX() || x0 != e0.getX()) return false;
-            if (includeEnds) {
-                return e1.getY() >= q0.getY() && e0.getY() <= q1.getY();
-            } else {
-                return e1.getY() > q0.getY() && e0.getY() < q1.getY();
-            }
+        int y0 = q0.getY();
+        if (y0 != q1.getY() || y0 != e0.getY()) return false;
+        if (includeEnds) {
+            return e1.getX() >= q0.getX() && e0.getX() <= q1.getX();
         } else {
-            int y0 = q0.getY();
-            if (y0 != q1.getY() || y0 != e0.getY()) return false;
-            if (includeEnds) {
-                return e1.getX() >= q0.getX() && e0.getX() <= q1.getX();
-            } else {
-                return e1.getX() > q0.getX() && e0.getX() < q1.getX();
-            }
+            return e1.getX() > q0.getX() && e0.getX() < q1.getX();
         }
-    }
-
-    public boolean isParallel(MyWire other) {
-        return this.is_x_equal == other.is_x_equal;
     }
 
     public Iterator<Location> iterator() {
