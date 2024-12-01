@@ -9,7 +9,7 @@ import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
 
-class WireBundle {
+public class WireBundle {
     private BitWidth width = BitWidth.UNKNOWN;
     private Value pullValue = Value.UNKNOWN;
     private WireBundle parent;

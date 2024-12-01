@@ -3,6 +3,7 @@
 
 package com.cburch.logisim.comp;
 
+import com.cburch.logisim.circuit.WireBundle;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 
@@ -15,6 +16,7 @@ public class EndData {
     private BitWidth width;
     private int i_o;
     private boolean exclusive;
+    private WireBundle wire; //for Alexey
 
     public EndData(Location loc, BitWidth width, int type, boolean exclusive) {
         this.loc = loc;

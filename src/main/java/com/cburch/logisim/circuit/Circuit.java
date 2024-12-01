@@ -451,4 +451,10 @@ public class Circuit {
     public static boolean isInput(Component comp) {
         return comp.getEnd(0).getType() != EndData.INPUT_ONLY;
     }
+
+
+    void buildWireBundles() {
+        //for Alexey
+        //
+    }
 }

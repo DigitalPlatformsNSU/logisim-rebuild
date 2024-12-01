@@ -48,6 +48,10 @@ class CircuitMutatorImpl implements CircuitMutator {
         circuit.mutatorAdd(comp);
     }
 
+    public void buildWireBundles(Circuit circuit) {
+        circuit.buildWireBundles();
+    }
+
     public void remove(Circuit circuit, Component comp) {
         if (circuit.contains(comp)) {
             modified.add(circuit);
