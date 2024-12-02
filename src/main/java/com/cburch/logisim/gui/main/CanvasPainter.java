@@ -187,33 +187,33 @@ class CanvasPainter implements PropertyChangeListener {
         g.setColor(Value.WIDTH_ERROR_COLOR);
         GraphicsUtil.switchToWidth(g, 2);
         FontMetrics fm = base.getFontMetrics(g.getFont());
-        for (WidthIncompatibilityData ex : exceptions) {
-            for (int i = 0; i < ex.size(); i++) {
-                Location p = ex.getPoint(i);
-                BitWidth w = ex.getBitWidth(i);
-
-                // ensure it hasn't already been drawn
-                boolean drawn = false;
-                for (int j = 0; j < i; j++) {
-                    if (ex.getPoint(j).equals(p)) {
-                        drawn = true;
-                        break;
-                    }
-                }
-                if (drawn) continue;
-
-                // compute the caption combining all similar points
-                String caption = "" + w.getWidth();
-                for (int j = i + 1; j < ex.size(); j++) {
-                    if (ex.getPoint(j).equals(p)) {
-                        caption += "/" + ex.getBitWidth(j);
-                        break;
-                    }
-                }
-                g.drawOval(p.getX() - 4, p.getY() - 4, 8, 8);
-                g.drawString(caption, p.getX() + 5, p.getY() + 2 + fm.getAscent());
-            }
-        }
+//        for (WidthIncompatibilityData ex : exceptions) {
+//            for (int i = 0; i < ex.size(); i++) {
+//                Location p = ex.getPoint(i);
+//                BitWidth w = ex.getBitWidth(i);
+//
+//                // ensure it hasn't already been drawn
+//                boolean drawn = false;
+//                for (int j = 0; j < i; j++) {
+//                    if (ex.getPoint(j).equals(p)) {
+//                        drawn = true;
+//                        break;
+//                    }
+//                }
+//                if (drawn) continue;
+//
+//                // compute the caption combining all similar points
+//                String caption = "" + w.getWidth();
+//                for (int j = i + 1; j < ex.size(); j++) {
+//                    if (ex.getPoint(j).equals(p)) {
+//                        caption += "/" + ex.getBitWidth(j);
+//                        break;
+//                    }
+//                }
+//                g.drawOval(p.getX() - 4, p.getY() - 4, 8, 8);
+//                g.drawString(caption, p.getX() + 5, p.getY() + 2 + fm.getAscent());
+//            }
+//        }
         g.setColor(Color.BLACK);
         GraphicsUtil.switchToWidth(g, 1);
     }

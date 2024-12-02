@@ -15,6 +15,7 @@ import com.cburch.logisim.circuit.Propagator.SetData;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.ComponentDrawContext;
 import com.cburch.logisim.comp.ComponentState;
+import com.cburch.logisim.comp.EndData;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
@@ -35,8 +36,8 @@ public class CircuitState implements InstanceData {
                 Component comp = (Component) event.getData();
                 if (comp instanceof Wire) {
                     Wire w = (Wire) comp;
-                    markPointAsDirty(w.getEnd0());
-                    markPointAsDirty(w.getEnd1());
+//                    markPointAsDirty(w.getEnd0());
+//                    markPointAsDirty(w.getEnd1());
                 } else {
                     markComponentAsDirty(comp);
                 }
@@ -54,8 +55,8 @@ public class CircuitState implements InstanceData {
 
                 if (comp instanceof Wire) {
                     Wire w = (Wire) comp;
-                    markPointAsDirty(w.getEnd0());
-                    markPointAsDirty(w.getEnd1());
+//                    markPointAsDirty(w.getEnd0());
+//                    markPointAsDirty(w.getEnd1());
                 } else {
                     if (base != null) base.checkComponentEnds(CircuitState.this, comp);
                     dirtyComponents.remove(comp);
@@ -126,9 +127,9 @@ public class CircuitState implements InstanceData {
 
     private CircuitWires.State wireData = null;
     private HashMap<Component, Object> componentData = new HashMap<Component, Object>();
-    private Map<Location, Value> values = new HashMap<Location, Value>();
+    private Map<WireBundle, Value> values = new HashMap<WireBundle, Value>();
     private HashSet<Component> dirtyComponents = new HashSet<Component>();
-    private HashSet<Location> dirtyPoints = new HashSet<Location>();
+    private HashSet<WireBundle> dirtyPoints = new HashSet<WireBundle>();
     HashMap<Location, SetData> causes = new HashMap<Location, SetData>();
 
     private static int lastId = 0;
@@ -266,16 +267,16 @@ public class CircuitState implements InstanceData {
         componentData.put(comp, data);
     }
 
-    public Value getValue(Location pt) {
-        Value ret = values.get(pt);
+    public Value getValue(WireBundle wire) {
+        Value ret = values.get(wire);
         if (ret != null) return ret;
 
-        BitWidth wid = circuit.getWidth(pt);
+        BitWidth wid = circuit.getWidth(wire);
         return Value.createUnknown(wid);
     }
 
-    public void setValue(Location pt, Value val, Component cause, int delay) {
-        if (base != null) base.setValue(this, pt, val, cause, delay);
+    public void setValue(Location pt, Value val, Component cause, int delay, WireBundle wire) {
+        if (base != null) base.setValue(this, pt, val, cause, delay, wire);
     }
 
     public void markComponentAsDirty(Component comp) {
@@ -292,8 +293,8 @@ public class CircuitState implements InstanceData {
         dirtyComponents.addAll(comps);
     }
 
-    public void markPointAsDirty(Location pt) {
-        dirtyPoints.add(pt);
+    public void markPointAsDirty(WireBundle wire) {
+        dirtyPoints.add(wire);
     }
 
     public InstanceState getInstanceState(Component comp) {
@@ -356,11 +357,11 @@ public class CircuitState implements InstanceData {
     }
 
     void processDirtyPoints() {
-        HashSet<Location> dirty = new HashSet<Location>(dirtyPoints);
+        HashSet<WireBundle> dirty = new HashSet<WireBundle>(dirtyPoints);
         dirtyPoints.clear();
         if (circuit.wires.isMapVoided()) {
             try {
-                dirty.addAll(circuit.wires.points.getSplitLocations());
+                //we need to put all wireBundles in circuit
             } catch (ConcurrentModificationException e) {
                 // try again...
                 try {
@@ -424,23 +425,23 @@ public class CircuitState implements InstanceData {
         return Propagator.computeValue(cause_list);
     }
 
-    Value getValueByWire(Location p) {
-        return values.get(p);
+    Value getValueByWire(WireBundle wire) {
+        return values.get(wire);
     }
 
-    void setValueByWire(Location p, Value v) {
+    void setValueByWire(WireBundle wire, Value v) {
         // for CircuitWires - to set value at point
         boolean changed;
         if (v == Value.NIL) {
-            Object old = values.remove(p);
+            Object old = values.remove(wire);
             changed = (old != null && old != Value.NIL);
         } else {
-            Object old = values.put(p, v);
+            Object old = values.put(wire, v);
             changed = !v.equals(old);
         }
         if (changed) {
             boolean found = false;
-            for (Component comp : circuit.getComponents(p)) {
+            for (Component comp : circuit.getComponents(wire)) {
                 if (!(comp instanceof Wire) && !(comp instanceof Splitter)) {
                     found = true;
                     markComponentAsDirty(comp);
@@ -449,7 +450,7 @@ public class CircuitState implements InstanceData {
             // NOTE: this will cause a double-propagation on components
             // whose outputs have just changed.
 
-            if (found && base != null) base.locationTouched(this, p);
+            //if (found && base != null) base.locationTouched(this, wire);
         }
     }
 

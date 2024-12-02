@@ -3,12 +3,7 @@
 
 package com.cburch.logisim.circuit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.EndData;
@@ -23,10 +18,10 @@ class CircuitPoints {
         // these lists are parallel - ends corresponding to wires are null
     }
 
-    private HashMap<Location, LocationData> map
-            = new HashMap<Location, LocationData>();
-    private HashMap<Location, WidthIncompatibilityData> incompatibilityData
-            = new HashMap<Location, WidthIncompatibilityData>();
+    private HashMap<WireBundle, LocationData> map
+            = new HashMap<WireBundle, LocationData>();
+    private HashMap<WireBundle, WidthIncompatibilityData> incompatibilityData
+            = new HashMap<WireBundle, WidthIncompatibilityData>();
 
     public CircuitPoints() {
     }
@@ -35,7 +30,8 @@ class CircuitPoints {
     // access methods
     //
     Set<Location> getSplitLocations() {
-        return map.keySet();
+        return new HashSet<Location>();
+        //return map.keySet();
     }
 
     BitWidth getWidth(Location loc) {
@@ -61,15 +57,15 @@ class CircuitPoints {
         return null;
     }
 
-    Collection<? extends Component> getComponents(Location loc) {
-        LocationData locData = map.get(loc);
+    Collection<? extends Component> getComponents(WireBundle wire) {
+        LocationData locData = map.get(wire);
         if (locData == null) return Collections.emptySet();
         else return locData.components;
     }
 
-    Collection<? extends Component> getSplitCauses(Location loc) {
-        return getComponents(loc);
-    }
+//    Collection<? extends Component> getSplitCauses(Location loc) {
+//        return getComponents(loc);
+//    }
 
     Collection<Wire> getWires(Location loc) {
         @SuppressWarnings("unchecked")
@@ -178,7 +174,7 @@ class CircuitPoints {
         }
         locData.components.add(comp);
         locData.ends.add(endData);
-        computeIncompatibilityData(loc, locData);
+//        computeIncompatibilityData(loc, locData);
     }
 
     private void removeSub(Location loc, Component comp) {
@@ -194,11 +190,11 @@ class CircuitPoints {
         } else {
             locData.components.remove(index);
             locData.ends.remove(index);
-            computeIncompatibilityData(loc, locData);
+//            computeIncompatibilityData(loc, locData);
         }
     }
 
-    private void computeIncompatibilityData(Location loc, LocationData locData) {
+    private void computeIncompatibilityData(WireBundle wire, LocationData locData) {
         WidthIncompatibilityData error = null;
         if (locData != null) {
             BitWidth width = BitWidth.UNKNOWN;
@@ -210,9 +206,9 @@ class CircuitPoints {
                     } else if (width != endWidth && endWidth != BitWidth.UNKNOWN) {
                         if (error == null) {
                             error = new WidthIncompatibilityData();
-                            error.add(loc, width);
+                            error.add(wire, width);
                         }
-                        error.add(loc, endWidth);
+                        error.add(wire, endWidth);
                     }
                 }
             }
@@ -220,9 +216,9 @@ class CircuitPoints {
         }
 
         if (error == null) {
-            incompatibilityData.remove(loc);
+            incompatibilityData.remove(wire);
         } else {
-            incompatibilityData.put(loc, error);
+            incompatibilityData.put(wire, error);
         }
     }
 

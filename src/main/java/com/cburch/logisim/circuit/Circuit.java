@@ -195,8 +195,8 @@ public class Circuit {
         return wires.getWidthIncompatibilityData();
     }
 
-    public BitWidth getWidth(Location p) {
-        return wires.getWidth(p);
+    public BitWidth getWidth(WireBundle wire) {
+        return wire.getWidth();
     }
 
     public Location getWidthDeterminant(Location p) {
@@ -227,13 +227,13 @@ public class Circuit {
         return comps;
     }
 
-    public Collection<? extends Component> getComponents(Location loc) {
-        return wires.points.getComponents(loc);
+    public Collection<? extends Component> getComponents(WireBundle wire) {
+        return wires.points.getComponents(wire);
     }
 
-    public Collection<? extends Component> getSplitCauses(Location loc) {
-        return wires.points.getSplitCauses(loc);
-    }
+//    public Collection<? extends Component> getSplitCauses(Location loc) {
+//        return wires.points.getSplitCauses(loc);
+//    }
 
     public Collection<Wire> getWires(Location loc) {
         return wires.points.getWires(loc);
@@ -243,7 +243,7 @@ public class Circuit {
         return wires.points.getNonWires(loc);
     }
 
-    public boolean isConnected(Location loc, Component ignore) {
+    public boolean isConnected(WireBundle loc, Component ignore) {
         for (Component o : wires.points.getComponents(loc)) {
             if (o != ignore) return true;
         }
@@ -251,7 +251,8 @@ public class Circuit {
     }
 
     public Set<Location> getSplitLocations() {
-        return wires.points.getSplitLocations();
+        return null;
+        //return wires.points.getSplitLocations();
     }
 
     public Collection<Component> getAllContaining(Location pt) {

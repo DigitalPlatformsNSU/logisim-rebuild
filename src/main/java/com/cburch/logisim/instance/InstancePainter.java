@@ -7,6 +7,7 @@ import java.awt.Graphics;
 
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.CircuitState;
+import com.cburch.logisim.circuit.WireBundle;
 import com.cburch.logisim.circuit.WireSet;
 import com.cburch.logisim.comp.ComponentDrawContext;
 import com.cburch.logisim.data.Attribute;
@@ -97,7 +98,7 @@ public class InstancePainter implements InstanceState {
         InstanceComponent c = comp;
         CircuitState s = context.getCircuitState();
         if (c != null && s != null) {
-            return s.getValue(c.getEnd(portIndex).getLocation());
+            return s.getValue(c.getEnd(portIndex).getWire());
         } else {
             return Value.UNKNOWN;
         }
@@ -140,7 +141,7 @@ public class InstancePainter implements InstanceState {
 
     public boolean isPortConnected(int index) {
         Circuit circ = context.getCircuit();
-        Location loc = comp.getEnd(index).getLocation();
+        WireBundle loc = comp.getEnd(index).getWire();
         return circ.isConnected(loc, comp);
     }
 

@@ -53,6 +53,10 @@ public class EndData {
         return i_o;
     }
 
+    public WireBundle getWire() {
+        return wire;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof EndData)) return false;

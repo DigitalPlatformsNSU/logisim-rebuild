@@ -28,17 +28,17 @@ public class WireBundle {
 
     void setWidth(BitWidth width, Location det) {
         if (width == BitWidth.UNKNOWN) return;
-        if (incompatibilityData != null) {
-            incompatibilityData.add(det, width);
-            return;
-        }
+//        if (incompatibilityData != null) {
+//            incompatibilityData.add(det, width);
+//            return;
+//        }
         if (this.width != BitWidth.UNKNOWN) {
             if (width.equals(this.width)) {
                 return; // the widths match, and the bundle is already set; nothing to do
             } else {    // the widths are broken: Create incompatibilityData holding this info
-                incompatibilityData = new WidthIncompatibilityData();
-                incompatibilityData.add(widthDeterminant, this.width);
-                incompatibilityData.add(det, width);
+//                incompatibilityData = new WidthIncompatibilityData();
+//                incompatibilityData.add(widthDeterminant, this.width);
+//                incompatibilityData.add(det, width);
                 return;
             }
         }
