@@ -3,8 +3,11 @@
 
 package com.cburch.logisim.circuit;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
+import com.cburch.gray.Components;
+import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
@@ -16,6 +19,8 @@ public class WireBundle {
     private Location widthDeterminant = null;
     WireThread[] threads = null;
     HashSet<Location> points = new HashSet<Location>(); // points bundle hits
+    HashSet<Component> comps = new HashSet<Component>();
+    HashMap<Location, Component> compslocs = new HashMap<Location, Component>();
     private WidthIncompatibilityData incompatibilityData = null;
 
     WireBundle() {

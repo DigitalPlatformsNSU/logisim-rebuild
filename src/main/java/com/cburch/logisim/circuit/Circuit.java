@@ -474,6 +474,8 @@ public class Circuit {
                             else{
                                 if(endLoc == loc){
                                     end.wire = bundle;
+                                    bundle.comps.add(comp);
+                                    bundle.compslocs.put(loc,comp);
                                     flag = 1;
                                 }
                             }
