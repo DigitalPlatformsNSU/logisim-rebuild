@@ -18,8 +18,8 @@ class CircuitPoints {
         // these lists are parallel - ends corresponding to wires are null
     }
 
-    private HashMap<WireBundle, LocationData> map
-            = new HashMap<WireBundle, LocationData>();
+    private HashMap<Location, LocationData> map
+            = new HashMap<Location, LocationData>();
     private HashMap<WireBundle, WidthIncompatibilityData> incompatibilityData
             = new HashMap<WireBundle, WidthIncompatibilityData>();
 
@@ -58,9 +58,10 @@ class CircuitPoints {
     }
 
     Collection<? extends Component> getComponents(WireBundle wire) {
-        LocationData locData = map.get(wire);
-        if (locData == null) return Collections.emptySet();
-        else return locData.components;
+        return null;
+        //        LocationData locData = map.get(wire);
+//        if (locData == null) return Collections.emptySet();
+//        else return locData.components;
     }
 
 //    Collection<? extends Component> getSplitCauses(Location loc) {
@@ -170,11 +171,11 @@ class CircuitPoints {
         LocationData locData = map.get(loc);
         if (locData == null) {
             locData = new LocationData();
-            //map.put(loc, locData);
+            map.put(loc, locData);
         }
         locData.components.add(comp);
         locData.ends.add(endData);
-//        computeIncompatibilityData(loc, locData);
+        computeIncompatibilityData(loc, locData);
     }
 
     private void removeSub(Location loc, Component comp) {
@@ -194,7 +195,7 @@ class CircuitPoints {
         }
     }
 
-    private void computeIncompatibilityData(WireBundle wire, LocationData locData) {
+    private void computeIncompatibilityData(Location wire, LocationData locData) {
         WidthIncompatibilityData error = null;
         if (locData != null) {
             BitWidth width = BitWidth.UNKNOWN;
@@ -206,20 +207,20 @@ class CircuitPoints {
                     } else if (width != endWidth && endWidth != BitWidth.UNKNOWN) {
                         if (error == null) {
                             error = new WidthIncompatibilityData();
-                            error.add(wire, width);
+                            //error.add(wire, width);
                         }
-                        error.add(wire, endWidth);
+                        //error.add(wire, endWidth);
                     }
                 }
             }
             locData.width = width;
         }
 
-        if (error == null) {
-            incompatibilityData.remove(wire);
-        } else {
-            incompatibilityData.put(wire, error);
-        }
+//        if (error == null) {
+//            incompatibilityData.remove(wire);
+//        } else {
+//            incompatibilityData.put(wire, error);
+//        }
     }
 
 }

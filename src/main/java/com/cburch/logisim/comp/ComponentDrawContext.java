@@ -230,7 +230,7 @@ public class ComponentDrawContext {
             WireBundle wire = e.getWire();
             if (getShowState()) {
                 CircuitState state = getCircuitState();
-                g.setColor(state.getValue(wire).getColor());
+//                g.setColor(state.getValue(wire).getColor());
             } else {
                 g.setColor(Color.BLACK);
             }

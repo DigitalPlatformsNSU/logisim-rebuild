@@ -441,7 +441,7 @@ public class CircuitState implements InstanceData {
         }
         if (changed) {
             boolean found = false;
-            for (Component comp : circuit.getComponents(wire)) {
+            for (Component comp : wire.comps) {
                 if (!(comp instanceof Wire) && !(comp instanceof Splitter)) {
                     found = true;
                     markComponentAsDirty(comp);

@@ -244,10 +244,10 @@ public class Circuit {
     }
 
     public boolean isConnected(WireBundle loc, Component ignore) {
-        for (Component o : wires.points.getComponents(loc)) {
-            if (o != ignore) return true;
-        }
-        return false;
+//        for (Component o : wires.points.getComponents(loc)) {
+//            if (o != ignore) return true;
+//        }
+        return true;
     }
 
     public Set<Location> getSplitLocations() {
