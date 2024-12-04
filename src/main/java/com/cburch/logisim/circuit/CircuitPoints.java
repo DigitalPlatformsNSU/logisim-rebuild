@@ -170,7 +170,7 @@ class CircuitPoints {
         LocationData locData = map.get(loc);
         if (locData == null) {
             locData = new LocationData();
-            map.put(loc, locData);
+            //map.put(loc, locData);
         }
         locData.components.add(comp);
         locData.ends.add(endData);
