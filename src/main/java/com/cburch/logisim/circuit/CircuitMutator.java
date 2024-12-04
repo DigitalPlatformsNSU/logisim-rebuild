@@ -20,4 +20,6 @@ public interface CircuitMutator {
     public void set(Circuit circuit, Component comp, Attribute<?> attr, Object value);
 
     public void setForCircuit(Circuit circuit, Attribute<?> attr, Object value);
+
+    public void buildWireBundles(Circuit circuit);
 }

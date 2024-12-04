@@ -22,74 +22,74 @@ class SplitterPainter {
 
     static void drawLines(ComponentDrawContext context,
                           SplitterAttributes attrs, Location origin) {
-        boolean showState = context.getShowState();
-        CircuitState state = showState ? context.getCircuitState() : null;
-        if (state == null) showState = false;
-
-        SplitterParameters parms = attrs.getParameters();
-        int x0 = origin.getX();
-        int y0 = origin.getY();
-        int x = x0 + parms.getEnd0X();
-        int y = y0 + parms.getEnd0Y();
-        int dx = parms.getEndToEndDeltaX();
-        int dy = parms.getEndToEndDeltaY();
-        int dxEndSpine = parms.getEndToSpineDeltaX();
-        int dyEndSpine = parms.getEndToSpineDeltaY();
-
-        Graphics g = context.getGraphics();
-        Color oldColor = g.getColor();
-        GraphicsUtil.switchToWidth(g, Wire.WIDTH);
-        for (int i = 0, n = attrs.fanout; i < n; i++) {
-            if (showState) {
-                Value val = state.getValue(Location.create(x, y));
-                g.setColor(val.getColor());
-            }
-            g.drawLine(x, y, x + dxEndSpine, y + dyEndSpine);
-            x += dx;
-            y += dy;
-        }
-        GraphicsUtil.switchToWidth(g, SPINE_WIDTH);
-        g.setColor(oldColor);
-        int spine0x = x0 + parms.getSpine0X();
-        int spine0y = y0 + parms.getSpine0Y();
-        int spine1x = x0 + parms.getSpine1X();
-        int spine1y = y0 + parms.getSpine1Y();
-        if (spine0x == spine1x && spine0y == spine1y) { // centered
-            int fanout = attrs.fanout;
-            spine0x = x0 + parms.getEnd0X() + parms.getEndToSpineDeltaX();
-            spine0y = y0 + parms.getEnd0Y() + parms.getEndToSpineDeltaY();
-            spine1x = spine0x + (fanout - 1) * parms.getEndToEndDeltaX();
-            spine1y = spine0y + (fanout - 1) * parms.getEndToEndDeltaY();
-            if (parms.getEndToEndDeltaX() == 0) { // vertical spine
-                if (spine0y < spine1y) {
-                    spine0y++;
-                    spine1y--;
-                } else {
-                    spine0y--;
-                    spine1y++;
-                }
-                g.drawLine(x0 + parms.getSpine1X() / 4, y0, spine0x, y0);
-            } else {
-                if (spine0x < spine1x) {
-                    spine0x++;
-                    spine1x--;
-                } else {
-                    spine0x--;
-                    spine1x++;
-                }
-                g.drawLine(x0, y0 + parms.getSpine1Y() / 4, x0, spine0y);
-            }
-            if (fanout <= 1) { // spine is empty
-                int diam = SPINE_DOT;
-                g.fillOval(spine0x - diam / 2, spine0y - diam / 2, diam, diam);
-            } else {
-                g.drawLine(spine0x, spine0y, spine1x, spine1y);
-            }
-        } else {
-            int[] xSpine = {spine0x, spine1x, x0 + parms.getSpine1X() / 4};
-            int[] ySpine = {spine0y, spine1y, y0 + parms.getSpine1Y() / 4};
-            g.drawPolyline(xSpine, ySpine, 3);
-        }
+//        boolean showState = context.getShowState();
+//        CircuitState state = showState ? context.getCircuitState() : null;
+//        if (state == null) showState = false;
+//
+//        SplitterParameters parms = attrs.getParameters();
+//        int x0 = origin.getX();
+//        int y0 = origin.getY();
+//        int x = x0 + parms.getEnd0X();
+//        int y = y0 + parms.getEnd0Y();
+//        int dx = parms.getEndToEndDeltaX();
+//        int dy = parms.getEndToEndDeltaY();
+//        int dxEndSpine = parms.getEndToSpineDeltaX();
+//        int dyEndSpine = parms.getEndToSpineDeltaY();
+//
+//        Graphics g = context.getGraphics();
+//        Color oldColor = g.getColor();
+//        GraphicsUtil.switchToWidth(g, Wire.WIDTH);
+//        for (int i = 0, n = attrs.fanout; i < n; i++) {
+//            if (showState) {
+//                Value val = state.getValue(Location.create(x, y));
+//                g.setColor(val.getColor());
+//            }
+//            g.drawLine(x, y, x + dxEndSpine, y + dyEndSpine);
+//            x += dx;
+//            y += dy;
+//        }
+//        GraphicsUtil.switchToWidth(g, SPINE_WIDTH);
+//        g.setColor(oldColor);
+//        int spine0x = x0 + parms.getSpine0X();
+//        int spine0y = y0 + parms.getSpine0Y();
+//        int spine1x = x0 + parms.getSpine1X();
+//        int spine1y = y0 + parms.getSpine1Y();
+//        if (spine0x == spine1x && spine0y == spine1y) { // centered
+//            int fanout = attrs.fanout;
+//            spine0x = x0 + parms.getEnd0X() + parms.getEndToSpineDeltaX();
+//            spine0y = y0 + parms.getEnd0Y() + parms.getEndToSpineDeltaY();
+//            spine1x = spine0x + (fanout - 1) * parms.getEndToEndDeltaX();
+//            spine1y = spine0y + (fanout - 1) * parms.getEndToEndDeltaY();
+//            if (parms.getEndToEndDeltaX() == 0) { // vertical spine
+//                if (spine0y < spine1y) {
+//                    spine0y++;
+//                    spine1y--;
+//                } else {
+//                    spine0y--;
+//                    spine1y++;
+//                }
+//                g.drawLine(x0 + parms.getSpine1X() / 4, y0, spine0x, y0);
+//            } else {
+//                if (spine0x < spine1x) {
+//                    spine0x++;
+//                    spine1x--;
+//                } else {
+//                    spine0x--;
+//                    spine1x++;
+//                }
+//                g.drawLine(x0, y0 + parms.getSpine1Y() / 4, x0, spine0y);
+//            }
+//            if (fanout <= 1) { // spine is empty
+//                int diam = SPINE_DOT;
+//                g.fillOval(spine0x - diam / 2, spine0y - diam / 2, diam, diam);
+//            } else {
+//                g.drawLine(spine0x, spine0y, spine1x, spine1y);
+//            }
+//        } else {
+//            int[] xSpine = {spine0x, spine1x, x0 + parms.getSpine1X() / 4};
+//            int[] ySpine = {spine0y, spine1y, y0 + parms.getSpine1Y() / 4};
+//            g.drawPolyline(xSpine, ySpine, 3);
+//        }
     }
 
     static void drawLabels(ComponentDrawContext context,
@@ -160,68 +160,68 @@ class SplitterPainter {
 
     static void drawLegacy(ComponentDrawContext context, SplitterAttributes attrs,
                            Location origin) {
-        Graphics g = context.getGraphics();
-        CircuitState state = context.getCircuitState();
-        Direction facing = attrs.facing;
-        int fanout = attrs.fanout;
-        SplitterParameters parms = attrs.getParameters();
-
-        g.setColor(Color.BLACK);
-        int x0 = origin.getX();
-        int y0 = origin.getY();
-        int x1 = x0 + parms.getEnd0X();
-        int y1 = y0 + parms.getEnd0Y();
-        int dx = parms.getEndToEndDeltaX();
-        int dy = parms.getEndToEndDeltaY();
-        if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-            int ySpine = (y0 + y1) / 2;
-            GraphicsUtil.switchToWidth(g, Wire.WIDTH);
-            g.drawLine(x0, y0, x0, ySpine);
-            int xi = x1;
-            int yi = y1;
-            for (int i = 1; i <= fanout; i++) {
-                if (context.getShowState()) {
-                    g.setColor(state.getValue(Location.create(xi, yi)).getColor());
-                }
-                int xSpine = xi + (xi == x0 ? 0 : (xi < x0 ? 10 : -10));
-                g.drawLine(xi, yi, xSpine, ySpine);
-                xi += dx;
-                yi += dy;
-            }
-            if (fanout > 3) {
-                GraphicsUtil.switchToWidth(g, SPINE_WIDTH);
-                g.setColor(Color.BLACK);
-                g.drawLine(x1 + dx, ySpine, x1 + (fanout - 2) * dx, ySpine);
-            } else {
-                g.setColor(Color.BLACK);
-                g.fillOval(x0 - SPINE_DOT / 2, ySpine - SPINE_DOT / 2,
-                        SPINE_DOT, SPINE_DOT);
-            }
-        } else {
-            int xSpine = (x0 + x1) / 2;
-            GraphicsUtil.switchToWidth(g, Wire.WIDTH);
-            g.drawLine(x0, y0, xSpine, y0);
-            int xi = x1;
-            int yi = y1;
-            for (int i = 1; i <= fanout; i++) {
-                if (context.getShowState()) {
-                    g.setColor(state.getValue(Location.create(xi, yi)).getColor());
-                }
-                int ySpine = yi + (yi == y0 ? 0 : (yi < y0 ? 10 : -10));
-                g.drawLine(xi, yi, xSpine, ySpine);
-                xi += dx;
-                yi += dy;
-            }
-            if (fanout >= 3) {
-                GraphicsUtil.switchToWidth(g, SPINE_WIDTH);
-                g.setColor(Color.BLACK);
-                g.drawLine(xSpine, y1 + dy, xSpine, y1 + (fanout - 2) * dy);
-            } else {
-                g.setColor(Color.BLACK);
-                g.fillOval(xSpine - SPINE_DOT / 2, y0 - SPINE_DOT / 2,
-                        SPINE_DOT, SPINE_DOT);
-            }
-        }
-        GraphicsUtil.switchToWidth(g, 1);
+//        Graphics g = context.getGraphics();
+//        CircuitState state = context.getCircuitState();
+//        Direction facing = attrs.facing;
+//        int fanout = attrs.fanout;
+//        SplitterParameters parms = attrs.getParameters();
+//
+//        g.setColor(Color.BLACK);
+//        int x0 = origin.getX();
+//        int y0 = origin.getY();
+//        int x1 = x0 + parms.getEnd0X();
+//        int y1 = y0 + parms.getEnd0Y();
+//        int dx = parms.getEndToEndDeltaX();
+//        int dy = parms.getEndToEndDeltaY();
+//        if (facing == Direction.NORTH || facing == Direction.SOUTH) {
+//            int ySpine = (y0 + y1) / 2;
+//            GraphicsUtil.switchToWidth(g, Wire.WIDTH);
+//            g.drawLine(x0, y0, x0, ySpine);
+//            int xi = x1;
+//            int yi = y1;
+//            for (int i = 1; i <= fanout; i++) {
+//                if (context.getShowState()) {
+//                    g.setColor(state.getValue(Location.create(xi, yi)).getColor());
+//                }
+//                int xSpine = xi + (xi == x0 ? 0 : (xi < x0 ? 10 : -10));
+//                g.drawLine(xi, yi, xSpine, ySpine);
+//                xi += dx;
+//                yi += dy;
+//            }
+//            if (fanout > 3) {
+//                GraphicsUtil.switchToWidth(g, SPINE_WIDTH);
+//                g.setColor(Color.BLACK);
+//                g.drawLine(x1 + dx, ySpine, x1 + (fanout - 2) * dx, ySpine);
+//            } else {
+//                g.setColor(Color.BLACK);
+//                g.fillOval(x0 - SPINE_DOT / 2, ySpine - SPINE_DOT / 2,
+//                        SPINE_DOT, SPINE_DOT);
+//            }
+//        } else {
+//            int xSpine = (x0 + x1) / 2;
+//            GraphicsUtil.switchToWidth(g, Wire.WIDTH);
+//            g.drawLine(x0, y0, xSpine, y0);
+//            int xi = x1;
+//            int yi = y1;
+//            for (int i = 1; i <= fanout; i++) {
+//                if (context.getShowState()) {
+//                    g.setColor(state.getValue(Location.create(xi, yi)).getColor());
+//                }
+//                int ySpine = yi + (yi == y0 ? 0 : (yi < y0 ? 10 : -10));
+//                g.drawLine(xi, yi, xSpine, ySpine);
+//                xi += dx;
+//                yi += dy;
+//            }
+//            if (fanout >= 3) {
+//                GraphicsUtil.switchToWidth(g, SPINE_WIDTH);
+//                g.setColor(Color.BLACK);
+//                g.drawLine(xSpine, y1 + dy, xSpine, y1 + (fanout - 2) * dy);
+//            } else {
+//                g.setColor(Color.BLACK);
+//                g.fillOval(xSpine - SPINE_DOT / 2, y0 - SPINE_DOT / 2,
+//                        SPINE_DOT, SPINE_DOT);
+//            }
+//        }
+//        GraphicsUtil.switchToWidth(g, 1);
     }
 }

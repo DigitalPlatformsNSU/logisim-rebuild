@@ -86,6 +86,8 @@ public class XmlCircuitReader extends CircuitTransaction {
             dest.getAppearance().setObjectsForce(appearance);
             dest.getAppearance().setDefaultAppearance(false);
         }
+
+        mutator.buildWireBundles(dest);
     }
 
     private String toComponentString(Element elt) {

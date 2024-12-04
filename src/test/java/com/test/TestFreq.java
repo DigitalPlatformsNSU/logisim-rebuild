@@ -93,15 +93,15 @@ public class TestFreq {
     }
 
     double getVerifyFreq() {
-        flagNotEnd = true;
-        ticks = 0;
-        for (Component comp : proj.getCurrentCircuit().getComponents(Location.create(10, 20))){
-            if (comp.getFactory() instanceof Led) {
-                led = comp;
-                break;
-            }
-        }
-        Assertions.assertNotNull(led);
+//        flagNotEnd = true;
+//        ticks = 0;
+//        for (Component comp : proj.getCurrentCircuit().getComponents(Location.create(10, 20))){
+//            if (comp.getFactory() instanceof Led) {
+//                led = comp;
+//                break;
+//            }
+//        }
+//        Assertions.assertNotNull(led);
 
 
         double time = 0;

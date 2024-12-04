@@ -3,19 +3,24 @@
 
 package com.cburch.logisim.circuit;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
+import com.cburch.gray.Components;
+import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
 
-class WireBundle {
+public class WireBundle {
     private BitWidth width = BitWidth.UNKNOWN;
     private Value pullValue = Value.UNKNOWN;
     private WireBundle parent;
     private Location widthDeterminant = null;
     WireThread[] threads = null;
     HashSet<Location> points = new HashSet<Location>(); // points bundle hits
+    HashSet<Component> comps = new HashSet<Component>();
+    HashMap<Location, Component> compslocs = new HashMap<Location, Component>();
     private WidthIncompatibilityData incompatibilityData = null;
 
     WireBundle() {
@@ -28,17 +33,17 @@ class WireBundle {
 
     void setWidth(BitWidth width, Location det) {
         if (width == BitWidth.UNKNOWN) return;
-        if (incompatibilityData != null) {
-            incompatibilityData.add(det, width);
-            return;
-        }
+//        if (incompatibilityData != null) {
+//            incompatibilityData.add(det, width);
+//            return;
+//        }
         if (this.width != BitWidth.UNKNOWN) {
             if (width.equals(this.width)) {
                 return; // the widths match, and the bundle is already set; nothing to do
             } else {    // the widths are broken: Create incompatibilityData holding this info
-                incompatibilityData = new WidthIncompatibilityData();
-                incompatibilityData.add(widthDeterminant, this.width);
-                incompatibilityData.add(det, width);
+//                incompatibilityData = new WidthIncompatibilityData();
+//                incompatibilityData.add(widthDeterminant, this.width);
+//                incompatibilityData.add(det, width);
                 return;
             }
         }
