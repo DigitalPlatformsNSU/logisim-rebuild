@@ -520,7 +520,7 @@ class CircuitWires {
         bundleMap = null;
     }
 
-    private BundleMap getBundleMap() {
+    BundleMap getBundleMap() {
         // Maybe we already have a valid bundle map (or maybe
         // one is in progress).
         BundleMap ret = bundleMap;

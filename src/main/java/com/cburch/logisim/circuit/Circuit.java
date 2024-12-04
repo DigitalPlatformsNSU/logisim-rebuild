@@ -457,5 +457,30 @@ public class Circuit {
     void buildWireBundles() {
         //for Alexey
         //
+        HashSet<WireBundle> bundles = this.wires.getBundleMap().bundles;
+        for (Component comp : this.comps){
+            for(EndData end : comp.getEnds()){
+                Location endLoc = end.getLocation();
+                int flag = 0;
+                for(WireBundle bundle : bundles){
+                    if(flag == 1){
+                        break;
+                    }
+                    else{
+                        for(Location loc : bundle.points){
+                            if(flag == 1){
+                                break;
+                            }
+                            else{
+                                if(endLoc == loc){
+                                    end.wire = bundle;
+                                    flag = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

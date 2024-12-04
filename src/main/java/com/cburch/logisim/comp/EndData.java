@@ -16,7 +16,7 @@ public class EndData {
     private BitWidth width;
     private int i_o;
     private boolean exclusive;
-    private WireBundle wire; //for Alexey
+    public WireBundle wire; //for Alexey
 
     public EndData(Location loc, BitWidth width, int type, boolean exclusive) {
         this.loc = loc;
