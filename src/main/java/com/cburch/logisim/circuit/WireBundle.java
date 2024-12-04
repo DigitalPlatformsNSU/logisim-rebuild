@@ -3,6 +3,7 @@
 
 package com.cburch.logisim.circuit;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
 import com.cburch.gray.Components;
@@ -19,6 +20,7 @@ public class WireBundle {
     WireThread[] threads = null;
     HashSet<Location> points = new HashSet<Location>(); // points bundle hits
     HashSet<Component> comps = new HashSet<Component>();
+    HashMap<Location, Component> compslocs = new HashMap<Location, Component>();
     private WidthIncompatibilityData incompatibilityData = null;
 
     WireBundle() {
