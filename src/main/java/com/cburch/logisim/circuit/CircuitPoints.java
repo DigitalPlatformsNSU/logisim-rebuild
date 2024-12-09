@@ -58,7 +58,7 @@ class CircuitPoints {
     }
 
     Collection<? extends Component> getComponents(WireBundle wire) {
-        return null;
+        return wire.comps;
         //        LocationData locData = map.get(wire);
 //        if (locData == null) return Collections.emptySet();
 //        else return locData.components;

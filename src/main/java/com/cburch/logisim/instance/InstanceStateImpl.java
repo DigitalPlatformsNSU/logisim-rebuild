@@ -63,12 +63,18 @@ class InstanceStateImpl implements InstanceState {
 
     public Value getPort(int portIndex) {
         EndData data = component.getEnd(portIndex);
+        if (data.getWire() == null) {
+            return Value.createUnknown(data.getWidth());
+        }
         return circuitState.getValue(data.getWire());
     }
 
     public boolean isPortConnected(int index) {
         Circuit circ = circuitState.getCircuit();
         WireBundle loc = component.getEnd(index).getWire();
+        if (loc == null) {
+            return false;
+        }
         return circ.isConnected(loc, component);
     }
 

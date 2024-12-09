@@ -85,32 +85,25 @@ This file is intended to be loaded by Logisim (http://www.cburch.com/logisim/).
     <a name="clabel" val=""/>
     <a name="clabelup" val="east"/>
     <a name="clabelfont" val="SansSerif plain 12"/>
-    <wire from="(190,180)" to="(220,180)"/>
-    <wire from="(190,210)" to="(190,220)"/>
+    <wire from="(280,190)" to="(300,190)"/>
     <wire from="(70,220)" to="(190,220)"/>
-    <wire from="(220,170)" to="(220,180)"/>
     <wire from="(300,230)" to="(300,270)"/>
-    <wire from="(220,170)" to="(240,170)"/>
     <wire from="(190,220)" to="(190,270)"/>
     <wire from="(190,270)" to="(300,270)"/>
-    <wire from="(290,190)" to="(300,190)"/>
-    <wire from="(190,210)" to="(200,210)"/>
-    <wire from="(230,210)" to="(240,210)"/>
+    <wire from="(220,200)" to="(230,200)"/>
+    <wire from="(190,180)" to="(190,200)"/>
+    <wire from="(190,200)" to="(190,220)"/>
     <wire from="(350,210)" to="(450,210)"/>
-    <wire from="(190,180)" to="(190,210)"/>
+    <wire from="(190,180)" to="(230,180)"/>
+    <comp lib="0" loc="(70,220)" name="Clock"/>
     <comp lib="0" loc="(450,210)" name="Pin">
       <a name="facing" val="west"/>
       <a name="output" val="true"/>
       <a name="tristate" val="false"/>
       <a name="label" val="bus 0"/>
     </comp>
-    <comp lib="1" loc="(230,210)" name="NOT Gate"/>
-    <comp lib="0" loc="(70,220)" name="Clock"/>
-    <comp lib="1" loc="(290,190)" name="AND Gate">
-      <a name="inputs" val="2"/>
-    </comp>
-    <comp lib="1" loc="(350,210)" name="OR Gate">
-      <a name="inputs" val="2"/>
-    </comp>
+    <comp lib="1" loc="(220,200)" name="NOT Gate"/>
+    <comp lib="1" loc="(350,210)" name="OR Gate"/>
+    <comp lib="1" loc="(280,190)" name="AND Gate"/>
   </circuit>
 </project>

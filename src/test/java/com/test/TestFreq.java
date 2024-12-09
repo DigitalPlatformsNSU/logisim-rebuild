@@ -69,7 +69,7 @@ public class TestFreq {
     Component led = null;
     boolean flagNotEnd = true;
     long ticks = 0;
-    int countChecks = 100;
+    int countChecks = 1000;
     static String resources = File.separator +
                                 "src" +
                                 File.separator +

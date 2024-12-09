@@ -187,7 +187,7 @@ public class ComponentDrawContext {
         int y = pt.getY();
         if (getShowState()) {
             CircuitState state = getCircuitState();
-            g.setColor(state.getValue(wire).getColor());
+            //g.setColor(state.getValue(wire).getColor());
         } else {
             g.setColor(Color.BLACK);
         }
@@ -215,7 +215,7 @@ public class ComponentDrawContext {
         Color curColor = g.getColor();
         if (getShowState()) {
             CircuitState state = getCircuitState();
-            g.setColor(state.getValue(wire).getColor());
+            //g.setColor(state.getValue(wire).getColor());
         } else {
             g.setColor(Color.BLACK);
         }
@@ -230,7 +230,7 @@ public class ComponentDrawContext {
             WireBundle wire = e.getWire();
             if (getShowState()) {
                 CircuitState state = getCircuitState();
-                g.setColor(state.getValue(wire).getColor());
+                //g.setColor(state.getValue(wire).getColor());
             } else {
                 g.setColor(Color.BLACK);
             }
