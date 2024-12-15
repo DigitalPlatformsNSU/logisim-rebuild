@@ -8,10 +8,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 
 import com.cburch.logisim.circuit.*;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
+import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.prefs.AppPreferences;
 import com.cburch.logisim.util.GraphicsUtil;
@@ -187,7 +184,7 @@ public class ComponentDrawContext {
         int y = pt.getY();
         if (getShowState()) {
             CircuitState state = getCircuitState();
-            //g.setColor(state.getValue(wire).getColor());
+            g.setColor(state.getValue(wire, e.getWidth()).getColor());
         } else {
             g.setColor(Color.BLACK);
         }
@@ -215,7 +212,7 @@ public class ComponentDrawContext {
         Color curColor = g.getColor();
         if (getShowState()) {
             CircuitState state = getCircuitState();
-            //g.setColor(state.getValue(wire).getColor());
+            g.setColor(state.getValue(wire, e.getWidth()).getColor());
         } else {
             g.setColor(Color.BLACK);
         }
@@ -230,7 +227,7 @@ public class ComponentDrawContext {
             WireBundle wire = e.getWire();
             if (getShowState()) {
                 CircuitState state = getCircuitState();
-                //g.setColor(state.getValue(wire).getColor());
+                g.setColor(state.getValue(wire, e.getWidth()).getColor());
             } else {
                 g.setColor(Color.BLACK);
             }

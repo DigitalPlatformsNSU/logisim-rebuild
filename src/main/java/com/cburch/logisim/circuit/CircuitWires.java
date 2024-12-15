@@ -342,20 +342,10 @@ class CircuitWires {
 
         // determine affected threads, and set values for unwired points
         for (WireBundle pb : points) {
-            if (pb == null) { // point is not wired
-//                circState.setValueByWire(p, circState.getComponentOutputAt(p));
-            } else {
+            if (pb != null) {
                 WireThread[] th = pb.threads;
                 if (!pb.isValid() || th == null) {
-                    // immediately propagate NILs across invalid bundles
-                    HashSet<Location> pbPoints = pb.points;
-//                    if (pbPoints == null) {
-//                        circState.setValueByWire(p, Value.NIL);
-//                    } else {
-//                        for (Location loc2 : pbPoints) {
-//                            circState.setValueByWire(loc2, Value.NIL);
-//                        }
-//                    }
+                    circState.setValueByWire(pb, Value.NIL);
                 } else {
                     for (WireThread t : th) {
                         dirtyThreads.add(t);
@@ -576,14 +566,14 @@ class CircuitWires {
         }
 
         // make a WireBundle object for each end of a splitter
-//        for (Splitter spl : splitters) {
-//            List<EndData> ends = new ArrayList<EndData>(spl.getEnds());
-//            for (EndData end : ends) {
-//                Location p = end.getLocation();
-//                WireBundle pb = ret.createBundleAt(p);
-//                pb.setWidth(end.getWidth(), p);
-//            }
-//        }
+        for (Splitter spl : splitters) {
+            List<EndData> ends = new ArrayList<EndData>(spl.getEnds());
+            for (EndData end : ends) {
+                Location p = end.getLocation();
+                WireBundle pb = ret.createBundleAt(p);
+                pb.setWidth(end.getWidth(), p);
+            }
+        }
 
         // set the width for each bundle whose size is known
         // based on components
@@ -596,19 +586,19 @@ class CircuitWires {
         }
 
         // determine the bundles at the end of each splitter
-//        for (Splitter spl : splitters) {
-//            List<EndData> ends = new ArrayList<EndData>(spl.getEnds());
-//            int index = -1;
-//            for (EndData end : ends) {
-//                index++;
-//                Location p = end.getLocation();
-//                WireBundle pb = ret.getBundleAt(p);
-//                if (pb != null) {
-//                    pb.setWidth(end.getWidth(), p);
-//                    spl.wire_data.end_bundle[index] = pb;
-//                }
-//            }
-//        }
+        for (Splitter spl : splitters) {
+            List<EndData> ends = new ArrayList<EndData>(spl.getEnds());
+            int index = -1;
+            for (EndData end : ends) {
+                index++;
+                Location p = end.getLocation();
+                WireBundle pb = ret.getBundleAt(p);
+                if (pb != null) {
+                    pb.setWidth(end.getWidth(), p);
+                    spl.wire_data.end_bundle[index] = pb;
+                }
+            }
+        }
 
         // unite threads going through splitters
         for (Splitter spl : splitters) {
@@ -690,7 +680,7 @@ class CircuitWires {
         for (Component comp : tunnels) {
             String label = comp.getAttributeSet().getValue(StdAttr.LABEL);
             label = label.trim();
-            if (!label.equals("")) {
+            if (!label.isEmpty()) {
                 ArrayList<Location> tunnelSet = tunnelSets.get(label);
                 if (tunnelSet == null) {
                     tunnelSet = new ArrayList<Location>(3);
@@ -731,17 +721,17 @@ class CircuitWires {
     }
 
     private void connectPullResistors(BundleMap ret) {
-//        for (Component comp : pulls) {
-//            Location loc = comp.getEnd(0).getLocation();
-//            WireBundle b = ret.getBundleAt(loc);
-//            if (b == null) {
-//                b = ret.createBundleAt(loc);
-//                b.points.add(loc);
-//                ret.setBundleAt(loc, b);
-//            }
-//            Instance instance = Instance.getInstanceFor(comp);
-//            b.addPullValue(PullResistor.getPullValue(instance));
-//        }
+        for (Component comp : pulls) {
+            Location loc = comp.getEnd(0).getLocation();
+            WireBundle b = ret.getBundleAt(loc);
+            if (b == null) {
+                b = ret.createBundleAt(loc);
+                b.points.add(loc);
+                ret.setBundleAt(loc, b);
+            }
+            Instance instance = Instance.getInstanceFor(comp);
+            b.addPullValue(PullResistor.getPullValue(instance));
+        }
     }
 
     private Value getThreadValue(CircuitState state, WireThread t) {

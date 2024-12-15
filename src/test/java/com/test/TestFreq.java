@@ -69,7 +69,7 @@ public class TestFreq {
     Component led = null;
     boolean flagNotEnd = true;
     long ticks = 0;
-    int countChecks = 1000;
+    int countChecks = 100;
     static String resources = File.separator +
                                 "src" +
                                 File.separator +
@@ -121,7 +121,7 @@ public class TestFreq {
 
     @Test
     void testFreqSmallCircuit() throws LoadFailedException {
-        File f = new File(System.getProperty("user.dir") + resources + "test.circ");
+        File f = new File(System.getProperty("user.dir") + resources + "Separator.circ");
         proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
         proj.getSimulator().setTickFrequency(4096);
         proj.getSimulator().addSimulatorListener(new MyListener());

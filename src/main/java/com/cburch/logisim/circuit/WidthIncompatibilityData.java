@@ -9,15 +9,15 @@ import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 
 public class WidthIncompatibilityData {
-    private ArrayList<WireBundle> points;
+    private ArrayList<Location> points;
     private ArrayList<BitWidth> widths;
 
     public WidthIncompatibilityData() {
-        points = new ArrayList<WireBundle>();
+        points = new ArrayList<Location>();
         widths = new ArrayList<BitWidth>();
     }
 
-    public void add(WireBundle p, BitWidth w) {
+    public void add(Location p, BitWidth w) {
         for (int i = 0; i < points.size(); i++) {
             if (p.equals(points.get(i)) && w.equals(widths.get(i))) return;
         }
@@ -29,7 +29,7 @@ public class WidthIncompatibilityData {
         return points.size();
     }
 
-    public WireBundle getPoint(int i) {
+    public Location getPoint(int i) {
         return points.get(i);
     }
 
@@ -39,26 +39,25 @@ public class WidthIncompatibilityData {
 
     @Override
     public boolean equals(Object other) {
-        return false;
-//        if (!(other instanceof WidthIncompatibilityData)) return false;
-//        if (this == other) return true;
-//
-//        WidthIncompatibilityData o = (WidthIncompatibilityData) other;
-//        if (this.size() != o.size()) return false;
-//        for (int i = 0; i < this.size(); i++) {
-//            Location p = this.getPoint(i);
-//            BitWidth w = this.getBitWidth(i);
-//            boolean matched = false;
-//            for (int j = 0; j < o.size(); j++) {
-//                Location q = this.getPoint(j);
-//                BitWidth x = this.getBitWidth(j);
-//                if (p.equals(q) && w.equals(x)) {
-//                    matched = true;
-//                    break;
-//                }
-//            }
-//            if (!matched) return false;
-//        }
-//        return true;
+        if (!(other instanceof WidthIncompatibilityData)) return false;
+        if (this == other) return true;
+
+        WidthIncompatibilityData o = (WidthIncompatibilityData) other;
+        if (this.size() != o.size()) return false;
+        for (int i = 0; i < this.size(); i++) {
+            Location p = this.getPoint(i);
+            BitWidth w = this.getBitWidth(i);
+            boolean matched = false;
+            for (int j = 0; j < o.size(); j++) {
+                Location q = this.getPoint(j);
+                BitWidth x = this.getBitWidth(j);
+                if (p.equals(q) && w.equals(x)) {
+                    matched = true;
+                    break;
+                }
+            }
+            if (!matched) return false;
+        }
+        return true;
     }
 }

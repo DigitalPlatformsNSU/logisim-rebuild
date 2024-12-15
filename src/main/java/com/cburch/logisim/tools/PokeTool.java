@@ -22,6 +22,7 @@ import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.ComponentDrawContext;
 import com.cburch.logisim.comp.ComponentUserEvent;
 import com.cburch.logisim.data.AttributeSet;
+import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.gui.main.Canvas;
@@ -50,7 +51,8 @@ public class PokeTool extends Tool {
 
         @Override
         public void draw(Graphics g) {
-            Value v = canvas.getCircuitState().getValue(wire.getWire());
+            //Value v = canvas.getCircuitState().getValue(wire.getWire());
+            Value v = Value.createUnknown(BitWidth.ONE);
             RadixOption radix1 = RadixOption.decode(AppPreferences.POKE_WIRE_RADIX1.get());
             RadixOption radix2 = RadixOption.decode(AppPreferences.POKE_WIRE_RADIX2.get());
             if (radix1 == null) radix1 = RadixOption.RADIX_2;

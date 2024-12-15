@@ -97,12 +97,11 @@ public class InstancePainter implements InstanceState {
     public Value getPort(int portIndex) {
         InstanceComponent c = comp;
         CircuitState s = context.getCircuitState();
-        return Value.UNKNOWN;
-//        if (c != null && s != null) {
-//            return s.getValue(c.getEnd(portIndex).getWire());
-//        } else {
-//            return Value.UNKNOWN;
-//        }
+        if (c != null && s != null) {
+            return s.getValue(c.getEnd(portIndex).getWire(), c.getEnd(portIndex).getWidth());
+        } else {
+            return Value.UNKNOWN;
+        }
     }
 
     public void setPort(int portIndex, Value value, int delay) {

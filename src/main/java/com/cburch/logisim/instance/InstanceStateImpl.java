@@ -66,7 +66,7 @@ class InstanceStateImpl implements InstanceState {
         if (data.getWire() == null) {
             return Value.createUnknown(data.getWidth());
         }
-        return circuitState.getValue(data.getWire());
+        return circuitState.getValue(data.getWire(), data.getWidth());
     }
 
     public boolean isPortConnected(int index) {

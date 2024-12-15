@@ -20,8 +20,8 @@ class CircuitPoints {
 
     private HashMap<Location, LocationData> map
             = new HashMap<Location, LocationData>();
-    private HashMap<WireBundle, WidthIncompatibilityData> incompatibilityData
-            = new HashMap<WireBundle, WidthIncompatibilityData>();
+    private HashMap<Location, WidthIncompatibilityData> incompatibilityData
+            = new HashMap<Location, WidthIncompatibilityData>();
 
     public CircuitPoints() {
     }
@@ -30,8 +30,7 @@ class CircuitPoints {
     // access methods
     //
     Set<Location> getSplitLocations() {
-        return new HashSet<Location>();
-        //return map.keySet();
+        return map.keySet();
     }
 
     BitWidth getWidth(Location loc) {
@@ -191,11 +190,11 @@ class CircuitPoints {
         } else {
             locData.components.remove(index);
             locData.ends.remove(index);
-//            computeIncompatibilityData(loc, locData);
+            computeIncompatibilityData(loc, locData);
         }
     }
 
-    private void computeIncompatibilityData(Location wire, LocationData locData) {
+    private void computeIncompatibilityData(Location loc, LocationData locData) {
         WidthIncompatibilityData error = null;
         if (locData != null) {
             BitWidth width = BitWidth.UNKNOWN;
@@ -207,20 +206,20 @@ class CircuitPoints {
                     } else if (width != endWidth && endWidth != BitWidth.UNKNOWN) {
                         if (error == null) {
                             error = new WidthIncompatibilityData();
-                            //error.add(wire, width);
+                            error.add(loc, width);
                         }
-                        //error.add(wire, endWidth);
+                        error.add(loc, endWidth);
                     }
                 }
             }
             locData.width = width;
         }
 
-//        if (error == null) {
-//            incompatibilityData.remove(wire);
-//        } else {
-//            incompatibilityData.put(wire, error);
-//        }
+        if (error == null) {
+            incompatibilityData.remove(loc);
+        } else {
+            incompatibilityData.put(loc, error);
+        }
     }
 
 }

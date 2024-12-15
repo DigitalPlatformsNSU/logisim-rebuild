@@ -247,12 +247,11 @@ public class Circuit {
         for (Component o : wires.points.getComponents(loc)) {
             if (o != ignore) return true;
         }
-        return true;
+        return false;
     }
 
     public Set<Location> getSplitLocations() {
-        return null;
-        //return wires.points.getSplitLocations();
+        return wires.points.getSplitLocations();
     }
 
     public Collection<Component> getAllContaining(Location pt) {
