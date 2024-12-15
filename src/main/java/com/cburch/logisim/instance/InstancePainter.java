@@ -98,7 +98,7 @@ public class InstancePainter implements InstanceState {
         InstanceComponent c = comp;
         CircuitState s = context.getCircuitState();
         if (c != null && s != null) {
-            return s.getValue(c.getEnd(portIndex).getWire());
+            return s.getValue(c.getEnd(portIndex).getWire(), c.getEnd(portIndex).getWidth());
         } else {
             return Value.UNKNOWN;
         }

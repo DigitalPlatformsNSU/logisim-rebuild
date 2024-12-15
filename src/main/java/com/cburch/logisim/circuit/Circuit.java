@@ -244,15 +244,14 @@ public class Circuit {
     }
 
     public boolean isConnected(WireBundle loc, Component ignore) {
-//        for (Component o : wires.points.getComponents(loc)) {
-//            if (o != ignore) return true;
-//        }
-        return true;
+        for (Component o : wires.points.getComponents(loc)) {
+            if (o != ignore) return true;
+        }
+        return false;
     }
 
     public Set<Location> getSplitLocations() {
-        return null;
-        //return wires.points.getSplitLocations();
+        return wires.points.getSplitLocations();
     }
 
     public Collection<Component> getAllContaining(Location pt) {
@@ -460,25 +459,23 @@ public class Circuit {
         HashMap<EndData, Component> emptyDataComponents = new HashMap<EndData, Component>();
         HashSet<EndData> emptyDatas = new HashSet<EndData>();
         HashSet<WireBundle> bundles = this.wires.getBundleMap().bundles;
-        for (Component comp : this.comps){
-            for(EndData end : comp.getEnds()){
+        for (Component comp : this.comps) {
+            for (EndData end : comp.getEnds()) {
                 Location endLoc = end.getLocation();
                 int flag = 0;
-                for(WireBundle bundle : bundles){
-                    if(flag == 1){
+                for (WireBundle bundle : bundles) {
+                    if (flag == 1) {
                         break;
-                    }
-                    else{
-                        for(Location loc : bundle.points){
-                            if(flag == 1){
+                    } else {
+                        for (Location loc : bundle.points) {
+                            if (flag == 1) {
                                 break;
-                            }
-                            else{
-                                if(endLoc == loc){
+                            } else {
+                                if (endLoc.equals(loc)) {
                                     end.wire = bundle;
                                     end.wireExist = true;
                                     bundle.comps.add(comp);
-                                    bundle.compslocs.put(loc,comp);
+                                    bundle.compslocs.put(loc, comp);
                                     flag = 1;
                                 }
                             }

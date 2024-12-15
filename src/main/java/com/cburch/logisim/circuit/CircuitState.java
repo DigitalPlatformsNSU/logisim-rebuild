@@ -267,12 +267,11 @@ public class CircuitState implements InstanceData {
         componentData.put(comp, data);
     }
 
-    public Value getValue(WireBundle wire) {
+    public Value getValue(WireBundle wire, BitWidth width) {
         Value ret = values.get(wire);
         if (ret != null) return ret;
-
-        BitWidth wid = circuit.getWidth(wire);
-        return Value.createUnknown(wid);
+;
+        return Value.createUnknown(width);
     }
 
     public void setValue(Location pt, Value val, Component cause, int delay, WireBundle wire) {
