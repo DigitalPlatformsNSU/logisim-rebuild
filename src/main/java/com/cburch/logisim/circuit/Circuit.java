@@ -458,6 +458,7 @@ public class Circuit {
         //
         HashMap<EndData, Component> emptyDataComponents = new HashMap<EndData, Component>();
         HashSet<EndData> emptyDatas = new HashSet<EndData>();
+        HashSet<EndData> emptyDataschecked = new HashSet<EndData>();
         HashSet<WireBundle> bundles = this.wires.getBundleMap().bundles;
         for (Component comp : this.comps) {
             for (EndData end : comp.getEnds()) {
@@ -490,29 +491,33 @@ public class Circuit {
         }
 
         for(EndData end1 : emptyDatas){
-            for(EndData end2 : emptyDatas){
-                if (!end1.equals(end2)){
-                    if(end1.getLocation().equals(end2.getLocation())){
-                        if(end1.wireExist){
-                            end1.wire.comps.add(emptyDataComponents.get(end2));
-                            end1.wire.compslocs.put(end2.getLocation(), emptyDataComponents.get(end2));
-                            end2.wire = end1.wire;
-                            emptyDatas.remove(end2);
-                        }
-                        else{
-                            end1.wire = new WireBundle();
-                            end1.wire.points.add(end1.getLocation());
-                            end1.wire.comps.add(emptyDataComponents.get(end1));
-                            end1.wire.compslocs.put(end1.getLocation(), emptyDataComponents.get(end1));
-                            end1.wire.comps.add(emptyDataComponents.get(end1));
-                            end1.wire.compslocs.put(end2.getLocation(), emptyDataComponents.get(end2));
-                            end2.wire = end1.wire;
-                            emptyDatas.remove(end2);
+            if (!emptyDataschecked.contains(end1)){
+                for(EndData end2 : emptyDatas){
+                    if (!emptyDataschecked.contains(end2)){
+                        if (!end1.equals(end2)){
+                            if(end1.getLocation().equals(end2.getLocation())){
+                                if(end1.wireExist){
+                                    end1.wire.comps.add(emptyDataComponents.get(end2));
+                                    end1.wire.compslocs.put(end2.getLocation(), emptyDataComponents.get(end2));
+                                    end2.wire = end1.wire;
+                                    emptyDataschecked.add(end2);
+                                }
+                                else{
+                                    end1.wire = new WireBundle();
+                                    end1.wire.points.add(end1.getLocation());
+                                    end1.wire.comps.add(emptyDataComponents.get(end1));
+                                    end1.wire.compslocs.put(end1.getLocation(), emptyDataComponents.get(end1));
+                                    end1.wire.comps.add(emptyDataComponents.get(end1));
+                                    end1.wire.compslocs.put(end2.getLocation(), emptyDataComponents.get(end2));
+                                    end2.wire = end1.wire;
+                                    emptyDataschecked.add(end2);
+                                }
+                            }
                         }
                     }
                 }
             }
-            emptyDatas.remove(end1);
+            emptyDataschecked.add(end1);
         }
     }
 }
