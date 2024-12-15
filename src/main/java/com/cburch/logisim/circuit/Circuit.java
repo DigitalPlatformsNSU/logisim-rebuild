@@ -457,6 +457,8 @@ public class Circuit {
     void buildWireBundles() {
         //for Alexey
         //
+        HashMap<EndData, Component> emptyDataComponents = new HashMap<EndData, Component>();
+        HashSet<EndData> emptyDatas = new HashSet<EndData>();
         HashSet<WireBundle> bundles = this.wires.getBundleMap().bundles;
         for (Component comp : this.comps){
             for(EndData end : comp.getEnds()){
@@ -474,6 +476,7 @@ public class Circuit {
                             else{
                                 if(endLoc == loc){
                                     end.wire = bundle;
+                                    end.wireExist = true;
                                     bundle.comps.add(comp);
                                     bundle.compslocs.put(loc,comp);
                                     flag = 1;
@@ -482,7 +485,37 @@ public class Circuit {
                         }
                     }
                 }
+                if(flag == 0){
+                    emptyDatas.add(end);
+                    emptyDataComponents.put(end, comp);
+                }
             }
+        }
+
+        for(EndData end1 : emptyDatas){
+            for(EndData end2 : emptyDatas){
+                if (!end1.equals(end2)){
+                    if(end1.getLocation().equals(end2.getLocation())){
+                        if(end1.wireExist){
+                            end1.wire.comps.add(emptyDataComponents.get(end2));
+                            end1.wire.compslocs.put(end2.getLocation(), emptyDataComponents.get(end2));
+                            end2.wire = end1.wire;
+                            emptyDatas.remove(end2);
+                        }
+                        else{
+                            end1.wire = new WireBundle();
+                            end1.wire.points.add(end1.getLocation());
+                            end1.wire.comps.add(emptyDataComponents.get(end1));
+                            end1.wire.compslocs.put(end1.getLocation(), emptyDataComponents.get(end1));
+                            end1.wire.comps.add(emptyDataComponents.get(end1));
+                            end1.wire.compslocs.put(end2.getLocation(), emptyDataComponents.get(end2));
+                            end2.wire = end1.wire;
+                            emptyDatas.remove(end2);
+                        }
+                    }
+                }
+            }
+            emptyDatas.remove(end1);
         }
     }
 }
