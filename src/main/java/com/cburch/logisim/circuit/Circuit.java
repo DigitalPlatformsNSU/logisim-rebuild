@@ -474,7 +474,6 @@ public class Circuit {
                             } else {
                                 if (endLoc.equals(loc)) {
                                     end.wire = bundle;
-                                    end.wireExist = true;
                                     bundle.comps.add(comp);
                                     bundle.compslocs.put(loc, comp);
                                     flag = 1;
@@ -496,7 +495,7 @@ public class Circuit {
                     if (!emptyDataschecked.contains(end2)){
                         if (!end1.equals(end2)){
                             if(end1.getLocation().equals(end2.getLocation())){
-                                if(end1.wireExist){
+                                if(end1.wire != null){
                                     end1.wire.comps.add(emptyDataComponents.get(end2));
                                     end1.wire.compslocs.put(end2.getLocation(), emptyDataComponents.get(end2));
                                     end2.wire = end1.wire;
