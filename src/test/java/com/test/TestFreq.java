@@ -121,7 +121,7 @@ public class TestFreq {
 
     @Test
     void testFreqSmallCircuit() throws LoadFailedException {
-        File f = new File(System.getProperty("user.dir") + resources + "Separator.circ");
+        File f = new File(System.getProperty("user.dir") + resources + "test.circ");
         proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
         proj.getSimulator().setTickFrequency(4096);
         proj.getSimulator().addSimulatorListener(new MyListener());
