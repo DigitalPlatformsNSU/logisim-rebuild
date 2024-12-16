@@ -158,6 +158,7 @@ class CircuitWires {
     // derived data
     private Bounds bounds = Bounds.EMPTY_BOUNDS;
     private BundleMap bundleMap = null;
+    boolean flag = false;
 
     CircuitWires() {
     }
@@ -166,7 +167,9 @@ class CircuitWires {
     // query methods
     //
     boolean isMapVoided() {
-        return bundleMap == null;
+        boolean ans = flag;
+        flag = true;
+        return ans;
     }
 
     Set<WidthIncompatibilityData> getWidthIncompatibilityData() {

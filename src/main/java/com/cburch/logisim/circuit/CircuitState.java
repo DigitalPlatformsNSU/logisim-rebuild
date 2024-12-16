@@ -360,7 +360,7 @@ public class CircuitState implements InstanceData {
         dirtyPoints.clear();
         if (circuit.wires.isMapVoided()) {
             try {
-                //we need to put all wireBundles in circuit
+                dirty.addAll(circuit.wires.getBundleMap().bundles);
             } catch (ConcurrentModificationException e) {
                 // try again...
                 try {
