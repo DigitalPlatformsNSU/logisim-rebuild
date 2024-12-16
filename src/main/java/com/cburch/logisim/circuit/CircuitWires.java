@@ -158,7 +158,7 @@ class CircuitWires {
     // derived data
     private Bounds bounds = Bounds.EMPTY_BOUNDS;
     private BundleMap bundleMap = null;
-    boolean flag = false;
+    boolean flag = true;
 
     CircuitWires() {
     }
@@ -168,7 +168,7 @@ class CircuitWires {
     //
     boolean isMapVoided() {
         boolean ans = flag;
-        flag = true;
+        flag = false;
         return ans;
     }
 
