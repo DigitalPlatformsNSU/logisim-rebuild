@@ -44,14 +44,24 @@ public class TestFreq {
         public void propagationCompleted(SimulatorEvent e) {
             ticks++;
             InstanceDataSingleton obj = (InstanceDataSingleton) proj.getCircuitState().getData(led);
-            Value val = (Value) obj.getValue();
-            if (val.equals(Value.TRUE)) {
+            if (obj != null) {
+                Value val = (Value) obj.getValue();
+                if (val.equals(Value.TRUE)) {
+                    flagNotEnd = false;
+                    proj.getSimulator().setIsTicking(false);
+                    synchronized (TestFreq.this) {
+                        TestFreq.this.notify();
+                    }
+                }
+            } else {
                 flagNotEnd = false;
+                proj.getSimulator().setIsTicking(false);
+                synchronized (TestFreq.this) {
+                    TestFreq.this.notify();
+                }
             }
-            proj.getSimulator().setIsTicking(false);
-            synchronized (TestFreq.this) {
-                TestFreq.this.notify();
-            }
+
+
         }
 
         @Override
@@ -93,15 +103,15 @@ public class TestFreq {
     }
 
     double getVerifyFreq() {
-//        flagNotEnd = true;
-//        ticks = 0;
-//        for (Component comp : proj.getCurrentCircuit().getComponents(Location.create(10, 20))){
-//            if (comp.getFactory() instanceof Led) {
-//                led = comp;
-//                break;
-//            }
-//        }
-//        Assertions.assertNotNull(led);
+        flagNotEnd = true;
+        ticks = 0;
+        for (Component comp : proj.getCurrentCircuit().getAllComponents()){
+            if (comp.getFactory() instanceof Led) {
+                led = comp;
+                break;
+            }
+        }
+        Assertions.assertNotNull(led);
 
 
         double time = 0;
@@ -116,7 +126,8 @@ public class TestFreq {
             time += (System.currentTimeMillis() - start);
         } while (flagNotEnd);
         time /= 1000;
-        return ticks / time;
+
+        return ticks/time;
     }
 
     @Test
@@ -153,10 +164,13 @@ public class TestFreq {
     @Test
     void testFreqWithVerification() throws InterruptedException {
         File f = new File(System.getProperty("user.dir") + resources + "fibonacci.circ");
+        double res = 0;
+
         proj = ProjectActions.doOpen(null, null, f);
         proj.getSimulator().setTickFrequency(4096);
         proj.getSimulator().addSimulatorListener(new MyVerifListener());
-        double res = getVerifyFreq();
+        res = getVerifyFreq();
+
         System.out.println("Average ticks in fibonacci circuit = " + res);
         Assertions.assertTrue(res >= 100.0);
     }
