@@ -158,6 +158,7 @@ class CircuitWires {
     // derived data
     private Bounds bounds = Bounds.EMPTY_BOUNDS;
     private BundleMap bundleMap = null;
+    boolean flag = true;
 
     CircuitWires() {
     }
@@ -166,7 +167,9 @@ class CircuitWires {
     // query methods
     //
     boolean isMapVoided() {
-        return bundleMap == null;
+        boolean ans = flag;
+        flag = false;
+        return ans;
     }
 
     Set<WidthIncompatibilityData> getWidthIncompatibilityData() {
@@ -320,7 +323,7 @@ class CircuitWires {
     //
     // utility methods
     //
-    void propagate(CircuitState circState, Set<Location> points) {
+    void propagate(CircuitState circState, Set<WireBundle> points) {
         BundleMap map = getBundleMap();
         HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
 
@@ -341,22 +344,11 @@ class CircuitWires {
         }
 
         // determine affected threads, and set values for unwired points
-        for (Location p : points) {
-            WireBundle pb = map.getBundleAt(p);
-            if (pb == null) { // point is not wired
-                circState.setValueByWire(p, circState.getComponentOutputAt(p));
-            } else {
+        for (WireBundle pb : points) {
+            if (pb != null) {
                 WireThread[] th = pb.threads;
                 if (!pb.isValid() || th == null) {
-                    // immediately propagate NILs across invalid bundles
-                    HashSet<Location> pbPoints = pb.points;
-                    if (pbPoints == null) {
-                        circState.setValueByWire(p, Value.NIL);
-                    } else {
-                        for (Location loc2 : pbPoints) {
-                            circState.setValueByWire(loc2, Value.NIL);
-                        }
-                    }
+                    circState.setValueByWire(pb, Value.NIL);
                 } else {
                     for (WireThread t : th) {
                         dirtyThreads.add(t);
@@ -399,119 +391,119 @@ class CircuitWires {
             }
 
             if (bv != null) {
-                for (Location p : b.points) {
-                    circState.setValueByWire(p, bv);
-                }
+                circState.setValueByWire(b, bv);
+
             }
         }
     }
 
     void draw(ComponentDrawContext context, Collection<Component> hidden) {
-        boolean showState = context.getShowState();
-        CircuitState state = context.getCircuitState();
-        Graphics g = context.getGraphics();
-        g.setColor(Color.BLACK);
-        GraphicsUtil.switchToWidth(g, Wire.WIDTH);
-        WireSet highlighted = context.getHighlightedWires();
-
-        BundleMap bmap = getBundleMap();
-        boolean isValid = bmap.isValid();
-        if (hidden == null || hidden.size() == 0) {
-            for (Wire w : wires) {
-                Location s = w.e0;
-                Location t = w.e1;
-                WireBundle wb = bmap.getBundleAt(s);
-                if (!wb.isValid()) {
-                    g.setColor(Value.WIDTH_ERROR_COLOR);
-                } else if (showState) {
-                    if (!isValid) g.setColor(Value.NIL_COLOR);
-                    else g.setColor(state.getValue(s).getColor());
-                } else {
-                    g.setColor(Color.BLACK);
-                }
-                if (highlighted.containsWire(w)) {
-                    GraphicsUtil.switchToWidth(g, Wire.WIDTH + 2);
-                    g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
-                    GraphicsUtil.switchToWidth(g, Wire.WIDTH);
-                } else {
-                    g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
-                }
-            }
-
-            for (Location loc : points.getSplitLocations()) {
-                if (points.getComponentCount(loc) > 2) {
-                    WireBundle wb = bmap.getBundleAt(loc);
-                    if (wb != null) {
-                        if (!wb.isValid()) {
-                            g.setColor(Value.WIDTH_ERROR_COLOR);
-                        } else if (showState) {
-                            if (!isValid) g.setColor(Value.NIL_COLOR);
-                            else g.setColor(state.getValue(loc).getColor());
-                        } else {
-                            g.setColor(Color.BLACK);
-                        }
-                        if (highlighted.containsLocation(loc)) {
-                            g.fillOval(loc.getX() - 5, loc.getY() - 5, 10, 10);
-                        } else {
-                            g.fillOval(loc.getX() - 4, loc.getY() - 4, 8, 8);
-                        }
-                    }
-                }
-            }
-        } else {
-            for (Wire w : wires) {
-                if (!hidden.contains(w)) {
-                    Location s = w.e0;
-                    Location t = w.e1;
-                    WireBundle wb = bmap.getBundleAt(s);
-                    if (!wb.isValid()) {
-                        g.setColor(Value.WIDTH_ERROR_COLOR);
-                    } else if (showState) {
-                        if (!isValid) g.setColor(Value.NIL_COLOR);
-                        else g.setColor(state.getValue(s).getColor());
-                    } else {
-                        g.setColor(Color.BLACK);
-                    }
-                    if (highlighted.containsWire(w)) {
-                        GraphicsUtil.switchToWidth(g, Wire.WIDTH + 2);
-                        g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
-                        GraphicsUtil.switchToWidth(g, Wire.WIDTH);
-                    } else {
-                        g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
-                    }
-                }
-            }
-
-            // this is just an approximation, but it's good enough since
-            // the problem is minor, and hidden only exists for a short
-            // while at a time anway.
-            for (Location loc : points.getSplitLocations()) {
-                if (points.getComponentCount(loc) > 2) {
-                    int icount = 0;
-                    for (Component comp : points.getComponents(loc)) {
-                        if (!hidden.contains(comp)) ++icount;
-                    }
-                    if (icount > 2) {
-                        WireBundle wb = bmap.getBundleAt(loc);
-                        if (wb != null) {
-                            if (!wb.isValid()) {
-                                g.setColor(Value.WIDTH_ERROR_COLOR);
-                            } else if (showState) {
-                                if (!isValid) g.setColor(Value.NIL_COLOR);
-                                else g.setColor(state.getValue(loc).getColor());
-                            } else {
-                                g.setColor(Color.BLACK);
-                            }
-                            if (highlighted.containsLocation(loc)) {
-                                g.fillOval(loc.getX() - 5, loc.getY() - 5, 10, 10);
-                            } else {
-                                g.fillOval(loc.getX() - 4, loc.getY() - 4, 8, 8);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        return;
+//        boolean showState = context.getShowState();
+//        CircuitState state = context.getCircuitState();
+//        Graphics g = context.getGraphics();
+//        g.setColor(Color.BLACK);
+//        GraphicsUtil.switchToWidth(g, Wire.WIDTH);
+//        WireSet highlighted = context.getHighlightedWires();
+//
+//        BundleMap bmap = getBundleMap();
+//        boolean isValid = bmap.isValid();
+//        if (hidden == null || hidden.size() == 0) {
+//            for (Wire w : wires) {
+//                Location s = w.e0;
+//                Location t = w.e1;
+//                WireBundle wb = bmap.getBundleAt(s);
+//                if (!wb.isValid()) {
+//                    g.setColor(Value.WIDTH_ERROR_COLOR);
+//                } else if (showState) {
+//                    if (!isValid) g.setColor(Value.NIL_COLOR);
+//                    else g.setColor(state.getValue(s).getColor());
+//                } else {
+//                    g.setColor(Color.BLACK);
+//                }
+//                if (highlighted.containsWire(w)) {
+//                    GraphicsUtil.switchToWidth(g, Wire.WIDTH + 2);
+//                    g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
+//                    GraphicsUtil.switchToWidth(g, Wire.WIDTH);
+//                } else {
+//                    g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
+//                }
+//            }
+//
+//            for (Location loc : points.getSplitLocations()) {
+//                if (points.getComponentCount(loc) > 2) {
+//                    WireBundle wb = bmap.getBundleAt(loc);
+//                    if (wb != null) {
+//                        if (!wb.isValid()) {
+//                            g.setColor(Value.WIDTH_ERROR_COLOR);
+//                        } else if (showState) {
+//                            if (!isValid) g.setColor(Value.NIL_COLOR);
+//                            else g.setColor(state.getValue(loc).getColor());
+//                        } else {
+//                            g.setColor(Color.BLACK);
+//                        }
+//                        if (highlighted.containsLocation(loc)) {
+//                            g.fillOval(loc.getX() - 5, loc.getY() - 5, 10, 10);
+//                        } else {
+//                            g.fillOval(loc.getX() - 4, loc.getY() - 4, 8, 8);
+//                        }
+//                    }
+//                }
+//            }
+//        } else {
+//            for (Wire w : wires) {
+//                if (!hidden.contains(w)) {
+//                    Location s = w.e0;
+//                    Location t = w.e1;
+//                    WireBundle wb = bmap.getBundleAt(s);
+//                    if (!wb.isValid()) {
+//                        g.setColor(Value.WIDTH_ERROR_COLOR);
+//                    } else if (showState) {
+//                        if (!isValid) g.setColor(Value.NIL_COLOR);
+//                        else g.setColor(state.getValue(s).getColor());
+//                    } else {
+//                        g.setColor(Color.BLACK);
+//                    }
+//                    if (highlighted.containsWire(w)) {
+//                        GraphicsUtil.switchToWidth(g, Wire.WIDTH + 2);
+//                        g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
+//                        GraphicsUtil.switchToWidth(g, Wire.WIDTH);
+//                    } else {
+//                        g.drawLine(s.getX(), s.getY(), t.getX(), t.getY());
+//                    }
+//                }
+//            }
+//
+//            // this is just an approximation, but it's good enough since
+//            // the problem is minor, and hidden only exists for a short
+//            // while at a time anway.
+//            for (Location loc : points.getSplitLocations()) {
+//                if (points.getComponentCount(loc) > 2) {
+//                    int icount = 0;
+//                    for (Component comp : points.getComponents(loc)) {
+//                        if (!hidden.contains(comp)) ++icount;
+//                    }
+//                    if (icount > 2) {
+//                        WireBundle wb = bmap.getBundleAt(loc);
+//                        if (wb != null) {
+//                            if (!wb.isValid()) {
+//                                g.setColor(Value.WIDTH_ERROR_COLOR);
+//                            } else if (showState) {
+//                                if (!isValid) g.setColor(Value.NIL_COLOR);
+//                                else g.setColor(state.getValue(loc).getColor());
+//                            } else {
+//                                g.setColor(Color.BLACK);
+//                            }
+//                            if (highlighted.containsLocation(loc)) {
+//                                g.fillOval(loc.getX() - 5, loc.getY() - 5, 10, 10);
+//                            } else {
+//                                g.fillOval(loc.getX() - 4, loc.getY() - 4, 8, 8);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     //
@@ -521,7 +513,7 @@ class CircuitWires {
         bundleMap = null;
     }
 
-    private BundleMap getBundleMap() {
+    BundleMap getBundleMap() {
         // Maybe we already have a valid bundle map (or maybe
         // one is in progress).
         BundleMap ret = bundleMap;
@@ -691,7 +683,7 @@ class CircuitWires {
         for (Component comp : tunnels) {
             String label = comp.getAttributeSet().getValue(StdAttr.LABEL);
             label = label.trim();
-            if (!label.equals("")) {
+            if (!label.isEmpty()) {
                 ArrayList<Location> tunnelSet = tunnelSets.get(label);
                 if (tunnelSet == null) {
                     tunnelSet = new ArrayList<Location>(3);

@@ -775,44 +775,44 @@ public class Canvas extends JPanel
 
         viewport.setWidthMessage(Strings.get("canvasWidthError")
                 + (exceptions.size() == 1 ? "" : " (" + exceptions.size() + ")"));
-        for (WidthIncompatibilityData ex : exceptions) {
-            // See whether any of the points are on the canvas.
-            boolean isWithin = false;
-            for (int i = 0; i < ex.size(); i++) {
-                Location p = ex.getPoint(i);
-                int x = p.getX();
-                int y = p.getY();
-                if (x >= viewable.x && x < viewable.x + viewable.width
-                        && y >= viewable.y && y < viewable.y + viewable.height) {
-                    isWithin = true;
-                    break;
-                }
-            }
-
-            // If none are, insert an arrow.
-            if (!isWithin) {
-                Location p = ex.getPoint(0);
-                int x = p.getX();
-                int y = p.getY();
-                boolean isWest = x < viewable.x;
-                boolean isEast = x >= viewable.x + viewable.width;
-                boolean isNorth = y < viewable.y;
-                boolean isSouth = y >= viewable.y + viewable.height;
-
-                if (isNorth) {
-                    if (isEast) viewport.setNortheast(true);
-                    else if (isWest) viewport.setNorthwest(true);
-                    else viewport.setNorth(true);
-                } else if (isSouth) {
-                    if (isEast) viewport.setSoutheast(true);
-                    else if (isWest) viewport.setSouthwest(true);
-                    else viewport.setSouth(true);
-                } else {
-                    if (isEast) viewport.setEast(true);
-                    else if (isWest) viewport.setWest(true);
-                }
-            }
-        }
+//        for (WidthIncompatibilityData ex : exceptions) {
+//            // See whether any of the points are on the canvas.
+//            boolean isWithin = false;
+//            for (int i = 0; i < ex.size(); i++) {
+//                Location p = ex.getPoint(i);
+//                int x = p.getX();
+//                int y = p.getY();
+//                if (x >= viewable.x && x < viewable.x + viewable.width
+//                        && y >= viewable.y && y < viewable.y + viewable.height) {
+//                    isWithin = true;
+//                    break;
+//                }
+//            }
+//
+//            // If none are, insert an arrow.
+//            if (!isWithin) {
+//                Location p = ex.getPoint(0);
+//                int x = p.getX();
+//                int y = p.getY();
+//                boolean isWest = x < viewable.x;
+//                boolean isEast = x >= viewable.x + viewable.width;
+//                boolean isNorth = y < viewable.y;
+//                boolean isSouth = y >= viewable.y + viewable.height;
+//
+//                if (isNorth) {
+//                    if (isEast) viewport.setNortheast(true);
+//                    else if (isWest) viewport.setNorthwest(true);
+//                    else viewport.setNorth(true);
+//                } else if (isSouth) {
+//                    if (isEast) viewport.setSoutheast(true);
+//                    else if (isWest) viewport.setSouthwest(true);
+//                    else viewport.setSouth(true);
+//                } else {
+//                    if (isEast) viewport.setEast(true);
+//                    else if (isWest) viewport.setWest(true);
+//                }
+//            }
+//        }
     }
 
     @Override

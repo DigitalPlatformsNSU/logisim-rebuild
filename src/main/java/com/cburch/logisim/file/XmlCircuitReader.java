@@ -3,10 +3,7 @@
 
 package com.cburch.logisim.file;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.w3c.dom.Element;
 
@@ -44,8 +41,10 @@ public class XmlCircuitReader extends CircuitTransaction {
 
     @Override
     protected void run(CircuitMutator mutator) {
+        ArrayList<Circuit> list = new ArrayList<>();
         for (XmlReader.CircuitData circuitData : circuitsData) {
             buildCircuit(circuitData, mutator);
+            list.add(circuitData.circuit);
         }
     }
 

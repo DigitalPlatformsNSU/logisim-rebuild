@@ -3,12 +3,7 @@
 
 package com.cburch.logisim.circuit;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.EndData;
@@ -61,15 +56,16 @@ class CircuitPoints {
         return null;
     }
 
-    Collection<? extends Component> getComponents(Location loc) {
-        LocationData locData = map.get(loc);
-        if (locData == null) return Collections.emptySet();
-        else return locData.components;
+    Collection<? extends Component> getComponents(WireBundle wire) {
+        return wire.comps;
+        //        LocationData locData = map.get(wire);
+//        if (locData == null) return Collections.emptySet();
+//        else return locData.components;
     }
 
-    Collection<? extends Component> getSplitCauses(Location loc) {
-        return getComponents(loc);
-    }
+//    Collection<? extends Component> getSplitCauses(Location loc) {
+//        return getComponents(loc);
+//    }
 
     Collection<Wire> getWires(Location loc) {
         @SuppressWarnings("unchecked")
