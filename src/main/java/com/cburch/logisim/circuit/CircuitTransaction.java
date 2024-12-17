@@ -53,6 +53,10 @@ public abstract class CircuitTransaction {
                 }
             }
 
+            for (Circuit circuit : modified) {
+                circuit.buildWireBundles();
+            }
+
             result = new CircuitTransactionResult(mutator);
             for (Circuit circuit : result.getModifiedCircuits()) {
                 circuit.fireEvent(CircuitEvent.TRANSACTION_DONE, result);
