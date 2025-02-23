@@ -55,7 +55,7 @@ public class WireBundle {
         }
     }
 
-    BitWidth getWidth() {
+    public BitWidth getWidth() {
         if (incompatibilityData != null) {
             return BitWidth.UNKNOWN;
         } else {

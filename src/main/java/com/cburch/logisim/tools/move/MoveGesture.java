@@ -112,75 +112,73 @@ public class MoveGesture {
 
     private static Set<ConnectionData> computeConnections(Circuit circuit,
                                                           Set<Component> selected) {
-//        if (selected == null || selected.isEmpty()) return Collections.emptySet();
-//
-//        // first identify locations that might be connected
-//        Set<Location> locs = new HashSet<Location>();
-//        for (Component comp : selected) {
-//            for (EndData end : comp.getEnds()) {
-//                locs.add(end.getLocation());
-//            }
-//        }
-//
-//        // now see which of them require connection
-//        Set<ConnectionData> conns = new HashSet<ConnectionData>();
-//        for (Location loc : locs) {
-//            boolean found = false;
-//            for (Component comp : circuit.getComponents(loc)) {
-//                if (!selected.contains(comp)) {
-//                    found = true;
-//                    break;
-//                }
-//            }
-//            if (found) {
-//                List<Wire> wirePath;
-//                Location wirePathStart;
-//                Wire lastOnPath = findWire(circuit, loc, selected, null);
-//                if (lastOnPath == null) {
-//                    wirePath = Collections.emptyList();
-//                    wirePathStart = loc;
-//                } else {
-//                    wirePath = new ArrayList<Wire>();
-//                    Location cur = loc;
-//                    for (Wire w = lastOnPath; w != null; w = findWire(circuit, cur, selected, w)) {
-//                        wirePath.add(w);
-//                        cur = w.getOtherEnd(cur);
-//                    }
-//                    Collections.reverse(wirePath);
-//                    wirePathStart = cur;
-//                }
-//
-//                Direction dir = null;
-//                if (lastOnPath != null) {
-//                    Location other = lastOnPath.getOtherEnd(loc);
-//                    int dx = loc.getX() - other.getX();
-//                    int dy = loc.getY() - other.getY();
-//                    if (Math.abs(dx) > Math.abs(dy)) {
-//                        dir = dx > 0 ? Direction.EAST : Direction.WEST;
-//                    } else {
-//                        dir = dy > 0 ? Direction.SOUTH : Direction.NORTH;
-//                    }
-//                }
-//                conns.add(new ConnectionData(loc, dir, wirePath, wirePathStart));
-//            }
-//        }
-//        return conns;
+        if (selected == null || selected.isEmpty()) return Collections.emptySet();
 
-        return null;
+        // first identify locations that might be connected
+        Set<Location> locs = new HashSet<Location>();
+        for (Component comp : selected) {
+            for (EndData end : comp.getEnds()) {
+                locs.add(end.getLocation());
+            }
+        }
+
+        // now see which of them require connection
+        Set<ConnectionData> conns = new HashSet<ConnectionData>();
+        for (Location loc : locs) {
+            boolean found = false;
+            for (Component comp : circuit.getComponents(loc)) {
+                if (!selected.contains(comp)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                List<Wire> wirePath;
+                Location wirePathStart;
+                Wire lastOnPath = findWire(circuit, loc, selected, null);
+                if (lastOnPath == null) {
+                    wirePath = Collections.emptyList();
+                    wirePathStart = loc;
+                } else {
+                    wirePath = new ArrayList<Wire>();
+                    Location cur = loc;
+                    for (Wire w = lastOnPath; w != null; w = findWire(circuit, cur, selected, w)) {
+                        wirePath.add(w);
+                        cur = w.getOtherEnd(cur);
+                    }
+                    Collections.reverse(wirePath);
+                    wirePathStart = cur;
+                }
+
+                Direction dir = null;
+                if (lastOnPath != null) {
+                    Location other = lastOnPath.getOtherEnd(loc);
+                    int dx = loc.getX() - other.getX();
+                    int dy = loc.getY() - other.getY();
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        dir = dx > 0 ? Direction.EAST : Direction.WEST;
+                    } else {
+                        dir = dy > 0 ? Direction.SOUTH : Direction.NORTH;
+                    }
+                }
+                conns.add(new ConnectionData(loc, dir, wirePath, wirePathStart));
+            }
+        }
+        return conns;
     }
 
     private static Wire findWire(Circuit circ, Location loc,
                                  Set<Component> ignore, Wire ignoreW) {
         Wire ret = null;
-//        for (Component comp : circ.getComponents(loc)) {
-//            if (!ignore.contains(comp) && comp != ignoreW) {
-//                if (ret == null && comp instanceof Wire) {
-//                    ret = (Wire) comp;
-//                } else {
-//                    return null;
-//                }
-//            }
-//        }
+        for (Component comp : circ.getComponents(loc)) {
+            if (!ignore.contains(comp) && comp != ignoreW) {
+                if (ret == null && comp instanceof Wire) {
+                    ret = (Wire) comp;
+                } else {
+                    return null;
+                }
+            }
+        }
         return ret;
     }
 

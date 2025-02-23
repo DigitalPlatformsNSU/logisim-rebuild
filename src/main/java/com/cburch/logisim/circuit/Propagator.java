@@ -258,7 +258,7 @@ public class Propagator {
                     + data.state + " to " + data.val
                     + " by " + data.cause); // */
 
-            if (changedPoints != null) changedPoints.add(state, data.loc);
+            if (changedPoints != null) changedPoints.add(state, data.wire);
 
             // change the information about value
             SetData oldHead = state.causes.get(data.loc);
@@ -321,8 +321,8 @@ public class Propagator {
         clearDirtyComponents();
     } */
 
-    void locationTouched(CircuitState state, Location loc) {
-        if (oscAdding) oscPoints.add(state, loc);
+    void locationTouched(CircuitState state, WireBundle wire) {
+        if (oscAdding) oscPoints.add(state, wire);
     }
 
     //
