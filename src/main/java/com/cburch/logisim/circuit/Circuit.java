@@ -231,6 +231,10 @@ public class Circuit {
         return wires.points.getComponents(wire);
     }
 
+    public Collection<? extends Component> getComponents(Location loc) {
+        return wires.points.getComponents(loc);
+    }
+
     public Collection<? extends Component> getAllComponents() {
         return (HashSet)comps.clone();
     }

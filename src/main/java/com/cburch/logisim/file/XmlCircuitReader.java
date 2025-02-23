@@ -41,10 +41,8 @@ public class XmlCircuitReader extends CircuitTransaction {
 
     @Override
     protected void run(CircuitMutator mutator) {
-        ArrayList<Circuit> list = new ArrayList<>();
         for (XmlReader.CircuitData circuitData : circuitsData) {
             buildCircuit(circuitData, mutator);
-            list.add(circuitData.circuit);
         }
     }
 

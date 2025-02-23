@@ -274,6 +274,16 @@ public class CircuitState implements InstanceData {
         return Value.createUnknown(width);
     }
 
+    public Value getValue(Location pt) {
+        for (WireBundle wire : values.keySet()) {
+            for (Location loc : wire.points) {
+                if (pt.equals(loc)) return values.get(wire);
+            }
+        }
+
+        return Value.createUnknown(circuit.wires.getWidth(pt));
+    }
+
     public void setValue(Location pt, Value val, Component cause, int delay, WireBundle wire) {
         if (base != null) base.setValue(this, pt, val, cause, delay, wire);
     }
@@ -449,7 +459,7 @@ public class CircuitState implements InstanceData {
             // NOTE: this will cause a double-propagation on components
             // whose outputs have just changed.
 
-            //if (found && base != null) base.locationTouched(this, wire);
+            if (found && base != null) base.locationTouched(this, wire);
         }
     }
 

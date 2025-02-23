@@ -319,32 +319,31 @@ public class EditTool extends Tool {
     }
 
     private boolean isWiringPoint(Canvas canvas, Location loc, int modsEx) {
-        return false;
-//        boolean wiring = (modsEx & MouseEvent.ALT_DOWN_MASK) == 0;
-//        boolean select = !wiring;
-//
-//        if (canvas != null && canvas.getSelection() != null) {
-//            Collection<Component> sel = canvas.getSelection().getComponents();
-//            if (sel != null) {
-//                for (Component c : sel) {
-//                    if (c instanceof Wire) {
-//                        Wire w = (Wire) c;
-//                        if (w.contains(loc) && !w.endsAt(loc)) return select;
-//                    }
-//                }
-//            }
-//        }
-//
-//        Circuit circ = canvas.getCircuit();
-//        Collection<? extends Component> at = circ.getComponents(loc);
-//        if (at != null && at.size() > 0) return wiring;
-//
-//        for (Wire w : circ.getWires()) {
-//            if (w.contains(loc)) {
-//                return wiring;
-//            }
-//        }
-//        return select;
+        boolean wiring = (modsEx & MouseEvent.ALT_DOWN_MASK) == 0;
+        boolean select = !wiring;
+
+        if (canvas != null && canvas.getSelection() != null) {
+            Collection<Component> sel = canvas.getSelection().getComponents();
+            if (sel != null) {
+                for (Component c : sel) {
+                    if (c instanceof Wire) {
+                        Wire w = (Wire) c;
+                        if (w.contains(loc) && !w.endsAt(loc)) return select;
+                    }
+                }
+            }
+        }
+
+        Circuit circ = canvas.getCircuit();
+        Collection<? extends Component> at = circ.getComponents(loc);
+        if (at != null && at.size() > 0) return wiring;
+
+        for (Wire w : circ.getWires()) {
+            if (w.contains(loc)) {
+                return wiring;
+            }
+        }
+        return select;
     }
 
     @Override

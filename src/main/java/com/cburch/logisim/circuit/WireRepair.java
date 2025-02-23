@@ -97,45 +97,45 @@ class WireRepair extends CircuitTransaction {
     */
 
     private void doMerges(CircuitMutator mutator) {
-//        MergeSets sets = new MergeSets();
-//        for (Location loc : circuit.wires.points.getSplitLocations()) {
-//            Collection<?> at = circuit.getComponents(loc);
-//            if (at.size() == 2) {
-//                Iterator<?> atit = at.iterator();
-//                Object at0 = atit.next();
-//                Object at1 = atit.next();
-//                if (at0 instanceof Wire && at1 instanceof Wire) {
-//                    Wire w0 = (Wire) at0;
-//                    Wire w1 = (Wire) at1;
-//                    if (w0.isParallel(w1)) {
-//                        sets.merge(w0, w1);
-//                    }
-//                }
-//            }
-//        }
-//
-//        ReplacementMap repl = new ReplacementMap();
-//        for (ArrayList<Wire> mergeSet : sets.getMergeSets()) {
-//            if (mergeSet.size() > 1) {
-//                ArrayList<Location> locs = new ArrayList<Location>(2 * mergeSet.size());
-//                for (Wire w : mergeSet) {
-//                    locs.add(w.getEnd0());
-//                    locs.add(w.getEnd1());
-//                }
-//                Collections.sort(locs);
-//                Location e0 = locs.get(0);
-//                Location e1 = locs.get(locs.size() - 1);
-//                Wire wnew = Wire.create(e0, e1);
-//                Collection<Wire> wset = Collections.singleton(wnew);
-//
-//                for (Wire w : mergeSet) {
-//                    if (!w.equals(wset)) {
-//                        repl.put(w, wset);
-//                    }
-//                }
-//            }
-//        }
-//        mutator.replace(circuit, repl);
+        MergeSets sets = new MergeSets();
+        for (Location loc : circuit.wires.points.getSplitLocations()) {
+            Collection<?> at = circuit.getComponents(loc);
+            if (at.size() == 2) {
+                Iterator<?> atit = at.iterator();
+                Object at0 = atit.next();
+                Object at1 = atit.next();
+                if (at0 instanceof Wire && at1 instanceof Wire) {
+                    Wire w0 = (Wire) at0;
+                    Wire w1 = (Wire) at1;
+                    if (w0.isParallel(w1)) {
+                        sets.merge(w0, w1);
+                    }
+                }
+            }
+        }
+
+        ReplacementMap repl = new ReplacementMap();
+        for (ArrayList<Wire> mergeSet : sets.getMergeSets()) {
+            if (mergeSet.size() > 1) {
+                ArrayList<Location> locs = new ArrayList<Location>(2 * mergeSet.size());
+                for (Wire w : mergeSet) {
+                    locs.add(w.getEnd0());
+                    locs.add(w.getEnd1());
+                }
+                Collections.sort(locs);
+                Location e0 = locs.get(0);
+                Location e1 = locs.get(locs.size() - 1);
+                Wire wnew = Wire.create(e0, e1);
+                Collection<Wire> wset = Collections.singleton(wnew);
+
+                for (Wire w : mergeSet) {
+                    if (!w.equals(wset)) {
+                        repl.put(w, wset);
+                    }
+                }
+            }
+        }
+        mutator.replace(circuit, repl);
     }
 
     private void doOverlaps(CircuitMutator mutator) {

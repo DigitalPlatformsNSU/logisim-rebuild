@@ -63,6 +63,12 @@ class CircuitPoints {
 //        else return locData.components;
     }
 
+    Collection<? extends Component> getComponents(Location loc) {
+        LocationData locData = map.get(loc);
+        if (locData == null) return Collections.emptySet();
+        else return locData.components;
+    }
+
 //    Collection<? extends Component> getSplitCauses(Location loc) {
 //        return getComponents(loc);
 //    }

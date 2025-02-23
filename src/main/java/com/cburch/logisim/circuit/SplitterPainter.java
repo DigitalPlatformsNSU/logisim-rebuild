@@ -41,8 +41,8 @@ class SplitterPainter {
         GraphicsUtil.switchToWidth(g, Wire.WIDTH);
         for (int i = 0, n = attrs.fanout; i < n; i++) {
             if (showState) {
-//                Value val = state.getValue(Location.create(x, y));
-//                g.setColor(val.getColor());
+                Value val = state.getValue(Location.create(x, y));
+                g.setColor(val.getColor());
             }
             g.drawLine(x, y, x + dxEndSpine, y + dyEndSpine);
             x += dx;
