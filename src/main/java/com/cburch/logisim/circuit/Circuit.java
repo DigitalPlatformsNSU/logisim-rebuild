@@ -373,7 +373,6 @@ public class Circuit {
 
         if (c instanceof Wire) {
             Wire w = (Wire) c;
-            if (w.getEnd0().equals(w.getEnd1())) return;
             boolean added = wires.add(w);
             if (!added) return;
         } else {
@@ -506,7 +505,9 @@ public class Circuit {
                             if(end1.getLocation().equals(end2.getLocation())){
                                 if (!emptyDataschecked.contains(end1)){
                                     end1.wire = new WireBundle();
+                                    end2.wire = end1.wire;
                                     end1.wire.setWidth(end1.getWidth(), end1.getLocation());
+                                    end2.wire.setWidth(end1.getWidth(), end1.getLocation());
                                     if (end1.wire.isValid() && end1.wire.threads != null) {
                                         for (int i = 0; i < end1.wire.threads.length; i++) {
                                             WireThread thr = end1.wire.threads[i].find();
@@ -517,6 +518,7 @@ public class Circuit {
                                     emptyDataschecked.add(end1);
                                     bund.add(end1.wire);
                                     end1.wire.points.add(end1.getLocation());
+                                    mutatorAdd(new Wire(end1.getLocation(), end1.getLocation()));
                                 }
                                 end2.wire = end1.wire;
                                 emptyDataschecked.add(end2);

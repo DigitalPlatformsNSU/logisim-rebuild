@@ -68,7 +68,7 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     final boolean is_x_equal;
     WireBundle wire;
 
-    private Wire(Location e0, Location e1) {
+    Wire(Location e0, Location e1) {
         this.is_x_equal = e0.getX() == e1.getX();
         if (is_x_equal) {
             if (e0.getY() > e1.getY()) {
