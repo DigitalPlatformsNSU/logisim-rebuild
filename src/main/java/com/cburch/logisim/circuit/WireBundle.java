@@ -17,21 +17,21 @@ public class WireBundle {
     private Value pullValue = Value.UNKNOWN;
     private WireBundle parent;
     private Location widthDeterminant = null;
-    WireThread[] threads = null;
-    HashSet<Location> points = new HashSet<Location>(); // points bundle hits
+    public WireThread[] threads = null;
+    public HashSet<Location> points = new HashSet<Location>(); // points bundle hits
     HashSet<Component> comps = new HashSet<Component>();
     HashMap<Location, Component> compslocs = new HashMap<Location, Component>();
     private WidthIncompatibilityData incompatibilityData = null;
 
-    WireBundle() {
+    public WireBundle() {
         parent = this;
     }
 
-    boolean isValid() {
+    public boolean isValid() {
         return incompatibilityData == null;
     }
 
-    void setWidth(BitWidth width, Location det) {
+    public void setWidth(BitWidth width, Location det) {
         if (width == BitWidth.UNKNOWN) return;
         if (incompatibilityData != null) {
             incompatibilityData.add(det, width);

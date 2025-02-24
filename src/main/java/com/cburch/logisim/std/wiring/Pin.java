@@ -201,8 +201,8 @@ public class Pin extends InstanceFactory {
         } else {
             PinState state = getState(painter);
             if (attrs.width.getWidth() <= 1) {
-                Value receiving = state.receiving;
-                g.setColor(receiving.getColor());
+                Value sending = state.sending;
+                g.setColor(sending.getColor());
                 g.fillOval(x + 4, y + 4, 13, 13);
 
                 if (attrs.width.getWidth() == 1) {

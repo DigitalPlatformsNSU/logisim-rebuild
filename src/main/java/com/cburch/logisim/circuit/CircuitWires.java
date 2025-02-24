@@ -30,7 +30,7 @@ import com.cburch.logisim.std.wiring.Tunnel;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.IteratorUtil;
 
-class CircuitWires {
+public class CircuitWires {
     static class SplitterData {
         WireBundle[] end_bundle; // PointData associated with each end
 
@@ -39,11 +39,11 @@ class CircuitWires {
         }
     }
 
-    static class ThreadBundle {
+    public static class ThreadBundle {
         int loc;
         WireBundle b;
 
-        ThreadBundle(int loc, WireBundle b) {
+        public ThreadBundle(int loc, WireBundle b) {
             this.loc = loc;
             this.b = b;
         }

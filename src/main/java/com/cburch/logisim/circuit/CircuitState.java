@@ -36,8 +36,7 @@ public class CircuitState implements InstanceData {
                 Component comp = (Component) event.getData();
                 if (comp instanceof Wire) {
                     Wire w = (Wire) comp;
-//                    markPointAsDirty(w.getEnd0());
-//                    markPointAsDirty(w.getEnd1());
+                    markPointAsDirty(w.wire);
                 } else {
                     markComponentAsDirty(comp);
                 }
@@ -55,8 +54,7 @@ public class CircuitState implements InstanceData {
 
                 if (comp instanceof Wire) {
                     Wire w = (Wire) comp;
-//                    markPointAsDirty(w.getEnd0());
-//                    markPointAsDirty(w.getEnd1());
+                    markPointAsDirty(w.wire);
                 } else {
                     if (base != null) base.checkComponentEnds(CircuitState.this, comp);
                     dirtyComponents.remove(comp);
@@ -438,7 +436,7 @@ public class CircuitState implements InstanceData {
         return values.get(wire);
     }
 
-    void setValueByWire(WireBundle wire, Value v) {
+    public void setValueByWire(WireBundle wire, Value v) {
         // for CircuitWires - to set value at point
         boolean changed;
         if (v == Value.NIL) {
