@@ -526,6 +526,18 @@ public class Circuit {
                 }
             }
             if(!emptyDataschecked.contains(end1)){
+                end1.wire = new WireBundle();
+                end1.wire.setWidth(end1.getWidth(), end1.getLocation());
+                if (end1.wire.isValid() && end1.wire.threads != null) {
+                    for (int i = 0; i < end1.wire.threads.length; i++) {
+                        WireThread thr = end1.wire.threads[i].find();
+                        end1.wire.threads[i] = thr;
+                        thr.getBundles().add(new CircuitWires.ThreadBundle(i, end1.wire));
+                    }
+                }
+                emptyDataschecked.add(end1);
+                bund.add(end1.wire);
+                end1.wire.points.add(end1.getLocation());
                 emptyDataschecked.add(end1);
             }
         }
