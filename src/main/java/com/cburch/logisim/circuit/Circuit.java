@@ -497,16 +497,27 @@ public class Circuit {
             }
         }
 
+        HashSet<WireBundle> bund = new HashSet<>();
         for(EndData end1 : emptyDatas){
             if (!emptyDataschecked.contains(end1)){
                 for(EndData end2 : emptyDatas){
                     if (!emptyDataschecked.contains(end2)){
                         if (!end1.equals(end2)){
                             if(end1.getLocation().equals(end2.getLocation())){
-                                if(!emptyDataschecked.contains(end1)){
-                                    Wire wireNew = Wire.create(end1.getLocation(), end2.getLocation());
-                                    mutatorAdd(wireNew);
+                                if (!emptyDataschecked.contains(end1)){
+                                    end1.wire = new WireBundle();
+                                    end2.wire = end1.wire;
+                                    end1.wire.setWidth(end1.getWidth(), end1.getLocation());
+                                    if (end1.wire.isValid() && end1.wire.threads != null) {
+                                        for (int i = 0; i < end1.wire.threads.length; i++) {
+                                            WireThread thr = end1.wire.threads[i].find();
+                                            end1.wire.threads[i] = thr;
+                                            thr.getBundles().add(new CircuitWires.ThreadBundle(i, end1.wire));
+                                        }
+                                    }
                                     emptyDataschecked.add(end1);
+                                    bund.add(end1.wire);
+                                    end1.wire.points.add(end1.getLocation());
                                 }
                                 emptyDataschecked.add(end2);
                             }
@@ -519,6 +530,7 @@ public class Circuit {
             }
         }
         bundles = this.wires.getBundleMap().bundles;
+        bundles.addAll(bund);
         for (Component comp : this.comps) {
             for (EndData end : comp.getEnds()) {
                 Location endLoc = end.getLocation();
