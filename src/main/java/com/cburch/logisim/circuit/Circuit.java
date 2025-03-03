@@ -195,8 +195,8 @@ public class Circuit {
         return wires.getWidthIncompatibilityData();
     }
 
-    public BitWidth getWidth(Location p) {
-        return wires.getWidth(p);
+    public BitWidth getWidth(WireBundle wire) {
+        return wire.getWidth();
     }
 
     public Location getWidthDeterminant(Location p) {
@@ -227,13 +227,21 @@ public class Circuit {
         return comps;
     }
 
+    public Collection<? extends Component> getComponents(WireBundle wire) {
+        return wires.points.getComponents(wire);
+    }
+
     public Collection<? extends Component> getComponents(Location loc) {
         return wires.points.getComponents(loc);
     }
 
-    public Collection<? extends Component> getSplitCauses(Location loc) {
-        return wires.points.getSplitCauses(loc);
+    public Collection<? extends Component> getAllComponents() {
+        return (HashSet)comps.clone();
     }
+
+//    public Collection<? extends Component> getSplitCauses(Location loc) {
+//        return wires.points.getSplitCauses(loc);
+//    }
 
     public Collection<Wire> getWires(Location loc) {
         return wires.points.getWires(loc);
@@ -243,7 +251,7 @@ public class Circuit {
         return wires.points.getNonWires(loc);
     }
 
-    public boolean isConnected(Location loc, Component ignore) {
+    public boolean isConnected(WireBundle loc, Component ignore) {
         for (Component o : wires.points.getComponents(loc)) {
             if (o != ignore) return true;
         }
@@ -365,7 +373,6 @@ public class Circuit {
 
         if (c instanceof Wire) {
             Wire w = (Wire) c;
-            if (w.getEnd0().equals(w.getEnd1())) return;
             boolean added = wires.add(w);
             if (!added) return;
         } else {
@@ -450,5 +457,105 @@ public class Circuit {
     //
     public static boolean isInput(Component comp) {
         return comp.getEnd(0).getType() != EndData.INPUT_ONLY;
+    }
+
+
+    void buildWireBundles() {
+        //for Alexey
+        //
+        HashMap<EndData, Component> emptyDataComponents = new HashMap<EndData, Component>();
+        HashSet<EndData> emptyDatas = new HashSet<EndData>();
+        HashSet<EndData> emptyDataschecked = new HashSet<EndData>();
+        HashSet<WireBundle> bundles = this.wires.getBundleMap().bundles;
+        for (Component comp : this.comps) {
+            for (EndData end : comp.getEnds()) {
+                Location endLoc = end.getLocation();
+                int flag = 0;
+                for (WireBundle bundle : bundles) {
+                    if (flag == 1) {
+                        break;
+                    } else {
+                        for (Location loc : bundle.points) {
+                            if (flag == 1) {
+                                break;
+                            } else {
+                                if (endLoc.equals(loc)) {
+                                    end.wire = bundle;
+                                    bundle.comps.add(comp);
+                                    bundle.compslocs.put(loc, comp);
+                                    flag = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+                if(flag == 0){
+                    emptyDatas.add(end);
+                    emptyDataComponents.put(end, comp);
+                }
+            }
+        }
+
+        HashSet<WireBundle> bund = new HashSet<>();
+        for(EndData end1 : emptyDatas){
+            if (!emptyDataschecked.contains(end1)){
+                for(EndData end2 : emptyDatas){
+                    if (!emptyDataschecked.contains(end2)){
+                        if (!end1.equals(end2)){
+                            if(end1.getLocation().equals(end2.getLocation())){
+                                if (!emptyDataschecked.contains(end1)){
+                                    end1.wire = new WireBundle();
+                                    end2.wire = end1.wire;
+                                    end1.wire.setWidth(end1.getWidth(), end1.getLocation());
+                                    end2.wire.setWidth(end1.getWidth(), end1.getLocation());
+                                    if (end1.wire.isValid() && end1.wire.threads != null) {
+                                        for (int i = 0; i < end1.wire.threads.length; i++) {
+                                            WireThread thr = end1.wire.threads[i].find();
+                                            end1.wire.threads[i] = thr;
+                                            thr.getBundles().add(new CircuitWires.ThreadBundle(i, end1.wire));
+                                        }
+                                    }
+                                    emptyDataschecked.add(end1);
+                                    bund.add(end1.wire);
+                                    end1.wire.points.add(end1.getLocation());
+                                    mutatorAdd(new Wire(end1.getLocation(), end1.getLocation()));
+                                }
+                                end2.wire = end1.wire;
+                                emptyDataschecked.add(end2);
+                            }
+                        }
+                    }
+                }
+            }
+            if(!emptyDataschecked.contains(end1)){
+                emptyDataschecked.add(end1);
+            }
+        }
+        bundles = this.wires.getBundleMap().bundles;
+        bundles.addAll(bund);
+        for (Component comp : this.comps) {
+            for (EndData end : comp.getEnds()) {
+                Location endLoc = end.getLocation();
+                int flag = 0;
+                for (WireBundle bundle : bundles) {
+                    if (flag == 1) {
+                        break;
+                    } else {
+                        for (Location loc : bundle.points) {
+                            if (flag == 1) {
+                                break;
+                            } else {
+                                if (endLoc.equals(loc)) {
+                                    end.wire = bundle;
+                                    bundle.comps.add(comp);
+                                    bundle.compslocs.put(loc, comp);
+                                    flag = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

@@ -3,8 +3,7 @@
 
 package com.cburch.logisim.instance;
 
-import com.cburch.logisim.circuit.Circuit;
-import com.cburch.logisim.circuit.CircuitState;
+import com.cburch.logisim.circuit.*;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.EndData;
 import com.cburch.logisim.data.Attribute;
@@ -12,6 +11,7 @@ import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.proj.Project;
+import com.cburch.logisim.circuit.CircuitWires;
 
 class InstanceStateImpl implements InstanceState {
     private CircuitState circuitState;
@@ -62,18 +62,37 @@ class InstanceStateImpl implements InstanceState {
 
     public Value getPort(int portIndex) {
         EndData data = component.getEnd(portIndex);
-        return circuitState.getValue(data.getLocation());
+        if (data.getWire() == null) {
+            return Value.createUnknown(data.getWidth());
+        }
+        return circuitState.getValue(data.getWire(), data.getWidth());
     }
 
     public boolean isPortConnected(int index) {
         Circuit circ = circuitState.getCircuit();
-        Location loc = component.getEnd(index).getLocation();
+        WireBundle loc = component.getEnd(index).getWire();
+        if (loc == null) {
+            return false;
+        }
         return circ.isConnected(loc, component);
     }
 
     public void setPort(int portIndex, Value value, int delay) {
         EndData end = component.getEnd(portIndex);
-        circuitState.setValue(end.getLocation(), value, component, delay);
+        if (end.wire == null) {
+            end.wire = new WireBundle();
+            end.wire.setWidth(end.getWidth(), end.getLocation());
+            if (end.wire.isValid() && end.wire.threads != null) {
+                for (int i = 0; i < end.wire.threads.length; i++) {
+                    WireThread thr = end.wire.threads[i].find();
+                    end.wire.threads[i] = thr;
+                    thr.getBundles().add(new CircuitWires.ThreadBundle(i, end.wire));
+                }
+            }
+            end.wire.points.add(end.getLocation());
+            circuitState.setValueByWire(end.wire, value);
+        }
+        circuitState.setValue(end.getLocation(), value, component, delay, end.getWire());
     }
 
     public InstanceData getData() {

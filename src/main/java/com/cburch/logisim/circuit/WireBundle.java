@@ -3,30 +3,35 @@
 
 package com.cburch.logisim.circuit;
 
+import java.util.HashMap;
 import java.util.HashSet;
 
+import com.cburch.gray.Components;
+import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
 
-class WireBundle {
+public class WireBundle {
     private BitWidth width = BitWidth.UNKNOWN;
     private Value pullValue = Value.UNKNOWN;
     private WireBundle parent;
     private Location widthDeterminant = null;
-    WireThread[] threads = null;
-    HashSet<Location> points = new HashSet<Location>(); // points bundle hits
+    public WireThread[] threads = null;
+    public HashSet<Location> points = new HashSet<Location>(); // points bundle hits
+    HashSet<Component> comps = new HashSet<Component>();
+    HashMap<Location, Component> compslocs = new HashMap<Location, Component>();
     private WidthIncompatibilityData incompatibilityData = null;
 
-    WireBundle() {
+    public WireBundle() {
         parent = this;
     }
 
-    boolean isValid() {
+    public boolean isValid() {
         return incompatibilityData == null;
     }
 
-    void setWidth(BitWidth width, Location det) {
+    public void setWidth(BitWidth width, Location det) {
         if (width == BitWidth.UNKNOWN) return;
         if (incompatibilityData != null) {
             incompatibilityData.add(det, width);
@@ -50,7 +55,7 @@ class WireBundle {
         }
     }
 
-    BitWidth getWidth() {
+    public BitWidth getWidth() {
         if (incompatibilityData != null) {
             return BitWidth.UNKNOWN;
         } else {

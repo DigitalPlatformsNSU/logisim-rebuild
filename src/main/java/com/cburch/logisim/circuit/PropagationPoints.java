@@ -16,23 +16,23 @@ import com.cburch.logisim.util.GraphicsUtil;
 class PropagationPoints {
     private static class Entry {
         private CircuitState state;
-        private Location loc;
+        private WireBundle wire;
 
-        private Entry(CircuitState state, Location loc) {
+        private Entry(CircuitState state, WireBundle wire) {
             this.state = state;
-            this.loc = loc;
+            this.wire = wire;
         }
 
         @Override
         public boolean equals(Object other) {
             if (!(other instanceof Entry)) return false;
             Entry o = (Entry) other;
-            return state.equals(o.state) && loc.equals(o.loc);
+            return state.equals(o.state) && wire.equals(o.wire);
         }
 
         @Override
         public int hashCode() {
-            return state.hashCode() * 31 + loc.hashCode();
+            return state.hashCode() * 31 + wire.hashCode();
         }
     }
 
@@ -42,8 +42,8 @@ class PropagationPoints {
         this.data = new HashSet<Entry>();
     }
 
-    void add(CircuitState state, Location loc) {
-        data.add(new Entry(state, loc));
+    void add(CircuitState state, WireBundle wire) {
+        data.add(new Entry(state, wire));
     }
 
     void clear() {
@@ -67,8 +67,9 @@ class PropagationPoints {
         GraphicsUtil.switchToWidth(g, 2);
         for (Entry e : data) {
             if (e.state == state) {
-                Location p = e.loc;
-                g.drawOval(p.getX() - 4, p.getY() - 4, 8, 8);
+                for (Location p : e.wire.points) {
+                    g.drawOval(p.getX() - 4, p.getY() - 4, 8, 8);
+                }
             } else if (stateMap.containsKey(e.state)) {
                 CircuitState substate = stateMap.get(e.state);
                 Component subcirc = substate.getSubcircuit();
