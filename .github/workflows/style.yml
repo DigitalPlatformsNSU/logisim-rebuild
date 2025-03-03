@@ -14,16 +14,16 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up JDK
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'corretto'
           java-version: '21'
 
       - name: Cache Gradle dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -33,28 +33,26 @@ jobs:
             ${{ runner.os }}-gradle-
 
       - name: Run Checkstyle
-        run: ./gradlew checkstyleMain checkstyleTest || true  # Не прерывать выполнение при ошибках
+        run: ./gradlew checkstyleMain checkstyleTest || true
 
       - name: Analyze Checkstyle Report
         id: checkstyle_analysis
         run: |
-          # Проверяем на наличие ошибок или предупреждений
           if grep -q "<error " build/reports/checkstyle/main.xml; then
-            echo "Checkstyle warnings/errors found"
-            echo "::set-output name=checkstyle_failed::true"  # Устанавливаем переменную для неуспешного статуса
+            echo "checkstyle_failed=true" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=checkstyle_failed::false"
+            echo "checkstyle_failed=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Mark build as failed if Checkstyle failed
         if: steps.checkstyle_analysis.outputs.checkstyle_failed == 'true'
         run: |
           echo "Marking check as failed due to Checkstyle errors"
-          exit 1  # Устанавливаем статус как неуспешный
+          exit 1
 
       - name: Upload Checkstyle report
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: checkstyle-report
           path: build/reports/checkstyle
