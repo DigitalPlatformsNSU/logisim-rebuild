@@ -37,7 +37,7 @@ public class Threads extends Thread {
     }
 
     public void setValue(Location pt, Value val, Component cause, int delay) {
-        result.add(new Struct(pt, val, cause, delay));
+        result.addElement(new Struct(pt, val, cause, delay));
     }
 
     Vector<Struct> getResult() {
@@ -51,6 +51,7 @@ public class Threads extends Thread {
     @Override
     public void run() {
         Object lock = state.getLock();
+        result = new Vector<Struct>();
         for (Object compObj : toProcess) {
             if (compObj instanceof Component) {
                 Component comp = (Component) compObj;
