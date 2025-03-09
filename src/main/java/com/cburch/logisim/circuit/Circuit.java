@@ -469,6 +469,12 @@ public class Circuit {
         HashSet<WireBundle> bundles = this.wires.getBundleMap().bundles;
         for (Component comp : this.comps) {
             for (EndData end : comp.getEnds()) {
+                end.wire = null;
+            }
+        }
+
+        for (Component comp : this.comps) {
+            for (EndData end : comp.getEnds()) {
                 Location endLoc = end.getLocation();
                 int flag = 0;
                 for (WireBundle bundle : bundles) {

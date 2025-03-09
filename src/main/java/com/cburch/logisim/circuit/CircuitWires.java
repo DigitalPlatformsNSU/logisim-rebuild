@@ -664,13 +664,16 @@ public class CircuitWires {
                 WireBundle b1 = ret.createBundleAt(w.e1);
                 b1.points.add(w.e0);
                 ret.setBundleAt(w.e0, b1);
+                w.wire = b1;
             } else {
                 WireBundle b1 = ret.getBundleAt(w.e1);
                 if (b1 == null) { // t1 doesn't exist
                     b0.points.add(w.e1);
                     ret.setBundleAt(w.e1, b0);
+                    w.wire = b0;
                 } else {
                     b1.unite(b0); // unite b0 and b1
+                    w.wire = b1;
                 }
             }
         }

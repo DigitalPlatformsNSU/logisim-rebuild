@@ -71,27 +71,24 @@ class InstanceStateImpl implements InstanceState {
     public boolean isPortConnected(int index) {
         Circuit circ = circuitState.getCircuit();
         WireBundle loc = component.getEnd(index).getWire();
-        if (loc == null) {
-            return false;
-        }
-        return circ.isConnected(loc, component);
+        return loc != null;
     }
 
     public void setPort(int portIndex, Value value, int delay) {
         EndData end = component.getEnd(portIndex);
-        if (end.wire == null) {
-            end.wire = new WireBundle();
-            end.wire.setWidth(end.getWidth(), end.getLocation());
-            if (end.wire.isValid() && end.wire.threads != null) {
-                for (int i = 0; i < end.wire.threads.length; i++) {
-                    WireThread thr = end.wire.threads[i].find();
-                    end.wire.threads[i] = thr;
-                    thr.getBundles().add(new CircuitWires.ThreadBundle(i, end.wire));
-                }
-            }
-            end.wire.points.add(end.getLocation());
-            circuitState.setValueByWire(end.wire, value);
-        }
+//        if (end.wire == null) {
+//            end.wire = new WireBundle();
+//            end.wire.setWidth(end.getWidth(), end.getLocation());
+//            if (end.wire.isValid() && end.wire.threads != null) {
+//                for (int i = 0; i < end.wire.threads.length; i++) {
+//                    WireThread thr = end.wire.threads[i].find();
+//                    end.wire.threads[i] = thr;
+//                    thr.getBundles().add(new CircuitWires.ThreadBundle(i, end.wire));
+//                }
+//            }
+//            end.wire.points.add(end.getLocation());
+//            circuitState.setValueByWire(end.wire, value);
+//        }
         circuitState.setValue(end.getLocation(), value, component, delay, end.getWire());
     }
 

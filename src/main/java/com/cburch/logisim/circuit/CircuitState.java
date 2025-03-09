@@ -54,7 +54,9 @@ public class CircuitState implements InstanceData {
 
                 if (comp instanceof Wire) {
                     Wire w = (Wire) comp;
-                    markPointAsDirty(w.wire);
+                    for (Component component : w.wire.comps) {
+                        markComponentAsDirty(component);
+                    }
                 } else {
                     if (base != null) base.checkComponentEnds(CircuitState.this, comp);
                     dirtyComponents.remove(comp);
