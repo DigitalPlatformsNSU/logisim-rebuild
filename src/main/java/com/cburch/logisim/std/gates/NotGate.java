@@ -13,6 +13,7 @@ import javax.swing.Icon;
 import com.cburch.logisim.analyze.model.Expression;
 import com.cburch.logisim.analyze.model.Expressions;
 import com.cburch.logisim.circuit.ExpressionComputer;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.TextField;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
@@ -82,6 +83,14 @@ class NotGate extends InstanceFactory {
             if (facing == Direction.WEST) return Bounds.create(0, -9, 30, 18);
             return Bounds.create(-30, -9, 30, 18);
         }
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        Value in = state.getPort(1);
+        Value out = in.not();
+        out = Buffer.repair(state, out);
+        state.setPortThread(0, out, GateAttributes.DELAY, thread);
     }
 
     @Override

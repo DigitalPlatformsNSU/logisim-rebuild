@@ -6,6 +6,7 @@ package com.cburch.logisim.std.plexers;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Attributes;
@@ -104,6 +105,35 @@ public class BitSelector extends InstanceFactory {
         ps[1].setToolTip(Strings.getter("bitSelectorDataTip"));
         ps[2].setToolTip(Strings.getter("bitSelectorSelectTip"));
         instance.setPorts(ps);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        Value data = state.getPort(1);
+        Value select = state.getPort(2);
+        BitWidth groupBits = state.getAttributeValue(GROUP_ATTR);
+        Value group;
+        if (!select.isFullyDefined()) {
+            group = Value.createUnknown(groupBits);
+        } else {
+            int shift = select.toIntValue() * groupBits.getWidth();
+            if (shift >= data.getWidth()) {
+                group = Value.createKnown(groupBits, 0);
+            } else if (groupBits.getWidth() == 1) {
+                group = data.get(shift);
+            } else {
+                Value[] bits = new Value[groupBits.getWidth()];
+                for (int i = 0; i < bits.length; i++) {
+                    if (shift + i >= data.getWidth()) {
+                        bits[i] = Value.FALSE;
+                    } else {
+                        bits[i] = data.get(shift + i);
+                    }
+                }
+                group = Value.create(bits);
+            }
+        }
+        state.setPortThread(0, group, Plexers.DELAY, thread);
     }
 
     @Override

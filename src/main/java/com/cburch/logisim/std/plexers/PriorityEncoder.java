@@ -6,6 +6,7 @@ package com.cburch.logisim.std.plexers;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
@@ -111,6 +112,38 @@ public class PriorityEncoder extends InstanceFactory {
         ps[n + GS].setToolTip(Strings.getter("priorityEncoderGroupSignalTip"));
 
         instance.setPorts(ps);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        BitWidth select = state.getAttributeValue(Plexers.ATTR_SELECT);
+        int n = 1 << select.getWidth();
+        boolean enabled = state.getPort(n + EN_IN) != Value.FALSE;
+
+        int out = -1;
+        Value outDefault;
+        if (enabled) {
+            outDefault = Value.createUnknown(select);
+            for (int i = n - 1; i >= 0; i--) {
+                if (state.getPort(i) == Value.TRUE) {
+                    out = i;
+                    break;
+                }
+            }
+        } else {
+            Object opt = state.getAttributeValue(Plexers.ATTR_DISABLED);
+            Value base = opt == Plexers.DISABLED_ZERO ? Value.FALSE : Value.UNKNOWN;
+            outDefault = Value.repeat(base, select.getWidth());
+        }
+        if (out < 0) {
+            state.setPortThread(n + OUT, outDefault, Plexers.DELAY, thread);
+            state.setPortThread(n + EN_OUT, enabled ? Value.TRUE : Value.FALSE, Plexers.DELAY, thread);
+            state.setPortThread(n + GS, Value.FALSE, Plexers.DELAY, thread);
+        } else {
+            state.setPortThread(n + OUT, Value.createKnown(select, out), Plexers.DELAY, thread);
+            state.setPortThread(n + EN_OUT, Value.FALSE, Plexers.DELAY, thread);
+            state.setPortThread(n + GS, Value.TRUE, Plexers.DELAY, thread);
+        }
     }
 
     @Override

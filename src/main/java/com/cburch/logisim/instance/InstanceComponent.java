@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.cburch.logisim.circuit.CircuitState;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.ComponentDrawContext;
 import com.cburch.logisim.comp.ComponentEvent;
@@ -245,6 +246,11 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
 
     public void propagate(CircuitState state) {
         factory.propagate(state.getInstanceState(this));
+    }
+
+    @Override
+    public void propagate(CircuitState state, Threads thread) {
+        factory.propagate(state.getInstanceState(this), thread);
     }
 
     //

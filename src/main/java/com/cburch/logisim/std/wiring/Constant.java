@@ -12,6 +12,7 @@ import java.util.Map;
 import com.cburch.logisim.analyze.model.Expression;
 import com.cburch.logisim.analyze.model.Expressions;
 import com.cburch.logisim.circuit.ExpressionComputer;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.AbstractAttributeSet;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
@@ -143,6 +144,13 @@ public class Constant extends InstanceFactory {
     protected Object getInstanceFeature(Instance instance, Object key) {
         if (key == ExpressionComputer.class) return new ConstantExpression(instance);
         return super.getInstanceFeature(instance, key);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        BitWidth width = state.getAttributeValue(StdAttr.WIDTH);
+        int value = state.getAttributeValue(ATTR_VALUE).intValue();
+        state.setPortThread(0, Value.createKnown(width, value), 1, thread);
     }
 
     @Override

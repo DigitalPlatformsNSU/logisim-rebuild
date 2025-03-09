@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Arrays;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
@@ -143,6 +144,30 @@ public class DotMatrix extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
+        Object type = state.getAttributeValue(ATTR_INPUT_TYPE);
+        int rows = state.getAttributeValue(ATTR_MATRIX_ROWS).intValue();
+        int cols = state.getAttributeValue(ATTR_MATRIX_COLS).intValue();
+        long clock = state.getTickCount();
+        long persist = clock + state.getAttributeValue(ATTR_PERSIST).intValue();
+
+        State data = getState(state);
+        if (type == INPUT_ROW) {
+            for (int i = 0; i < rows; i++) {
+                data.setRow(i, state.getPort(i), persist);
+            }
+        } else if (type == INPUT_COLUMN) {
+            for (int i = 0; i < cols; i++) {
+                data.setColumn(i, state.getPort(i), persist);
+            }
+        } else if (type == INPUT_SELECT) {
+            data.setSelect(state.getPort(1), state.getPort(0), persist);
+        } else {
+            throw new RuntimeException("unexpected matrix type");
+        }
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
         Object type = state.getAttributeValue(ATTR_INPUT_TYPE);
         int rows = state.getAttributeValue(ATTR_MATRIX_ROWS).intValue();
         int cols = state.getAttributeValue(ATTR_MATRIX_COLS).intValue();

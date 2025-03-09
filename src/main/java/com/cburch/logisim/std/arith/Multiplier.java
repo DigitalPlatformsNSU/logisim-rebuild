@@ -6,6 +6,7 @@ package com.cburch.logisim.std.arith;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -49,6 +50,23 @@ public class Multiplier extends InstanceFactory {
         ps[C_IN].setToolTip(Strings.getter("multiplierCarryInTip"));
         ps[C_OUT].setToolTip(Strings.getter("multiplierCarryOutTip"));
         setPorts(ps);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        // get attributes
+        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
+
+        // compute outputs
+        Value a = state.getPort(IN0);
+        Value b = state.getPort(IN1);
+        Value c_in = state.getPort(C_IN);
+        Value[] outs = Multiplier.computeProduct(dataWidth, a, b, c_in);
+
+        // propagate them
+        int delay = dataWidth.getWidth() * (dataWidth.getWidth() + 2) * PER_DELAY;
+        state.setPortThread(OUT, outs[0], delay, thread);
+        state.setPortThread(C_OUT, outs[1], delay, thread);
     }
 
     @Override

@@ -12,6 +12,7 @@ import javax.swing.Icon;
 
 import com.cburch.logisim.LogisimVersion;
 import com.cburch.logisim.circuit.CircuitState;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.AbstractComponentFactory;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.ComponentDrawContext;
@@ -286,6 +287,8 @@ public abstract class InstanceFactory extends AbstractComponentFactory {
     public abstract void paintInstance(InstancePainter painter);
 
     public abstract void propagate(InstanceState state);
+
+    public abstract void propagate(InstanceState state, Threads thread);
 
     // event methods
     protected void configureNewInstance(Instance instance) {

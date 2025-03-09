@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Arrays;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.Attributes;
@@ -75,6 +76,72 @@ public class Shifter extends InstanceFactory {
         ps[IN1].setToolTip(Strings.getter("shifterDistanceTip"));
         ps[OUT].setToolTip(Strings.getter("shifterOutputTip"));
         instance.setPorts(ps);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        // compute output
+        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
+        int bits = dataWidth == null ? 32 : dataWidth.getWidth();
+        Value vx = state.getPort(IN0);
+        Value vd = state.getPort(IN1);
+        Value vy; // y will by x shifted by d
+        if (vd.isFullyDefined() && vx.getWidth() == bits) {
+            int d = vd.toIntValue();
+            Object shift = state.getAttributeValue(ATTR_SHIFT);
+            if (d == 0) {
+                vy = vx;
+            } else if (vx.isFullyDefined()) {
+                int x = vx.toIntValue();
+                int y;
+                if (shift == SHIFT_LOGICAL_RIGHT) {
+                    y = x >>> d;
+                } else if (shift == SHIFT_ARITHMETIC_RIGHT) {
+                    if (d >= bits) d = bits - 1;
+                    y = x >> d | ((x << (32 - bits)) >> (32 - bits + d));
+                } else if (shift == SHIFT_ROLL_RIGHT) {
+                    if (d >= bits) d -= bits;
+                    y = (x >>> d) | (x << (bits - d));
+                } else if (shift == SHIFT_ROLL_LEFT) {
+                    if (d >= bits) d -= bits;
+                    y = (x << d) | (x >>> (bits - d));
+                } else { // SHIFT_LOGICAL_LEFT
+                    y = x << d;
+                }
+                vy = Value.createKnown(dataWidth, y);
+            } else {
+                Value[] x = vx.getAll();
+                Value[] y = new Value[bits];
+                if (shift == SHIFT_LOGICAL_RIGHT) {
+                    if (d >= bits) d = bits;
+                    System.arraycopy(x, d, y, 0, bits - d);
+                    Arrays.fill(y, bits - d, bits, Value.FALSE);
+                } else if (shift == SHIFT_ARITHMETIC_RIGHT) {
+                    if (d >= bits) d = bits;
+                    System.arraycopy(x, d, y, 0, x.length - d);
+                    Arrays.fill(y, bits - d, y.length, x[bits - 1]);
+                } else if (shift == SHIFT_ROLL_RIGHT) {
+                    if (d >= bits) d -= bits;
+                    System.arraycopy(x, d, y, 0, bits - d);
+                    System.arraycopy(x, 0, y, bits - d, d);
+                } else if (shift == SHIFT_ROLL_LEFT) {
+                    if (d >= bits) d -= bits;
+                    System.arraycopy(x, x.length - d, y, 0, d);
+                    System.arraycopy(x, 0, y, d, bits - d);
+                } else { // SHIFT_LOGICAL_LEFT
+                    if (d >= bits) d = bits;
+                    Arrays.fill(y, 0, d, Value.FALSE);
+                    System.arraycopy(x, 0, y, d, bits - d);
+                }
+                vy = Value.create(y);
+            }
+        } else {
+            vy = Value.createError(dataWidth);
+        }
+
+        // propagate them
+        int delay = dataWidth.getWidth() * (3 * Adder.PER_DELAY);
+        state.setPortThread(OUT, vy, delay, thread);
     }
 
     @Override

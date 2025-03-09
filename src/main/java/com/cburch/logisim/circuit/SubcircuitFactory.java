@@ -209,6 +209,29 @@ public class SubcircuitFactory extends InstanceFactory {
     }
 
     @Override
+    public void propagate(InstanceState superState, Threads thread) {
+        CircuitState subState = getSubstate(superState);
+
+        CircuitAttributes attrs = (CircuitAttributes) superState.getAttributeSet();
+        Instance[] pins = attrs.getPinInstances();
+        for (int i = 0; i < pins.length; i++) {
+            Instance pin = pins[i];
+            InstanceState pinState = subState.getInstanceState(pin);
+            if (Pin.FACTORY.isInputPin(pin)) {
+                Value newVal = superState.getPort(i);
+                Value oldVal = Pin.FACTORY.getValue(pinState);
+                if (!newVal.equals(oldVal)) {
+                    Pin.FACTORY.setValue(pinState, newVal);
+                    Pin.FACTORY.propagate(pinState);
+                }
+            } else { // it is output-only
+                Value val = pinState.getPort(0);
+                superState.setPortThread(i, val, 1, thread);
+            }
+        }
+    }
+
+    @Override
     public void propagate(InstanceState superState) {
         CircuitState subState = getSubstate(superState);
 

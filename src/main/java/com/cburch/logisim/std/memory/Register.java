@@ -6,6 +6,7 @@ package com.cburch.logisim.std.memory;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -64,6 +65,28 @@ public class Register extends InstanceFactory {
         instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT,
                 bds.getX() + bds.getWidth() / 2, bds.getY() - 3,
                 GraphicsUtil.H_CENTER, GraphicsUtil.V_BASELINE);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        RegisterData data = (RegisterData) state.getData();
+        if (data == null) {
+            data = new RegisterData();
+            state.setData(data);
+        }
+
+        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
+        Object triggerType = state.getAttributeValue(StdAttr.TRIGGER);
+        boolean triggered = data.updateClock(state.getPort(CK), triggerType);
+
+        if (state.getPort(CLR) == Value.TRUE) {
+            data.value = 0;
+        } else if (triggered && state.getPort(EN) != Value.FALSE) {
+            Value in = state.getPort(IN);
+            if (in.isFullyDefined()) data.value = in.toIntValue();
+        }
+
+        state.setPortThread(OUT, Value.createKnown(dataWidth, data.value), DELAY, thread);
     }
 
     @Override

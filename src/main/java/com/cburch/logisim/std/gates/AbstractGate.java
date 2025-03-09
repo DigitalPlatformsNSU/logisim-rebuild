@@ -14,6 +14,7 @@ import com.cburch.logisim.LogisimVersion;
 import com.cburch.logisim.analyze.model.Expression;
 import com.cburch.logisim.analyze.model.Expressions;
 import com.cburch.logisim.circuit.ExpressionComputer;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.TextField;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
@@ -420,6 +421,43 @@ abstract class AbstractGate extends InstanceFactory {
             ports[i + 1] = new Port(offs.getX(), offs.getY(), Port.INPUT, StdAttr.WIDTH);
         }
         instance.setPorts(ports);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        GateAttributes attrs = (GateAttributes) state.getAttributeSet();
+        int inputCount = attrs.inputs;
+        int negated = attrs.negated;
+        AttributeSet opts = state.getProject().getOptions().getAttributeSet();
+        boolean errorIfUndefined = opts.getValue(Options.ATTR_GATE_UNDEFINED)
+                .equals(Options.GATE_UNDEFINED_ERROR);
+
+        Value[] inputs = new Value[inputCount];
+        int numInputs = 0;
+        boolean error = false;
+        for (int i = 1; i <= inputCount; i++) {
+            if (state.isPortConnected(i)) {
+                int negatedBit = (negated >> (i - 1)) & 1;
+                if (negatedBit == 1) {
+                    inputs[numInputs] = state.getPort(i).not();
+                } else {
+                    inputs[numInputs] = state.getPort(i);
+                }
+                numInputs++;
+            } else {
+                if (errorIfUndefined) {
+                    error = true;
+                }
+            }
+        }
+        Value out = null;
+        if (numInputs == 0 || error) {
+            out = Value.createError(attrs.width);
+        } else {
+            out = computeOutput(inputs, numInputs, state);
+            out = pullOutput(out, attrs.out);
+        }
+        state.setPortThread(0, out, GateAttributes.DELAY, thread);
     }
 
     @Override

@@ -5,6 +5,7 @@ package com.cburch.logisim.std.arith;
 
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Attributes;
@@ -101,6 +102,45 @@ public class BitAdder extends InstanceFactory {
         int outWidth = 1;
         while ((1 << outWidth) <= maxBits) outWidth++;
         return outWidth;
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        int width = state.getAttributeValue(StdAttr.WIDTH).getWidth();
+        int inputs = state.getAttributeValue(NUM_INPUTS).intValue();
+
+        // compute the number of 1 bits
+        int minCount = 0; // number that are definitely 1
+        int maxCount = 0; // number that are definitely not 0 (incl X/Z)
+        for (int i = 1; i <= inputs; i++) {
+            Value v = state.getPort(i);
+            Value[] bits = v.getAll();
+            for (int j = 0; j < bits.length; j++) {
+                Value b = bits[j];
+                if (b == Value.TRUE) minCount++;
+                if (b != Value.FALSE) maxCount++;
+            }
+        }
+
+        // compute which output bits should be error bits
+        int unknownMask = 0;
+        for (int i = minCount + 1; i <= maxCount; i++) {
+            unknownMask |= (minCount ^ i);
+        }
+
+        Value[] out = new Value[computeOutputBits(width, inputs)];
+        for (int i = 0; i < out.length; i++) {
+            if (((unknownMask >> i) & 1) != 0) {
+                out[i] = Value.ERROR;
+            } else if (((minCount >> i) & 1) != 0) {
+                out[i] = Value.TRUE;
+            } else {
+                out[i] = Value.FALSE;
+            }
+        }
+
+        int delay = out.length * Adder.PER_DELAY;
+        state.setPortThread(0, Value.create(out), delay, thread);
     }
 
     @Override

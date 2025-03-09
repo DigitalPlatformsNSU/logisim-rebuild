@@ -15,6 +15,7 @@ import javax.swing.SwingUtilities;
 
 import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.circuit.RadixOption;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.EndData;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
@@ -251,6 +252,31 @@ public class Pin extends InstanceFactory {
             port.setToolTip(Strings.getter("pinInputToolTip"));
         }
         instance.setPorts(new Port[]{port});
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        PinAttributes attrs = (PinAttributes) state.getAttributeSet();
+        Value val = state.getPort(0);
+
+        PinState q = getState(state);
+        if (attrs.type == EndData.OUTPUT_ONLY) {
+            q.sending = val;
+            q.receiving = val;
+            state.setPortThread(0, Value.createUnknown(attrs.width), 1, thread);
+        } else {
+            if (!val.isFullyDefined() && !attrs.threeState
+                    && state.isCircuitRoot()) {
+                q.sending = pull2(q.sending, attrs.width);
+                q.receiving = pull2(val, attrs.width);
+                state.setPortThread(0, q.sending, 1, thread);
+            } else {
+                q.receiving = val;
+                if (!val.equals(q.sending)) { // ignore if no change
+                    state.setPortThread(0, q.sending, 1, thread);
+                }
+            }
+        }
     }
 
     @Override

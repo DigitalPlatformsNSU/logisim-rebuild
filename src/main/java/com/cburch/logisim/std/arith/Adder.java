@@ -6,6 +6,7 @@ package com.cburch.logisim.std.arith;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -52,6 +53,23 @@ public class Adder extends InstanceFactory {
         ps[C_IN].setToolTip(Strings.getter("adderCarryInTip"));
         ps[C_OUT].setToolTip(Strings.getter("adderCarryOutTip"));
         setPorts(ps);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        // get attributes
+        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
+
+        // compute outputs
+        Value a = state.getPort(IN0);
+        Value b = state.getPort(IN1);
+        Value c_in = state.getPort(C_IN);
+        Value[] outs = Adder.computeSum(dataWidth, a, b, c_in);
+
+        // propagate them
+        int delay = (dataWidth.getWidth() + 2) * PER_DELAY;
+        state.setPortThread(OUT, outs[0], delay, thread);
+        state.setPortThread(C_OUT, outs[1], delay, thread);
     }
 
     @Override

@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.Bounds;
@@ -86,6 +87,44 @@ abstract class AbstractFlipFlop extends InstanceFactory {
         instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT,
                 bds.getX() + bds.getWidth() / 2, bds.getY() - 3,
                 GraphicsUtil.H_CENTER, GraphicsUtil.V_BASELINE);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        boolean changed = false;
+        StateData data = (StateData) state.getData();
+        if (data == null) {
+            changed = true;
+            data = new StateData();
+            state.setData(data);
+        }
+
+        int n = getPorts().size() - STD_PORTS;
+        Object triggerType = state.getAttributeValue(triggerAttribute);
+        boolean triggered = data.updateClock(state.getPort(n), triggerType);
+
+        if (state.getPort(n + 3) == Value.TRUE) { // clear requested
+            changed |= data.curValue != Value.FALSE;
+            data.curValue = Value.FALSE;
+        } else if (state.getPort(n + 4) == Value.TRUE) { // preset requested
+            changed |= data.curValue != Value.TRUE;
+            data.curValue = Value.TRUE;
+        } else if (triggered && state.getPort(n + 5) != Value.FALSE) {
+            // Clock has triggered and flip-flop is enabled: Update the state
+            Value[] inputs = new Value[n];
+            for (int i = 0; i < n; i++) {
+                inputs[i] = state.getPort(i);
+            }
+
+            Value newVal = computeValue(inputs, data.curValue);
+            if (newVal == Value.TRUE || newVal == Value.FALSE) {
+                changed |= data.curValue != newVal;
+                data.curValue = newVal;
+            }
+        }
+
+        state.setPortThread(n + 1, data.curValue, Memory.DELAY, thread);
+        state.setPortThread(n + 2, data.curValue.not(), Memory.DELAY, thread);
     }
 
     @Override

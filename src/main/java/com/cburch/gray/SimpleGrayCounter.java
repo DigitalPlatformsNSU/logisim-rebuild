@@ -3,6 +3,7 @@
 
 package com.cburch.gray;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Direction;
@@ -33,6 +34,25 @@ class SimpleGrayCounter extends InstanceFactory {
                 new Port(-30, 0, Port.INPUT, 1),
                 new Port(0, 0, Port.OUTPUT, BIT_WIDTH.getWidth()),
         });
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        // Here I retrieve the state associated with this component via a helper
+        // method. In this case, the state is in a CounterData object, which is
+        // also where the helper method is defined. This helper method will end
+        // up creating a CounterData object if one doesn't already exist.
+        CounterData cur = CounterData.get(state, BIT_WIDTH);
+
+        boolean trigger = cur.updateClock(state.getPort(0));
+        if (trigger) cur.setValue(GrayIncrementer.nextGray(cur.getValue()));
+        state.setPortThread(1, cur.getValue(), 9, thread);
+
+        // (You might be tempted to determine the counter's current value
+        // via state.getPort(1). This is erroneous, though, because another
+        // component may be pushing a value onto the same point, which would
+        // "corrupt" the value found there. We really do need to store the
+        // current value in the instance.)
     }
 
     @Override

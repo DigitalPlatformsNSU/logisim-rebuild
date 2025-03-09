@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.TextField;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
@@ -163,6 +164,11 @@ public class Tunnel extends InstanceFactory {
     @Override
     public void propagate(InstanceState state) {
         ; // nothing to do - handled by circuit
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+
     }
 
     //

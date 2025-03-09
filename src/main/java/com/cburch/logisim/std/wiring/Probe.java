@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.cburch.logisim.circuit.RadixOption;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.TextField;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
@@ -185,6 +186,32 @@ public class Probe extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
+        StateData oldData = (StateData) state.getData();
+        Value oldValue = oldData == null ? Value.NIL : oldData.curValue;
+        Value newValue = state.getPort(0);
+        boolean same = oldValue == null ? newValue == null : oldValue.equals(newValue);
+        if (!same) {
+            if (oldData == null) {
+                oldData = new StateData();
+                oldData.curValue = newValue;
+                state.setData(oldData);
+            } else {
+                oldData.curValue = newValue;
+            }
+            int oldWidth = oldValue == null ? 1 : oldValue.getBitWidth().getWidth();
+            int newWidth = newValue.getBitWidth().getWidth();
+            if (oldWidth != newWidth) {
+                ProbeAttributes attrs = (ProbeAttributes) state.getAttributeSet();
+                attrs.width = newValue.getBitWidth();
+                state.getInstance().recomputeBounds();
+                configureLabel(state.getInstance());
+            }
+            state.fireInvalidated();
+        }
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
         StateData oldData = (StateData) state.getData();
         Value oldValue = oldData == null ? Value.NIL : oldData.curValue;
         Value newValue = state.getPort(0);

@@ -3,6 +3,7 @@
 
 package com.cburch.logisim.std.arith;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.Attributes;
@@ -51,6 +52,58 @@ public class Comparator extends InstanceFactory {
         ps[EQ].setToolTip(Strings.getter("comparatorEqualTip"));
         ps[LT].setToolTip(Strings.getter("comparatorLessTip"));
         setPorts(ps);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        // get attributes
+        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
+
+        // compute outputs
+        Value gt = Value.FALSE;
+        Value eq = Value.TRUE;
+        Value lt = Value.FALSE;
+
+        Value a = state.getPort(IN0);
+        Value b = state.getPort(IN1);
+        Value[] ax = a.getAll();
+        Value[] bx = b.getAll();
+        int maxlen = Math.max(ax.length, bx.length);
+        for (int pos = maxlen - 1; pos >= 0; pos--) {
+            Value ab = pos < ax.length ? ax[pos] : Value.ERROR;
+            Value bb = pos < bx.length ? bx[pos] : Value.ERROR;
+            if (pos == ax.length - 1 && ab != bb) {
+                Object mode = state.getAttributeValue(MODE_ATTRIBUTE);
+                if (mode != UNSIGNED_OPTION) {
+                    Value t = ab;
+                    ab = bb;
+                    bb = t;
+                }
+            }
+
+            if (ab == Value.ERROR || bb == Value.ERROR) {
+                gt = Value.ERROR;
+                eq = Value.ERROR;
+                lt = Value.ERROR;
+                break;
+            } else if (ab == Value.UNKNOWN || bb == Value.UNKNOWN) {
+                gt = Value.UNKNOWN;
+                eq = Value.UNKNOWN;
+                lt = Value.UNKNOWN;
+                break;
+            } else if (ab != bb) {
+                eq = Value.FALSE;
+                if (ab == Value.TRUE) gt = Value.TRUE;
+                else lt = Value.TRUE;
+                break;
+            }
+        }
+
+        // propagate them
+        int delay = (dataWidth.getWidth() + 2) * Adder.PER_DELAY;
+        state.setPortThread(GT, gt, delay, thread);
+        state.setPortThread(EQ, eq, delay, thread);
+        state.setPortThread(LT, lt, delay, thread);
     }
 
     @Override

@@ -5,6 +5,7 @@ package com.cburch.logisim.std.memory;
 
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Attributes;
@@ -128,6 +129,35 @@ public class ShiftRegister extends InstanceFactory {
             data.setDimensions(width, length);
         }
         return data;
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        Object triggerType = state.getAttributeValue(StdAttr.EDGE_TRIGGER);
+        boolean parallel = state.getAttributeValue(ATTR_LOAD).booleanValue();
+        ShiftRegisterData data = getData(state);
+        int len = data.getLength();
+
+        boolean triggered = data.updateClock(state.getPort(CK), triggerType);
+        if (state.getPort(CLR) == Value.TRUE) {
+            data.clear();
+        } else if (triggered) {
+            if (parallel && state.getPort(LD) == Value.TRUE) {
+                data.clear();
+                for (int i = len - 1; i >= 0; i--) {
+                    data.push(state.getPort(6 + 2 * i));
+                }
+            } else if (state.getPort(SH) != Value.FALSE) {
+                data.push(state.getPort(IN));
+            }
+        }
+
+        state.setPortThread(OUT, data.get(0), 4, thread);
+        if (parallel) {
+            for (int i = 0; i < len; i++) {
+                state.setPortThread(6 + 2 * i + 1, data.get(len - 1 - i), 4, thread);
+            }
+        }
     }
 
     @Override

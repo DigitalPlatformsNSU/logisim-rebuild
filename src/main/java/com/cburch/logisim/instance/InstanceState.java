@@ -3,6 +3,7 @@
 
 package com.cburch.logisim.instance;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Value;
@@ -24,6 +25,8 @@ public interface InstanceState {
     public boolean isPortConnected(int portIndex);
 
     public void setPort(int portIndex, Value value, int delay);
+
+    public void setPortThread(int portIndex, Value value, int delay, Threads thread);
 
     public InstanceData getData();
 

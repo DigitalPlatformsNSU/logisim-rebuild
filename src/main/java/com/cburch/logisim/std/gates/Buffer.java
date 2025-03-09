@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.cburch.logisim.analyze.model.Expression;
 import com.cburch.logisim.circuit.ExpressionComputer;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
@@ -50,6 +51,13 @@ class Buffer extends InstanceFactory {
         if (facing == Direction.NORTH) return Bounds.create(-9, 0, 18, 20);
         if (facing == Direction.WEST) return Bounds.create(0, -9, 20, 18);
         return Bounds.create(-20, -9, 20, 18);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        Value in = state.getPort(1);
+        in = Buffer.repair(state, in);
+        state.setPortThread(0, in, GateAttributes.DELAY, thread);
     }
 
     @Override

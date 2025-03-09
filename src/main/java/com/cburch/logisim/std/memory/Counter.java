@@ -6,6 +6,7 @@ package com.cburch.logisim.std.memory;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
@@ -87,6 +88,81 @@ public class Counter extends InstanceFactory {
         instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT,
                 bds.getX() + bds.getWidth() / 2, bds.getY() - 3,
                 GraphicsUtil.H_CENTER, GraphicsUtil.V_BASELINE);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        RegisterData data = (RegisterData) state.getData();
+        if (data == null) {
+            data = new RegisterData();
+            state.setData(data);
+        }
+
+        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
+        Object triggerType = state.getAttributeValue(StdAttr.EDGE_TRIGGER);
+        int max = state.getAttributeValue(ATTR_MAX).intValue();
+        Value clock = state.getPort(CK);
+        boolean triggered = data.updateClock(clock, triggerType);
+
+        Value newValue;
+        boolean carry;
+        if (state.getPort(CLR) == Value.TRUE) {
+            newValue = Value.createKnown(dataWidth, 0);
+            carry = false;
+        } else {
+            boolean ld = state.getPort(LD) == Value.TRUE;
+            boolean ct = state.getPort(CT) != Value.FALSE;
+            int oldVal = data.value;
+            int newVal;
+            if (!triggered) {
+                newVal = oldVal;
+            } else if (ct) { // trigger, enable = 1: should increment or decrement
+                int goal = ld ? 0 : max;
+                if (oldVal == goal) {
+                    Object onGoal = state.getAttributeValue(ATTR_ON_GOAL);
+                    if (onGoal == ON_GOAL_WRAP) {
+                        newVal = ld ? max : 0;
+                    } else if (onGoal == ON_GOAL_STAY) {
+                        newVal = oldVal;
+                    } else if (onGoal == ON_GOAL_LOAD) {
+                        Value in = state.getPort(IN);
+                        newVal = in.isFullyDefined() ? in.toIntValue() : 0;
+                        if (newVal > max) newVal &= max;
+                    } else if (onGoal == ON_GOAL_CONT) {
+                        newVal = ld ? oldVal - 1 : oldVal + 1;
+                    } else {
+                        System.err.println("Invalid goal attribute " + onGoal); //OK
+                        newVal = ld ? max : 0;
+                    }
+                } else {
+                    newVal = ld ? oldVal - 1 : oldVal + 1;
+                }
+            } else if (ld) { // trigger, enable = 0, load = 1: should load
+                Value in = state.getPort(IN);
+                newVal = in.isFullyDefined() ? in.toIntValue() : 0;
+                if (newVal > max) newVal &= max;
+            } else { // trigger, enable = 0, load = 0: no change
+                newVal = oldVal;
+            }
+            newValue = Value.createKnown(dataWidth, newVal);
+            newVal = newValue.toIntValue();
+            carry = newVal == (ld && ct ? 0 : max);
+            /* I would want this if I were worried about the carry signal
+             * outrunning the clock. But the component's delay should be
+             * enough to take care of it.
+            if (carry) {
+                if (triggerType == StdAttr.TRIG_FALLING) {
+                    carry = clock == Value.TRUE;
+                } else {
+                    carry = clock == Value.FALSE;
+                }
+            }
+            */
+        }
+
+        data.value = newValue.toIntValue();
+        state.setPortThread(OUT, newValue, DELAY, thread);
+        state.setPortThread(CARRY, carry ? Value.TRUE : Value.FALSE, DELAY, thread);
     }
 
     @Override

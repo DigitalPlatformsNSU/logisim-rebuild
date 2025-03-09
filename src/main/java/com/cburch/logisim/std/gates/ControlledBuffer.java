@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.Icon;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.ComponentFactory;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
@@ -203,6 +204,32 @@ class ControlledBuffer extends InstanceFactory {
         ports[1] = new Port(loc1.getX(), loc1.getY(), Port.INPUT, StdAttr.WIDTH);
         ports[2] = new Port(loc2.getX(), loc2.getY(), Port.INPUT, 1);
         instance.setPorts(ports);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        Value control = state.getPort(2);
+        BitWidth width = state.getAttributeValue(StdAttr.WIDTH);
+        if (control == Value.TRUE) {
+            Value in = state.getPort(1);
+            state.setPortThread(0, isInverter ? in.not() : in, GateAttributes.DELAY, thread);
+        } else if (control == Value.ERROR || control == Value.UNKNOWN) {
+            state.setPortThread(0, Value.createError(width), GateAttributes.DELAY, thread);
+        } else {
+            Value out;
+            if (control == Value.UNKNOWN || control == Value.NIL) {
+                AttributeSet opts = state.getProject().getOptions().getAttributeSet();
+                if (opts.getValue(Options.ATTR_GATE_UNDEFINED)
+                        .equals(Options.GATE_UNDEFINED_ERROR)) {
+                    out = Value.createError(width);
+                } else {
+                    out = Value.createUnknown(width);
+                }
+            } else {
+                out = Value.createUnknown(width);
+            }
+            state.setPortThread(0, out, GateAttributes.DELAY, thread);
+        }
     }
 
     @Override

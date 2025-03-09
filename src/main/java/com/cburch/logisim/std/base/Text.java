@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.Rectangle;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.TextField;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
@@ -174,5 +175,10 @@ public class Text extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+
     }
 }

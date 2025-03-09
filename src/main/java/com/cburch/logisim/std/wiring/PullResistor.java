@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.Icon;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
@@ -164,6 +165,11 @@ public class PullResistor extends InstanceFactory {
     @Override
     public void propagate(InstanceState state) {
         ; // nothing to do - handled by CircuitWires
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+
     }
 
     public static Value getPullValue(Instance instance) {

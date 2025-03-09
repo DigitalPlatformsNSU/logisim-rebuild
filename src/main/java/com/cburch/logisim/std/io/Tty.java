@@ -8,6 +8,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Attributes;
@@ -90,6 +91,31 @@ public class Tty extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState circState) {
+        Object trigger = circState.getAttributeValue(StdAttr.EDGE_TRIGGER);
+        TtyState state = getTtyState(circState);
+        Value clear = circState.getPort(CLR);
+        Value clock = circState.getPort(CK);
+        Value enable = circState.getPort(WE);
+        Value in = circState.getPort(IN);
+
+        synchronized (state) {
+            Value lastClock = state.setLastClock(clock);
+            if (clear == Value.TRUE) {
+                state.clear();
+            } else if (enable != Value.FALSE) {
+                boolean go;
+                if (trigger == StdAttr.TRIG_FALLING) {
+                    go = lastClock == Value.TRUE && clock == Value.FALSE;
+                } else {
+                    go = lastClock == Value.FALSE && clock == Value.TRUE;
+                }
+                if (go) state.add(in.isFullyDefined() ? (char) in.toIntValue() : '?');
+            }
+        }
+    }
+
+    @Override
+    public void propagate(InstanceState circState, Threads thread) {
         Object trigger = circState.getAttributeValue(StdAttr.EDGE_TRIGGER);
         TtyState state = getTtyState(circState);
         Value clear = circState.getPort(CLR);

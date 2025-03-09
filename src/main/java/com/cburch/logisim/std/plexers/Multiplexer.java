@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.cburch.logisim.LogisimVersion;
+import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
@@ -168,6 +169,33 @@ public class Multiplexer extends InstanceFactory {
         ps[ps.length - 1].setToolTip(Strings.getter("multiplexerOutTip"));
 
         instance.setPorts(ps);
+    }
+
+    @Override
+    public void propagate(InstanceState state, Threads thread) {
+        BitWidth data = state.getAttributeValue(StdAttr.WIDTH);
+        BitWidth select = state.getAttributeValue(Plexers.ATTR_SELECT);
+        boolean enable = state.getAttributeValue(Plexers.ATTR_ENABLE).booleanValue();
+        int inputs = 1 << select.getWidth();
+        Value en = enable ? state.getPort(inputs + 1) : Value.TRUE;
+        Value out;
+        if (en == Value.FALSE) {
+            Object opt = state.getAttributeValue(Plexers.ATTR_DISABLED);
+            Value base = opt == Plexers.DISABLED_ZERO ? Value.FALSE : Value.UNKNOWN;
+            out = Value.repeat(base, data.getWidth());
+        } else if (en == Value.ERROR && state.isPortConnected(inputs + 1)) {
+            out = Value.createError(data);
+        } else {
+            Value sel = state.getPort(inputs);
+            if (sel.isFullyDefined()) {
+                out = state.getPort(sel.toIntValue());
+            } else if (sel.isErrorValue()) {
+                out = Value.createError(data);
+            } else {
+                out = Value.createUnknown(data);
+            }
+        }
+        state.setPortThread(inputs + (enable ? 2 : 1), out, Plexers.DELAY, thread);
     }
 
     @Override

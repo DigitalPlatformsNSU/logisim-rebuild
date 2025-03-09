@@ -55,6 +55,11 @@ public class Splitter extends ManagedComponent
     }
 
     @Override
+    public void propagate(CircuitState state, Threads thread) {
+
+    }
+
+    @Override
     public boolean contains(Location loc) {
         if (super.contains(loc)) {
             Location myLoc = getLocation();
