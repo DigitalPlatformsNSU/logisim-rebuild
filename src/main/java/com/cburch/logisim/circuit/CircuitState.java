@@ -3,7 +3,13 @@
 
 package com.cburch.logisim.circuit;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import com.cburch.logisim.circuit.Propagator.SetData;
 import com.cburch.logisim.comp.Component;
@@ -20,8 +26,6 @@ import com.cburch.logisim.proj.Project;
 import com.cburch.logisim.std.wiring.Clock;
 import com.cburch.logisim.std.wiring.Pin;
 import com.cburch.logisim.util.ArraySet;
-
-import static java.util.Arrays.copyOfRange;
 
 public class CircuitState implements InstanceData {
     private class MyCircuitListener implements CircuitListener {
@@ -317,12 +321,6 @@ public class CircuitState implements InstanceData {
         return parentState != null;
     }
 
-    private Object lock = new Object();
-
-    Object getLock() {
-        return lock;
-    }
-
     void processDirtyComponents() {
         if (!dirtyComponents.isEmpty()) {
             // This seeming wasted copy is to avoid ConcurrentModifications
@@ -339,42 +337,13 @@ public class CircuitState implements InstanceData {
             }
 
             dirtyComponents.clear();
-
-            Vector<Threads> threads = new Vector<>();
-            int numThreads = 4;
-            int step = toProcess.length/numThreads;
-            int rest = toProcess.length%numThreads;
-            if (rest != 0) {
-                step++;
-            }
-            int start;
-            int end = 0;
-            for (int i = 0; i < numThreads; i++) {
-                start = end;
-                end += step;
-                if (end > toProcess.length) {
-                    end = toProcess.length;
-                }
-                Object[] newToProcess = copyOfRange(toProcess, start, end);
-                threads.add(new Threads(parentState, parentComp, this, newToProcess));
-                threads.get(i).start();
-            }
-
-            while (!threads.isEmpty()) {
-                synchronized (lock) {
-                    try{
-                        lock.wait();
-                    } catch (InterruptedException ignored) {
-                    }
-                }
-                for (int i = 0; i < numThreads; i++) {
-                    if (threads.get(i).isDone()) {
-                        Vector<Threads.Struct> res = threads.get(i).getResult();
-                        for (Threads.Struct struct : res) {
-                            setValue(struct.pt, struct.val, struct.cause, struct.delay);
-                        }
-                        threads.remove(i);
-                        i--;
+            for (Object compObj : toProcess) {
+                if (compObj instanceof Component) {
+                    Component comp = (Component) compObj;
+                    comp.propagate(this);
+                    if (comp.getFactory() instanceof Pin && parentState != null) {
+                        // should be propagated in superstate
+                        parentComp.propagate(parentState);
                     }
                 }
             }

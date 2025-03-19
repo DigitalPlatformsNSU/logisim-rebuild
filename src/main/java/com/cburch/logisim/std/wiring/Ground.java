@@ -9,7 +9,6 @@ package com.cburch.logisim.std.wiring;
 
 import java.awt.Graphics2D;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.tools.key.BitWidthConfigurator;
 import com.cburch.logisim.util.GraphicsUtil;
 
@@ -55,12 +54,6 @@ public class Ground extends InstanceFactory {
     public Bounds getOffsetBounds(AttributeSet attrs) {
         return Bounds.create(0, -8, 14, 16)
                 .rotate(Direction.EAST, attrs.getValue(StdAttr.FACING), 0, 0);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        BitWidth width = state.getAttributeValue(StdAttr.WIDTH);
-        state.setPortThread(0, Value.repeat(Value.FALSE, width.getWidth()), 1, thread);
     }
 
     @Override

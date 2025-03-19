@@ -7,7 +7,6 @@ import java.net.URL;
 
 import javax.swing.ImageIcon;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -78,17 +77,6 @@ class GrayCounter extends InstanceFactory {
         boolean trigger = cur.updateClock(state.getPort(0));
         if (trigger) cur.setValue(GrayIncrementer.nextGray(cur.getValue()));
         state.setPort(1, cur.getValue(), 9);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        // This is the same as with SimpleGrayCounter, except that we use the
-        // StdAttr.WIDTH attribute to determine the bit width to work with.
-        BitWidth width = state.getAttributeValue(StdAttr.WIDTH);
-        CounterData cur = CounterData.get(state, width);
-        boolean trigger = cur.updateClock(state.getPort(0));
-        if (trigger) cur.setValue(GrayIncrementer.nextGray(cur.getValue()));
-        state.setPortThread(1, cur.getValue(), 9, thread);
     }
 
     @Override

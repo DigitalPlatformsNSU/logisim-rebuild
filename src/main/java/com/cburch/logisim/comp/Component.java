@@ -8,7 +8,6 @@ import java.awt.Graphics;
 import java.util.List;
 
 import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
@@ -71,7 +70,4 @@ public interface Component {
     public boolean endsAt(Location pt);
 
     public void propagate(CircuitState state);
-
-    public void propagate(CircuitState state, Threads thread);
-
 }

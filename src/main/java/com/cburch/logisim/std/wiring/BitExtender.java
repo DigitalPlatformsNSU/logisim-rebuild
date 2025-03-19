@@ -6,7 +6,6 @@ package com.cburch.logisim.std.wiring;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
@@ -116,28 +115,6 @@ public class BitExtender extends InstanceFactory {
         } else {
             instance.setPorts(new Port[]{p0, p1});
         }
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        Value in = state.getPort(1);
-        BitWidth wout = state.getAttributeValue(ATTR_OUT_WIDTH);
-        String type = getType(state.getAttributeSet());
-        Value extend;
-        if (type.equals("one")) {
-            extend = Value.TRUE;
-        } else if (type.equals("sign")) {
-            int win = in.getWidth();
-            extend = win > 0 ? in.get(win - 1) : Value.ERROR;
-        } else if (type.equals("input")) {
-            extend = state.getPort(2);
-            if (extend.getWidth() != 1) extend = Value.ERROR;
-        } else {
-            extend = Value.FALSE;
-        }
-
-        Value out = in.extendWidth(wout.getWidth(), extend);
-        state.setPortThread(0, out, 1, thread);
     }
 
     @Override

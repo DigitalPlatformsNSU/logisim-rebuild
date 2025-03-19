@@ -10,7 +10,6 @@ package com.cburch.logisim.std.wiring;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
@@ -106,11 +105,6 @@ public class TransmissionGate extends InstanceFactory {
         } else {
             return false;
         }
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        state.setPortThread(OUTPUT, computeOutput(state), 1, thread);
     }
 
     @Override

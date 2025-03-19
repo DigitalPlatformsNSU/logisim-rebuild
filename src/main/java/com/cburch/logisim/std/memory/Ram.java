@@ -8,7 +8,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeEvent;
 import com.cburch.logisim.data.AttributeListener;
@@ -150,59 +149,6 @@ public class Ram extends Mem {
     HexFrame getHexFrame(Project proj, Instance instance, CircuitState circState) {
         RamState state = (RamState) getState(instance, circState);
         return state.getHexFrame(proj);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        RamState myState = (RamState) getState(state);
-        BitWidth dataBits = state.getAttributeValue(DATA_ATTR);
-        Object busVal = state.getAttributeValue(ATTR_BUS);
-        boolean asynch = busVal == null ? false : busVal.equals(BUS_ASYNCH);
-        boolean separate = busVal == null ? false : busVal.equals(BUS_SEPARATE);
-
-        Value addrValue = state.getPort(ADDR);
-        boolean chipSelect = state.getPort(CS) != Value.FALSE;
-        boolean triggered = asynch || myState.setClock(state.getPort(CLK), StdAttr.TRIG_RISING);
-        boolean outputEnabled = state.getPort(OE) != Value.FALSE;
-        boolean shouldClear = state.getPort(CLR) == Value.TRUE;
-
-        if (shouldClear) {
-            myState.getContents().clear();
-        }
-
-        if (!chipSelect) {
-            myState.setCurrent(-1);
-            state.setPortThread(DATA, Value.createUnknown(dataBits), DELAY, thread);
-            return;
-        }
-
-        int addr = addrValue.toIntValue();
-        if (!addrValue.isFullyDefined() || addr < 0)
-            return;
-        if (addr != myState.getCurrent()) {
-            myState.setCurrent(addr);
-            myState.scrollToShow(addr);
-        }
-
-        if (!shouldClear && triggered) {
-            boolean shouldStore;
-            if (separate) {
-                shouldStore = state.getPort(WE) != Value.FALSE;
-            } else {
-                shouldStore = !outputEnabled;
-            }
-            if (shouldStore) {
-                Value dataValue = state.getPort(separate ? DIN : DATA);
-                myState.getContents().set(addr, dataValue.toIntValue());
-            }
-        }
-
-        if (outputEnabled) {
-            int val = myState.getContents().get(addr);
-            state.setPortThread(DATA, Value.createKnown(dataBits, val), DELAY, thread);
-        } else {
-            state.setPortThread(DATA, Value.createUnknown(dataBits), DELAY, thread);
-        }
     }
 
     @Override

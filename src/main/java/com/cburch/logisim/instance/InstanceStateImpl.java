@@ -5,7 +5,6 @@ package com.cburch.logisim.instance;
 
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.comp.EndData;
 import com.cburch.logisim.data.Attribute;
@@ -75,11 +74,6 @@ class InstanceStateImpl implements InstanceState {
     public void setPort(int portIndex, Value value, int delay) {
         EndData end = component.getEnd(portIndex);
         circuitState.setValue(end.getLocation(), value, component, delay);
-    }
-
-    public void setPortThread(int portIndex, Value value, int delay, Threads thread) {
-        EndData end = component.getEnd(portIndex);
-        thread.setValue(end.getLocation(), value, component, delay);
     }
 
     public InstanceData getData() {

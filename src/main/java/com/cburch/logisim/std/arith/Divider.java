@@ -6,7 +6,6 @@ package com.cburch.logisim.std.arith;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -50,23 +49,6 @@ public class Divider extends InstanceFactory {
         ps[UPPER].setToolTip(Strings.getter("dividerDividendUpperTip"));
         ps[REM].setToolTip(Strings.getter("dividerRemainderTip"));
         setPorts(ps);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        // get attributes
-        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
-
-        // compute outputs
-        Value a = state.getPort(IN0);
-        Value b = state.getPort(IN1);
-        Value upper = state.getPort(UPPER);
-        Value[] outs = Divider.computeResult(dataWidth, a, b, upper);
-
-        // propagate them
-        int delay = dataWidth.getWidth() * (dataWidth.getWidth() + 2) * PER_DELAY;
-        state.setPortThread(OUT, outs[0], delay, thread);
-        state.setPortThread(REM, outs[1], delay, thread);
     }
 
     @Override

@@ -3,7 +3,6 @@
 
 package com.cburch.logisim.std.arith;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -34,51 +33,6 @@ public class Negator extends InstanceFactory {
         ps[IN].setToolTip(Strings.getter("negatorInputTip"));
         ps[OUT].setToolTip(Strings.getter("negatorOutputTip"));
         setPorts(ps);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        // get attributes
-        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
-
-        // compute outputs
-        Value in = state.getPort(IN);
-        Value out;
-        if (in.isFullyDefined()) {
-            out = Value.createKnown(in.getBitWidth(), -in.toIntValue());
-        } else {
-            Value[] bits = in.getAll();
-            Value fill = Value.FALSE;
-            int pos = 0;
-            while (pos < bits.length) {
-                if (bits[pos] == Value.FALSE) {
-                    bits[pos] = fill;
-                } else if (bits[pos] == Value.TRUE) {
-                    if (fill != Value.FALSE) bits[pos] = fill;
-                    pos++;
-                    break;
-                } else if (bits[pos] == Value.ERROR) {
-                    fill = Value.ERROR;
-                } else {
-                    if (fill == Value.FALSE) fill = bits[pos];
-                    else bits[pos] = fill;
-                }
-                pos++;
-            }
-            while (pos < bits.length) {
-                if (bits[pos] == Value.TRUE) {
-                    bits[pos] = Value.FALSE;
-                } else if (bits[pos] == Value.FALSE) {
-                    bits[pos] = Value.TRUE;
-                }
-                pos++;
-            }
-            out = Value.create(bits);
-        }
-
-        // propagate them
-        int delay = (dataWidth.getWidth() + 2) * Adder.PER_DELAY;
-        state.setPortThread(OUT, out, delay, thread);
     }
 
     @Override

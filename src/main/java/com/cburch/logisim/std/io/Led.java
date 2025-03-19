@@ -6,7 +6,6 @@ package com.cburch.logisim.std.io;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
@@ -102,17 +101,6 @@ public class Led extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        Value val = state.getPort(0);
-        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
-        if (data == null) {
-            state.setData(new InstanceDataSingleton(val));
-        } else {
-            data.setValue(val);
-        }
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
         Value val = state.getPort(0);
         InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
         if (data == null) {

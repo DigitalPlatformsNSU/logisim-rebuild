@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.Attributes;
 import com.cburch.logisim.data.BitWidth;
@@ -39,31 +38,6 @@ public class Joystick extends InstanceFactory {
                 new Port(0, 10, Port.OUTPUT, ATTR_WIDTH),
         });
         setInstancePoker(Poker.class);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        BitWidth bits = state.getAttributeValue(ATTR_WIDTH);
-        int dx;
-        int dy;
-        State s = (State) state.getData();
-        if (s == null) {
-            dx = 0;
-            dy = 0;
-        } else {
-            dx = s.xPos;
-            dy = s.yPos;
-        }
-
-        int steps = (1 << bits.getWidth()) - 1;
-        dx = (dx + 14) * steps / 29 + 1;
-        dy = (dy + 14) * steps / 29 + 1;
-        if (bits.getWidth() > 4) {
-            if (dx >= steps / 2) dx++;
-            if (dy >= steps / 2) dy++;
-        }
-        state.setPortThread(0, Value.createKnown(bits, dx), 1, thread);
-        state.setPortThread(1, Value.createKnown(bits, dy), 1, thread);
     }
 
     @Override

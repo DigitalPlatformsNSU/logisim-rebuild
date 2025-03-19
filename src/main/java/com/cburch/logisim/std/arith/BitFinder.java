@@ -5,7 +5,6 @@ package com.cburch.logisim.std.arith;
 
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeOption;
 import com.cburch.logisim.data.AttributeSet;
@@ -96,51 +95,6 @@ public class BitFinder extends InstanceFactory {
         int outWidth = 1;
         while ((1 << outWidth) <= maxBits) outWidth++;
         return outWidth;
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        int width = state.getAttributeValue(StdAttr.WIDTH).getWidth();
-        int outWidth = computeOutputBits(width - 1);
-        Object type = state.getAttributeValue(TYPE);
-
-        Value[] bits = state.getPort(2).getAll();
-        Value want;
-        int i;
-        if (type == HIGH_ZERO) {
-            want = Value.FALSE;
-            for (i = bits.length - 1; i >= 0 && bits[i] == Value.TRUE; i--) {
-            }
-        } else if (type == LOW_ZERO) {
-            want = Value.FALSE;
-            for (i = 0; i < bits.length && bits[i] == Value.TRUE; i++) {
-            }
-        } else if (type == HIGH_ONE) {
-            want = Value.TRUE;
-            for (i = bits.length - 1; i >= 0 && bits[i] == Value.FALSE; i--) {
-            }
-        } else {
-            want = Value.TRUE;
-            for (i = 0; i < bits.length && bits[i] == Value.FALSE; i++) {
-            }
-        }
-
-        Value present;
-        Value index;
-        if (i < 0 || i >= bits.length) {
-            present = Value.FALSE;
-            index = Value.createKnown(BitWidth.create(outWidth), 0);
-        } else if (bits[i] == want) {
-            present = Value.TRUE;
-            index = Value.createKnown(BitWidth.create(outWidth), i);
-        } else {
-            present = Value.ERROR;
-            index = Value.createError(BitWidth.create(outWidth));
-        }
-
-        int delay = outWidth * Adder.PER_DELAY;
-        state.setPortThread(0, present, delay, thread);
-        state.setPortThread(1, index, delay, thread);
     }
 
     @Override

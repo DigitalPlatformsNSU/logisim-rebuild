@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.circuit.Wire;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
@@ -106,13 +105,6 @@ public class Button extends InstanceFactory {
 
         instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT,
                 x, y, halign, valign);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
-        Value val = data == null ? Value.FALSE : (Value) data.getValue();
-        state.setPortThread(0, val, 1, thread);
     }
 
     @Override

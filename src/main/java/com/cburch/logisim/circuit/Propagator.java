@@ -62,7 +62,7 @@ public class Propagator {
         }
     }
 
-    static class ComponentPoint {
+    private static class ComponentPoint {
         Component cause;
         Location loc;
 
@@ -177,7 +177,6 @@ public class Propagator {
     }
 
     public void propagate() {
-        Threads[] threads = new Threads[8];
         oscPoints.clear();
         clearDirtyPoints();
         clearDirtyComponents();

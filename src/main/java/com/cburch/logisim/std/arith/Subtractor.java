@@ -6,7 +6,6 @@ package com.cburch.logisim.std.arith;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -48,24 +47,6 @@ public class Subtractor extends InstanceFactory {
         ps[B_IN].setToolTip(Strings.getter("subtractorBorrowInTip"));
         ps[B_OUT].setToolTip(Strings.getter("subtractorBorrowOutTip"));
         setPorts(ps);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        // get attributes
-        BitWidth data = state.getAttributeValue(StdAttr.WIDTH);
-
-        // compute outputs
-        Value a = state.getPort(IN0);
-        Value b = state.getPort(IN1);
-        Value b_in = state.getPort(B_IN);
-        if (b_in == Value.UNKNOWN || b_in == Value.NIL) b_in = Value.FALSE;
-        Value[] outs = Adder.computeSum(data, a, b.not(), b_in.not());
-
-        // propagate them
-        int delay = (data.getWidth() + 4) * Adder.PER_DELAY;
-        state.setPortThread(OUT, outs[0], delay, thread);
-        state.setPortThread(B_OUT, outs[1].not(), delay, thread);
     }
 
     @Override

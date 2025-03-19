@@ -9,7 +9,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.Attributes;
 import com.cburch.logisim.data.BitWidth;
@@ -63,36 +62,6 @@ public class Keyboard extends InstanceFactory {
         ps[AVL].setToolTip(Strings.getter("keybAvailTip"));
         ps[OUT].setToolTip(Strings.getter("keybOutputTip"));
         setPorts(ps);
-    }
-
-    @Override
-    public void propagate(InstanceState circState, Threads thread) {
-        Object trigger = circState.getAttributeValue(StdAttr.EDGE_TRIGGER);
-        KeyboardData state = getKeyboardState(circState);
-        Value clear = circState.getPort(CLR);
-        Value clock = circState.getPort(CK);
-        Value enable = circState.getPort(RE);
-        char c;
-
-        synchronized (state) {
-            Value lastClock = state.setLastClock(clock);
-            if (clear == Value.TRUE) {
-                state.clear();
-            } else if (enable != Value.FALSE) {
-                boolean go;
-                if (trigger == StdAttr.TRIG_FALLING) {
-                    go = lastClock == Value.TRUE && clock == Value.FALSE;
-                } else {
-                    go = lastClock == Value.FALSE && clock == Value.TRUE;
-                }
-                if (go) state.dequeue();
-            }
-
-            c = state.getChar(0);
-        }
-        Value out = Value.createKnown(BitWidth.create(7), c & 0x7F);
-        circState.setPortThread(OUT, out, DELAY0, thread);
-        circState.setPortThread(AVL, c != '\0' ? Value.TRUE : Value.FALSE, DELAY1, thread);
     }
 
     @Override

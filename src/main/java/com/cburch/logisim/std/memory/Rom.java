@@ -16,7 +16,6 @@ import java.util.WeakHashMap;
 import javax.swing.JLabel;
 
 import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
@@ -84,32 +83,6 @@ public class Rom extends Mem {
     // TODO - maybe delete this method?
     MemContents getMemContents(Instance instance) {
         return instance.getAttributeValue(CONTENTS_ATTR);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        MemState myState = getState(state);
-        BitWidth dataBits = state.getAttributeValue(DATA_ATTR);
-
-        Value addrValue = state.getPort(ADDR);
-        boolean chipSelect = state.getPort(CS) != Value.FALSE;
-
-        if (!chipSelect) {
-            myState.setCurrent(-1);
-            state.setPortThread(DATA, Value.createUnknown(dataBits), DELAY, thread);
-            return;
-        }
-
-        int addr = addrValue.toIntValue();
-        if (!addrValue.isFullyDefined() || addr < 0)
-            return;
-        if (addr != myState.getCurrent()) {
-            myState.setCurrent(addr);
-            myState.scrollToShow(addr);
-        }
-
-        int val = myState.getContents().get(addr);
-        state.setPortThread(DATA, Value.createKnown(dataBits, val), DELAY, thread);
     }
 
     @Override

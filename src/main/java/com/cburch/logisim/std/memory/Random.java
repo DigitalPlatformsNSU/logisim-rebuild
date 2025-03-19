@@ -5,7 +5,6 @@ package com.cburch.logisim.std.memory;
 
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.Attributes;
 import com.cburch.logisim.data.BitWidth;
@@ -66,27 +65,6 @@ public class Random extends InstanceFactory {
         instance.setTextField(StdAttr.LABEL, StdAttr.LABEL_FONT,
                 bds.getX() + bds.getWidth() / 2, bds.getY() - 3,
                 GraphicsUtil.H_CENTER, GraphicsUtil.V_BASELINE);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        StateData data = (StateData) state.getData();
-        if (data == null) {
-            data = new StateData(state.getAttributeValue(ATTR_SEED));
-            state.setData(data);
-        }
-
-        BitWidth dataWidth = state.getAttributeValue(StdAttr.WIDTH);
-        Object triggerType = state.getAttributeValue(StdAttr.EDGE_TRIGGER);
-        boolean triggered = data.updateClock(state.getPort(CK), triggerType);
-
-        if (state.getPort(RST) == Value.TRUE) {
-            data.reset(state.getAttributeValue(ATTR_SEED));
-        } else if (triggered && state.getPort(NXT) != Value.FALSE) {
-            data.step();
-        }
-
-        state.setPortThread(OUT, Value.createKnown(dataWidth, data.value), 4, thread);
     }
 
     @Override

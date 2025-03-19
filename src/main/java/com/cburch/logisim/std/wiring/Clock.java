@@ -11,7 +11,6 @@ import javax.swing.Icon;
 
 import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.circuit.RadixOption;
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
@@ -199,15 +198,6 @@ public class Clock extends InstanceFactory {
         } else if (attr == StdAttr.FACING) {
             instance.recomputeBounds();
             configureLabel(instance);
-        }
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        Value val = state.getPort(0);
-        ClockState q = getState(state);
-        if (!val.equals(q.sending)) { // ignore if no change
-            state.setPortThread(0, q.sending, 1, thread);
         }
     }
 

@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import com.cburch.logisim.LogisimVersion;
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.BitWidth;
@@ -160,51 +159,6 @@ public class Decoder extends InstanceFactory {
             ps[outputs + 1].setToolTip(Strings.getter("decoderEnableTip"));
         }
         instance.setPorts(ps);
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        // get attributes
-        BitWidth data = BitWidth.ONE;
-        BitWidth select = state.getAttributeValue(Plexers.ATTR_SELECT);
-        Boolean threeState = state.getAttributeValue(Plexers.ATTR_TRISTATE);
-        boolean enable = state.getAttributeValue(Plexers.ATTR_ENABLE).booleanValue();
-        int outputs = 1 << select.getWidth();
-
-        // determine default output values
-        Value others; // the default output
-        if (threeState.booleanValue()) {
-            others = Value.UNKNOWN;
-        } else {
-            others = Value.FALSE;
-        }
-
-        // determine selected output value
-        int outIndex = -1; // the special output
-        Value out = null;
-        Value en = enable ? state.getPort(outputs + 1) : Value.TRUE;
-        if (en == Value.FALSE) {
-            Object opt = state.getAttributeValue(Plexers.ATTR_DISABLED);
-            Value base = opt == Plexers.DISABLED_ZERO ? Value.FALSE : Value.UNKNOWN;
-            others = Value.repeat(base, data.getWidth());
-        } else if (en == Value.ERROR && state.isPortConnected(outputs + 1)) {
-            others = Value.createError(data);
-        } else {
-            Value sel = state.getPort(outputs);
-            if (sel.isFullyDefined()) {
-                outIndex = sel.toIntValue();
-                out = Value.TRUE;
-            } else if (sel.isErrorValue()) {
-                others = Value.createError(data);
-            } else {
-                others = Value.createUnknown(data);
-            }
-        }
-
-        // now propagate them
-        for (int i = 0; i < outputs; i++) {
-            state.setPortThread(i, i == outIndex ? out : others, Plexers.DELAY, thread);
-        }
     }
 
     @Override

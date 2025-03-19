@@ -7,7 +7,6 @@ import java.awt.Graphics;
 
 import com.cburch.logisim.circuit.Circuit;
 import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.circuit.WireSet;
 import com.cburch.logisim.comp.ComponentDrawContext;
 import com.cburch.logisim.data.Attribute;
@@ -105,11 +104,6 @@ public class InstancePainter implements InstanceState {
     }
 
     public void setPort(int portIndex, Value value, int delay) {
-        throw new UnsupportedOperationException("setValue on InstancePainter");
-    }
-
-    @Override
-    public void setPortThread(int portIndex, Value value, int delay, Threads thread) {
         throw new UnsupportedOperationException("setValue on InstancePainter");
     }
 

@@ -3,7 +3,6 @@
 
 package com.cburch.gray;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.BitWidth;
 import com.cburch.logisim.data.Bounds;
@@ -67,26 +66,6 @@ class GrayIncrementer extends InstanceFactory {
      * other circumstances, even if there is no reason to expect it to change
      * anything.
      */
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
-        // First we retrieve the value being fed into the input. Note that in
-        // the setPorts invocation above, the component's input was included at
-        // index 0 in the parameter array, so we use 0 as the parameter below.
-        Value in = state.getPort(0);
-
-        // Now compute the output. We've farmed this out to a helper method,
-        // since the same logic is needed for the library's other components.
-        Value out = nextGray(in);
-
-        // Finally we propagate the output into the circuit. The first parameter
-        // is 1 because in our list of ports (configured by invocation of
-        // setPorts above) the output is at index 1. The second parameter is the
-        // value we want to send on that port. And the last parameter is its
-        // "delay" - the number of steps it will take for the output to update
-        // after its input.
-        state.setPortThread(1, out, out.getWidth() + 1, thread);
-    }
-
     @Override
     public void propagate(InstanceState state) {
         // First we retrieve the value being fed into the input. Note that in

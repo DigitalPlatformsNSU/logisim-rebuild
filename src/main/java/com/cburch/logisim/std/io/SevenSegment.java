@@ -6,7 +6,6 @@ package com.cburch.logisim.std.io;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Threads;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Value;
@@ -40,22 +39,6 @@ public class SevenSegment extends InstanceFactory {
 
     @Override
     public void propagate(InstanceState state) {
-        int summary = 0;
-        for (int i = 0; i < 8; i++) {
-            Value val = state.getPort(i);
-            if (val == Value.TRUE) summary |= 1 << i;
-        }
-        Object value = Integer.valueOf(summary);
-        InstanceDataSingleton data = (InstanceDataSingleton) state.getData();
-        if (data == null) {
-            state.setData(new InstanceDataSingleton(value));
-        } else {
-            data.setValue(value);
-        }
-    }
-
-    @Override
-    public void propagate(InstanceState state, Threads thread) {
         int summary = 0;
         for (int i = 0; i < 8; i++) {
             Value val = state.getPort(i);
