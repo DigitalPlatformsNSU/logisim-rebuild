@@ -375,7 +375,6 @@ public class CircuitState implements InstanceData {
                         }
                         threads.remove(i);
                         i--;
-                        numThreads--;
                     }
                 }
             }
