@@ -529,7 +529,6 @@ class CircuitWires {
         // one is in progress).
         BundleMap ret = bundleMap;
         if (ret != null) {
-            ret.waitUntilComputed();
             return ret;
         }
         try {

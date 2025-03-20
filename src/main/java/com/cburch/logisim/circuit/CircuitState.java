@@ -371,11 +371,15 @@ public class CircuitState implements InstanceData {
             }
         }
 
-        dirtyComponents.addAll(threadPool.propagatePoints(this, dirty));
+        threadPool.propagatePoints(this, dirty);
 
         CircuitState[] subs = new CircuitState[substates.size()];
         for (CircuitState substate : substates.toArray(subs)) {
             substate.processDirtyPoints();
+        }
+
+        if (parentState == null) {
+            threadPool.summarize();
         }
     }
 
