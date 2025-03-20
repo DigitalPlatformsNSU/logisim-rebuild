@@ -320,7 +320,8 @@ class CircuitWires {
     //
     // utility methods
     //
-    void propagate(CircuitState circState, Set<Location> points) {
+    HashSet<Component> propagate(CircuitState circState, Set<Location> points) {
+        HashSet<Component> res = new HashSet<>();
         BundleMap map = getBundleMap();
         HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
 
@@ -344,17 +345,17 @@ class CircuitWires {
         for (Location p : points) {
             WireBundle pb = map.getBundleAt(p);
             if (pb == null) { // point is not wired
-                circState.setValueByWire(p, circState.getComponentOutputAt(p));
+                res.addAll(circState.setValueByWire(p, circState.getComponentOutputAt(p)));
             } else {
                 WireThread[] th = pb.threads;
                 if (!pb.isValid() || th == null) {
                     // immediately propagate NILs across invalid bundles
                     HashSet<Location> pbPoints = pb.points;
                     if (pbPoints == null) {
-                        circState.setValueByWire(p, Value.NIL);
+                        res.addAll(circState.setValueByWire(p, Value.NIL));
                     } else {
                         for (Location loc2 : pbPoints) {
-                            circState.setValueByWire(loc2, Value.NIL);
+                            res.addAll(circState.setValueByWire(loc2, Value.NIL));
                         }
                     }
                 } else {
@@ -365,7 +366,7 @@ class CircuitWires {
             }
         }
 
-        if (dirtyThreads.isEmpty()) return;
+        if (dirtyThreads.isEmpty()) return res;
 
         // determine values of affected threads
         HashSet<ThreadBundle> bundles = new HashSet<ThreadBundle>();
@@ -400,10 +401,12 @@ class CircuitWires {
 
             if (bv != null) {
                 for (Location p : b.points) {
-                    circState.setValueByWire(p, bv);
+                    res.addAll(circState.setValueByWire(p, bv));
                 }
             }
         }
+
+        return res;
     }
 
     void draw(ComponentDrawContext context, Collection<Component> hidden) {
@@ -521,7 +524,7 @@ class CircuitWires {
         bundleMap = null;
     }
 
-    private BundleMap getBundleMap() {
+    synchronized private BundleMap getBundleMap() {
         // Maybe we already have a valid bundle map (or maybe
         // one is in progress).
         BundleMap ret = bundleMap;

@@ -3,13 +3,11 @@
 
 package com.cburch.logisim.circuit;
 
-import java.util.Collection;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.cburch.logisim.circuit.Propagator.SetData;
 import com.cburch.logisim.comp.Component;
@@ -133,6 +131,8 @@ public class CircuitState implements InstanceData {
 
     private static int lastId = 0;
     private int id = lastId++;
+
+    private CircuitThreadPool threadPool = CircuitThreadPool.getInstance();
 
     public CircuitState(Project proj, Circuit circuit) {
         this.proj = proj;
@@ -356,7 +356,7 @@ public class CircuitState implements InstanceData {
     }
 
     void processDirtyPoints() {
-        HashSet<Location> dirty = new HashSet<Location>(dirtyPoints);
+        ArrayList<Location> dirty = new ArrayList<>(dirtyPoints);
         dirtyPoints.clear();
         if (circuit.wires.isMapVoided()) {
             try {
@@ -370,9 +370,8 @@ public class CircuitState implements InstanceData {
                 e.printStackTrace();
             }
         }
-        if (!dirty.isEmpty()) {
-            circuit.wires.propagate(this, dirty);
-        }
+
+        dirtyComponents.addAll(threadPool.propagatePoints(this, dirty));
 
         CircuitState[] subs = new CircuitState[substates.size()];
         for (CircuitState substate : substates.toArray(subs)) {
@@ -428,8 +427,9 @@ public class CircuitState implements InstanceData {
         return values.get(p);
     }
 
-    void setValueByWire(Location p, Value v) {
+    HashSet<Component> setValueByWire(Location p, Value v) {
         // for CircuitWires - to set value at point
+        HashSet<Component> res = new HashSet<>();
         boolean changed;
         if (v == Value.NIL) {
             Object old = values.remove(p);
@@ -443,7 +443,7 @@ public class CircuitState implements InstanceData {
             for (Component comp : circuit.getComponents(p)) {
                 if (!(comp instanceof Wire) && !(comp instanceof Splitter)) {
                     found = true;
-                    markComponentAsDirty(comp);
+                    res.add(comp);
                 }
             }
             // NOTE: this will cause a double-propagation on components
@@ -451,6 +451,8 @@ public class CircuitState implements InstanceData {
 
             if (found && base != null) base.locationTouched(this, p);
         }
+
+        return res;
     }
 
     //
