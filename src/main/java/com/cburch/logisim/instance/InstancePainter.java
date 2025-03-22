@@ -23,6 +23,11 @@ public class InstancePainter implements InstanceState {
     private InstanceFactory factory;
     private AttributeSet attrs;
 
+    public CircuitState getCircuitState() {
+        System.exit(10);
+        return null;
+    }
+
     public InstancePainter(ComponentDrawContext context,
                            InstanceComponent instance) {
         this.context = context;

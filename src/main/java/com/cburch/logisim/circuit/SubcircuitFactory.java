@@ -12,6 +12,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
 import java.util.Map;
 
 import javax.swing.JPopupMenu;
@@ -221,8 +222,12 @@ public class SubcircuitFactory extends InstanceFactory {
                 Value newVal = superState.getPort(i);
                 Value oldVal = Pin.FACTORY.getValue(pinState);
                 if (!newVal.equals(oldVal)) {
+                    pinState.getCircuitState().threadLocal.set(new HashSet<>());
                     Pin.FACTORY.setValue(pinState, newVal);
                     Pin.FACTORY.propagate(pinState);
+                    HashSet<CircuitThreadPool.Struct> s = superState.getCircuitState().threadLocal.get();
+                    s.addAll(pinState.getCircuitState().threadLocal.get());
+                    superState.getCircuitState().threadLocal.set(s);
                 }
             } else { // it is output-only
                 Value val = pinState.getPort(0);

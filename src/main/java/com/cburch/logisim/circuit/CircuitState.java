@@ -119,7 +119,7 @@ public class CircuitState implements InstanceData {
     private Circuit circuit; // circuit being simulated
 
     private CircuitState parentState = null; // parent in tree of CircuitStates
-    private Component parentComp = null; // subcircuit component containing this state
+    Component parentComp = null; // subcircuit component containing this state
     private ArraySet<CircuitState> substates = new ArraySet<CircuitState>();
 
     private CircuitWires.State wireData = null;
@@ -274,8 +274,18 @@ public class CircuitState implements InstanceData {
         return Value.createUnknown(wid);
     }
 
+    public ThreadLocal<HashSet<CircuitThreadPool.Struct>> threadLocal = new ThreadLocal<>();
+
     public void setValue(Location pt, Value val, Component cause, int delay) {
-        if (base != null) base.setValue(this, pt, val, cause, delay);
+        HashSet<CircuitThreadPool.Struct> f = (HashSet<CircuitThreadPool.Struct>) threadLocal.get();
+        try {
+            f.add(new CircuitThreadPool.Struct(this, pt, val, cause, delay));
+        } catch (Exception e) {
+            System.exit(11);
+        }
+
+        threadLocal.set(f);
+
     }
 
     public void markComponentAsDirty(Component comp) {
@@ -337,16 +347,9 @@ public class CircuitState implements InstanceData {
             }
 
             dirtyComponents.clear();
-            for (Object compObj : toProcess) {
-                if (compObj instanceof Component) {
-                    Component comp = (Component) compObj;
-                    comp.propagate(this);
-                    if (comp.getFactory() instanceof Pin && parentState != null) {
-                        // should be propagated in superstate
-                        parentComp.propagate(parentState);
-                    }
-                }
-            }
+            threadPool.propagateComponents(this, toProcess);
+            threadPool.summarizeComponents(base);
+
         }
 
         CircuitState[] subs = new CircuitState[substates.size()];
@@ -372,15 +375,13 @@ public class CircuitState implements InstanceData {
         }
 
         threadPool.propagatePoints(this, dirty);
+        threadPool.summarize();
 
         CircuitState[] subs = new CircuitState[substates.size()];
         for (CircuitState substate : substates.toArray(subs)) {
             substate.processDirtyPoints();
         }
 
-        if (parentState == null) {
-            threadPool.summarize();
-        }
     }
 
     void reset() {
