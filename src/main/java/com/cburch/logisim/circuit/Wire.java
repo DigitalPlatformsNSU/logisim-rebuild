@@ -66,8 +66,9 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     final Location e0;
     final Location e1;
     final boolean is_x_equal;
+    WireBundle wire;
 
-    private Wire(Location e0, Location e1) {
+    Wire(Location e0, Location e1) {
         this.is_x_equal = e0.getX() == e1.getX();
         if (is_x_equal) {
             if (e0.getY() > e1.getY()) {
@@ -181,8 +182,8 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     public void propagate(CircuitState state) {
         // Normally this is handled by CircuitWires, and so it won't get
         // called. The exception is when a wire is added or removed
-        state.markPointAsDirty(e0);
-        state.markPointAsDirty(e1);
+//        state.markPointAsDirty(e0);
+//        state.markPointAsDirty(e1);
     }
 
     //
@@ -334,5 +335,13 @@ public final class Wire implements Component, AttributeSet, CustomHandles,
     public void drawHandles(ComponentDrawContext context) {
         context.drawHandle(e0);
         context.drawHandle(e1);
+    }
+
+    public WireBundle getWire() {
+        return wire;
+    }
+
+    public void setWire(WireBundle wire) {
+        this.wire = wire;
     }
 }

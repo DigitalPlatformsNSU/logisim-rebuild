@@ -7,13 +7,8 @@ import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
-import com.cburch.logisim.circuit.Circuit;
-import com.cburch.logisim.circuit.CircuitState;
-import com.cburch.logisim.circuit.WireSet;
-import com.cburch.logisim.data.AttributeSet;
-import com.cburch.logisim.data.Bounds;
-import com.cburch.logisim.data.Direction;
-import com.cburch.logisim.data.Location;
+import com.cburch.logisim.circuit.*;
+import com.cburch.logisim.data.*;
 import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.prefs.AppPreferences;
 import com.cburch.logisim.util.GraphicsUtil;
@@ -184,11 +179,12 @@ public class ComponentDrawContext {
         if (i < 0 || i >= comp.getEnds().size()) return;
         EndData e = comp.getEnd(i);
         Location pt = e.getLocation();
+        WireBundle wire = e.getWire();
         int x = pt.getX();
         int y = pt.getY();
         if (getShowState()) {
             CircuitState state = getCircuitState();
-            g.setColor(state.getValue(pt).getColor());
+            g.setColor(state.getValue(wire, e.getWidth()).getColor());
         } else {
             g.setColor(Color.BLACK);
         }
@@ -212,10 +208,11 @@ public class ComponentDrawContext {
     public void drawPin(Component comp, int i) {
         EndData e = comp.getEnd(i);
         Location pt = e.getLocation();
+        WireBundle wire = e.getWire();
         Color curColor = g.getColor();
         if (getShowState()) {
             CircuitState state = getCircuitState();
-            g.setColor(state.getValue(pt).getColor());
+            g.setColor(state.getValue(wire, e.getWidth()).getColor());
         } else {
             g.setColor(Color.BLACK);
         }
@@ -227,9 +224,10 @@ public class ComponentDrawContext {
         Color curColor = g.getColor();
         for (EndData e : comp.getEnds()) {
             Location pt = e.getLocation();
+            WireBundle wire = e.getWire();
             if (getShowState()) {
                 CircuitState state = getCircuitState();
-                g.setColor(state.getValue(pt).getColor());
+                g.setColor(state.getValue(wire, e.getWidth()).getColor());
             } else {
                 g.setColor(Color.BLACK);
             }
