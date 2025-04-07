@@ -5,6 +5,7 @@ package com.cburch.logisim.comp;
 
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.List;
 
 import com.cburch.logisim.circuit.CircuitState;
@@ -12,7 +13,7 @@ import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Bounds;
 import com.cburch.logisim.data.Location;
 
-public interface Component {
+public interface Component extends Serializable {
     // listener methods
     public void addComponentListener(ComponentListener l);
 
