@@ -120,6 +120,36 @@ public class TestNesting {
     }
 
     @Test
+    void testFreqCdm16Circuit() throws LoadFailedException {
+        File f = new File(System.getProperty("user.dir") + resources + "cdm16.circ");
+        proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
+        proj.getSimulator().setTickFrequency(4096);
+        proj.getSimulator().addSimulatorListener(new MyListener());
+        long sum = 0;
+        for (int i = 0; i < countChecks; i++) {
+            sum += getRealFreq(1000);
+        }
+        double res = (double) sum / countChecks;
+        System.out.println("Average ticks in cdm16 circuit = " + res);
+        Assertions.assertTrue(res >= 1800);
+    }
+
+    @Test
+    void testFreqSmallCircuit() throws LoadFailedException {
+        File f = new File(System.getProperty("user.dir") + resources + "test.circ");
+        proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
+        proj.getSimulator().setTickFrequency(4096);
+        proj.getSimulator().addSimulatorListener(new MyListener());
+        long sum = 0;
+        for (int i = 0; i < countChecks; i++) {
+            sum += getRealFreq(1000);
+        }
+        double res = (double) sum / countChecks;
+        System.out.println("Average ticks in small circuit = " + res);
+        Assertions.assertTrue(res >= 2048);
+    }
+
+    @Test
     void testFreqSmallNestingCircuit() throws LoadFailedException {
         File f = new File(System.getProperty("user.dir") + resources + "test_nesting.circ");
         proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
