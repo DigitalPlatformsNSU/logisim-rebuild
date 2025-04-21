@@ -1,10 +1,17 @@
 package com.test;
 
+import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.file.LoadFailedException;
+import com.cburch.logisim.proj.Project;
+import com.cburch.logisim.proj.ProjectActions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Set;
+
+import static java.lang.Thread.sleep;
 
 public class TestFreq {
     static final String RESOURCES = File.separator +
@@ -50,5 +57,46 @@ public class TestFreq {
         double res = tester.getVerifyFreq();
         System.out.println("Average ticks in fibonacci circuit = " + res);
         Assertions.assertTrue(res >= 100.0);
+    }
+
+    @Test
+    void testSeparators() throws LoadFailedException {
+        File f = new File(System.getProperty("user.dir") + RESOURCES + "Separator.circ");
+        Project proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
+        boolean haveSeparators = false;
+        Set<Component> comps = proj.getCurrentCircuit().getNonWires();
+        for (Component c : comps) {
+            if (c.getAttributeSet().getAttributes().toString().equals("[facing, fanout, incoming, appear, bit0]")) {
+                haveSeparators = true;
+                break;
+            }
+        }
+        Assertions.assertTrue(haveSeparators);
+    }
+
+    @Test
+    void testOscillating() throws LoadFailedException {
+        File f = new File(System.getProperty("user.dir") + RESOURCES + "Oscillating.circ");
+        Project proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
+        proj.getSimulator().setTickFrequency(10);
+        boolean isOsc = false;
+        proj.getSimulator().setIsTicking(true);
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            System.err.println(e.getMessage());
+        }
+        if (proj.getSimulator().isOscillating()){
+            isOsc = true;
+        }
+        proj.getSimulator().setIsTicking(false);
+        Assertions.assertTrue(isOsc);
+    }
+
+    @Test
+    void testIncompatibleData() throws LoadFailedException {
+        File f = new File(System.getProperty("user.dir") + RESOURCES + "IncompatibleData.circ");
+        Project proj = ProjectActions.doOpen(null, f, new HashMap<File, File>());
+        Assertions.assertTrue(proj.getCurrentCircuit().getWidthIncompatibilityData()!=null);
     }
 }
