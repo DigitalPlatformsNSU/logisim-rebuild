@@ -17,13 +17,15 @@ public class CircuitThreadPool {
         public Value val;
         public Component cause;
         public int delay;
+        public WireBundle wire;
 
-        public Struct(CircuitState state, Location pt, Value val, Component cause, int delay) {
+        public Struct(CircuitState state, Location pt, Value val, Component cause, int delay, WireBundle wire) {
             this.state = state;
             this.pt = pt;
             this.val = val;
             this.cause = cause;
             this.delay = delay;
+            this.wire = wire;
         }
     }
 
@@ -65,7 +67,7 @@ public class CircuitThreadPool {
     private HashMap<CircuitState, ArrayList<Future<HashSet<Component>>>> results = new HashMap<>();
     private HashMap<CircuitState, ArrayList<Future<HashSet<Struct>>>> resultsComponents = new HashMap<>();
 
-    public void propagatePoints(CircuitState state, ArrayList<Location> dirty) {
+    public void propagatePoints(CircuitState state, ArrayList<WireBundle> dirty) {
         if (!dirty.isEmpty()) {
             ArrayList<Future<HashSet<Component>>> list = new ArrayList<>();
             int q = dirty.size() / Runtime.getRuntime().availableProcessors();
@@ -139,7 +141,7 @@ public class CircuitThreadPool {
             }
 
             for (Struct res : set) {
-                if (propagator != null) propagator.setValue(res.state, res.pt, res.val, res.cause, res.delay);
+                if (propagator != null) propagator.setValue(res.state, res.pt, res.val, res.cause, res.delay, res.wire);
             }
 
 

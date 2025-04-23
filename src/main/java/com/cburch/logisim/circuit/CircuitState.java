@@ -286,10 +286,10 @@ public class CircuitState implements InstanceData {
 
     public ThreadLocal<HashSet<CircuitThreadPool.Struct>> threadLocal = new ThreadLocal<>();
 
-    public void setValue(Location pt, Value val, Component cause, int delay) {
-        HashSet<CircuitThreadPool.Struct> f = (HashSet<CircuitThreadPool.Struct>) threadLocal.get();
+    public void setValue(Location pt, Value val, Component cause, int delay, WireBundle wire) {
+        HashSet<CircuitThreadPool.Struct> f = threadLocal.get();
         try {
-            f.add(new CircuitThreadPool.Struct(this, pt, val, cause, delay));
+            f.add(new CircuitThreadPool.Struct(this, pt, val, cause, delay, wire));
         } catch (Exception e) {
             System.exit(11);
         }
@@ -384,7 +384,7 @@ public class CircuitState implements InstanceData {
             }
         }
 
-        threadPool.propagatePoints(this, dirty);
+        threadPool.propagatePoints(this, new ArrayList(dirty));
         threadPool.summarize();
 
         CircuitState[] subs = new CircuitState[substates.size()];
@@ -442,7 +442,7 @@ public class CircuitState implements InstanceData {
         return values.get(wire);
     }
 
-    HashSet<Component> setValueByWire(Location p, Value v) {
+    HashSet<Component> setValueByWire(WireBundle wire, Value v) {
         // for CircuitWires - to set value at point
         HashSet<Component> res = new HashSet<>();
         boolean changed;

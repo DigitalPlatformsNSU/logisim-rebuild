@@ -323,7 +323,7 @@ public class CircuitWires {
     //
     // utility methods
     //
-    HashSet<Component> propagate(CircuitState circState, Set<Location> points) {
+    HashSet<Component> propagate(CircuitState circState, Set<WireBundle> points) {
         HashSet<Component> res = new HashSet<>();
         BundleMap map = getBundleMap();
         HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
@@ -392,9 +392,7 @@ public class CircuitWires {
             }
 
             if (bv != null) {
-                for (Location p : b.points) {
-                    res.addAll(circState.setValueByWire(p, bv));
-                }
+                res.addAll(circState.setValueByWire(b, bv));
             }
         }
 

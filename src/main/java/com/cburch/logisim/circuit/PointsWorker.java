@@ -7,10 +7,10 @@ import java.util.HashSet;
 import java.util.concurrent.Callable;
 
 public class PointsWorker implements Callable<HashSet<Component>> {
-    private HashSet<Location> dirty;
+    private HashSet<WireBundle> dirty;
     private CircuitState circuit;
 
-    public PointsWorker(CircuitState circuit, HashSet<Location> dirty) {
+    public PointsWorker(CircuitState circuit, HashSet<WireBundle> dirty) {
         this.dirty = dirty;
         this.circuit = circuit;
     }
