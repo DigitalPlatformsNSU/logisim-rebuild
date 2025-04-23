@@ -323,7 +323,8 @@ public class CircuitWires {
     //
     // utility methods
     //
-    void propagate(CircuitState circState, Set<WireBundle> points) {
+    HashSet<Component> propagate(CircuitState circState, Set<Location> points) {
+        HashSet<Component> res = new HashSet<>();
         BundleMap map = getBundleMap();
         HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
 
@@ -357,7 +358,7 @@ public class CircuitWires {
             }
         }
 
-        if (dirtyThreads.isEmpty()) return;
+        if (dirtyThreads.isEmpty()) return res;
 
         // determine values of affected threads
         HashSet<ThreadBundle> bundles = new HashSet<ThreadBundle>();
@@ -391,10 +392,13 @@ public class CircuitWires {
             }
 
             if (bv != null) {
-                circState.setValueByWire(b, bv);
-
+                for (Location p : b.points) {
+                    res.addAll(circState.setValueByWire(p, bv));
+                }
             }
         }
+
+        return res;
     }
 
     void draw(ComponentDrawContext context, Collection<Component> hidden) {
@@ -512,12 +516,11 @@ public class CircuitWires {
         bundleMap = null;
     }
 
-    BundleMap getBundleMap() {
+    synchronized BundleMap getBundleMap() {
         // Maybe we already have a valid bundle map (or maybe
         // one is in progress).
         BundleMap ret = bundleMap;
         if (ret != null) {
-            ret.waitUntilComputed();
             return ret;
         }
         try {

@@ -3,13 +3,11 @@
 
 package com.cburch.logisim.circuit;
 
-import java.util.Collection;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.Future;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.cburch.logisim.circuit.Propagator.SetData;
 import com.cburch.logisim.comp.Component;
@@ -122,7 +120,7 @@ public class CircuitState implements InstanceData {
     private Circuit circuit; // circuit being simulated
 
     private CircuitState parentState = null; // parent in tree of CircuitStates
-    private Component parentComp = null; // subcircuit component containing this state
+    Component parentComp = null; // subcircuit component containing this state
     private ArraySet<CircuitState> substates = new ArraySet<CircuitState>();
 
     private CircuitWires.State wireData = null;
@@ -134,6 +132,8 @@ public class CircuitState implements InstanceData {
 
     private static int lastId = 0;
     private int id = lastId++;
+
+    private CircuitThreadPool threadPool = CircuitThreadPool.getInstance();
 
     public CircuitState(Project proj, Circuit circuit) {
         this.proj = proj;
@@ -284,8 +284,18 @@ public class CircuitState implements InstanceData {
         return Value.createUnknown(circuit.wires.getWidth(pt));
     }
 
-    public void setValue(Location pt, Value val, Component cause, int delay, WireBundle wire) {
-        if (base != null) base.setValue(this, pt, val, cause, delay, wire);
+    public ThreadLocal<HashSet<CircuitThreadPool.Struct>> threadLocal = new ThreadLocal<>();
+
+    public void setValue(Location pt, Value val, Component cause, int delay) {
+        HashSet<CircuitThreadPool.Struct> f = (HashSet<CircuitThreadPool.Struct>) threadLocal.get();
+        try {
+            f.add(new CircuitThreadPool.Struct(this, pt, val, cause, delay));
+        } catch (Exception e) {
+            System.exit(11);
+        }
+
+        threadLocal.set(f);
+
     }
 
     public void markComponentAsDirty(Component comp) {
@@ -347,16 +357,9 @@ public class CircuitState implements InstanceData {
             }
 
             dirtyComponents.clear();
-            for (Object compObj : toProcess) {
-                if (compObj instanceof Component) {
-                    Component comp = (Component) compObj;
-                    comp.propagate(this);
-                    if (comp.getFactory() instanceof Pin && parentState != null) {
-                        // should be propagated in superstate
-                        parentComp.propagate(parentState);
-                    }
-                }
-            }
+            threadPool.propagateComponents(this, toProcess);
+            threadPool.summarizeComponents(base);
+
         }
 
         CircuitState[] subs = new CircuitState[substates.size()];
@@ -380,14 +383,15 @@ public class CircuitState implements InstanceData {
                 e.printStackTrace();
             }
         }
-        if (!dirty.isEmpty()) {
-            circuit.wires.propagate(this, dirty);
-        }
+
+        threadPool.propagatePoints(this, dirty);
+        threadPool.summarize();
 
         CircuitState[] subs = new CircuitState[substates.size()];
         for (CircuitState substate : substates.toArray(subs)) {
             substate.processDirtyPoints();
         }
+
     }
 
     void reset() {
@@ -438,8 +442,9 @@ public class CircuitState implements InstanceData {
         return values.get(wire);
     }
 
-    public void setValueByWire(WireBundle wire, Value v) {
+    HashSet<Component> setValueByWire(Location p, Value v) {
         // for CircuitWires - to set value at point
+        HashSet<Component> res = new HashSet<>();
         boolean changed;
         if (v == Value.NIL) {
             Object old = values.remove(wire);
@@ -453,7 +458,7 @@ public class CircuitState implements InstanceData {
             for (Component comp : wire.comps) {
                 if (!(comp instanceof Wire) && !(comp instanceof Splitter)) {
                     found = true;
-                    markComponentAsDirty(comp);
+                    res.add(comp);
                 }
             }
             // NOTE: this will cause a double-propagation on components
@@ -461,6 +466,8 @@ public class CircuitState implements InstanceData {
 
             if (found && base != null) base.locationTouched(this, wire);
         }
+
+        return res;
     }
 
     //

@@ -27,7 +27,7 @@ class InstanceStateImpl implements InstanceState {
         this.component = component;
     }
 
-    CircuitState getCircuitState() {
+    public CircuitState getCircuitState() {
         return circuitState;
     }
 

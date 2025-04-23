@@ -3,6 +3,7 @@
 
 package com.cburch.logisim.instance;
 
+import com.cburch.logisim.circuit.CircuitState;
 import com.cburch.logisim.data.Attribute;
 import com.cburch.logisim.data.AttributeSet;
 import com.cburch.logisim.data.Value;
@@ -34,4 +35,6 @@ public interface InstanceState {
     public boolean isCircuitRoot();
 
     public long getTickCount();
+
+    public CircuitState getCircuitState();
 }
