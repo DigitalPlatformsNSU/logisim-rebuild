@@ -165,7 +165,7 @@ class CircuitWires {
     //
     // query methods
     //
-    boolean isMapVoided() {
+    synchronized boolean isMapVoided() {
         return bundleMap == null;
     }
 
@@ -177,7 +177,7 @@ class CircuitWires {
         getBundleMap();
     }
 
-    BitWidth getWidth(Location q) {
+    synchronized BitWidth getWidth(Location q) {
         BitWidth det = points.getWidth(q);
         if (det != BitWidth.UNKNOWN) return det;
 
@@ -189,7 +189,7 @@ class CircuitWires {
         return BitWidth.UNKNOWN;
     }
 
-    Location getWidthDeterminant(Location q) {
+    synchronized Location getWidthDeterminant(Location q) {
         BitWidth det = points.getWidth(q);
         if (det != BitWidth.UNKNOWN) return q;
 
@@ -199,16 +199,16 @@ class CircuitWires {
         return q;
     }
 
-    Iterator<? extends Component> getComponents() {
+    synchronized Iterator<? extends Component> getComponents() {
         return IteratorUtil.createJoinedIterator(splitters.iterator(),
                 wires.iterator());
     }
 
-    Set<Wire> getWires() {
+    synchronized Set<Wire> getWires() {
         return wires;
     }
 
-    Bounds getWireBounds() {
+    synchronized Bounds getWireBounds() {
         Bounds bds = bounds;
         if (bds == Bounds.EMPTY_BOUNDS) {
             bds = recomputeBounds();
@@ -216,12 +216,12 @@ class CircuitWires {
         return bds;
     }
 
-    WireBundle getWireBundle(Location query) {
+    synchronized WireBundle getWireBundle(Location query) {
         BundleMap bmap = getBundleMap();
         return bmap.getBundleAt(query);
     }
 
-    WireSet getWireSet(Wire start) {
+    synchronized WireSet getWireSet(Wire start) {
         WireBundle bundle = getWireBundle(start.e0);
         if (bundle == null) return WireSet.EMPTY;
         HashSet<Wire> wires = new HashSet<Wire>();
@@ -236,7 +236,7 @@ class CircuitWires {
     //
     // NOTE: this could be made much more efficient in most cases to
     // avoid voiding the bundle map.
-    boolean add(Component comp) {
+    synchronized boolean add(Component comp) {
         boolean added = true;
         if (comp instanceof Wire) {
             added = addWire((Wire) comp);
@@ -259,7 +259,7 @@ class CircuitWires {
         return added;
     }
 
-    void remove(Component comp) {
+    synchronized void remove(Component comp) {
         if (comp instanceof Wire) {
             removeWire((Wire) comp);
         } else if (comp instanceof Splitter) {
@@ -278,17 +278,17 @@ class CircuitWires {
         voidBundleMap();
     }
 
-    void add(Component comp, EndData end) {
+    synchronized void add(Component comp, EndData end) {
         points.add(comp, end);
         voidBundleMap();
     }
 
-    void remove(Component comp, EndData end) {
+    synchronized void remove(Component comp, EndData end) {
         points.remove(comp, end);
         voidBundleMap();
     }
 
-    void replace(Component comp, EndData oldEnd, EndData newEnd) {
+    synchronized void replace(Component comp, EndData oldEnd, EndData newEnd) {
         points.remove(comp, oldEnd);
         points.add(comp, newEnd);
         voidBundleMap();

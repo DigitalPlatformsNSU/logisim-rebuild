@@ -33,8 +33,8 @@ public class CircuitState implements InstanceData {
                 Component comp = (Component) event.getData();
                 if (comp instanceof Wire) {
                     Wire w = (Wire) comp;
-                    markPointAsDirty(w.getEnd0());
-                    markPointAsDirty(w.getEnd1());
+                    markPointAsDirtySync(w.getEnd0());
+                    markPointAsDirtySync(w.getEnd1());
                 } else {
                     markComponentAsDirty(comp);
                 }
@@ -52,8 +52,8 @@ public class CircuitState implements InstanceData {
 
                 if (comp instanceof Wire) {
                     Wire w = (Wire) comp;
-                    markPointAsDirty(w.getEnd0());
-                    markPointAsDirty(w.getEnd1());
+                    markPointAsDirtySync(w.getEnd0());
+                    markPointAsDirtySync(w.getEnd1());
                 } else {
                     if (base != null) base.checkComponentEnds(CircuitState.this, comp);
                     dirtyComponents.remove(comp);
@@ -306,6 +306,12 @@ public class CircuitState implements InstanceData {
         dirtyPoints.add(pt);
     }
 
+    public void markPointAsDirtySync(Location pt) {
+        synchronized (circuit.wires) {
+            dirtyPoints.add(pt);
+        }
+    }
+
     public InstanceState getInstanceState(Component comp) {
         Object factory = comp.getFactory();
         if (factory instanceof InstanceFactory) {
@@ -359,18 +365,21 @@ public class CircuitState implements InstanceData {
     }
 
     void processDirtyPoints() {
-        ArrayList<Location> dirty = new ArrayList<>(dirtyPoints);
-        dirtyPoints.clear();
-        if (circuit.wires.isMapVoided()) {
-            try {
-                dirty.addAll(circuit.wires.points.getSplitLocations());
-            } catch (ConcurrentModificationException e) {
-                // try again...
+        ArrayList<Location> dirty;
+        synchronized (circuit.wires) {
+            dirty = new ArrayList<>(dirtyPoints);
+            dirtyPoints.clear();
+            if (circuit.wires.isMapVoided()) {
                 try {
-                    Thread.sleep(1);
-                } catch (InterruptedException e2) {
+                    dirty.addAll(circuit.wires.points.getSplitLocations());
+                } catch (ConcurrentModificationException e) {
+                    // try again...
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e2) {
+                    }
+                    e.printStackTrace();
                 }
-                e.printStackTrace();
             }
         }
 
@@ -381,7 +390,6 @@ public class CircuitState implements InstanceData {
         for (CircuitState substate : substates.toArray(subs)) {
             substate.processDirtyPoints();
         }
-
     }
 
     void reset() {
