@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class CircuitThreadPool {
-    static class Struct implements Serializable {
+    static class Struct {
         public CircuitState state;
         public Location pt;
         public Value val;
@@ -53,8 +53,8 @@ public class CircuitThreadPool {
         if (!dirty.isEmpty()) {
             ArrayList<Future<HashSet<Component>>> list = new ArrayList<>();
             int q = dirty.size() / countProcessor;
-            if (q < 10000) {
-                q = 10000;
+            if (q < 20) {
+                q = 20;
             }
             for (int i = 0; i < dirty.size(); i += q) {
                 if (i + q >= dirty.size()) {

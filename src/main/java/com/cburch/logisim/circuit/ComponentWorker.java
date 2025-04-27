@@ -29,8 +29,9 @@ public class ComponentWorker implements Callable<HashSet<CircuitThreadPool.Struc
                     // should be propagated in superstate
                     circuitState.getParentState().threadLocal.set(ret);
                     circuitState.parentComp.propagate(circuitState.getParentState());
+                    circuitState.getParentState().threadLocal.remove();
                 }
-
+                circuitState.threadLocal.remove();
             }
         }
 
