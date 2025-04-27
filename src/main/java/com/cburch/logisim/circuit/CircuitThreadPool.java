@@ -30,14 +30,7 @@ public class CircuitThreadPool {
     static private CircuitThreadPool instance = null;
 
     private ThreadPoolExecutor threadPool;
-
-    private Pipe pipe;
-    private Pipe.SinkChannel pipeSink;
-    private Pipe.SourceChannel pipeSource;
-
-    public Pipe.SinkChannel getObjectOutputStream() {
-        return pipeSink;
-    }
+    private int countProcessor = Runtime.getRuntime().availableProcessors();
 
     static public CircuitThreadPool getInstance() {
         if (instance == null) instance = new CircuitThreadPool();
@@ -51,15 +44,6 @@ public class CircuitThreadPool {
                                         0,
                                         TimeUnit.NANOSECONDS,
                                         new LinkedBlockingQueue<>());
-
-        try {
-            pipe = Pipe.open();
-            pipeSink = pipe.sink();
-            pipeSource = pipe.source();
-            pipeSource.configureBlocking(false);
-        } catch (Exception e) {
-        }
-
     }
 
     private HashMap<CircuitState, ArrayList<Future<HashSet<Component>>>> results = new HashMap<>();
@@ -68,9 +52,9 @@ public class CircuitThreadPool {
     public void propagatePoints(CircuitState state, ArrayList<Location> dirty) {
         if (!dirty.isEmpty()) {
             ArrayList<Future<HashSet<Component>>> list = new ArrayList<>();
-            int q = dirty.size() / Runtime.getRuntime().availableProcessors();
-            if (q < 15) {
-                q = 15;
+            int q = dirty.size() / countProcessor;
+            if (q < 10000) {
+                q = 10000;
             }
             for (int i = 0; i < dirty.size(); i += q) {
                 if (i + q >= dirty.size()) {
@@ -89,17 +73,14 @@ public class CircuitThreadPool {
     public void summarize() {
         for (CircuitState state : results.keySet()) {
             ArrayList<Future<HashSet<Component>>> list = results.get(state);
-            HashSet<Component> components = new HashSet<>();
 
             for (Future<HashSet<Component>> future : list) {
                 try {
-                    components.addAll(future.get());
+                    state.markComponentsDirty(future.get());
                 } catch (Exception e) {
 
                 }
             }
-
-            state.markComponentsDirty(components);
         }
 
         results.clear();
@@ -109,7 +90,7 @@ public class CircuitThreadPool {
         if (toProcess.length == 0) return;
 
         ArrayList<Future<HashSet<Struct>>> list = new ArrayList<>();
-        int q = toProcess.length / Runtime.getRuntime().availableProcessors();
+        int q = toProcess.length / countProcessor;
         if (q < 15) {
             q = 15;
         }
@@ -129,22 +110,17 @@ public class CircuitThreadPool {
         for (CircuitState state : resultsComponents.keySet()) {
             ArrayList<Future<HashSet<Struct>>> list = resultsComponents.get(state);
 
-            HashSet<Struct> set = new HashSet<>();
             for (Future<HashSet<Struct>> future : list) {
                 try {
-                    set.addAll(future.get());
+                    HashSet<Struct> set = future.get();
+                    for (Struct res : set) {
+                        if (propagator != null) propagator.setValue(res.state, res.pt, res.val, res.cause, res.delay);
+                    }
                 } catch (Exception e) {
                     System.err.println(e.getMessage());
                 }
             }
-
-            for (Struct res : set) {
-                if (propagator != null) propagator.setValue(res.state, res.pt, res.val, res.cause, res.delay);
-            }
-
-
-
-            }
+        }
 
 
 

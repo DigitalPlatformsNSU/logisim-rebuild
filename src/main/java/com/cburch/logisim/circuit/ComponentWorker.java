@@ -21,19 +21,14 @@ public class ComponentWorker implements Callable<HashSet<CircuitThreadPool.Struc
         HashSet<CircuitThreadPool.Struct> ret = new HashSet<>();
         for (Object compObj : toProcess) {
             if (compObj instanceof Component) {
-                HashSet<CircuitThreadPool.Struct> result = new HashSet<>();
-                circuitState.threadLocal.set(result);
+                circuitState.threadLocal.set(ret);
                 Component comp = (Component) compObj;
                 comp.propagate(circuitState);
-                result = circuitState.threadLocal.get();
-                ret.addAll(result);
+                ret = circuitState.threadLocal.get();
                 if (comp.getFactory() instanceof Pin && circuitState.getParentState() != null) {
                     // should be propagated in superstate
-                    HashSet<CircuitThreadPool.Struct> resul = new HashSet<>();
-                    circuitState.getParentState().threadLocal.set(resul);
+                    circuitState.getParentState().threadLocal.set(ret);
                     circuitState.parentComp.propagate(circuitState.getParentState());
-                    resul = circuitState.getParentState().threadLocal.get();
-                    ret.addAll(resul);
                 }
 
             }

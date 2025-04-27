@@ -36,7 +36,7 @@ public class CircuitState implements InstanceData {
                     markPointAsDirtySync(w.getEnd0());
                     markPointAsDirtySync(w.getEnd1());
                 } else {
-                    markComponentAsDirty(comp);
+                    markComponentAsDirtySync(comp);
                 }
             } else if (action == CircuitEvent.ACTION_REMOVE) {
                 Component comp = (Component) event.getData();
@@ -277,14 +277,11 @@ public class CircuitState implements InstanceData {
     public ThreadLocal<HashSet<CircuitThreadPool.Struct>> threadLocal = new ThreadLocal<>();
 
     public void setValue(Location pt, Value val, Component cause, int delay) {
-        HashSet<CircuitThreadPool.Struct> f = (HashSet<CircuitThreadPool.Struct>) threadLocal.get();
-        try {
-            f.add(new CircuitThreadPool.Struct(this, pt, val, cause, delay));
-        } catch (Exception e) {
-            System.exit(11);
-        }
+        HashSet<CircuitThreadPool.Struct> threadData = (HashSet<CircuitThreadPool.Struct>) threadLocal.get();
+        threadData.add(new CircuitThreadPool.Struct(this, pt, val, cause, delay));
 
-        threadLocal.set(f);
+
+        threadLocal.set(threadData);
 
     }
 
@@ -295,6 +292,18 @@ public class CircuitState implements InstanceData {
             HashSet<Component> set = new HashSet<Component>();
             set.add(comp);
             dirtyComponents = set;
+        }
+    }
+
+    public void markComponentAsDirtySync(Component comp) {
+        synchronized (dirtyComponents) {
+            try {
+                dirtyComponents.add(comp);
+            } catch (RuntimeException e) {
+                HashSet<Component> set = new HashSet<Component>();
+                set.add(comp);
+                dirtyComponents = set;
+            }
         }
     }
 
@@ -338,29 +347,31 @@ public class CircuitState implements InstanceData {
     }
 
     void processDirtyComponents() {
-        if (!dirtyComponents.isEmpty()) {
-            // This seeming wasted copy is to avoid ConcurrentModifications
-            // if we used an iterator instead.
-            Object[] toProcess;
-            RuntimeException firstException = null;
-            try {
-                toProcess = dirtyComponents.toArray();
-            } catch (RuntimeException e) {
-                if (firstException == null) firstException = e;
-                toProcess = new Object[0];
-                dirtyComponents = new HashSet<Component>();
-                throw firstException;
+        synchronized (dirtyComponents) {
+            if (!dirtyComponents.isEmpty()) {
+                // This seeming wasted copy is to avoid ConcurrentModifications
+                // if we used an iterator instead.
+                Object[] toProcess;
+                RuntimeException firstException = null;
+                try {
+                    toProcess = dirtyComponents.toArray();
+                } catch (RuntimeException e) {
+                    if (firstException == null) firstException = e;
+                    toProcess = new Object[0];
+                    dirtyComponents = new HashSet<Component>();
+                    throw firstException;
+                }
+
+                dirtyComponents.clear();
+                threadPool.propagateComponents(this, toProcess);
+                threadPool.summarizeComponents(base);
+
             }
 
-            dirtyComponents.clear();
-            threadPool.propagateComponents(this, toProcess);
-            threadPool.summarizeComponents(base);
-
-        }
-
-        CircuitState[] subs = new CircuitState[substates.size()];
-        for (CircuitState substate : substates.toArray(subs)) {
-            substate.processDirtyComponents();
+            CircuitState[] subs = new CircuitState[substates.size()];
+            for (CircuitState substate : substates.toArray(subs)) {
+                substate.processDirtyComponents();
+            }
         }
     }
 
