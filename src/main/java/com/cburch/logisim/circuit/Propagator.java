@@ -27,6 +27,18 @@ public class Propagator {
         Location loc;       // the location at which value is emitted
         Value val;          // value being emitted
         SetData next = null;
+        WireBundle wire;
+
+        private SetData(int time, int serialNumber, CircuitState state,
+                        Location loc, Component cause, Value val, WireBundle wire) {
+            this.time = time;
+            this.serialNumber = serialNumber;
+            this.state = state;
+            this.cause = cause;
+            this.loc = loc;
+            this.val = val;
+            this.wire = wire;
+        }
 
         private SetData(int time, int serialNumber, CircuitState state,
                         Location loc, Component cause, Value val) {
@@ -246,7 +258,7 @@ public class Propagator {
                     + data.state + " to " + data.val
                     + " by " + data.cause); // */
 
-            if (changedPoints != null) changedPoints.add(state, data.loc);
+            if (changedPoints != null) changedPoints.add(state, data.wire);
 
             // change the information about value
             SetData oldHead = state.causes.get(data.loc);
@@ -256,7 +268,7 @@ public class Propagator {
 
             // if the value at point has changed, propagate it
             if (!newVal.equals(oldVal)) {
-                state.markPointAsDirty(data.loc);
+                state.markPointAsDirty(data.wire);
             }
         }
 
@@ -309,15 +321,15 @@ public class Propagator {
         clearDirtyComponents();
     } */
 
-    void locationTouched(CircuitState state, Location loc) {
-        if (oscAdding) oscPoints.add(state, loc);
+    void locationTouched(CircuitState state, WireBundle wire) {
+        if (oscAdding) oscPoints.add(state, wire);
     }
 
     //
     // package-protected helper methods
     //
     void setValue(CircuitState state, Location pt, Value val,
-                  Component cause, int delay) {
+                  Component cause, int delay, WireBundle wire) {
         if (cause instanceof Wire || cause instanceof Splitter) return;
         if (delay <= 0) {
             delay = 1;
@@ -337,7 +349,7 @@ public class Propagator {
             }
         }
         toProcess.add(new SetData(clock + delay, setDataSerialNumber,
-                state, pt, cause, val));
+                state, pt, cause, val, wire));
         /*DEBUGGING - comment out
         Simulator.log(clock + ": set " + pt + " in "
                 + state + " to " + val
@@ -362,16 +374,17 @@ public class Propagator {
     void checkComponentEnds(CircuitState state, Component comp) {
         for (EndData end : comp.getEnds()) {
             Location loc = end.getLocation();
+            WireBundle wire = end.getWire();
             SetData oldHead = state.causes.get(loc);
             Value oldVal = computeValue(oldHead);
             SetData newHead = removeCause(state, oldHead, loc, comp);
             Value newVal = computeValue(newHead);
-            Value wireVal = state.getValueByWire(loc);
+            Value wireVal = state.getValueByWire(wire);
 
             if (!newVal.equals(oldVal) || wireVal != null) {
-                state.markPointAsDirty(loc);
+                state.markPointAsDirty(wire);
             }
-            if (wireVal != null) state.setValueByWire(loc, Value.NIL);
+            if (wireVal != null) state.setValueByWire(wire, Value.NIL);
         }
     }
 

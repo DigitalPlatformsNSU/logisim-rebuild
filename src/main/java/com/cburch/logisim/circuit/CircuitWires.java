@@ -30,7 +30,7 @@ import com.cburch.logisim.std.wiring.Tunnel;
 import com.cburch.logisim.util.GraphicsUtil;
 import com.cburch.logisim.util.IteratorUtil;
 
-class CircuitWires {
+public class CircuitWires {
     static class SplitterData {
         WireBundle[] end_bundle; // PointData associated with each end
 
@@ -39,11 +39,11 @@ class CircuitWires {
         }
     }
 
-    static class ThreadBundle {
+    public static class ThreadBundle {
         int loc;
         WireBundle b;
 
-        ThreadBundle(int loc, WireBundle b) {
+        public ThreadBundle(int loc, WireBundle b) {
             this.loc = loc;
             this.b = b;
         }
@@ -158,6 +158,7 @@ class CircuitWires {
     // derived data
     private Bounds bounds = Bounds.EMPTY_BOUNDS;
     private BundleMap bundleMap = null;
+    boolean flag = true;
 
     CircuitWires() {
     }
@@ -166,7 +167,9 @@ class CircuitWires {
     // query methods
     //
     boolean isMapVoided() {
-        return bundleMap == null;
+        boolean ans = flag;
+        flag = false;
+        return ans;
     }
 
     Set<WidthIncompatibilityData> getWidthIncompatibilityData() {
@@ -320,7 +323,7 @@ class CircuitWires {
     //
     // utility methods
     //
-    void propagate(CircuitState circState, Set<Location> points) {
+    void propagate(CircuitState circState, Set<WireBundle> points) {
         BundleMap map = getBundleMap();
         HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
 
@@ -341,22 +344,11 @@ class CircuitWires {
         }
 
         // determine affected threads, and set values for unwired points
-        for (Location p : points) {
-            WireBundle pb = map.getBundleAt(p);
-            if (pb == null) { // point is not wired
-                circState.setValueByWire(p, circState.getComponentOutputAt(p));
-            } else {
+        for (WireBundle pb : points) {
+            if (pb != null) {
                 WireThread[] th = pb.threads;
                 if (!pb.isValid() || th == null) {
-                    // immediately propagate NILs across invalid bundles
-                    HashSet<Location> pbPoints = pb.points;
-                    if (pbPoints == null) {
-                        circState.setValueByWire(p, Value.NIL);
-                    } else {
-                        for (Location loc2 : pbPoints) {
-                            circState.setValueByWire(loc2, Value.NIL);
-                        }
-                    }
+                    circState.setValueByWire(pb, Value.NIL);
                 } else {
                     for (WireThread t : th) {
                         dirtyThreads.add(t);
@@ -399,9 +391,8 @@ class CircuitWires {
             }
 
             if (bv != null) {
-                for (Location p : b.points) {
-                    circState.setValueByWire(p, bv);
-                }
+                circState.setValueByWire(b, bv);
+
             }
         }
     }
@@ -425,7 +416,7 @@ class CircuitWires {
                     g.setColor(Value.WIDTH_ERROR_COLOR);
                 } else if (showState) {
                     if (!isValid) g.setColor(Value.NIL_COLOR);
-                    else g.setColor(state.getValue(s).getColor());
+                    else g.setColor(state.getValue(wb, wb.getWidth()).getColor());
                 } else {
                     g.setColor(Color.BLACK);
                 }
@@ -446,7 +437,7 @@ class CircuitWires {
                             g.setColor(Value.WIDTH_ERROR_COLOR);
                         } else if (showState) {
                             if (!isValid) g.setColor(Value.NIL_COLOR);
-                            else g.setColor(state.getValue(loc).getColor());
+                            else g.setColor(state.getValue(wb, wb.getWidth()).getColor());
                         } else {
                             g.setColor(Color.BLACK);
                         }
@@ -468,7 +459,7 @@ class CircuitWires {
                         g.setColor(Value.WIDTH_ERROR_COLOR);
                     } else if (showState) {
                         if (!isValid) g.setColor(Value.NIL_COLOR);
-                        else g.setColor(state.getValue(s).getColor());
+                        else g.setColor(state.getValue(wb, wb.getWidth()).getColor());
                     } else {
                         g.setColor(Color.BLACK);
                     }
@@ -487,18 +478,18 @@ class CircuitWires {
             // while at a time anway.
             for (Location loc : points.getSplitLocations()) {
                 if (points.getComponentCount(loc) > 2) {
+                    WireBundle wb = bmap.getBundleAt(loc);
                     int icount = 0;
-                    for (Component comp : points.getComponents(loc)) {
+                    for (Component comp : points.getComponents(wb)) {
                         if (!hidden.contains(comp)) ++icount;
                     }
                     if (icount > 2) {
-                        WireBundle wb = bmap.getBundleAt(loc);
                         if (wb != null) {
                             if (!wb.isValid()) {
                                 g.setColor(Value.WIDTH_ERROR_COLOR);
                             } else if (showState) {
                                 if (!isValid) g.setColor(Value.NIL_COLOR);
-                                else g.setColor(state.getValue(loc).getColor());
+                                else g.setColor(state.getValue(wb, wb.getWidth()).getColor());
                             } else {
                                 g.setColor(Color.BLACK);
                             }
@@ -521,7 +512,7 @@ class CircuitWires {
         bundleMap = null;
     }
 
-    private BundleMap getBundleMap() {
+    BundleMap getBundleMap() {
         // Maybe we already have a valid bundle map (or maybe
         // one is in progress).
         BundleMap ret = bundleMap;
@@ -673,13 +664,16 @@ class CircuitWires {
                 WireBundle b1 = ret.createBundleAt(w.e1);
                 b1.points.add(w.e0);
                 ret.setBundleAt(w.e0, b1);
+                w.wire = b1;
             } else {
                 WireBundle b1 = ret.getBundleAt(w.e1);
                 if (b1 == null) { // t1 doesn't exist
                     b0.points.add(w.e1);
                     ret.setBundleAt(w.e1, b0);
+                    w.wire = b0;
                 } else {
                     b1.unite(b0); // unite b0 and b1
+                    w.wire = b1;
                 }
             }
         }
@@ -691,7 +685,7 @@ class CircuitWires {
         for (Component comp : tunnels) {
             String label = comp.getAttributeSet().getValue(StdAttr.LABEL);
             label = label.trim();
-            if (!label.equals("")) {
+            if (!label.isEmpty()) {
                 ArrayList<Location> tunnelSet = tunnelSets.get(label);
                 if (tunnelSet == null) {
                     tunnelSet = new ArrayList<Location>(3);

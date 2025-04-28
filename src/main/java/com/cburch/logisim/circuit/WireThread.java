@@ -5,7 +5,7 @@ package com.cburch.logisim.circuit;
 
 import java.util.HashSet;
 
-class WireThread {
+public class WireThread {
     private WireThread parent;
     private HashSet<CircuitWires.ThreadBundle> bundles = new HashSet<CircuitWires.ThreadBundle>();
 
@@ -13,7 +13,7 @@ class WireThread {
         parent = this;
     }
 
-    HashSet<CircuitWires.ThreadBundle> getBundles() {
+    public HashSet<CircuitWires.ThreadBundle> getBundles() {
         return bundles;
     }
 
@@ -23,7 +23,7 @@ class WireThread {
         if (group != group2) group.parent = group2;
     }
 
-    WireThread find() {
+    public WireThread find() {
         WireThread ret = this;
         if (ret.parent != ret) {
             do ret = ret.parent;
