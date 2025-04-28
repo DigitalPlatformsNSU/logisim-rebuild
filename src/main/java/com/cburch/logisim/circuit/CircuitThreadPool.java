@@ -57,17 +57,17 @@ public class CircuitThreadPool {
                 q = 20;
             }
 
-            if (q >= dirty.size()) {
-                state.getCircuit().wires.propagateMainThread(state, dirty);
-                return;
-            }
+//            if (q >= dirty.size()) {
+//                state.getCircuit().wires.propagateMainThread(state, dirty);
+//                return;
+//            }
 
             for (int i = 0; i < dirty.size(); i += q) {
                 if (i + q >= dirty.size()) {
-                    list.add(threadPool.submit(new PointsWorker(state, new HashSet<>(dirty.subList(i, dirty.size())))));
+                    list.add(threadPool.submit(new PointsWorker(state, new ArrayList<>(dirty.subList(i, dirty.size())))));
                     continue;
                 }
-                list.add(threadPool.submit(new PointsWorker(state, new HashSet<>(dirty.subList(i, i + q)))));
+                list.add(threadPool.submit(new PointsWorker(state, new ArrayList<>(dirty.subList(i, i + q)))));
 
 
             }

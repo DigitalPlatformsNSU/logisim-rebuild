@@ -413,6 +413,11 @@ public class CircuitState implements InstanceData {
             }
         }
 
+        CircuitWires.BundleMap map = circuit.wires.getBundleMap();
+        if (wireData == null || wireData.bundleMap != map) {
+            wireData = new CircuitWires.State(map);
+        }
+
         threadPool.propagatePoints(this, dirty);
         threadPool.summarize();
 

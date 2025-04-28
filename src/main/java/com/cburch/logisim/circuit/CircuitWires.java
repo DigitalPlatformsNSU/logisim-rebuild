@@ -52,6 +52,7 @@ class CircuitWires {
     static class State {
         BundleMap bundleMap;
         HashMap<WireThread, Value> thr_values = new HashMap<WireThread, Value>();
+        boolean inUse = false;
 
         State(BundleMap bundleMap) {
             this.bundleMap = bundleMap;
@@ -320,102 +321,102 @@ class CircuitWires {
     //
     // utility methods
     //
-    void propagateMainThread(CircuitState circState, ArrayList<Location> points) {
-        BundleMap map = getBundleMap();
-        HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
+//    void propagateMainThread(CircuitState circState, ArrayList<Location> points) {
+//        BundleMap map = getBundleMap();
+//        HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
+//
+//        // get state, or create a new one if current state is outdated
+//        State s = circState.getWireData();
+//        if (s == null || s.bundleMap != map) {
+//            // if it is outdated, we need to compute for all threads
+//            s = new State(map);
+//            for (WireBundle b : map.getBundles()) {
+//                WireThread[] th = b.threads;
+//                if (b.isValid() && th != null) {
+//                    for (WireThread t : th) {
+//                        dirtyThreads.add(t);
+//                    }
+//                }
+//            }
+//            circState.setWireData(s);
+//        }
+//
+//        // determine affected threads, and set values for unwired points
+//        for (Location p : points) {
+//            WireBundle pb = map.getBundleAt(p);
+//            if (pb == null) { // point is not wired
+//                circState.setValueByWire(p, circState.getComponentOutputAt(p));
+//            } else {
+//                WireThread[] th = pb.threads;
+//                if (!pb.isValid() || th == null) {
+//                    // immediately propagate NILs across invalid bundles
+//                    HashSet<Location> pbPoints = pb.points;
+//                    if (pbPoints == null) {
+//                        circState.setValueByWire(p, Value.NIL);
+//                    } else {
+//                        for (Location loc2 : pbPoints) {
+//                            circState.setValueByWire(loc2, Value.NIL);
+//                        }
+//                    }
+//                } else {
+//                    for (WireThread t : th) {
+//                        dirtyThreads.add(t);
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (dirtyThreads.isEmpty()) return;
+//
+//        // determine values of affected threads
+//        HashSet<ThreadBundle> bundles = new HashSet<ThreadBundle>();
+//        for (WireThread t : dirtyThreads) {
+//            Value v = getThreadValue(circState, t);
+//            s.thr_values.put(t, v);
+//            bundles.addAll(t.getBundles());
+//        }
+//
+//        // now propagate values through circuit
+//        for (ThreadBundle tb : bundles) {
+//            WireBundle b = tb.b;
+//
+//            Value bv = null;
+//            if (!b.isValid() || b.threads == null) {
+//                ; // do nothing
+//            } else if (b.threads.length == 1) {
+//                bv = s.thr_values.get(b.threads[0]);
+//            } else {
+//                Value[] tvs = new Value[b.threads.length];
+//                boolean tvs_valid = true;
+//                for (int i = 0; i < tvs.length; i++) {
+//                    Value tv = s.thr_values.get(b.threads[i]);
+//                    if (tv == null) {
+//                        tvs_valid = false;
+//                        break;
+//                    }
+//                    tvs[i] = tv;
+//                }
+//                if (tvs_valid) bv = Value.create(tvs);
+//            }
+//
+//            if (bv != null) {
+//                for (Location p : b.points) {
+//                    circState.setValueByWireByMainThread(p, bv);
+//                }
+//            }
+//        }
+//    }
 
-        // get state, or create a new one if current state is outdated
-        State s = circState.getWireData();
-        if (s == null || s.bundleMap != map) {
-            // if it is outdated, we need to compute for all threads
-            s = new State(map);
-            for (WireBundle b : map.getBundles()) {
-                WireThread[] th = b.threads;
-                if (b.isValid() && th != null) {
-                    for (WireThread t : th) {
-                        dirtyThreads.add(t);
-                    }
-                }
-            }
-            circState.setWireData(s);
-        }
-
-        // determine affected threads, and set values for unwired points
-        for (Location p : points) {
-            WireBundle pb = map.getBundleAt(p);
-            if (pb == null) { // point is not wired
-                circState.setValueByWire(p, circState.getComponentOutputAt(p));
-            } else {
-                WireThread[] th = pb.threads;
-                if (!pb.isValid() || th == null) {
-                    // immediately propagate NILs across invalid bundles
-                    HashSet<Location> pbPoints = pb.points;
-                    if (pbPoints == null) {
-                        circState.setValueByWire(p, Value.NIL);
-                    } else {
-                        for (Location loc2 : pbPoints) {
-                            circState.setValueByWire(loc2, Value.NIL);
-                        }
-                    }
-                } else {
-                    for (WireThread t : th) {
-                        dirtyThreads.add(t);
-                    }
-                }
-            }
-        }
-
-        if (dirtyThreads.isEmpty()) return;
-
-        // determine values of affected threads
-        HashSet<ThreadBundle> bundles = new HashSet<ThreadBundle>();
-        for (WireThread t : dirtyThreads) {
-            Value v = getThreadValue(circState, t);
-            s.thr_values.put(t, v);
-            bundles.addAll(t.getBundles());
-        }
-
-        // now propagate values through circuit
-        for (ThreadBundle tb : bundles) {
-            WireBundle b = tb.b;
-
-            Value bv = null;
-            if (!b.isValid() || b.threads == null) {
-                ; // do nothing
-            } else if (b.threads.length == 1) {
-                bv = s.thr_values.get(b.threads[0]);
-            } else {
-                Value[] tvs = new Value[b.threads.length];
-                boolean tvs_valid = true;
-                for (int i = 0; i < tvs.length; i++) {
-                    Value tv = s.thr_values.get(b.threads[i]);
-                    if (tv == null) {
-                        tvs_valid = false;
-                        break;
-                    }
-                    tvs[i] = tv;
-                }
-                if (tvs_valid) bv = Value.create(tvs);
-            }
-
-            if (bv != null) {
-                for (Location p : b.points) {
-                    circState.setValueByWireByMainThread(p, bv);
-                }
-            }
-        }
-    }
-
-    HashSet<Component> propagate(CircuitState circState, Set<Location> points) {
+    HashSet<Component> propagate(CircuitState circState, ArrayList<Location> points) {
         HashSet<Component> res = new HashSet<>();
-        BundleMap map = getBundleMap();
+        BundleMap map = bundleMap;
         HashSet<WireThread> dirtyThreads = new HashSet<WireThread>(); // affected threads
 
         // get state, or create a new one if current state is outdated
         State s = circState.getWireData();
-        if (s == null || s.bundleMap != map) {
+        if (!s.inUse) {
+            s.inUse = true;
             // if it is outdated, we need to compute for all threads
-            s = new State(map);
             for (WireBundle b : map.getBundles()) {
                 WireThread[] th = b.threads;
                 if (b.isValid() && th != null) {
@@ -424,7 +425,7 @@ class CircuitWires {
                     }
                 }
             }
-            circState.setWireData(s);
+
         }
 
         // determine affected threads, and set values for unwired points
@@ -458,7 +459,9 @@ class CircuitWires {
         HashSet<ThreadBundle> bundles = new HashSet<ThreadBundle>();
         for (WireThread t : dirtyThreads) {
             Value v = getThreadValue(circState, t);
-            s.thr_values.put(t, v);
+            synchronized (s.thr_values) {
+                s.thr_values.put(t, v);
+            }
             bundles.addAll(t.getBundles());
         }
 
@@ -610,7 +613,7 @@ class CircuitWires {
         bundleMap = null;
     }
 
-    synchronized private BundleMap getBundleMap() {
+    synchronized BundleMap getBundleMap() {
         // Maybe we already have a valid bundle map (or maybe
         // one is in progress).
         BundleMap ret = bundleMap;
