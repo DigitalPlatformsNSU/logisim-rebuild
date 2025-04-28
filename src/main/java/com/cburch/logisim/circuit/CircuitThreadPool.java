@@ -56,6 +56,12 @@ public class CircuitThreadPool {
             if (q < 20) {
                 q = 20;
             }
+
+            if (q >= dirty.size()) {
+                state.getCircuit().wires.propagateMainThread(state, dirty);
+                return;
+            }
+
             for (int i = 0; i < dirty.size(); i += q) {
                 if (i + q >= dirty.size()) {
                     list.add(threadPool.submit(new PointsWorker(state, new HashSet<>(dirty.subList(i, dirty.size())))));
