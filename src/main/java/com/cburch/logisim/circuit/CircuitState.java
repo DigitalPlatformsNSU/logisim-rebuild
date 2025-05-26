@@ -293,6 +293,13 @@ public class CircuitState implements InstanceData {
 
     public void setValue(Location pt, Value val, Component cause, int delay) {
         HashSet<CircuitThreadPool.Struct> threadData = (HashSet<CircuitThreadPool.Struct>) threadLocal.get();
+
+        if (threadData == null) {
+            if (base != null) base.setValue(this, pt, val, cause, delay);
+
+            return;
+        }
+
         threadData.add(new CircuitThreadPool.Struct(this, pt, val, cause, delay));
 
 

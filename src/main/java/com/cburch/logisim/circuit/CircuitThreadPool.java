@@ -3,6 +3,7 @@ package com.cburch.logisim.circuit;
 import com.cburch.logisim.comp.Component;
 import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
+import com.cburch.logisim.std.wiring.Pin;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -44,6 +45,8 @@ public class CircuitThreadPool {
                                         0,
                                         TimeUnit.NANOSECONDS,
                                         new LinkedBlockingQueue<>());
+
+        threadPool.prestartAllCoreThreads();
     }
 
     private HashMap<CircuitState, ArrayList<Future<HashSet<Component>>>> results = new HashMap<>();
@@ -54,14 +57,12 @@ public class CircuitThreadPool {
             ArrayList<Future<HashSet<Component>>> list = new ArrayList<>();
             int q = dirty.size() / countProcessor;
             if (q < 20) {
-                q = 20;
+                state.getCircuit().wires.propagateMainThread(state, dirty);
+                return;
             }
 
-//            if (q >= dirty.size()) {
-//                state.getCircuit().wires.propagateMainThread(state, dirty);
-//                return;
-//            }
 
+            System.out.println("start with size = " + dirty.size() + " and q = " + q);
             for (int i = 0; i < dirty.size(); i += q) {
                 if (i + q >= dirty.size()) {
                     list.add(threadPool.submit(new PointsWorker(state, new ArrayList<>(dirty.subList(i, dirty.size())))));
@@ -87,6 +88,10 @@ public class CircuitThreadPool {
 
                 }
             }
+
+            if (!list.isEmpty()) {
+                System.out.println("finish");
+            }
         }
 
         results.clear();
@@ -98,7 +103,17 @@ public class CircuitThreadPool {
         ArrayList<Future<HashSet<Struct>>> list = new ArrayList<>();
         int q = toProcess.length / countProcessor;
         if (q < 15) {
-            q = 15;
+            for (Object compObj : toProcess) {
+                if (compObj instanceof Component) {
+                    Component comp = (Component) compObj;
+                    comp.propagate(state);
+                    if (comp.getFactory() instanceof Pin && state.getParentState() != null) {
+                        // should be propagated in superstate
+                        state.parentComp.propagate(state.getParentState());
+                    }
+                }
+            }
+            return;
         }
 
         for (int i = 0; i < toProcess.length; i += q) {
