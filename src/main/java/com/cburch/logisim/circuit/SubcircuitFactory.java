@@ -222,12 +222,17 @@ public class SubcircuitFactory extends InstanceFactory {
                 Value newVal = superState.getPort(i);
                 Value oldVal = Pin.FACTORY.getValue(pinState);
                 if (!newVal.equals(oldVal)) {
-                    pinState.getCircuitState().threadLocal.set(new HashSet<>());
+                    HashSet<CircuitThreadPool.Struct> s = superState.getCircuitState().threadLocal.get();
+                    if (s != null) {
+                        pinState.getCircuitState().threadLocal.set(new HashSet<>());
+                    }
                     Pin.FACTORY.setValue(pinState, newVal);
                     Pin.FACTORY.propagate(pinState);
-                    HashSet<CircuitThreadPool.Struct> s = superState.getCircuitState().threadLocal.get();
-                    s.addAll(pinState.getCircuitState().threadLocal.get());
-                    superState.getCircuitState().threadLocal.set(s);
+                    if (s != null) {
+                        s.addAll(pinState.getCircuitState().threadLocal.get());
+                        superState.getCircuitState().threadLocal.set(s);
+                    }
+
                 }
             } else { // it is output-only
                 Value val = pinState.getPort(0);

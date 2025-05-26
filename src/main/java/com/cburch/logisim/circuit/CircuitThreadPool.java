@@ -103,6 +103,7 @@ public class CircuitThreadPool {
         ArrayList<Future<HashSet<Struct>>> list = new ArrayList<>();
         int q = toProcess.length / countProcessor;
         if (q < 15) {
+            q = 15;
             for (Object compObj : toProcess) {
                 if (compObj instanceof Component) {
                     Component comp = (Component) compObj;
