@@ -2,9 +2,14 @@ plugins {
     id("java")
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("checkstyle")
+    id("application")
 }
 
-group = "org.example"
+application {
+    mainClass.set("com.cburch.logisim.Main")
+}
+
+group = "com.cburch.logisim"
 version = "1.0-SNAPSHOT"
 
 repositories {
