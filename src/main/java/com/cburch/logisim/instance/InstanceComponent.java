@@ -3,8 +3,7 @@
 
 package com.cburch.logisim.instance;
 
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -45,6 +44,7 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
     private AttributeSet attrs;
     private boolean attrListenRequested;
     private InstanceTextField textField;
+    private Color threadColor = Color.RED; // цвет по умолчанию
 
     InstanceComponent(InstanceFactory factory, Location loc,
                       AttributeSet attrs) {
@@ -254,6 +254,19 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
         InstancePainter painter = context.getInstancePainter();
         painter.setInstance(this);
         factory.paintInstance(painter);
+
+        Graphics g = context.getGraphics();
+        // Цвет круга
+        g.setColor(threadColor);
+
+        // Центр круга (снизу справа от компонента)
+        int circleRadius = 3;
+        int circleDiameter = circleRadius * 2;
+
+        int x = bounds.getX() + bounds.getWidth() + 1; // немного правее компонента
+        int y = bounds.getY() + bounds.getHeight() - circleDiameter; // в самом низу
+
+        g.fillOval(x, y, circleDiameter, circleDiameter);
     }
 
     public void expose(ComponentDrawContext context) {
@@ -339,4 +352,7 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
         }
     }
 
+    public void setThreadColor(Color color) {
+        this.threadColor = color;
+    }
 }

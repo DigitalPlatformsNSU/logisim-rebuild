@@ -3,7 +3,7 @@
 
 package com.cburch.logisim.instance;
 
-import java.awt.Font;
+import java.awt.*;
 import java.util.List;
 
 import com.cburch.logisim.circuit.CircuitState;
@@ -95,5 +95,9 @@ public class Instance {
 
     public void fireInvalidated() {
         comp.fireInvalidated();
+    }
+
+    public void setThreadColor(Color c) {
+        comp.setThreadColor(c);
     }
 }

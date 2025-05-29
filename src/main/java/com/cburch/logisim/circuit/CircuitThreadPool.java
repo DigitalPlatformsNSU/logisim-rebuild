@@ -5,6 +5,7 @@ import com.cburch.logisim.data.Location;
 import com.cburch.logisim.data.Value;
 import com.cburch.logisim.std.wiring.Pin;
 
+import java.awt.*;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.Pipe;
@@ -32,6 +33,10 @@ public class CircuitThreadPool {
 
     private ThreadPoolExecutor threadPool;
     private int countProcessor = Runtime.getRuntime().availableProcessors();
+    public static final ThreadLocal<Color> THREAD_COLOR = ThreadLocal.withInitial(() -> {
+        Random rnd = new Random();
+        return new Color(rnd.nextInt(200) + 30, rnd.nextInt(200) + 30, rnd.nextInt(200) + 30);
+    });
 
     static public CircuitThreadPool getInstance() {
         if (instance == null) instance = new CircuitThreadPool();
