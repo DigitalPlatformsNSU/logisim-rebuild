@@ -44,7 +44,7 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
     private AttributeSet attrs;
     private boolean attrListenRequested;
     private InstanceTextField textField;
-    private Color threadColor = Color.RED; // цвет по умолчанию
+    private Color threadColor = null; // цвет по умолчанию
 
     InstanceComponent(InstanceFactory factory, Location loc,
                       AttributeSet attrs) {
@@ -255,18 +255,21 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
         painter.setInstance(this);
         factory.paintInstance(painter);
 
-        Graphics g = context.getGraphics();
-        // Цвет круга
-        g.setColor(threadColor);
+        if (threadColor != null) {
+            Graphics g = context.getGraphics();
+            // Цвет круга
+            g.setColor(threadColor);
 
-        // Центр круга (снизу справа от компонента)
-        int circleRadius = 3;
-        int circleDiameter = circleRadius * 2;
+            // Центр круга (снизу справа от компонента)
+            int circleRadius = 3;
+            int circleDiameter = circleRadius * 2;
 
-        int x = bounds.getX() + bounds.getWidth() + 1; // немного правее компонента
-        int y = bounds.getY() + bounds.getHeight() - circleDiameter; // в самом низу
+            int x = bounds.getX() + bounds.getWidth() + 1; // немного правее компонента
+            int y = bounds.getY() + bounds.getHeight() - circleDiameter; // в самом низу
 
-        g.fillOval(x, y, circleDiameter, circleDiameter);
+            g.fillOval(x, y, circleDiameter, circleDiameter);
+            threadColor = null;
+        }
     }
 
     public void expose(ComponentDrawContext context) {
