@@ -268,7 +268,6 @@ class InstanceComponent implements Component, AttributeListener, ToolTipMaker {
             int y = bounds.getY() + bounds.getHeight() - circleDiameter; // в самом низу
 
             g.fillOval(x, y, circleDiameter, circleDiameter);
-            threadColor = null;
         }
     }
 
