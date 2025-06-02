@@ -4,7 +4,7 @@
 package com.cburch.logisim.comp;
 
 
-import java.awt.Graphics;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
 
