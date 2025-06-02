@@ -12,7 +12,13 @@ Logisim is used by students at colleges and universities around the world in man
 # Deployment
 1. Install Gradle 8.8 or later (https://gradle.org/install/)
 2. Install Java 21 or later (https://www.oracle.com/de/java/technologies/downloads/)
-3. Run:
+3. Run these commands from the root directory:
 
        gradle assemble
        gradle run
+4. If you want to test the simulation, follow these steps:
+   - click "Файл" button in upper left corner, then the "Открыть" button
+   - select this path: "DOWNLOAD_PATH/logisim-rebuild/src/test/resources/CIRCUIT"
+     - DOWNLOAD_PATH - the directory you cloned the repository into
+     - CIRCUIT - one of the files with the .circ extension (to test multithreading you should select big_test.circ and wait ~1 minute)
+   - click "Моделировать" button in upper left corner, choose frequency in "Тактовая частота" menu, then click the "Такты включены" button
